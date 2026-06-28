@@ -48,11 +48,22 @@ Everything passes the **requirement object**. Frontend builds against this as mo
   "decision": null,               // {action, note, timestamp} once the human acts
   "criteria_ref": "award-criterion-3",   // scoring criterion it maps to (nullable)
   "depends_on": ["req-0007"],     // dependency edges (may be empty)
-  "draft_answer": null            // shallow first-pass response (nullable)
+  "draft_answer": null,           // DEPRECATED alias of answer.text (kept for v1 matrix UI)
+
+  // --- auditable autofill extension (additive; see autofill-scope-decision.md) ---
+  "answer": {                     // grounded draft response to this requirement (nullable)
+    "text": "...",                // the drafted answer
+    "state": "auto",              // "auto" | "needs_input" | "human_edited" | "empty"
+    "evidence_refs": [ { "doc_id": "cap-003", "excerpt": "...", "page": 4 } ], // capability-doc backing
+    "confidence": 0.88            // 0–1, that the answer satisfies the requirement
+  },
+  "open_questions": [             // gaps for the human; empty when fully auto-answered
+    { "id": "q-req0001-1", "question": "...", "answer": null, "answered_at": null }
+  ]
 }
 ```
 
-A tender processes into `{ "tender_id", "title", "requirements": [ ...requirement objects ] }`.
+A tender processes into `{ "tender_id", "title", "requirements": [ ...requirement objects ], "capability_docs": [ { "doc_id", "filename", "page_count" } ] }`. `answer`/`open_questions`/`capability_docs` are additive — nullable/empty until the autofill pipeline runs, so the compliance matrix renders without them.
 
 ---
 

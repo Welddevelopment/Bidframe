@@ -76,11 +76,26 @@ Every requirement flowing through the system matches this schema. Frontend build
   "decision": null,
   "criteria_ref": "award-criterion-3",
   "depends_on": ["req-0007"],
-  "draft_answer": null
+  "draft_answer": null,                  // DEPRECATED alias of answer.text — kept so the v1 matrix UI keeps working
+
+  "answer": {                            // auditable autofill: grounded draft response to this requirement (nullable)
+    "text": "We hold ISO 9001:2015, certificate no. ...",
+    "state": "auto",                     // "auto" | "needs_input" | "human_edited" | "empty"
+    "evidence_refs": [                   // two-sided traceability — which capability doc backs the claim
+      { "doc_id": "cap-003", "excerpt": "verbatim snippet from the bidder's capability doc", "page": 4 }
+    ],
+    "confidence": 0.88                   // model's confidence the answer satisfies the requirement (0–1)
+  },
+  "open_questions": [                    // gaps the human must answer; empty when fully auto-answered
+    { "id": "q-req0001-1", "question": "What is your ISO 9001 certificate expiry date?",
+      "answer": null, "answered_at": null }
+  ]
 }
 ```
 
-A tender response: `{ "tender_id", "title", "requirements": [ ...requirement objects ] }`.
+`answer` and `open_questions` are **additive** (Day-1 autofill extension — see `autofill-scope-decision.md`). Both nullable/empty until the autofill pipeline runs; the compliance matrix renders without them. `draft_answer` stays populated (= `answer.text`) for v1 so nothing breaks during migration.
+
+A tender response: `{ "tender_id", "title", "requirements": [ ...requirement objects ], "capability_docs": [ { "doc_id", "filename", "page_count" } ] }`. `capability_docs` lists the bidder's uploaded evidence (empty until any are uploaded).
 
 ## Frontend conventions
 
