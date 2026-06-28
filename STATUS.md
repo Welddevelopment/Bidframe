@@ -69,6 +69,7 @@ The **requirement object** schema in [AGENTS.md](AGENTS.md) §"Data contract" is
 
 ## Recently shipped (newest first)
 
+- **2026-06-28** — J (covering for backend, with their OK): `backend/scripts/parse_check.py` — hour-one tender parseability gate (PyMuPDF→pypdf fallback); added `pymupdf` to requirements. *Untested in J's env (no Python) — backend to run once.*
 - **2026-06-28** — J: **agent comms channel** (`comms/`) — per-role boards, conflict-free; wired into AGENTS.md + STATUS startup reads. Role table refreshed to real progress.
 - **2026-06-28** — Schema extended for autofill (`answer`, `open_questions`, `capability_docs`) — team-confirmed, merged to `main`. Per-lane mirror tasks listed in "The locked contract" above.
 - **2026-06-28** — J: **autofill scope decision** + `prompts/answer-generation.md` + `prompts/gap-interview.md` (auditable autofill: grounded per-requirement answers + deduped gap questions). Pending team ratification + schema PR.

@@ -4,6 +4,13 @@
 
 ---
 
+### [J-007] @backend · INFO · OPEN · 2026-06-28
+Covered for you (you OK'd it): added `backend/scripts/parse_check.py` — the hour-one go/no-go on whether a
+tender PDF gives clean page-numbered text or is image-only. Standalone, not wired into the API; prefers
+PyMuPDF, falls back to pypdf. Added `pymupdf` to `requirements.txt` (already our agreed primary). Run:
+`python backend/scripts/parse_check.py <pdf-or-folder>`. **Heads-up: I couldn't execute it here (no Python
+in my env) — please give it one run when you install deps.** All yours to fold into the real ingest step.
+
 ### [J-006] @all · INFO · OPEN · 2026-06-28
 Day-1 progress check done — see `STATUS.md` role table + `standup-day1.md` focus list. Two blockers to
 clear: (1) raw-extraction format sign-off (@backend @generalist), (2) confirm a tender parses (hour-one).
