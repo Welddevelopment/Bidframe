@@ -31,9 +31,16 @@ git push
 
 ## The locked contract (do NOT change without team agreement)
 
-The **requirement object** schema in [AGENTS.md](AGENTS.md) §"Data contract" is **locked**. Frontend builds mock data in it; backend + generalist produce it for real. Changing it breaks both sides at once → branch + PR + team sign-off only.
+The **requirement object** schema in [AGENTS.md](AGENTS.md) §"Data contract" is **locked**. Frontend builds mock data in it; backend + generalist produce it for real. Changing it normally needs team sign-off (it breaks both sides at once).
 
-`{ id, text, source_page, source_clause, source_excerpt, type, is_gating, category, confidence, status, needs_review, decision, criteria_ref, depends_on, draft_answer }`
+`{ id, text, source_page, source_clause, source_excerpt, type, is_gating, category, confidence, status, needs_review, decision, criteria_ref, depends_on, draft_answer, answer, open_questions }` + `capability_docs[]` on the tender response.
+
+> ✅ **SCHEMA EXTENDED — team-confirmed 2026-06-28, now on `main`.** Added (additive, nullable — the matrix UI is unaffected): `answer` `{ text, state, evidence_refs[], confidence }`, `open_questions[]`, and `capability_docs[]` on the tender response. `draft_answer` kept as a deprecated alias of `answer.text`. Rationale + field details in [autofill-scope-decision.md](autofill-scope-decision.md). *(Team waived the PR ceremony for this one — verbal sign-off was the point of the rule; see [CONTRIBUTING.md](CONTRIBUTING.md).)*
+>
+> **Each role's agent — mirror it in your lane:**
+> - **Frontend:** add the fields to `frontend/src/types/requirement.ts` + a couple of `mock-requirements.ts` examples. Safe to ignore in the matrix until the answer UI is built.
+> - **Backend:** add `answer` / `open_questions` / `capability_docs` to your request/response models + serializers (nullable/empty by default).
+> - **Generalist/J:** wire the `prompts/answer-generation.md` + `prompts/gap-interview.md` prompts into the pipeline (after the extraction Day-4 gate).
 
 **Intermediate format (backend → generalist):** the *raw extraction list* — requirement objects pre-reconcile (cross-chunk duplicates allowed, raw confidence, ids not yet deduped). **Spec is up — `prompts/raw-extraction-format.md` (PROPOSED v1)** with a 6-item mock at `prompts/mock-raw-extraction.json`. **Backend + generalist: review + sign off in standup today**, build against the mock meanwhile.
 
@@ -60,6 +67,7 @@ The **requirement object** schema in [AGENTS.md](AGENTS.md) §"Data contract" is
 
 ## Recently shipped (newest first)
 
+- **2026-06-28** — Schema extended for autofill (`answer`, `open_questions`, `capability_docs`) — team-confirmed, merged to `main`. Per-lane mirror tasks listed in "The locked contract" above.
 - **2026-06-28** — J: **autofill scope decision** + `prompts/answer-generation.md` + `prompts/gap-interview.md` (auditable autofill: grounded per-requirement answers + deduped gap questions). Pending team ratification + schema PR.
 - **2026-06-28** — J: v1 extraction + classification prompts (`prompts/extraction.md`, `prompts/classification.md`) — provider-agnostic, recall-first, structured-output schemas inline.
 - **2026-06-28** — J: raw-extraction format spec + 6-item mock (`prompts/raw-extraction-format.md`, `prompts/mock-raw-extraction.json`) — backend→generalist contract.
