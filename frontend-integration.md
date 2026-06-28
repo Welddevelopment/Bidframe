@@ -10,10 +10,13 @@ compliance matrix should work with no UI changes — you're just changing where 
 
 Add `NEXT_PUBLIC_API_BASE_URL` to your env:
 - **Local dev:** `http://localhost:8000` (run the backend with `uvicorn app.main:app --reload`)
-- **Deployed:** the Render URL (e.g. `https://bidframe-api.onrender.com`) — see `backend/DEPLOY.md`. Set it
-  in Vercel → Project → Settings → Environment Variables.
+- **Deployed:** the backend's public URL — **J/backend will deploy the backend and give you the URL**
+  (you don't deploy the backend; it's an org-repo Render deploy that needs the repo owner). Once you have
+  it, set it in Vercel → Project → Settings → Environment Variables.
 
-CORS is already configured to allow `localhost:3000` and any `*.vercel.app` origin — nothing to do there.
+> **Your deploy scope = the Vercel frontend only** (which you already manage). The backend hosting is
+> handled separately — you just need the URL. CORS already allows `localhost:3000` + any `*.vercel.app`
+> origin, so once the env var points at the backend, it just works.
 
 ## 2. The three endpoints
 
