@@ -12,11 +12,11 @@ The reconcile/dedupe module is **step 5 of the pipeline** and the entry point of
 
 ## Locked decisions
 
-1. **Matching = fuzzy text + source proximity, stdlib (`difflib`), behind a swappable `similarity()` seam.** Not semantic embeddings — they over-merge (would fuse "ISO 9001" with "ISO 14001"), are non-deterministic, and are unauditable, which violates both the conservatism directive and the product's traceability thesis. The seam lets us swap in `rapidfuzz`/embeddings later if Day-2 eval proves `difflib` too weak, without touching merge logic.
-2. **Merge only on a conservative AND of signals** — high text similarity **and** source-proximal (same page/clause or overlapping char offsets). Two similar-sounding items far apart in the document are probably distinct requirements stated twice; keep both.
+1. **Matching = fuzzy text similarity + a token-set floor + source proximity, stdlib (`difflib`), behind a swappable `similarity()` seam.** Not semantic embeddings — they over-merge (would fuse "ISO 9001" with "ISO 14001"), are non-deterministic, and are unauditable, which violates both the conservatism directive and the product's traceability thesis. The seam lets us swap in `rapidfuzz`/embeddings later if Day-2 eval proves `difflib` too weak, without touching merge logic. **Why the token floor (caught during planning):** `difflib` char-ratio alone scored two *different* mandatory disqualifiers — insurance vs turnover — at **0.6443** (shared UK-tender boilerplate "The supplier must … of at least £…,000,000"), dangerously close to a false merge. A content-token Jaccard floor drops that pair to **0.1111** while the true ISO duplicate stays at **0.2727**, cleanly separating them.
+2. **Merge only on a conservative AND of FOUR signals** — high char-ratio (≥0.66) **and** token-Jaccard ≥0.20 **and** same `source_page` **and** same non-null `source_clause`. Two similar-sounding items far apart, or on different clauses, are probably distinct requirements stated twice; keep both. **Char-offset overlap is NOT used** as a cross-item signal — raw `char_start/char_end` are *chunk-local*, so comparing them across chunks (exactly where duplicates arise) is incoherent; offsets are used only for document-order tie-breaking.
 3. **Confidence combination = noisy-OR** (`1 − ∏(1 − cᵢ)`). Two independent chunks extracting the same requirement is corroboration → confidence rises, not averages down.
 4. **Safety escalation on merge:** if *any* member is `mandatory` or `is_gating`, the merged item is `mandatory`/`is_gating`. Never downgrade a disqualifier by merging.
-5. **Output = the locked final schema**, a drop-in for what the API serves (zero reshaping for frontend/backend). Merge provenance lives in a **separate reconcile report**, never in the requirement object — so the locked schema is untouched.
+5. **Output = the LIVE frontend type** (`frontend/src/types/requirement.ts`, 15 fields), a true drop-in. **Finding (verified during planning):** the frontend has **not** yet mirrored the autofill schema extension — its `Requirement` has no `answer`/`open_questions` and `Tender` has no `capability_docs`. So reconcile **omits** those fields (AGENTS.md permits "emit null OR omit"); they arrive later via the Day-3 answer-draft step + a coordinated Frontend mirror PR. This is also natural: reconcile is *upstream* of answer generation, so no answers exist at reconcile time. Merge provenance lives in a **separate reconcile report**, never in the requirement object. *(Cross-lane heads-up needed: real raw data may carry a null `source_clause`, which the frontend type currently declares non-nullable — flag to Frontend, don't fix from this lane.)*
 6. **`needs_review` = crude default for now** (confidence below ~0.75 → true). Real calibration against the gold set is the Generalist's Day-3 job. The crude default already makes the £2m-turnover item (0.62) self-flag in the demo.
 7. **Code home = new top-level `engine/` folder** — the Generalist's lane, separate from `/backend`, so pushes never collide.
 
@@ -49,8 +49,8 @@ raw envelope JSON
   → validate (tolerate missing criteria_ref/depends_on; keep+flag malformed)
   → group candidates (text-sim AND source-proximal)
   → merge each group (canonical excerpt/page, noisy-OR confidence, escalate type/gating, union depends_on)
-  → promote to final schema (assign ids, status=pending, decision=null, answer=null, open_questions=[], crude needs_review)
-  → emit tender response { tender_id, title, requirements[], capability_docs: [] }
+  → promote to final schema (assign ids, status=pending, decision=null, draft_answer=null, crude needs_review)
+  → emit tender response { tender_id, title, requirements[] }   # match live frontend type; no autofill fields yet
   + separate reconcile report (which raw_ids merged into which req_id, similarity scores, decisions)
 ```
 
@@ -63,7 +63,7 @@ raw envelope JSON
 
 ## Output schema (the locked final object — per `AGENTS.md`)
 
-`id` (assigned) · `text` · `source_page` · `source_clause` · `source_excerpt` (canonical) · `type` · `is_gating` (escalated) · `category` · `confidence` (noisy-OR) · `status:"pending"` · `needs_review` (crude default) · `decision:null` · `criteria_ref` (passthrough/null) · `depends_on` (union/[]) · `draft_answer:null` · `answer:null` · `open_questions:[]`. Tender response also carries `capability_docs: []`.
+The exact 15 fields of the live `Requirement` type: `id` (assigned) · `text` · `source_page` · `source_clause` · `source_excerpt` (canonical) · `type` · `is_gating` (escalated) · `category` · `confidence` (noisy-OR) · `status:"pending"` · `needs_review` (crude default) · `decision:null` · `criteria_ref` (passthrough/null) · `depends_on` (union/[]) · `draft_answer:null`. Tender response = `{ tender_id, title, requirements[] }`. **No `answer`, `open_questions`, or `capability_docs`** — see locked decision 5.
 
 ## Error handling
 
