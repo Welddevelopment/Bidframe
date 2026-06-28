@@ -1,0 +1,38 @@
+{
+  "tender_id": "syn-001",
+  "source_filename": "synthetic.pdf",
+  "requirements": [
+    {
+      "gold_id": "gs-1",
+      "text": "The supplier must hold ISO 9001 certification.",
+      "source_page": 14,
+      "type": "mandatory",
+      "is_gating": true,
+      "category": "certification"
+    },
+    {
+      "gold_id": "gs-2",
+      "text": "The supplier must hold employer's liability insurance of at least ?5,000,000.",
+      "source_page": 22,
+      "type": "mandatory",
+      "is_gating": true,
+      "category": "insurance"
+    },
+    {
+      "gold_id": "gs-3",
+      "text": "The supplier should provide a dedicated account manager.",
+      "source_page": 48,
+      "type": "optional",
+      "is_gating": false,
+      "category": "technical"
+    },
+    {
+      "gold_id": "gs-4",
+      "text": "The supplier must demonstrate an annual turnover of at least ?2,000,000.",
+      "source_page": 61,
+      "type": "mandatory",
+      "is_gating": true,
+      "category": "financial"
+    }
+  ]
+}
