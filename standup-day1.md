@@ -12,6 +12,15 @@
 - **LLM provider: deferred** — cheapest-and-best, evaluate Day 2+. Prompts are provider-agnostic.
 - **Fetch.ai stack: deferred to Day 3.**
 
+## 🟠 Needs a team decision today — autofill scope
+
+J + product call: extend Bidframe from compliance/extraction into **end-to-end bid drafting**, framed as
+**"auditable autofill"** (grounded answers per requirement + a short gap-question interview). Full write-up:
+[autofill-scope-decision.md](autofill-scope-decision.md). Prompts drafted (`prompts/answer-generation.md`,
+`prompts/gap-interview.md`). **Decide as a team:** (1) are we in? (2) it changes the locked schema →
+who owns the schema PR? (3) confirm it ships only *after* the extraction Day-4 gate is green — extraction
+stays the spine. Ratify or push back before anyone builds against it.
+
 ## The Day-1 finish line (master plan §7)
 
 1. **Schema + raw-extraction format locked** — schema done; raw format needs 2 sign-offs.

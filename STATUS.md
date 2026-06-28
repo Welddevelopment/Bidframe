@@ -4,7 +4,9 @@
 > Owned + kept current by **J** (glue/standup), but **every role updates the line for their own area when they push.**
 > For the *fixed* stuff — schema, git rules, pipeline — see [AGENTS.md](AGENTS.md) and [tender-master-plan.md](tender-master-plan.md). This file is the *moving* part.
 
-**Tool name:** **Bidframe** (locked Day 1). _Auditable requirement breakdown + compliance matrix for SME public-sector bidders._
+**Tool name:** **Bidframe** (locked Day 1). _Auditable requirement breakdown + compliance matrix → grounded autofill of the bid response, for SME public-sector bidders._
+
+> 🟠 **MAJOR SCOPE DECISION (needs team ratification at standup):** Bidframe extends to **end-to-end bid drafting**, messaged as **"auditable autofill"** (never "we write your bid"). Full write-up + proposed schema change + role implications in [autofill-scope-decision.md](autofill-scope-decision.md). **This changes the locked schema → branch + PR + sign-off before any `AGENTS.md` edit.** Extraction + the disqualifier catch stay the spine and the Day-4 gate; autofill rides on top, ships only once that gate is green.
 **Track:** Conduct "Make Legacy Move" (primary). Fetch.ai stack = **decide Day 3** (J's parallel task, never at engineers' expense).
 **Timeline:** Day 1 = **28 Jun 2026** · Demo = **4 Jul** · **Day 4 = integration gate** (end-to-end on a fresh tender; not working by EOD4 → Day 5 cuts scope, doesn't add).
 **Last updated:** 2026-06-28 (Day 1) by J.
@@ -50,6 +52,7 @@ The **requirement object** schema in [AGENTS.md](AGENTS.md) §"Data contract" is
 
 ## Open decisions / watch list
 
+- **Autofill scope (NEW, ratify at standup)** — extend to grounded bid drafting? Schema change + role impact in [autofill-scope-decision.md](autofill-scope-decision.md). J has drafted the prompts + proposal; needs backend/generalist/frontend buy-in + a schema PR. **Must not delay the extraction Day-4 gate.**
 - **LLM provider** — undecided. Cheapest-and-best; **evaluate Day 2+**. Prompts written provider-agnostic (structured output via JSON-schema/function-calling, never free text). Pick once sponsor credits are known.
 - **Sourcing sprint (Day 1, all four)** — grab 10–15 real UK public-sector tenders (Contracts Finder / Find a Tender, full-pack-attached). **Confirm one downloads + parses cleanly in hour one.** Never commit tender PDFs (`.gitignore`).
 - **Gold set (by EOD Day 2)** — each person hand-labels ONE tender end-to-end.
@@ -57,6 +60,7 @@ The **requirement object** schema in [AGENTS.md](AGENTS.md) §"Data contract" is
 
 ## Recently shipped (newest first)
 
+- **2026-06-28** — J: **autofill scope decision** + `prompts/answer-generation.md` + `prompts/gap-interview.md` (auditable autofill: grounded per-requirement answers + deduped gap questions). Pending team ratification + schema PR.
 - **2026-06-28** — J: v1 extraction + classification prompts (`prompts/extraction.md`, `prompts/classification.md`) — provider-agnostic, recall-first, structured-output schemas inline.
 - **2026-06-28** — J: raw-extraction format spec + 6-item mock (`prompts/raw-extraction-format.md`, `prompts/mock-raw-extraction.json`) — backend→generalist contract.
 - **2026-06-28** — J: cleaned up stray global config; locked tool name **Bidframe**; created this `STATUS.md`.
