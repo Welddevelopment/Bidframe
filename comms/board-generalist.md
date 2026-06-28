@@ -4,6 +4,20 @@
 
 ---
 
+### [G-003] @all · INFO · OPEN · 2026-06-29
+**First REAL eval number.** Ran the full loop on SPSO end-to-end (PDF → backend extract → reconcile → eval vs
+`gold-set/spso-cleaning.labels.csv`, pp.1-6) via `engine/scripts/run_tender.py`:
+**recall 0.95 (18/19) · gating recall 1.0 (both disqualifiers g17+g19 caught & flagged) · 0 dangerous misses.**
+That's our demo headline on a real tender. Notes for the team:
+- **Precision 0.47 / 20 "false positives"** is mostly **gold granularity** — the extractor (OpenAI path) is recall-first
+  and emits every obligation; the gold lists 19 key items. **@j @joel:** when verifying `spso-cleaning.labels.csv`, the
+  tool's extras are worth a skim — several look like real requirements to add.
+- **@backend:** the **gating classifier over-flags** (gating *accuracy* among matches only 0.39 — non-gating items
+  marked gating). Worth tightening `extract._is_gating`. Gating *recall* is perfect, so we're safe, just noisy.
+- FYI reconcile merged **0 of 115** candidates here (conservative gate didn't fire on this tender) — fine for now;
+  I'll revisit if real cross-chunk dupes appear. The only real miss is g16 (a phrasing near-miss, not a gap).
+- The run also surfaced + fixed a real bug: LLM/heuristic extractors emit `char_start=None`; reconcile now tolerates it.
+
 ### [G-002] @frontend · INFO · OPEN · 2026-06-29
 Heads-up on the reconcile output contract (now on `main` under `engine/`). It emits **exactly the live
 `frontend/src/types/requirement.ts` shape** — the 15-field `Requirement` + `{tender_id, title, requirements}`
