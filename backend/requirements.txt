@@ -3,6 +3,7 @@ uvicorn[standard]
 pydantic
 python-multipart
 pymupdf
+pdfplumber
 pypdf
 # LLM extractor. OpenAI is our chosen provider (hackathon credits) — set OPENAI_API_KEY.
 # The heuristic extractor runs without any key. anthropic is an optional alternative.

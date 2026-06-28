@@ -118,12 +118,13 @@ class HeuristicExtractor:
                 conf += 0.1
             conf = min(conf, 0.8)
             start = chunk.text.find(raw_sentence.strip()[:40])
+            page = chunk.page_at(start) if start >= 0 else chunk.page_start
             out.append(
                 {
                     "raw_id": f"raw-{chunk.id}-{seq:04d}",
                     "chunk_id": chunk.id,
                     "text": sentence,
-                    "source_page": chunk.page_start,  # best-effort; chunk-level page
+                    "source_page": page,  # resolved to the exact page via chunk.page_map
                     "source_clause": _clause(sentence),
                     "source_excerpt": sentence,
                     "type": req_type,
@@ -193,12 +194,14 @@ def _to_raw(items: list[dict], chunk: Chunk) -> list[dict]:
     for seq, it in enumerate(items):
         excerpt = it.get("source_excerpt", "")
         start = chunk.text.find(excerpt) if excerpt else -1
+        # If we can locate the excerpt, trust the page_map over the model's guess.
+        page = chunk.page_at(start) if start >= 0 else it.get("source_page", chunk.page_start)
         out.append(
             {
                 "raw_id": f"raw-{chunk.id}-{seq:04d}",
                 "chunk_id": chunk.id,
                 "text": it.get("text", ""),
-                "source_page": it.get("source_page", chunk.page_start),
+                "source_page": page,
                 "source_clause": it.get("source_clause"),
                 "source_excerpt": excerpt,
                 "type": it.get("type", "mandatory"),

@@ -15,7 +15,7 @@ Scaffolded by J as backend cover.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from .ingest import IngestedDoc
 
@@ -35,6 +35,19 @@ class Chunk:
     text: str
     page_start: int
     page_end: int
+    # (char_offset_in_chunk, page) for each block, so a position in `text` resolves
+    # to the exact page it came from — not just the chunk's start page.
+    page_map: list[tuple[int, int]] = field(default_factory=list)
+
+    def page_at(self, offset: int) -> int:
+        """Exact page for a character offset within this chunk's text."""
+        page = self.page_start
+        for start, pg in self.page_map:
+            if offset >= start:
+                page = pg
+            else:
+                break
+        return page
 
 
 def _split_into_blocks(doc: IngestedDoc) -> list[_Block]:
@@ -67,12 +80,19 @@ def chunk_doc(doc: IngestedDoc) -> list[Chunk]:
         if not cur:
             return []
         text = "\n\n".join(b.text for b in cur)
+        # Record where each block starts in `text` and which page it's from.
+        page_map: list[tuple[int, int]] = []
+        offset = 0
+        for b in cur:
+            page_map.append((offset, b.page))
+            offset += len(b.text) + 2  # +2 for the "\n\n" join separator
         chunks.append(
             Chunk(
                 id=f"c{seq:03d}",
                 text=text,
                 page_start=cur[0].page,
                 page_end=cur[-1].page,
+                page_map=page_map,
             )
         )
         seq += 1

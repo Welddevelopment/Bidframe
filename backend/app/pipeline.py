@@ -17,6 +17,7 @@ from difflib import SequenceMatcher
 
 from .chunk import chunk_doc
 from .extract import get_extractor
+from .graph import build_graph
 from .ingest import ingest_pdf
 from .schema import Requirement, TenderResponse
 
@@ -60,12 +61,15 @@ def run_pipeline(pdf_path: str, tender_id: str, title: str) -> TenderResponse:
         raws.extend(extractor.extract_chunk(ch))
 
     reconciled = _reconcile(raws)
+    full_text = "\n".join(p.text for p in doc.pages)
 
     requirements: list[Requirement] = []
     for i, r in enumerate(reconciled, start=1):
         requirements.append(
             Requirement(
-                id=f"req-{i:04d}",
+                # Globally unique (tender-prefixed) so two tenders never collide on
+                # the requirements PK and PATCH /requirements/{id} is unambiguous.
+                id=f"{tender_id}-r{i:04d}",
                 text=r["text"],
                 source_page=r["source_page"],
                 source_clause=r.get("source_clause"),
@@ -82,5 +86,8 @@ def run_pipeline(pdf_path: str, tender_id: str, title: str) -> TenderResponse:
                 draft_answer=None,
             )
         )
+
+    # Graph edges: criteria_ref + depends_on (is_gating already set). Conservative.
+    build_graph(requirements, full_text)
 
     return TenderResponse(tender_id=tender_id, title=title, requirements=requirements)
