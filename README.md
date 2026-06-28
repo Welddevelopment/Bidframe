@@ -1,5 +1,8 @@
 # Tender Breakdown
 
+> **First thing — humans and AI agents both read [AGENTS.md](AGENTS.md) before doing anything.**
+> It holds the locked data contract and the git workflow every teammate (and their agent) must follow.
+
 Extracts requirements from UK public-sector tender PDFs and presents them in a
 **compliance matrix** for bid managers to review. Conduct "Make Legacy Move" hackathon (7-day build).
 
