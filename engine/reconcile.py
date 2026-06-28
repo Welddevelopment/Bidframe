@@ -45,3 +45,81 @@ def group_candidates(raws: list[dict[str, Any]]) -> list[list[dict[str, Any]]]:
         else:
             groups.append([raw])
     return groups
+
+
+
+def _confidence(raw: dict[str, Any]) -> float:
+    return float(raw.get("confidence", 0.0))
+
+
+def _char_start(raw: dict[str, Any]) -> int:
+    value = raw.get("char_start")
+    return int(value) if value is not None else 0
+
+
+def _canonical(group: list[dict[str, Any]]) -> dict[str, Any]:
+    return sorted(
+        group,
+        key=lambda raw: (-_confidence(raw), -len(str(raw.get("source_excerpt", ""))), _char_start(raw)),
+    )[0]
+
+
+def _clamp_confidence(confidence: float) -> float:
+    return min(1.0, max(0.0, confidence))
+
+
+def _noisy_or(confidences: list[float]) -> float:
+    product = 1.0
+    for confidence in confidences:
+        product *= 1.0 - _clamp_confidence(confidence)
+    return round(1.0 - product, 4)
+
+
+def _first_non_null(group: list[dict[str, Any]], key: str) -> Any:
+    for member in group:
+        value = member.get(key)
+        if value is not None:
+            return value
+    return None
+
+
+def _depends_on_union(group: list[dict[str, Any]]) -> list[str]:
+    seen: set[str] = set()
+    result: list[str] = []
+    for member in group:
+        for dep in member.get("depends_on", []) or []:
+            if dep not in seen:
+                seen.add(dep)
+                result.append(dep)
+    return result
+
+
+def merge_group(group: list[dict[str, Any]]) -> dict[str, Any]:
+    """Collapse one conservative group into an interim merged requirement dict."""
+    if not group:
+        raise ValueError("cannot merge an empty group")
+
+    canonical = _canonical(group)
+    confidences = [_confidence(member) for member in group]
+    confidence: float = group[0]["confidence"] if len(group) == 1 else _noisy_or(confidences)
+
+    source_clause = canonical.get("source_clause")
+    if source_clause is None:
+        source_clause = _first_non_null(group, "source_clause")
+
+    return {
+        "text": canonical.get("text"),
+        "source_page": canonical.get("source_page"),
+        "source_clause": source_clause,
+        "source_excerpt": canonical.get("source_excerpt"),
+        "type": "mandatory" if any(member.get("type") == "mandatory" for member in group) else "optional",
+        "is_gating": any(bool(member.get("is_gating")) for member in group),
+        "category": canonical.get("category"),
+        "confidence": confidence,
+        "criteria_ref": _first_non_null(group, "criteria_ref"),
+        "depends_on": _depends_on_union(group),
+        "_char_start": _char_start(canonical),
+        "_member_raw_ids": [member["raw_id"] for member in group],
+        "_member_confidences": confidences,
+        "_canonical_raw_id": canonical.get("raw_id"),
+    }
