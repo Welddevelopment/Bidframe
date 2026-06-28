@@ -9,12 +9,42 @@ number is deterministic and auditable. No LLM judge.
 from __future__ import annotations
 
 import argparse
+import csv
 import sys
+from pathlib import Path
 
 from engine._io import read_json, write_json
 from engine.similarity import similarity
 
 MATCH_THRESHOLD = 0.60
+
+_GATING_TRUE = {"yes", "true", "y", "1", "gating"}
+
+
+def load_gold_csv(path: str | Path, tender_id: str | None = None) -> dict:
+    """Load a team gold-set CSV (id,text,type,is_gating,source_page,source_clause,notes).
+
+    Tolerates `#` comment lines and a yes/no `is_gating` column. Returns the gold
+    envelope shape the scorer expects: {tender_id, requirements:[{gold_id, ...}]}.
+    """
+    with open(path, encoding="utf-8") as f:
+        lines = [ln for ln in f if not ln.lstrip().startswith("#")]
+    requirements = []
+    for row in csv.DictReader(lines):
+        gid = (row.get("id") or "").strip()
+        if not gid:
+            continue
+        page = (row.get("source_page") or "").strip()
+        clause = (row.get("source_clause") or "").strip()
+        requirements.append({
+            "gold_id": gid,
+            "text": (row.get("text") or "").strip(),
+            "type": (row.get("type") or "mandatory").strip() or "mandatory",
+            "is_gating": (row.get("is_gating") or "").strip().lower() in _GATING_TRUE,
+            "source_page": int(page) if page.lstrip("-").isdigit() else None,
+            "source_clause": clause or None,
+        })
+    return {"tender_id": tender_id or Path(path).stem, "requirements": requirements}
 
 
 def match_requirements(gold: dict, output: dict):

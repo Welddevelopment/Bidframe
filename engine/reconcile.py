@@ -124,7 +124,7 @@ def merge_group(group: list[dict]) -> dict:
         "confidence": confidence,
         "criteria_ref": _first_non_null(group, "criteria_ref"),
         "depends_on": depends_on,
-        "_char_start": canonical.get("char_start", 0),
+        "_char_start": canonical.get("char_start") or 0,   # real extractors emit None when unlocated
         "_member_raw_ids": [m["raw_id"] for m in group],
         "_canonical_raw_id": canonical["raw_id"],
     }
@@ -163,8 +163,17 @@ def to_final(merged: dict, req_id: str) -> dict:
 # Document-order id assignment
 # --------------------------------------------------------------------------- #
 def assign_ids(merged_groups: list[dict]) -> list[tuple[str, dict]]:
-    """Stable-sort by (source_page, _char_start); assign req-0001.. in document order."""
-    ordered = sorted(merged_groups, key=lambda m: (m["source_page"], m["_char_start"]))
+    """Stable-sort by (source_page, _char_start); assign req-0001.. in document order.
+
+    Real extractors may emit a null source_page/char_start; unknown pages sort last,
+    unknown offsets sort first within a page — never crash on the comparison.
+    """
+    def _key(m: dict) -> tuple[int, int]:
+        page = m.get("source_page")
+        char = m.get("_char_start")
+        return (page if page is not None else 10**9, char if char is not None else 0)
+
+    ordered = sorted(merged_groups, key=_key)
     return [(f"req-{n:04d}", m) for n, m in enumerate(ordered, start=1)]
 
 
