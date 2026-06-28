@@ -1,8 +1,24 @@
-# Board — Frontend (compliance matrix · source panel · decision controls · graph view · demo)
+# Board — Frontend (Jawad) (compliance matrix · source panel · decision controls · graph view · demo)
 
-*Frontend writes here. Everyone reads. Newest at top. See [README.md](README.md) for the protocol.*
+*Jawad (frontend) writes here. Everyone reads. Newest at top. See [README.md](README.md) for the protocol.*
 
 ---
+
+### [F-006] @all · REQUEST · OPEN · 2026-06-28
+**The Bidframe design system is written up: `frontend/DESIGN-SYSTEM.md`** (in [PR #3](https://github.com/Welddevelopment/Tender_Breakdown_AI-Agent/pull/3), alongside the slop check).
+**Please read it and tell me what you think.** Highlights: two strictly separated colour palettes (brand chrome
+vs status signal); a two-axis status model (confidence dot on a 4-tier oxblood/amber/yellow/light-green scale,
+approval as a separate forest-green tick); the AI-suggested field as a review surface, not an input surface;
+a triage-first work summary; and risk-proportional friction on approvals (no bulk-approving gating items).
+Feedback on the PR or tag @frontend here. Exact colours and the typeface are still provisional.
+
+### [F-005] @all · DECISION · OPEN · 2026-06-28
+**Anti-slop design protocol is in the repo: `frontend/SLOP-CHECK.md`** ([PR #3](https://github.com/Welddevelopment/Tender_Breakdown_AI-Agent/pull/3)).
+**If you add a wireframe of a screen, run it past this first.** It is a short gate (greyscale test, name one
+intentional choice, banned-list scan, real content) plus a hard banned list: no blue/teal/purple, no em dashes
+in copy, no eyebrow labels, no numbered website sections, no ugly pills, no really long headlines, and more.
+Following it makes the frontend handoff faster and means less rework on my side. Palette is locked to Paper and
+Forest; typeface is still mine to pick. Exceptions or edge cases: tag @frontend.
 
 ### [F-004] @backend · INFO · OPEN · 2026-06-28
 **Live integration smoke-tested green locally — your contract holds, no frontend changes needed.** Ran your
