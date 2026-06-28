@@ -1,6 +1,26 @@
 id,text,type,is_gating,source_page,source_clause,notes
-# Fill in one row per requirement you find in data/tenders/spso-cleaning.pdf
-# type = mandatory|optional ; is_gating = yes|no ; delete these comment lines when done.
-# The two rows below are EXAMPLES showing the format — replace them with what YOU find.
-g1,Prices quoted must be held firm for at least 45 days from the closing date,mandatory,no,4,,example row — verify against the PDF
-g2,The supplier must hold valid public liability insurance,mandatory,yes,,,"example row — gating if missing it disqualifies; check the PDF for the real wording/page"
+# GOLD LABEL — SPSO Cleaning Services ITT (data/tenders/spso-cleaning.pdf)
+# FIRST-PASS DRAFT by J's agent from the tender text — Joel: read down it, fix anything wrong,
+#   delete non-requirements, add anything missed. Then delete these comment lines.
+# Scope: bidder-facing requirements (submission, conditions, logistics, eligibility). The detailed
+#   room-by-room cleaning tasks in Appendix 1 (pp.7-11) are summarised in g1-g3, not line-by-line.
+# type = mandatory|optional ; is_gating = yes|no
+g1,"Provide cleaning services for the office at 4 Melville St Edinburgh per the detailed specification",mandatory,no,3,Project Specification,core service; full task list in Appendix 1
+g2,"Keep risk assessment and COSHH manuals up to date and on site",mandatory,no,3,Project Specification,from the spec task list
+g3,"Carry out quality assurance checks of the work done and keep records",mandatory,no,3,Project Specification,
+g4,"Be aware of and comply with the confidentiality requirements of section 19 of the SPSO Act",mandatory,no,3,Additional Information,legal; detail in Appendix 2 (p.12)
+g5,"Tender submission must include a detailed response to the Project Specification (areas to be cleaned and frequency)",mandatory,no,4,Tender Submissions,
+g6,"Tender submission must include details of the bidder's experience of similar work and proposed personnel",mandatory,no,4,Tender Submissions,
+g7,"Tender submission must include a breakdown of costs (per person per hour, consumables, total cost incl VAT)",mandatory,no,4,Tender Submissions,
+g8,"Tender submission must include summaries of work for two referenceable clients with contact details",mandatory,no,4,Tender Submissions,
+g9,"Tender submission must state payment requirements (e.g. monthly invoice/payment periods)",mandatory,no,4,Tender Submissions,
+g10,"Tender submission must state the standard terms of the contract regarding termination",mandatory,no,4,Tender Submissions,
+g11,"The preferred bidder may be asked to provide professional indemnity or public liability insurance before award",mandatory,no,4,Tender Submissions,conditional/pre-award — flag if not held
+g12,"Suppliers must meet their own costs of responding to this tender",mandatory,no,5,Tender conditions,
+g13,"Prices quoted must be held firm for at least 45 days from the closing date",mandatory,no,5,Tender conditions,
+g14,"The supplier must be willing for the tender response to form part of the contractual relationship",mandatory,no,5,Tender conditions,
+g15,"If costs are not fixed for the contract duration, the review points and basis of review must be clearly detailed",mandatory,no,5,Tender conditions,
+g16,"A full response must be submitted by email or by post (hard copy / CD) to the named address",mandatory,no,6,Making a tender,
+g17,"Tenders must arrive no later than 12:00 noon on 06/11/2013",mandatory,yes,6,Making a tender,submission deadline — late tenders not considered (gating)
+g18,"Submission must be clearly marked ""Response to Cleaning Tender""",mandatory,no,6,Making a tender,so it isn't opened before the deadline
+g19,"The tender must substantially conform to the tender requirements, or it will not be considered further",mandatory,yes,6,Assessment of tenders,the pass/fail conformance gate — the disqualifier
