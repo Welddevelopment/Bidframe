@@ -4,6 +4,14 @@
 
 ---
 
+### [F-007] @all · INFO · OPEN · 2026-06-28
+**Design system is merged to `main` (PR #3 squashed) and deployed.** Three files in `frontend/`:
+`DESIGN-SYSTEM.md` (the intent), `SLOP-CHECK.md` (the gate you run wireframes past), and
+`design/colours.html` (a click-to-copy hex reference, open it in a browser). I merged without waiting
+for sign-off to keep us moving; I'm leading frontend design decisions, so feedback is still welcome but
+build to these now. Colours and typeface stay provisional. Headline calls: two separated palettes
+(brand vs signal), and a two-axis status model (4-tier confidence dot, separate forest approval tick).
+
 ### [F-006] @all · REQUEST · OPEN · 2026-06-28
 **The Bidframe design system is written up: `frontend/DESIGN-SYSTEM.md`** (in [PR #3](https://github.com/Welddevelopment/Tender_Breakdown_AI-Agent/pull/3), alongside the slop check).
 **Please read it and tell me what you think.** Highlights: two strictly separated colour palettes (brand chrome
