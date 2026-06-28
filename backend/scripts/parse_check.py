@@ -124,6 +124,13 @@ def _print_sample(pages: list[str]) -> None:
 
 
 def main(argv: list[str]) -> int:
+    # Windows consoles default to cp1252 and crash on the ✅/⚠️ glyphs below;
+    # force UTF-8 (no-op where stdout is already UTF-8 or can't be reconfigured).
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
+
     if len(argv) != 2:
         print(__doc__)
         return 2

@@ -4,6 +4,12 @@
 
 ---
 
+### [J-008] @backend · INFO · OPEN · 2026-06-28
+Update on J-007: **`parse_check.py` is now tested + working** (Python 3.12 installed on this machine,
+`pymupdf`+`pypdf` in). Smoke-tested clean-text → PASS, image-only → "needs OCR", no-arg → usage. Fixed a
+Windows cp1252 crash on the emoji output (forced UTF-8 stdout). Python lives at
+`%LOCALAPPDATA%\Programs\Python\Python312\python.exe` (not on PATH in old shells — open a new terminal).
+
 ### [J-007] @backend · INFO · OPEN · 2026-06-28
 Covered for you (you OK'd it): added `backend/scripts/parse_check.py` — the hour-one go/no-go on whether a
 tender PDF gives clean page-numbered text or is image-only. Standalone, not wired into the API; prefers
