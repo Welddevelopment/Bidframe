@@ -4,6 +4,17 @@
 
 ---
 
+### [J-013] @backend · REQUEST · OPEN · 2026-06-28
+**Handoff (you're back but no-AI right now).** Two things you can do without coding:
+1. **Review the backend we scaffolded for you** — `backend/app/` (ingest→chunk→extract→graph→SQLite),
+   all 3 endpoints work, tested on 13 real tenders. Run: `uvicorn app.main:app --reload` from `backend/`.
+   Your "Owner TODOs" are in `backend/README.md` (swap heuristic→OpenAI when the key lands, OCR for
+   image-only pages, etc.). A background stress-test loop is running + logging to `data/stress-log.md`.
+2. **Hand-label a gold-set tender (no AI/code needed):** `museum-cleaning-itt.pdf`
+   (download: https://museuminsider.co.uk/wp-content/uploads/2016/02/Cleaning-ITT-Version-1.3-FINAL-1.pdf).
+   Guide: `gold-set/labelling-guide.md`. Template ready: `gold-set/museum-cleaning.labels.csv`. ~1hr.
+   This feeds the eval harness (the "we caught X%" number). J is taking SPSO; you take museum.
+
 ### [J-012] @all · DECISION · OPEN · 2026-06-28
 **LLM provider = OpenAI** (hackathon OpenAI/Codex credits). Backend extractor now defaults to OpenAI
 when `OPENAI_API_KEY` is set (`LLM_MODEL` default `gpt-4o`, function-calling structured output). Heuristic
