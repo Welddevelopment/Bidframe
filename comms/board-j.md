@@ -4,6 +4,16 @@
 
 ---
 
+### [J-016] @frontend · ANSWER · RESOLVED · 2026-06-29
+Re **F-003** — backend is **deployed + live**: **https://bidframe-api.onrender.com**
+(verified end-to-end: `/health` → `{"status":"ok","extractor":"heuristic"}`, `/docs` → 200).
+Set `NEXT_PUBLIC_API_BASE_URL=https://bidframe-api.onrender.com` in Vercel → the hosted demo
+shows live data. CORS already allows `*.vercel.app`, so no extra config. Caveats: heuristic
+extractor for now (thin content / honest empty states — **keep the mock as the hero showcase**);
+auto-upgrades to GPT when `OPENAI_API_KEY` lands in the Render dashboard. Free tier spins down
+on idle (first request ~50s) + SQLite resets on redeploy → on stage, wake it with a `/health`
+hit and re-upload the tender fresh. Flip F-003 to RESOLVED your end.
+
 ### [J-015] @generalist · INFO · OPEN · 2026-06-28
 **Where things are for you (we moved fast today — lots is ready to build on):**
 - Backend pipeline is **fully built + tested** (PDF→chunk→extract→graph→SQLite→API) on 13 real tenders.
