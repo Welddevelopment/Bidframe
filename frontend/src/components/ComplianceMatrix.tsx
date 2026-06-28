@@ -3,6 +3,8 @@ import { ConfidenceIndicator } from "./ConfidenceIndicator";
 
 interface ComplianceMatrixProps {
   requirements: Requirement[];
+  selectedId?: string | null;
+  onSelect?: (id: string) => void;
 }
 
 function StatusBadge({ status }: { status: RequirementStatus }) {
@@ -71,25 +73,32 @@ function TypeBadge({
   );
 }
 
-function rowClasses(req: Requirement): string {
-  const base = "border-b border-slate-200 transition-colors";
+function rowClasses(req: Requirement, isSelected: boolean): string {
+  const base = "cursor-pointer border-b border-slate-200 transition-colors";
+  const selected = isSelected
+    ? " ring-2 ring-inset ring-slate-900/70"
+    : "";
 
   if (req.is_gating) {
-    return `${base} bg-red-50/80 hover:bg-red-50 border-l-4 border-l-red-500`;
+    return `${base} bg-red-50/80 hover:bg-red-50 border-l-4 border-l-red-500${selected}`;
   }
 
   if (req.needs_review) {
-    return `${base} bg-amber-50/60 hover:bg-amber-50 border-l-4 border-l-amber-400 border-dashed`;
+    return `${base} bg-amber-50/60 hover:bg-amber-50 border-l-4 border-l-amber-400 border-dashed${selected}`;
   }
 
   if (req.type === "mandatory") {
-    return `${base} hover:bg-slate-50 border-l-4 border-l-orange-300`;
+    return `${base} hover:bg-slate-50 border-l-4 border-l-orange-300${selected}`;
   }
 
-  return `${base} hover:bg-slate-50 border-l-4 border-l-transparent`;
+  return `${base} hover:bg-slate-50 border-l-4 border-l-transparent${selected}`;
 }
 
-export function ComplianceMatrix({ requirements }: ComplianceMatrixProps) {
+export function ComplianceMatrix({
+  requirements,
+  selectedId,
+  onSelect,
+}: ComplianceMatrixProps) {
   const gatingCount = requirements.filter((r) => r.is_gating).length;
   const reviewCount = requirements.filter((r) => r.needs_review).length;
 
@@ -127,7 +136,11 @@ export function ComplianceMatrix({ requirements }: ComplianceMatrixProps) {
           </thead>
           <tbody>
             {requirements.map((req) => (
-              <tr key={req.id} className={rowClasses(req)}>
+              <tr
+                key={req.id}
+                onClick={() => onSelect?.(req.id)}
+                className={rowClasses(req, req.id === selectedId)}
+              >
                 <td className="px-4 py-3.5">
                   <div className="flex flex-col gap-1.5">
                     <p

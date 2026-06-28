@@ -1,0 +1,177 @@
+"use client";
+
+import Link from "next/link";
+import { useRef, useState } from "react";
+
+type UploadStage = "idle" | "extracting" | "done";
+
+export function UploadDropzone() {
+  const [stage, setStage] = useState<UploadStage>("idle");
+  const [isDragging, setIsDragging] = useState(false);
+  const [fileName, setFileName] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  function startFakeExtraction(name: string) {
+    setFileName(name);
+    setStage("extracting");
+    // Wireframe only — no real upload or parsing happens here.
+    window.setTimeout(() => setStage("done"), 1800);
+  }
+
+  function handleFiles(files: FileList | null) {
+    if (stage === "extracting") return;
+    const file = files?.[0];
+    if (!file) return;
+    startFakeExtraction(file.name);
+  }
+
+  function handleDrop(event: React.DragEvent<HTMLDivElement>) {
+    event.preventDefault();
+    setIsDragging(false);
+    handleFiles(event.dataTransfer.files);
+  }
+
+  function handleDragOver(event: React.DragEvent<HTMLDivElement>) {
+    event.preventDefault();
+    if (stage === "extracting") return;
+    setIsDragging(true);
+  }
+
+  function handleDragLeave(event: React.DragEvent<HTMLDivElement>) {
+    event.preventDefault();
+    setIsDragging(false);
+  }
+
+  function handleBrowseClick() {
+    if (stage === "extracting") return;
+    inputRef.current?.click();
+  }
+
+  function reset() {
+    setStage("idle");
+    setFileName(null);
+    if (inputRef.current) inputRef.current.value = "";
+  }
+
+  if (stage === "done") {
+    return (
+      <div className="w-full max-w-xl rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+        <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 ring-1 ring-inset ring-emerald-200">
+          <svg
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            className="h-6 w-6"
+            aria-hidden
+          >
+            <path
+              fillRule="evenodd"
+              d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0l-3.5-3.5a1 1 0 1 1 1.4-1.4l2.8 2.8 6.8-6.8a1 1 0 0 1 1.4 0Z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </span>
+        <h2 className="mt-4 text-base font-semibold tracking-tight text-slate-900">
+          Requirements extracted
+        </h2>
+        <p className="mt-1 text-sm text-slate-500">
+          {fileName ? (
+            <>
+              Parsed <span className="font-medium text-slate-700">{fileName}</span>{" "}
+              and built the compliance matrix.
+            </>
+          ) : (
+            "Built the compliance matrix from your tender."
+          )}
+        </p>
+        <div className="mt-6 flex items-center justify-center gap-3">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-700"
+          >
+            View extracted requirements
+            <span aria-hidden>&rarr;</span>
+          </Link>
+          <button
+            type="button"
+            onClick={reset}
+            className="rounded-md px-3 py-2 text-sm font-medium text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-800"
+          >
+            Upload another
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (stage === "extracting") {
+    return (
+      <div className="w-full max-w-xl rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+        <span
+          className="inline-block h-10 w-10 animate-spin rounded-full border-[3px] border-slate-200 border-t-slate-900"
+          aria-hidden
+        />
+        <h2 className="mt-4 text-base font-semibold tracking-tight text-slate-900">
+          Extracting requirements&hellip;
+        </h2>
+        <p className="mt-1 truncate text-sm text-slate-500" title={fileName ?? undefined}>
+          {fileName}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full max-w-xl">
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={handleBrowseClick}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            handleBrowseClick();
+          }
+        }}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-8 py-16 text-center transition-colors ${
+          isDragging
+            ? "border-slate-400 bg-slate-50"
+            : "border-slate-300 bg-white hover:border-slate-400 hover:bg-slate-50"
+        }`}
+      >
+        <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-500">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.75}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-6 w-6"
+            aria-hidden
+          >
+            <path d="M12 16V4" />
+            <path d="m7 9 5-5 5 5" />
+            <path d="M5 16v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2" />
+          </svg>
+        </span>
+        <p className="mt-4 text-sm font-medium text-slate-800">
+          Drop a tender PDF here, or click to browse
+        </p>
+        <p className="mt-1 text-xs text-slate-500">
+          We&rsquo;ll extract every requirement into a compliance matrix.
+        </p>
+      </div>
+
+      <input
+        ref={inputRef}
+        type="file"
+        accept="application/pdf,.pdf"
+        className="hidden"
+        onChange={(event) => handleFiles(event.target.files)}
+      />
+    </div>
+  );
+}

@@ -1,5 +1,5 @@
-import { ComplianceMatrix } from "@/components/ComplianceMatrix";
 import { Header } from "@/components/Header";
+import { MatrixView } from "@/components/MatrixView";
 import { mockTender } from "@/data/mock-requirements";
 
 export default function Home() {
@@ -11,7 +11,7 @@ export default function Home() {
       />
 
       <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-8">
-        <ComplianceMatrix requirements={mockTender.requirements} />
+        <MatrixView />
       </main>
     </div>
   );
