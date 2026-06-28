@@ -9,6 +9,7 @@ Extraction is pluggable: heuristic with no key, Claude when ANTHROPIC_API_KEY is
 
 from __future__ import annotations
 
+import os
 import shutil
 import uuid
 from pathlib import Path
@@ -23,10 +24,14 @@ from . import store
 
 app = FastAPI(title="Tender Breakdown API")
 
-# Frontend dev server runs on :3000 — allow it during the hackathon.
+# CORS: allow local dev (:3000) + any *.vercel.app deployment (the live frontend +
+# its preview builds), plus anything in CORS_ORIGINS (comma-separated) for a custom domain.
+_origins = ["http://localhost:3000"]
+_origins += [o.strip() for o in os.environ.get("CORS_ORIGINS", "").split(",") if o.strip()]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=_origins,
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_methods=["*"],
     allow_headers=["*"],
 )

@@ -1,0 +1,20 @@
+# Render Blueprint — one-click deploy of the Bidframe backend API.
+# In Render: New + → Blueprint → connect this repo → it reads this file.
+# The heuristic extractor needs no key, so the API works immediately on deploy.
+# Add OPENAI_API_KEY in the Render dashboard later to switch to GPT extraction.
+services:
+  - type: web
+    name: bidframe-api
+    runtime: python
+    rootDir: backend
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: OPENAI_API_KEY      # optional — leave blank to use the heuristic extractor
+        sync: false
+      - key: LLM_MODEL
+        value: gpt-4o
+      - key: CORS_ORIGINS        # optional — add a custom frontend domain if not on *.vercel.app
+        sync: false

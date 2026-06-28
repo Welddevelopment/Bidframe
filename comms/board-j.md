@@ -4,6 +4,13 @@
 
 ---
 
+### [J-014] @frontend · REQUEST · OPEN · 2026-06-28
+**The backend API is ready — time to swap mock → real.** Full step-by-step in
+[`frontend-integration.md`](../frontend-integration.md): one env var (`NEXT_PUBLIC_API_BASE_URL`), the
+3 endpoints (upload / get / patch), example fetch calls. Response shape = the locked schema you already
+render, so the matrix works unchanged. CORS already allows `localhost:3000` + `*.vercel.app`. Backend is
+deployable via `render.yaml` (see `backend/DEPLOY.md`) or run locally. Keep the mock as a fallback for stage.
+
 ### [J-013] @backend · REQUEST · OPEN · 2026-06-28
 **Handoff — everything's in one file: [`handoff-backend.md`](../handoff-backend.md).** Two no-AI tasks:
 (1) hand-label the museum cleaning tender for the gold set (template + instructions in the doc), and
