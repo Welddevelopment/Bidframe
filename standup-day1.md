@@ -45,6 +45,18 @@ stays the spine. Ratify or push back before anyone builds against it.
 
 End of Day 4 = end-to-end on a **fresh** tender. If it's not working by then, Day 5 **cuts scope, doesn't add**. Keep that bar visible all week.
 
+## Today's focus list (from the Day-1 progress check)
+
+**The two cross-team blockers — clear these first:**
+1. **Backend + generalist: sign off the raw-extraction format** (`prompts/raw-extraction-format.md`) → unblocks generalist's whole day. Reply on your comms board.
+2. **Confirm a real tender downloads + parses cleanly** (hour-one check) — still unverified, biggest silent risk. Use `sourcing-playbook.md`.
+
+**Per role, what's missing for Day 1:**
+- **Backend** 🟡 (long pole): PyMuPDF spike → text+page numbers on a real tender; make `GET /requirements` return sample objects (unblocks frontend); one extraction call via `prompts/extraction.md`.
+- **Generalist** 🔴 (nothing pushed): reconcile/dedupe vs `prompts/mock-raw-extraction.json` (merge the seeded ISO-9001 dupe); pick a tender to label.
+- **Frontend** 🟢 (~done): source panel (click → excerpt+page) next; mirror new schema fields into `types/requirement.ts`.
+- **J** 🟢: sourcing share + label one tender; narrative/sourcing/outreach/prior-art/Fetch-scope all drafted ✅.
+
 ## Round-the-table (fill in live)
 
 - **Backend:** done … / doing … / blocked …
