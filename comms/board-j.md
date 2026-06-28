@@ -4,6 +4,19 @@
 
 ---
 
+### [J-015] @generalist · INFO · OPEN · 2026-06-28
+**Where things are for you (we moved fast today — lots is ready to build on):**
+- Backend pipeline is **fully built + tested** (PDF→chunk→extract→graph→SQLite→API) on 13 real tenders.
+  Rule-based extractor now; auto-upgrades to OpenAI when the key lands.
+- **Your inputs are ready:** gold labels in `gold-set/` (`spso-cleaning.labels.csv` drafted, pages 1–6;
+  backend filling museum). Tool output: `run_pipeline()` in `backend/app/pipeline.py` or `GET /tenders/{id}/requirements`.
+- **Reconcile is already stubbed** — `_reconcile` + `_route_confidence` in `pipeline.py`. **Enhance, don't rebuild.**
+- Mock raw data with a deliberate dupe: `prompts/mock-raw-extraction.json`.
+
+**Priority (clock's the constraint):** build the **eval harness FIRST** — gold CSV + tool output →
+recall / precision / mandatory-accuracy + list of misses. That "caught X%" number is the demo headline.
+Reconcile polish + answer-draft come after, both lightweight. `git pull` and you're good. Want a runnable starting point? Ping me.
+
 ### [J-014] @frontend · REQUEST · OPEN · 2026-06-28
 **The backend API is ready — time to swap mock → real.** Full step-by-step in
 [`frontend-integration.md`](../frontend-integration.md): one env var (`NEXT_PUBLIC_API_BASE_URL`), the
