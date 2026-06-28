@@ -4,3 +4,6 @@ pydantic
 python-multipart
 pymupdf
 pypdf
+# Optional: only needed for the Claude extractor (set ANTHROPIC_API_KEY). The
+# heuristic extractor runs without it.
+anthropic

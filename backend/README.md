@@ -1,6 +1,10 @@
 # Backend — Tender Breakdown API
 
-FastAPI service: PDF ingest → extract → classify → REST API. SQLite for storage.
+FastAPI service: PDF ingest → chunk → extract → classify → SQLite → REST API.
+
+> **Status (2026-06-28):** pipeline + all three endpoints **implemented and tested
+> end-to-end** on a real tender (SPSO cleaning ITT → 20 requirements). Scaffolded by J
+> as cover while backend ramps up — **backend owns hardening it** (see "Owner TODOs").
 
 ## Run
 
@@ -9,19 +13,48 @@ cd backend
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env             # fill in keys
+cp .env.example .env             # optional — fill ANTHROPIC_API_KEY to use Claude
 uvicorn app.main:app --reload    # http://localhost:8000  ·  docs at /docs
 ```
 
-Check it's alive: `curl http://localhost:8000/health`
+Check it's alive: `curl http://localhost:8000/health` → `{"status":"ok","extractor":"heuristic"}`
 
-## Endpoints (locked shapes — see ../AGENTS.md)
+## The pipeline (`app/`)
+
+| Module | Does |
+|--------|------|
+| `ingest.py` | PDF → page-numbered text (PyMuPDF, pypdf fallback) |
+| `chunk.py` | structure-aware **overlapping** chunks (nothing lost at boundaries) |
+| `extract.py` | chunk → raw requirements. **Pluggable:** heuristic (no key) or **Claude** (set `ANTHROPIC_API_KEY`) |
+| `pipeline.py` | ingest → chunk → extract → thin reconcile → `Requirement[]` |
+| `store.py` | SQLite persistence (tenders + requirements) |
+| `schema.py` | the locked data contract as Pydantic models |
+| `main.py` | the FastAPI app + endpoints |
+
+### Extraction is pluggable (no API key needed today)
+- **No key →** `HeuristicExtractor` (signal words: shall/must/PASS-FAIL). Proves the
+  plumbing + gives the frontend real data. *Not the quality bar.*
+- **`ANTHROPIC_API_KEY` set →** `ClaudeExtractor` uses `prompts/extraction.md` + structured
+  output. This is where real accuracy (esp. the gating catch + honest confidence) comes from.
+
+## Endpoints (match the locked schema — see ../AGENTS.md)
 
 | Method | Path | Does |
 |--------|------|------|
-| `POST` | `/tenders/upload` | Ingest a PDF → `{ tender_id }` |
-| `GET`  | `/tenders/{id}/requirements` | Requirement list in locked schema |
-| `PATCH`| `/requirements/{id}` | Update status + decision |
+| `POST` | `/tenders/upload` | multipart PDF (`file`, optional `title`) → `{ tender_id, requirement_count }` |
+| `GET`  | `/tenders/{id}/requirements` | `{ tender_id, title, requirements: [...] }` in the locked schema |
+| `PATCH`| `/requirements/{id}` | body `{ status?, decision? }` → updated requirement |
 
-`app/main.py` has these stubbed (`NotImplementedError`). Fill them in — keep the
-response shapes matching the schema so frontend swaps mock → real with no UI change.
+## Owner TODOs (backend, when back on track)
+- Swap the heuristic for the Claude path (lock the provider/model; add prompt caching + retries).
+- Harden ingest: pdfplumber fallback for tables; strip header/footer noise; OCR detection.
+- Refine `source_page` to the exact page (currently chunk-level best-effort).
+- Build graph edges (`criteria_ref`, `depends_on`, `is_gating` relationships).
+- Hand the raw extraction list to the generalist for proper reconcile (the `_reconcile`
+  in `pipeline.py` is a thin placeholder — see role-generalist.md).
+
+## Quick local check
+```bash
+# parse a tender PDF without the server:
+python scripts/parse_check.py data/tenders/<file>.pdf
+```

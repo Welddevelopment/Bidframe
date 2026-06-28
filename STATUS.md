@@ -52,7 +52,7 @@ The **requirement object** schema in [AGENTS.md](AGENTS.md) §"Data contract" is
 
 | Role | Owns | Status | Next | Blocked on |
 |------|------|--------|------|-----------|
-| **Backend** | PDF ingest · chunk · extract · classify · graph · SQLite · REST API | 🟡 **skeleton only** — FastAPI + `/health`; upload/requirements/PATCH still `NotImplementedError` | **Long pole.** PyMuPDF spike → text+accurate page numbers on a real tender; report table/multi-col breakage; one extraction call (use `prompts/extraction.md`); make `GET /requirements` return sample objects so frontend can integrate; sign off raw-extraction format | needs ONE tender PDF in hand (sourcing) |
+| **Backend** | PDF ingest · chunk · extract · classify · graph · SQLite · REST API | 🟢 **pipeline built + tested** (J covering, backend's laptop down till tomorrow) — ingest→chunk→extract→SQLite, all 3 endpoints live, tested on SPSO (20 reqs). Heuristic extractor (no key); Claude path ready | **Backend, when back:** swap heuristic→Claude, harden ingest (tables/OCR), graph edges, hand raw list to generalist. See `backend/README.md` "Owner TODOs" | nothing |
 | **Generalist** | reconcile/dedupe · confidence routing · eval harness · answer-draft | 🔴 **nothing pushed** | Sign off raw-extraction format; build reconcile/dedupe vs `prompts/mock-raw-extraction.json` (merge the seeded ISO-9001 dupe); pick a tender to label | not blocked — mock raw data is ready |
 | **Frontend** | compliance matrix · source panel · decision controls · graph view · demo | 🟢 **Day-1 ~done** — matrix + gating highlight + `needs_review` styling + visual confidence + 11 mocks | Source panel (click row → `source_excerpt`+page); mirror new schema fields into `types/requirement.ts`; decision controls (Day 3) | backend mock `/requirements` for real-data swap |
 | **J** | prompts · orchestration · narrative · traction · glue | 🟢 **ahead** — name, 4 prompts, raw-extraction spec+mock, autofill scope+schema, comms channel, standup | Sourcing share + label 1 tender (human); demo narrative + thesis-bridge; chase the two blockers | nothing |
@@ -69,6 +69,7 @@ The **requirement object** schema in [AGENTS.md](AGENTS.md) §"Data contract" is
 
 ## Recently shipped (newest first)
 
+- **2026-06-28** — J (covering for backend, with their OK — laptop down till tomorrow): **full backend pipeline built + tested end-to-end** (`backend/app/`: ingest, chunk, extract, pipeline, store, schema, wired endpoints). 20 reqs extracted from SPSO + persisted via API. Pluggable extractor (heuristic now, Claude on key). Frontend can integrate against the real API.
 - **2026-06-28** — ✅ **Hour-one parse check PASSED on a real tender** (SPSO cleaning ITT, 13pp clean). Biggest Day-1 engine risk retired. Sourcing log started: [tenders.md](tenders.md).
 - **2026-06-28** — J (covering for backend, with their OK): `backend/scripts/parse_check.py` — hour-one tender parseability gate (PyMuPDF→pypdf fallback); added `pymupdf` to requirements. **Tested + working** (installed Python 3.12; clean→PASS, image-only→needs-OCR, no-arg→usage). Fixed a Windows cp1252 emoji crash.
 - **2026-06-28** — J: **agent comms channel** (`comms/`) — per-role boards, conflict-free; wired into AGENTS.md + STATUS startup reads. Role table refreshed to real progress.

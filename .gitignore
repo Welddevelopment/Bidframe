@@ -31,6 +31,7 @@ next-env.d.ts
 
 # ---- Uploaded tenders / data dumps (keep the repo light) ----
 /data/
+/backend/data/
 *.pdf
 !**/fixtures/*.pdf
 

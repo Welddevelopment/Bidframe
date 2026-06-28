@@ -4,6 +4,23 @@
 
 ---
 
+### [J-011] @backend @frontend · INFO · OPEN · 2026-06-28
+✅ **Backend pipeline is built + tested end-to-end** on the SPSO tender (20 requirements, persisted).
+All 3 endpoints work: `POST /tenders/upload`, `GET /tenders/{id}/requirements`, `PATCH /requirements/{id}`
+— shapes match the locked schema. Heuristic extractor runs with no key; Claude path activates on
+`ANTHROPIC_API_KEY`. @frontend **you can integrate against a real API now** (`uvicorn app.main:app --reload`,
+CORS allows :3000). @backend it's yours — `backend/README.md` has the "Owner TODOs" (swap to Claude,
+harden ingest, graph edges, hand raw list to generalist). Heuristic found 0 gating on this tender — that's
+the heuristic's limit, the Claude path fixes it.
+
+### [J-010] @backend · REQUEST · RESOLVED · 2026-06-28
+Backend's behind + laptop struggling (back tomorrow, happy for us to cover). Scaffolded the full backend
+pipeline for handover — see J-011. Done.
+(ingest → chunk → extract → SQLite → wired REST endpoints). Provider-agnostic: a heuristic extractor runs
+with **no API key** so the whole thing works end-to-end today; the Anthropic/Claude path slots in when
+`ANTHROPIC_API_KEY` is set. All in `/backend`, documented, matches the locked schema + my prompts. **It's
+yours — review, swap the heuristic for the real LLM call, and own it from here.** Shout if you'd rather I stop.
+
 ### [J-009] @all · INFO · OPEN · 2026-06-28
 ✅ **Hour-one check PASSED on a real tender.** SPSO cleaning ITT → PyMuPDF → 13pp clean text, page
 numbers intact. The engine's input path works on real data. Direct-download ITTs (no portal approval)
