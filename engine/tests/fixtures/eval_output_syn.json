@@ -1,0 +1,10 @@
+{
+  "tender_id": "syn-001",
+  "title": "Synthetic",
+  "requirements": [
+    { "id": "req-0001", "text": "The supplier must hold ISO 9001 certification.", "source_page": 14, "type": "mandatory", "is_gating": true,  "category": "certification", "confidence": 0.95, "status": "pending", "needs_review": false, "decision": null, "source_clause": "S1", "source_excerpt": "x", "depends_on": [], "draft_answer": null },
+    { "id": "req-0002", "text": "The supplier must hold employer's liability insurance of at least £5,000,000.", "source_page": 22, "type": "mandatory", "is_gating": false, "category": "insurance", "confidence": 0.90, "status": "pending", "needs_review": false, "decision": null, "source_clause": "S2", "source_excerpt": "x", "depends_on": [], "draft_answer": null },
+    { "id": "req-0003", "text": "The supplier should provide a dedicated account manager.", "source_page": 48, "type": "optional", "is_gating": false, "category": "technical", "confidence": 0.80, "status": "pending", "needs_review": false, "decision": null, "source_clause": "S3", "source_excerpt": "x", "depends_on": [], "draft_answer": null },
+    { "id": "req-0004", "text": "All correspondence shall be conducted in English.", "source_page": 90, "type": "optional", "is_gating": false, "category": "other", "confidence": 0.70, "status": "pending", "needs_review": true, "decision": null, "source_clause": "S9", "source_excerpt": "x", "depends_on": [], "draft_answer": null }
+  ]
+}

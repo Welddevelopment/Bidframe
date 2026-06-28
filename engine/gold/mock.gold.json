@@ -1,0 +1,11 @@
+{
+  "tender_id": "tnd-001",
+  "source_filename": "managed-it-tender.pdf",
+  "requirements": [
+    { "gold_id": "g-001", "text": "The supplier shall hold a valid ISO 9001 certification at the time of tender submission.", "source_page": 14, "type": "mandatory", "is_gating": true,  "category": "certification" },
+    { "gold_id": "g-002", "text": "The supplier must hold employer's liability insurance of at least £5,000,000.", "source_page": 22, "type": "mandatory", "is_gating": true,  "category": "insurance" },
+    { "gold_id": "g-003", "text": "The supplier should provide a dedicated account manager for the contract term.", "source_page": 48, "type": "optional",  "is_gating": false, "category": "technical" },
+    { "gold_id": "g-004", "text": "The supplier must demonstrate an annual turnover of at least £2,000,000.", "source_page": 61, "type": "mandatory", "is_gating": true,  "category": "financial" },
+    { "gold_id": "g-005", "text": "The supplier shall provide three case studies of comparable public-sector contracts.", "source_page": 74, "type": "mandatory", "is_gating": false, "category": "experience" }
+  ]
+}
