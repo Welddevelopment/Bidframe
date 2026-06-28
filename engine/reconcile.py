@@ -123,3 +123,39 @@ def merge_group(group: list[dict[str, Any]]) -> dict[str, Any]:
         "_member_confidences": confidences,
         "_canonical_raw_id": canonical.get("raw_id"),
     }
+
+
+FINAL_KEYS = (
+    "id", "text", "source_page", "source_clause", "source_excerpt", "type",
+    "is_gating", "category", "confidence", "status", "needs_review", "decision",
+    "criteria_ref", "depends_on", "draft_answer",
+)
+
+
+def _final_depends_on(merged: dict[str, Any]) -> list[str]:
+    depends_on = list(merged.get("depends_on", []) or [])
+    if any(str(dep).startswith("raw-") for dep in depends_on):
+        raise ValueError("raw_id must not leak through depends_on")
+    return depends_on
+
+
+def to_final(merged: dict[str, Any], req_id: str) -> dict[str, Any]:
+    """Map one interim merged dict to the locked 15-field Requirement schema."""
+    confidence = merged["confidence"]
+    return {
+        "id": req_id,
+        "text": merged.get("text"),
+        "source_page": merged.get("source_page"),
+        "source_clause": merged.get("source_clause"),
+        "source_excerpt": merged.get("source_excerpt"),
+        "type": merged.get("type"),
+        "is_gating": merged.get("is_gating"),
+        "category": merged.get("category"),
+        "confidence": confidence,
+        "status": "pending",
+        "needs_review": confidence < NEEDS_REVIEW_THRESHOLD,
+        "decision": None,
+        "criteria_ref": merged.get("criteria_ref"),
+        "depends_on": _final_depends_on(merged),
+        "draft_answer": None,
+    }
