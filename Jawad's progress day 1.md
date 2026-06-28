@@ -46,6 +46,11 @@ Shipped as functional, mock-driven wireframes (polish pass comes later):
 - App deployed to **Vercel** (monorepo, Root Directory = `frontend`).
 - **GitHub auto-deploy wired**: every `git push` builds and ships the live site. (Routed through a personal `TenderBreak` mirror repo because the Welddevelopment org couldn't authorize the Vercel app — one push updates both the team repo and the deploy mirror.) CLI deploy kept as a fallback.
 
+### 7. Answer + evidence panel & gap-interview (auditable autofill)
+- **Answer + evidence panel** (in the requirement drawer): renders the drafted `answer` with a state badge (Auto-drafted / Needs your input / Edited by you), **visual** confidence (no raw numbers), an inline **Edit answer** affordance, and the **Evidence** list — each citation resolves the `doc_id` to the real capability-doc filename and shows page + verbatim excerpt in an emerald "receipts" card. Honest empty states (no draft / no evidence linked).
+- **Gap-interview UI**: per-requirement open questions answerable inline in the drawer, **plus** a dedicated **`/answers`** route + nav item — an autofill summary (drafted / auto / needs-input / gaps remaining), a progress bar, and the full open-question to-do list grouped by requirement, answerable inline. All persists in-memory across navigation.
+- Context extended with `capabilityDocs`, `editAnswer()`, `answerOpenQuestion()`. Mock enriched with 3 more drafted answers (2 `needs_input` + open questions). Build + lint green.
+
 ---
 
 ## Tech stack
@@ -71,11 +76,11 @@ npm run lint
 ---
 
 ## Next up (priority order)
-1. **Answer + evidence panel** — render the `answer` text *with its evidence citation* (which capability doc backs each claim). The visible payoff of the autofill schema and the team's headline differentiator ("auditable autofill").
-2. **Gap-interview UI** — surface `open_questions` as a tidy to-do list the bidder answers. Pairs with #1.
-3. **Capability-doc upload mode** — a second upload lane for the bidder's own evidence docs (`capability_docs`).
-4. **Swap to the real backend** — point the provider at `GET /tenders/{id}/requirements` (J's pipeline is live and CORS already allows `:3000`); the UI shouldn't change.
-5. **Design-system pass** — typographic + spacing polish over the wireframes (brief says wireframe-first, polish later).
+1. **Swap to the real backend** — point the provider at `GET /tenders/{id}/requirements` (Joel's pipeline is live, CORS allows `:3000`); see `frontend-integration.md`. The UI shouldn't change; keep the mock as a fallback for demo safety.
+2. **Design-system pass** — typographic + spacing polish over the wireframes (ideating separately, then implementing).
+3. **Capability-doc upload mode** — a second upload lane for the bidder's own evidence docs (`capability_docs`), so gaps can be closed by uploading evidence.
+
+_Done: ✅ answer + evidence panel · ✅ gap-interview UI (see changelog)._
 
 ## Blocked on / waiting
 - Nothing hard-blocking. Real-data swap can start any time — backend API is up (heuristic extractor; Claude/OpenAI path lands when the key is in).
@@ -83,4 +88,5 @@ npm run lint
 ---
 
 ## Changelog
-- **2026-06-28 (Day 1)** — Initial log. Shipped items 1–6 above: compliance matrix, multi-page wireframes (navbar, drawer, gating hero, graph, upload), in-memory decision state, Bidframe rebrand, autofill schema mirror, Vercel deploy + GitHub auto-deploy. _(append new days below)_
+- **2026-06-28 (Day 1)** — Initial log. Shipped items 1–6 above: compliance matrix, multi-page wireframes (navbar, drawer, gating hero, graph, upload), in-memory decision state, Bidframe rebrand, autofill schema mirror, Vercel deploy + GitHub auto-deploy.
+- **2026-06-28 (Day 1, cont.)** — Shipped item 7: **answer + evidence panel** (drawer renders each requirement's drafted answer with capability-doc evidence citations, visual confidence, inline edit) and the **gap-interview UI** (`/answers` route + nav item: open-question to-do list, answerable inline, with autofill summary + progress). Context extended (`capabilityDocs`, `editAnswer`, `answerOpenQuestion`); mock enriched with 3 more drafted answers. Build + lint green. _(append new days below)_

@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import type { Requirement } from "@/types/requirement";
 import { useRequirements } from "@/context/RequirementsContext";
+import { AnswerPanel } from "./AnswerPanel";
+import { OpenQuestions } from "./OpenQuestions";
 
 interface RequirementDrawerProps {
   requirement: Requirement | null;
@@ -200,6 +202,10 @@ function DrawerContent({
             <span>{requirement.source_clause}</span>
           </div>
         </div>
+
+        <AnswerPanel requirement={requirement} />
+
+        <OpenQuestions requirement={requirement} />
 
         {requirement.decision && (
           <div className="mt-5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5">

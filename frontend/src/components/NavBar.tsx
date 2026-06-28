@@ -11,6 +11,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { href: "/upload", label: "Upload" },
   { href: "/", label: "Matrix" },
+  { href: "/answers", label: "Answers" },
   { href: "/graph", label: "Graph" },
 ];
 

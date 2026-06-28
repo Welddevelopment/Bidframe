@@ -61,7 +61,22 @@ export const mockTender: Tender = {
       decision: null,
       criteria_ref: "award-criterion-1",
       depends_on: [],
-      draft_answer: null,
+      draft_answer:
+        "We hold Cyber Essentials Plus, certified and valid at the date of submission.",
+      answer: {
+        text: "We hold Cyber Essentials Plus, certified and valid at the date of submission.",
+        state: "auto",
+        evidence_refs: [
+          {
+            doc_id: "cap-002",
+            excerpt:
+              "Cyber Essentials Plus — certified (annual reassessment current); certificate valid at submission date.",
+            page: 2,
+          },
+        ],
+        confidence: 0.86,
+      },
+      open_questions: [],
     },
     {
       id: "req-0003",
@@ -79,7 +94,23 @@ export const mockTender: Tender = {
       decision: null,
       criteria_ref: "award-criterion-1",
       depends_on: [],
-      draft_answer: null,
+      draft_answer:
+        "We meet the minimum turnover threshold; exact figures to be confirmed by the bid team.",
+      answer: {
+        text: "We meet the minimum turnover threshold; exact figures to be confirmed by the bid team.",
+        state: "needs_input",
+        evidence_refs: [],
+        confidence: 0.4,
+      },
+      open_questions: [
+        {
+          id: "q-req0003-1",
+          question:
+            "What was your annual turnover for each of the last two financial years?",
+          answer: null,
+          answered_at: null,
+        },
+      ],
     },
     {
       id: "req-0004",
@@ -134,7 +165,23 @@ export const mockTender: Tender = {
       decision: null,
       criteria_ref: "award-criterion-3",
       depends_on: [],
-      draft_answer: null,
+      draft_answer:
+        "We hold professional indemnity insurance; confirming the limit meets £10,000,000.",
+      answer: {
+        text: "We hold professional indemnity insurance; confirming the limit meets £10,000,000.",
+        state: "needs_input",
+        evidence_refs: [],
+        confidence: 0.45,
+      },
+      open_questions: [
+        {
+          id: "q-req0005-1",
+          question:
+            "What is your current professional indemnity insurance limit, and does it meet £10,000,000 for the full contract duration?",
+          answer: null,
+          answered_at: null,
+        },
+      ],
     },
     {
       id: "req-0006",
