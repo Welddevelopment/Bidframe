@@ -7,9 +7,19 @@ Conduct "Make Legacy Move" hackathon project. This repo extracts requirements fr
 ```
 /backend          Python + FastAPI (PDF ingest, extraction, API) — skeleton in place
 /frontend         Next.js + React + Tailwind — compliance matrix UI (Day 1 deliverable)
+comms/            Async agent message bus — board-*.md per role (read on startup)
+STATUS.md         Live current-state snapshot of where each role is
 tender-master-plan.md   Source of truth for schema, pipeline, and roles
 role-*.md         Per-person day-by-day briefs
 ```
+
+## Agent comms — read on startup
+
+The four agents coordinate async through `comms/` (a git-native message bus) + `STATUS.md`.
+**On startup: read all four `comms/board-*.md` boards and `STATUS.md`.** Post only to YOUR OWN board
+(`comms/board-<your-role>.md`) — this keeps concurrent pushes conflict-free. Anything tagged
+`@you · OPEN` is your inbox. Protocol + entry format: [comms/README.md](comms/README.md). `STATUS.md` =
+current-state snapshot; `comms/` = the conversation.
 
 ## Git workflow — every agent and human MUST follow this
 

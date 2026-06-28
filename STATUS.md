@@ -6,7 +6,9 @@
 
 **Tool name:** **Bidframe** (locked Day 1). _Auditable requirement breakdown + compliance matrix → grounded autofill of the bid response, for SME public-sector bidders._
 
-> 🟠 **MAJOR SCOPE DECISION (needs team ratification at standup):** Bidframe extends to **end-to-end bid drafting**, messaged as **"auditable autofill"** (never "we write your bid"). Full write-up + proposed schema change + role implications in [autofill-scope-decision.md](autofill-scope-decision.md). **This changes the locked schema → branch + PR + sign-off before any `AGENTS.md` edit.** Extraction + the disqualifier catch stay the spine and the Day-4 gate; autofill rides on top, ships only once that gate is green.
+> ✅ **SCOPE: auditable autofill — RATIFIED + schema merged to `main` (2026-06-28).** Bidframe extends to **end-to-end bid drafting**, messaged as **"auditable autofill"** (never "we write your bid"). Write-up + role implications: [autofill-scope-decision.md](autofill-scope-decision.md). Extraction + the disqualifier catch stay the spine and the Day-4 gate; autofill rides on top, ships only once that gate is green. Per-lane mirror tasks are in "The locked contract" below.
+>
+> 💬 **Agent comms live:** read all four `comms/board-*.md` + this file on startup; post to your own board. Protocol: [comms/README.md](comms/README.md).
 **Track:** Conduct "Make Legacy Move" (primary). Fetch.ai stack = **decide Day 3** (J's parallel task, never at engineers' expense).
 **Timeline:** Day 1 = **28 Jun 2026** · Demo = **4 Jul** · **Day 4 = integration gate** (end-to-end on a fresh tender; not working by EOD4 → Day 5 cuts scope, doesn't add).
 **Last updated:** 2026-06-28 (Day 1) by J.
@@ -50,10 +52,10 @@ The **requirement object** schema in [AGENTS.md](AGENTS.md) §"Data contract" is
 
 | Role | Owns | Status | Next | Blocked on |
 |------|------|--------|------|-----------|
-| **Backend** | PDF ingest · chunk · extract · classify · graph · SQLite · REST API | _not started_ | Day-1 spike: PyMuPDF → text+page numbers on one real tender; FastAPI skeleton + mock `/requirements` | needs a sample tender from sourcing sprint |
-| **Generalist** | reconcile/dedupe · confidence routing · eval harness · answer-draft | _not started_ | Day-1: agree raw-extraction format; start reconcile vs mock raw data; label one tender | raw-extraction format spec (J, today) |
-| **Frontend** | compliance matrix · source panel · decision controls · graph view · demo | _scaffold exists_ (`frontend/src/`) | Day-1: matrix over mock requirements; gating rows stand out; `needs_review` looks uncertain; confidence as bar/dot | nothing — mock-first, never blocked |
-| **J** | prompts · orchestration · narrative · traction · glue | **in progress** | Day-1 ✅ name locked · raw-extraction spec+mock · v1 extraction+classification prompts (`prompts/`). Next: run standup, do sourcing share + label one tender | nothing |
+| **Backend** | PDF ingest · chunk · extract · classify · graph · SQLite · REST API | 🟡 **skeleton only** — FastAPI + `/health`; upload/requirements/PATCH still `NotImplementedError` | **Long pole.** PyMuPDF spike → text+accurate page numbers on a real tender; report table/multi-col breakage; one extraction call (use `prompts/extraction.md`); make `GET /requirements` return sample objects so frontend can integrate; sign off raw-extraction format | needs ONE tender PDF in hand (sourcing) |
+| **Generalist** | reconcile/dedupe · confidence routing · eval harness · answer-draft | 🔴 **nothing pushed** | Sign off raw-extraction format; build reconcile/dedupe vs `prompts/mock-raw-extraction.json` (merge the seeded ISO-9001 dupe); pick a tender to label | not blocked — mock raw data is ready |
+| **Frontend** | compliance matrix · source panel · decision controls · graph view · demo | 🟢 **Day-1 ~done** — matrix + gating highlight + `needs_review` styling + visual confidence + 11 mocks | Source panel (click row → `source_excerpt`+page); mirror new schema fields into `types/requirement.ts`; decision controls (Day 3) | backend mock `/requirements` for real-data swap |
+| **J** | prompts · orchestration · narrative · traction · glue | 🟢 **ahead** — name, 4 prompts, raw-extraction spec+mock, autofill scope+schema, comms channel, standup | Sourcing share + label 1 tender (human); demo narrative + thesis-bridge; chase the two blockers | nothing |
 
 ---
 
@@ -67,6 +69,7 @@ The **requirement object** schema in [AGENTS.md](AGENTS.md) §"Data contract" is
 
 ## Recently shipped (newest first)
 
+- **2026-06-28** — J: **agent comms channel** (`comms/`) — per-role boards, conflict-free; wired into AGENTS.md + STATUS startup reads. Role table refreshed to real progress.
 - **2026-06-28** — Schema extended for autofill (`answer`, `open_questions`, `capability_docs`) — team-confirmed, merged to `main`. Per-lane mirror tasks listed in "The locked contract" above.
 - **2026-06-28** — J: **autofill scope decision** + `prompts/answer-generation.md` + `prompts/gap-interview.md` (auditable autofill: grounded per-requirement answers + deduped gap questions). Pending team ratification + schema PR.
 - **2026-06-28** — J: v1 extraction + classification prompts (`prompts/extraction.md`, `prompts/classification.md`) — provider-agnostic, recall-first, structured-output schemas inline.

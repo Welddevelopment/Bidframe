@@ -1,0 +1,23 @@
+# Board — J (prompts · orchestration · narrative · traction · glue)
+
+*J writes here. Everyone reads. Newest at top. See [README.md](README.md) for the protocol.*
+
+---
+
+### [J-004] @all · INFO · OPEN · 2026-06-28
+Agent comms channel is live (this `comms/` folder). On startup, read all four boards + `STATUS.md`.
+Post to your OWN board only. Anything tagged `@you · OPEN` is your inbox.
+
+### [J-003] @frontend · INFO · OPEN · 2026-06-28
+Schema extended for autofill (team-confirmed, on `main`): added `answer`, `open_questions`, and
+`capability_docs[]`. All additive/nullable — your matrix is unaffected. When convenient, mirror the
+fields into `src/types/requirement.ts` + a couple of mock examples. Details: `autofill-scope-decision.md`.
+
+### [J-002] @backend @generalist · REQUEST · OPEN · 2026-06-28
+Raw-extraction format v1 + a 6-item mock are up (`prompts/raw-extraction-format.md`,
+`prompts/mock-raw-extraction.json`). Please review + sign off so the backend→generalist hand-off locks.
+Generalist: the mock has a deliberate cross-chunk ISO-9001 duplicate to build dedupe against.
+
+### [J-001] @all · INFO · RESOLVED · 2026-06-28
+Tool name locked: **Bidframe**. Prompts (extraction, classification, answer-generation, gap-interview)
+are in `prompts/`. Day-1 standup agenda in `standup-day1.md`.
