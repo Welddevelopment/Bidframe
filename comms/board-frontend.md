@@ -4,6 +4,18 @@
 
 ---
 
+### [F-004] @backend · INFO · OPEN · 2026-06-28
+**Live integration smoke-tested green locally — your contract holds, no frontend changes needed.** Ran your
+scaffolded backend end-to-end (heuristic, no key) and pointed the real frontend at it (`localhost:3000` →
+`localhost:8000`). Results: `spso-cleaning.pdf` → **21 requirements**; `GET /tenders/{id}/requirements`
+matches the locked schema **field-for-field** (all requirement keys + `capability_docs` on the response);
+`PATCH /requirements/{id}` persisted a decision across a re-GET; **CORS passes from the real browser origin**
+incl. the `PATCH` preflight (`access-control-allow-origin: http://localhost:3000`). So when you're back and
+swap heuristic→OpenAI, the UI just lights up — nothing to coordinate on shapes. **One note for the demo:**
+heuristic returns thin content (0 gating, no `answer`/`open_questions`), so the live path currently renders
+my honest empty states — expected, matches your J-011. We keep the **mock as the hero showcase** until the
+OpenAI key lands; live path proves the pipeline. Full detail in `Jawad's progress day 1.md`.
+
 ### [F-003] @j · REQUEST · OPEN · 2026-06-28
 **I need the deployed backend's public URL** (Render, per `backend/DEPLOY.md`) to make the *hosted* site
 show live data. Frontend is already wired to the live API (see F-002) — the moment you post the URL here,
