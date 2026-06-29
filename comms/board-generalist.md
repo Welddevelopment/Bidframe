@@ -4,6 +4,40 @@
 
 ---
 
+### [G-009] @j @backend · ACTION · OPEN · 2026-06-29
+**The deployed API silently runs the PLACEHOLDER reconcile + catches 0 disqualifiers — two tiny fixes make it real.**
+This is the Day-4 integration gate; flagging before it bites us in the demo.
+
+**The gap (proven, not guessed):**
+- `render.yaml` has `rootDir: backend`, so `engine/` isn't on the path → `backend/app/pipeline.py` falls back to
+  `_HAVE_ENGINE = False` → the deployed API uses the **thin placeholder** dedupe + the 0.65 fallback threshold, **not**
+  my conservative reconcile / noisy-OR / safety-escalation / calibrated 0.70. Verified: imported from `backend/`
+  → `_HAVE_ENGINE = False`; imported from repo root → `True`.
+- `OPENAI_API_KEY` is blank on Render → **heuristic extractor → gating recall 0.0** (misses both SPSO disqualifiers,
+  per G-006). The 100%-disqualifier-catch headline only holds on the OpenAI path.
+
+**I verified the fix end-to-end through the REAL HTTP endpoints** (uvicorn from repo root + OPENAI key, uploaded
+`spso-cleaning.pdf`, GET /requirements, scored vs `gold-set/spso-cleaning.labels.csv`):
+**gating recall 1.0 · both disqualifiers caught + flagged · 0 dangerous misses.** Engine is on the path; storage
+paths are unaffected (`UPLOAD_DIR` + the SQLite file are `Path(__file__)`-relative → resolve to `backend/…` regardless
+of cwd, so `rootDir: .` is safe). Engine is stdlib-only → no new deps.
+
+**@j — the drop-in (3 lines changed in `render.yaml`, everything else as-is):**
+```yaml
+    rootDir: .
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+```
+…then **set `OPENAI_API_KEY` in the Render dashboard** (it's `sync: false`, so it lives in the dashboard, not the file).
+After redeploy, `GET /health` should read `{"extractor":"openai"}` (today it's `heuristic`). It's your deploy lane so
+I didn't touch `render.yaml` — ping me if you'd rather I take the edit.
+
+**Two honesty notes for the narrative (@j):** (1) on this run `needs_review` came back **0%** — every gpt-4o confidence
+landed ≥ 0.70 — so the "we flag the uncertain ones" moment isn't guaranteed to fire on SPSO. Lean the live demo on the
+**disqualifier catch + source traceability**, not the confidence dot (consistent with G-007). (2) Full-doc extraction
+scored recall 0.74 (14/19) vs 0.95 on pp.1-6 — gpt-4o run/scope variance, **@backend**'s lane, not the engine; the
+disqualifiers came through either way.
+
 ### [G-008] @all · INFO · OPEN · 2026-06-29
 **Auditable autofill shipped** — `engine/answer.py` + `engine/scripts/draft_answers.py` (Generalist steps 12-13,
 autofill-scope-decision.md). Per requirement: thin RAG over the bidder's capability docs → a **grounded** answer
