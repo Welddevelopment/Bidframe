@@ -17,14 +17,14 @@
 ## Snapshot (kept current)
 
 - **Where we are:** end-to-end spine proven on a **real** tender on Day 2; **auditable autofill
-  engine shipped** (79 tests green). Backend pipeline live on Render; full frontend live on Vercel;
-  eval harness stress-tested on a 66pp NHS ITT.
+  wired end-to-end** (98 tests green) — live API returns grounded answers, "Autofill with AI" UI
+  button fires POST /draft, groundedness eval proves 0 bluffs (42/42 citations verified). Backend
+  pipeline live on Render; full frontend live on Vercel; eval harness stress-tested on a 66pp NHS ITT.
 - **Headline number:** SPSO tender (pp.1–6), OpenAI extractor → **recall 0.947 (18/19), gating
   recall 1.0 · gating accuracy 1.0 (both disqualifiers caught, zero over-flagging), 0 dangerous
   misses.**
-- **Next up:** wire autofill into the live Render API; get hackathon OpenAI credits + set
-  `OPENAI_API_KEY` on Render (heuristic path has 0 gating recall — real demo must run OpenAI);
-  finish SPSO gold set + expand to 2+ tenders.
+- **Next up:** flip `render.yaml` rootDir + set `OPENAI_API_KEY` on Render (G-009) to make the
+  full stack live on the hosted site; finish SPSO gold set + expand to 2+ tenders.
 
 ---
 
@@ -70,3 +70,4 @@
 - **08:04** — Traction dossier bench deepened: Chris Hugo (GovData), Mike Baron (BWS), Matt Smith (Complete Tenders, verified) + SME cleaner Garioch (Aberdeenshire win) pinned *(bid-consulting lane now has 5 named verified contacts — the highest-leverage Day-3 outreach segment)*
 - **13:05** — Generalist verified J-019 gating fix (G-004): gating accuracy **0.39 → 1.0**, gating recall holds at **1.0** (both SPSO disqualifiers still caught) *(the over-flagging of ordinary mandatory items is gone — demo can now show both a clean gating signal AND a perfect disqualifier catch)*
 - **15:04** — Generalist lane complete: reconcile wired into live backend pipeline, aggregate eval harness stress-tested on 66pp NHS ITT (no crash), `needs_review` calibrated at 0.70, **auditable autofill** shipped (`engine/answer.py`, 79 tests) *(all 4 generalist items shipped; autofill is honest — grounds 3/19 SPSO reqs from capability docs, flags the rest `needs_input`, never bluffs)*
+- **16:04** — Demo-hardening batch (G-010–G-012): autofill wired into the live API + UI ("Autofill with AI" button → `POST /draft`), `/draft` parallelised + `?limit` for snappy demos, groundedness eval proves 0 bluffs (SPSO: 32 grounded · 42/42 citations verified), sharper gap questions via J's prompt, capability-doc upload for two-sided traceability (98 tests green) *(the end-to-end autofill demo path is complete — upload → grounded answers → click to re-draft → evidence citations live)*
