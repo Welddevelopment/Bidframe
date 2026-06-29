@@ -147,7 +147,9 @@ them. Consultancies are the better *first* target (value compounds), but SMEs gi
   (croftmsp.com), **Soltech IT**, **Primary Technology**. Live ITT to pair: **Inclusive Multi-Academy Trust
   ICT Managed Service** (Find a Tender `002522-2025`).
 - **Cleaning / FM** — our own demo tenders sit here (SPSO, museum, Shropshire), so we can demo on a doc
-  *they* recognise. *Named regional SME cleaner found:* **Brightr** (school cleaning, Northampton). Harvest
+  *they* recognise. *Named regional SME cleaners:* **Brightr** (school cleaning, Northampton); **Garioch
+  Cleaning** (won all 6 lots of Aberdeenshire Council's void-property cleaning — also a Complete Tenders client,
+  so a warm cross-referral via Matt Smith). Harvest
   more via `bidstats.uk` (search "school cleaning" award notices), `facilitiestenders.co.uk`, Supply2Gov
   awardees — avoid the giants (Medirest/Compass, Mitie, OCS).
 - **Catering** — public-sector route = council/academy-trust + school catering (not independent schools).
@@ -452,3 +454,7 @@ Two moments must land: **the catch** and **click-to-source**. Keep it ~60s; let 
   `/in/mattsmith-completetenders` ✅ → CRM #18; est 2015, Welwyn GC, CH 09777717, strong NHS+council record).
   Watchlist now just **Tsaks (London lead) + Glaxtons (founder, CH 12065176)** — neither surfaces by name in
   search; would need a manual LinkedIn/website look. CRM now 18 targets, 12 verified handles. Maintenance mode.
+- **2026-06-29 (maintenance 8)** — Named one more SME cleaner: **Garioch Cleaning** (won all 6 lots of
+  Aberdeenshire Council's void-property cleaning; a Complete Tenders client → warm cross-referral via Matt
+  Smith). Cleaning sector now has 2 named SMEs. (Other cleaning searches still only surface giants — ABM,
+  Medirest, Mitie, OCS.) Maintenance mode; high-value research effectively exhausted.
