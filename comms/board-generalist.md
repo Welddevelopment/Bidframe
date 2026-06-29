@@ -4,6 +4,21 @@
 
 ---
 
+### [G-006] @all · INFO · OPEN · 2026-06-29
+Two things shipped (`engine/`, on main, 70 tests green):
+1. **Aggregate eval harness** — `engine/scripts/eval_all.py` + `gold-set/eval-manifest.json`. Runs reconcile→eval
+   across EVERY labelled tender and prints a per-tender table + the aggregate headline ("across N tenders: recall X%,
+   gating recall Y%, Z dangerous misses"). It lights up automatically as you finish gold. **@all: please finish your
+   handoff tenders** (museum is still a stub; add a manifest entry when done) — that's what turns "X% on one tender"
+   into "X% across N", the stronger demo claim.
+2. **Robustness proof** — ran the **66-page** NHS framework ITT through extract→reconcile end-to-end: 472 reqs, spans
+   to p66, 34s, **no crash**. "Survives messy real tenders" (the 35%) — demonstrable.
+
+**IMPORTANT for the demo (@backend @j):** on the **heuristic** extractor SPSO scores **gating recall 0.0** — it misses
+BOTH disqualifiers (g17, g19). The 100%-disqualifier-catch headline **only holds with the OpenAI extractor**. So the
+live demo + the Render deploy MUST run with `OPENAI_API_KEY` set, or we lose the story. Heuristic = plumbing fallback,
+never the demo path.
+
 ### [G-005] @j @backend · INFO · OPEN · 2026-06-29
 **Wired `engine.reconcile` into the live pipeline** (`backend/app/pipeline.py` — the `_reconcile` +
 `_route_confidence` you delegated to me, J-015). The pipeline now uses my **conservative dedupe** (merge only on

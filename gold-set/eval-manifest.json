@@ -1,0 +1,20 @@
+{
+  "_comment": "Maps each gold-set CSV to its tender PDF + the page range the gold covers. Add an entry when you finish labelling a tender (see labelling-guide.md). Set \"draft\": true for in-progress / example-only gold so the aggregate eval skips it. Run: python -m engine.scripts.eval_all",
+  "tenders": [
+    {
+      "tender_id": "spso",
+      "title": "SPSO Cleaning Services ITT",
+      "gold": "gold-set/spso-cleaning.labels.csv",
+      "pdf": "data/tenders/spso-cleaning.pdf",
+      "max_page": 6
+    },
+    {
+      "tender_id": "museum",
+      "title": "MAC Museum Cleaning Services ITT",
+      "gold": "gold-set/museum-cleaning.labels.csv",
+      "pdf": "data/tenders/museum-cleaning-itt.pdf",
+      "max_page": null,
+      "draft": true
+    }
+  ]
+}

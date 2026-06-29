@@ -99,6 +99,8 @@ def score(gold: dict, output: dict) -> dict:
     gold_gating = [g for g in gold.get("requirements", []) if g.get("is_gating")]
     caught_gating = sum(1 for g, o in matches if g.get("is_gating") and o.get("is_gating"))
     gating_recall = _ratio(caught_gating, len(gold_gating))
+    # A dangerous miss = a gold GATING requirement the tool failed to match at all.
+    dangerous_misses = sum(1 for g in unmatched_gold if g.get("is_gating"))
 
     return {
         "tp": tp, "fn": fn, "fp": fp,
@@ -106,6 +108,8 @@ def score(gold: dict, output: dict) -> dict:
         "output_count": len(output.get("requirements", [])),
         "recall": recall, "precision": precision, "f1": f1,
         "gating_accuracy": gating_accuracy, "gating_recall": gating_recall,
+        "gating_gold": len(gold_gating), "gating_caught": caught_gating,
+        "dangerous_misses": dangerous_misses,
     }
 
 
