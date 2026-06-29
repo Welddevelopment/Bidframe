@@ -1,8 +1,10 @@
-// The confidence dot (DESIGN-SYSTEM section 4, axis 1). Four tiers, worst to
-// best, carried in greyscale by a fill level and a 1px ink ring, and by a hue.
-// The word beside it uses the fixed four-tier lexicon (copywriting.md), never a
-// number. Two renders: a compact dot-only for the matrix left cell, and a
-// dot+word for the spine and panel.
+// The confidence bead (DESIGN-SYSTEM section 4, axis 1). Four tiers, worst to
+// best, carried in greyscale by a fill LEVEL and by a hue, never a number. The
+// bead is dimensional: a glossy leveled fill, a 1px ink ring, a soft drop shadow
+// (the `.conf-dot` material in globals.css), so the status system draws the eye
+// it earns. Shared everywhere, so it lands in the matrix, the spine, the panel,
+// and the hero (which renders the real matrix). The word beside it uses the
+// fixed four-tier lexicon (copywriting.md).
 
 type ConfidenceTier = "oxblood" | "amber" | "yellow" | "light-green";
 
@@ -13,19 +15,20 @@ const TIER_WORD: Record<ConfidenceTier, string> = {
   "light-green": "Confident",
 };
 
-const TIER_HUE: Record<ConfidenceTier, string> = {
-  oxblood: "bg-signal-oxblood",
-  amber: "bg-signal-amber",
-  yellow: "bg-signal-yellow",
-  "light-green": "bg-signal-light-green",
+// The hue (for the leveled gradient fill) and the fill level that keeps each
+// tier legible with colour switched off (the SLOP-CHECK greyscale test).
+const TIER_HEX: Record<ConfidenceTier, string> = {
+  oxblood: "#8a2d2a",
+  amber: "#bc6b2e",
+  yellow: "#d2a435",
+  "light-green": "#6f9a57",
 };
 
-// How full the dot reads, so the tier survives the greyscale test.
-const TIER_FILL: Record<ConfidenceTier, string> = {
-  oxblood: "25%",
-  amber: "50%",
-  yellow: "75%",
-  "light-green": "100%",
+const TIER_FILL: Record<ConfidenceTier, number> = {
+  oxblood: 30,
+  amber: 52,
+  yellow: 76,
+  "light-green": 100,
 };
 
 // confidence -> tier. An explicit unanswerable case (a gating item with no good
@@ -42,11 +45,13 @@ export function ConfidenceIndicator({
   needsReview = false,
   unanswerable = false,
   variant = "word",
+  size = "md",
 }: {
   confidence: number;
   needsReview?: boolean;
   unanswerable?: boolean;
   variant?: "dot" | "word";
+  size?: "sm" | "md";
 }) {
   // needs_review never reads better than amber: a flagged-for-review item is at
   // most a rough draft.
@@ -57,17 +62,20 @@ export function ConfidenceIndicator({
       : rawTier;
 
   const word = TIER_WORD[tier];
+  const hex = TIER_HEX[tier];
+  const fill = TIER_FILL[tier];
+  const px = size === "sm" ? 14 : 20;
 
   const dot = (
     <span
-      className="relative inline-block h-2.5 w-2.5 shrink-0 overflow-hidden rounded-full ring-1 ring-inset ring-ink/70"
+      className="conf-dot inline-block shrink-0"
       aria-hidden
-    >
-      <span
-        className={`absolute inset-x-0 bottom-0 ${TIER_HUE[tier]}`}
-        style={{ height: TIER_FILL[tier] }}
-      />
-    </span>
+      style={{
+        width: px,
+        height: px,
+        background: `linear-gradient(to top, ${hex} 0%, ${hex} ${fill}%, var(--paper-recessed) ${fill}%, var(--paper-recessed) 100%)`,
+      }}
+    />
   );
 
   if (variant === "dot") {
@@ -84,7 +92,7 @@ export function ConfidenceIndicator({
   }
 
   return (
-    <span className="inline-flex items-center gap-2 text-sm text-ink-muted">
+    <span className="inline-flex items-center gap-2.5 text-sm text-ink-muted">
       {dot}
       <span>{word}</span>
     </span>

@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `6af445a` · 2026-06-29T23:37:48+01:00
+> Map of commit `7396d4e` · 2026-06-29T22:38:04Z
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,7 +12,7 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 68 | 13,739 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **frontend** | 68 | 13,771 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
 | **backend** | 17 | 1,907 | Backend — FastAPI (PDF ingest, extraction, REST API) |
 | **engine** | 48 | 2,994 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 678 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
@@ -90,14 +90,15 @@ graph LR
   n27[RequirementPanel.tsx] --> n17[AnswerPanel.tsx]
   n27[RequirementPanel.tsx] --> n21[ConfidenceIndicator.tsx]
   n27[RequirementPanel.tsx] --> n19[requirement.ts]
+  n28[RequirementSpine.tsx] --> n21[ConfidenceIndicator.tsx]
   n28[RequirementSpine.tsx] --> n22[triage.ts]
-  n28[RequirementSpine.tsx] --> n19[requirement.ts]
   n16[UploadDropzone.tsx] --> n9[RequirementsContext.tsx]
   n16[UploadDropzone.tsx] --> n29[api.ts]
   n30[HeroResolve.tsx] --> n20[ComplianceMatrix.tsx]
   n30[HeroResolve.tsx] --> n25[GatingHero.tsx]
   n30[HeroResolve.tsx] --> n9[RequirementsContext.tsx]
   n30[HeroResolve.tsx] --> n22[triage.ts]
+  n11[Landing.tsx] --> n21[ConfidenceIndicator.tsx]
   n11[Landing.tsx] --> n31[ApprovalStamp.tsx]
   n11[Landing.tsx] --> n32[BookDemoButton.tsx]
   n11[Landing.tsx] --> n33[BotanicalSprig.tsx]
@@ -196,7 +197,7 @@ graph LR
 - `frontend/src/components/AutofillButton.tsx` — exports `AutofillButton`
 - `frontend/src/components/CapabilityUpload.tsx` — exports `CapabilityUpload`
 - `frontend/src/components/ComplianceMatrix.tsx` — exports `ComplianceMatrix`
-- `frontend/src/components/ConfidenceIndicator.tsx` — The confidence dot (DESIGN-SYSTEM section 4, axis 1). Four tiers, worst to
+- `frontend/src/components/ConfidenceIndicator.tsx` — The confidence bead (DESIGN-SYSTEM section 4, axis 1). Four tiers, worst to
 - `frontend/src/components/DocumentHeader.tsx` — exports `DocumentHeader`
 - `frontend/src/components/GapInterview.tsx` — exports `GapInterview`
 - `frontend/src/components/GatingHero.tsx` — exports `GatingHero`

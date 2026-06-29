@@ -1,7 +1,7 @@
 "use client";
 
-import type { Requirement } from "@/types/requirement";
 import type { TriageGroup } from "@/lib/triage";
+import { ConfidenceIndicator } from "./ConfidenceIndicator";
 
 // The spine (layout.md section 5): the narrow ~300px index column that replaces
 // the full matrix once a row is open. It is the document's own contents page,
@@ -15,17 +15,6 @@ interface RequirementSpineProps {
   groups: TriageGroup[];
   selectedId: string | null;
   onSelect: (id: string) => void;
-}
-
-// The confidence dot tier, matched to the four-tier model. Greyscale-safe: the
-// fill is one channel, the requirement text beside it is the other, so the spine
-// still reads with colour off (SLOP-CHECK greyscale test). Confidence is never a
-// number here.
-function dotTier(req: Requirement): string {
-  if (req.needs_review) return "bg-signal-amber";
-  if (req.confidence >= 0.85) return "bg-signal-light-green";
-  if (req.confidence >= 0.65) return "bg-signal-yellow";
-  return "bg-signal-amber";
 }
 
 export function RequirementSpine({
@@ -60,12 +49,15 @@ export function RequirementSpine({
                           : "border-l-2 border-l-transparent pl-3 text-ink-muted hover:bg-paper-raised hover:text-ink"
                       }`}
                     >
-                      <span
-                        className={`mt-1 h-2 w-2 shrink-0 rounded-full ${dotTier(
-                          req
-                        )}`}
-                        aria-hidden
-                      />
+                      <span className="mt-px shrink-0">
+                        <ConfidenceIndicator
+                          confidence={req.confidence}
+                          needsReview={req.needs_review}
+                          unanswerable={req.is_gating && req.status === "pending"}
+                          variant="dot"
+                          size="sm"
+                        />
+                      </span>
                       <span className="truncate">{req.text}</span>
                     </button>
                   </li>

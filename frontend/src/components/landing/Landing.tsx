@@ -4,6 +4,7 @@ import { HeroResolve } from "./HeroResolve";
 import { ApprovalStamp } from "./ApprovalStamp";
 import { WaitlistForm } from "./WaitlistForm";
 import { BotanicalSprig } from "./BotanicalSprig";
+import { ConfidenceIndicator } from "@/components/ConfidenceIndicator";
 
 // The public landing page (landing-page-brief). It is itself a civic record: the
 // same paper, masthead, rules, mono record voice, and real product components as
@@ -189,10 +190,10 @@ export function Landing() {
             one.
           </p>
           <div className="mt-8 flex flex-wrap gap-x-9 gap-y-4">
-            <Dot className="bg-signal-oxblood" word="Can't answer this" />
-            <Dot className="bg-signal-amber" word="Low confidence" />
-            <Dot className="bg-signal-yellow" word="Fairly sure" />
-            <Dot className="bg-signal-light-green" word="Confident" />
+            <ConfidenceIndicator confidence={0.3} unanswerable variant="word" />
+            <ConfidenceIndicator confidence={0.5} variant="word" />
+            <ConfidenceIndicator confidence={0.7} variant="word" />
+            <ConfidenceIndicator confidence={0.92} variant="word" />
           </div>
         </Band>
 
@@ -378,15 +379,6 @@ function ProofRow({ figure, label }: { figure: string; label: string }) {
       </dt>
       <dd className="leading-relaxed text-paper/75">{label}</dd>
     </div>
-  );
-}
-
-function Dot({ className, word }: { className: string; word: string }) {
-  return (
-    <span className="inline-flex items-center gap-2.5">
-      <span className={`conf-dot ${className}`} aria-hidden="true" />
-      <span className="text-sm font-medium text-ink">{word}</span>
-    </span>
   );
 }
 
