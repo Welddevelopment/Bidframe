@@ -134,7 +134,10 @@ them. Consultancies are the better *first* target (value compounds), but SMEs gi
 - **IT / managed services** ⭐ — the **G-Cloud / Digital Marketplace** is a goldmine: ~4,000 suppliers,
   **~90% SMEs**, all publicly listed + searchable at `applytosupply.digitalmarketplace.service.gov.uk`.
   Filter to small MSPs that have *won* call-offs (public £-spend data via Tussell/Contracts Finder) →
-  these bid often and feel the tender-reading pain. *(cycle 3: pull 8–10 named small MSPs.)*
+  these bid often and feel the tender-reading pain. *Named SME MSPs (education niche — they bid for
+  academy-trust / MAT ICT managed-service contracts):* **Computeam**, **Classroom365**, **Croft**
+  (croftmsp.com), **Soltech IT**, **Primary Technology**. Live ITT to pair: **Inclusive Multi-Academy Trust
+  ICT Managed Service** (Find a Tender `002522-2025`).
 - **Cleaning / FM** — our own demo tenders sit here (SPSO, museum, Shropshire), so we can demo on a doc
   *they* recognise. *Named regional SME cleaner found:* **Brightr** (school cleaning, Northampton). Harvest
   more via `bidstats.uk` (search "school cleaning" award notices), `facilitiestenders.co.uk`, Supply2Gov
@@ -407,3 +410,7 @@ Two moments must land: **the catch** and **click-to-source**. Keep it ~60s; let 
   ④ SME-bidder rows (Joghide/MC&DS, Fareport/Runway, Agile Guarding/Brightr, David Anderson) need a specific
   person + current LinkedIn; ⑤ **mytender.io** pricing/features (gated). **Substantive dossier is COMPLETE
   → entering low-frequency maintenance mode** (long-interval cycles, only genuinely additive bits).
+- **2026-06-29 (maintenance 1)** — Added named **SME MSPs in the education niche** (Computeam, Classroom365,
+  Croft, Soltech IT, Primary Technology) that bid for academy-trust/MAT ICT managed-service contracts, paired
+  with a live ITT (Find a Tender `002522-2025`) — fills the thinnest segment (IT/MSP) with real names. (NHS
+  family-run SME cleaner search still only surfaces giants — no new name.) Staying in maintenance mode.
