@@ -5,10 +5,16 @@
 > [positioning-and-traction.md](positioning-and-traction.md); **this is the *who* and the *how*,
 > named and specific.**
 >
-> ⚠️ **Built from public web research (autonomously, overnight 2026-06-29). Verify every person +
-> LinkedIn handle before sending** — titles change, and search summaries can be slightly off. Where a
-> handle is unverified it's marked *(verify)*. **No private contact data is invented** — emails are not
-> guessed; reach people via LinkedIn or the firm's public contact form.
+> ⚠️ **Built from public web research (autonomously, overnight 2026-06-29). Verify every person + LinkedIn
+> handle before sending** — titles change and search summaries can be slightly off. **Convention:** `✅` = a
+> public source gave this exact handle (still glance before sending); `route` / `to pin` / `(verify)` / `TBD`
+> = identity known but no confirmed personal handle yet (use the company page). Firm size / win-rate / £
+> figures are the **firms' own public marketing claims**, not independently verified. **No private contact
+> data is invented** — emails aren't guessed; reach people via LinkedIn or the firm's public contact form.
+>
+> **Verification status (cycle-11 QA, 2026-06-29):** 9 personal LinkedIn handles `✅` from public sources;
+> identities confirmed via Companies House for Ian Evans (08918064) + Sharon Welch (09245742). Still-open
+> items are listed at the end of the Research log — check those before sending.
 >
 > **Status:** living doc, grown in research cycles. New findings + the running plan are in the
 > **Research log** at the bottom. ⭐ = start here.
@@ -46,7 +52,7 @@ Ranked by **decides-fast × bids-often × reachable × wedge-fit**. Verify ✅ h
 | 8 | **Stuart Reed** — independent | — | Solo bid writer | Active "bid writing expert"; fast personal reply | `/in/stuart-reed` ✅ |
 | 9 | **Julian Clarke** — independent | — | Solo bid writer | Helps SMEs; personal reply likely | `/in/julian-clarke-a156bb50` ✅ |
 | 10 | **John Hudson** — Hudson Succeed | — | Consultancy (large) | COO of a 2,000-client bid shop; bigger/slower but high-volume validator | `/in/johnhudson3` ✅ |
-| 11 | **Sharon Welch** — Bid Writer Consultancy | — | Consultancy (SME, "AI bid") | Already markets AI bid support → receptive to the framing | `/company/bid-writer-consultancy` · identity ✅ (Director, CH 09245742) |
+| 11 | **Sharon Welch** — Bid Writer Consultancy | — | Consultancy (SME, "AI bid") | Already markets AI bid support → receptive to the framing | `/company/bid-writer-consultancy` · Director ✅ (CH 09245742, now reg. "Sharon Welch Ltd"); personal handle to pin |
 | 12 | **David Anderson** — Fuelling Minds | — | SME bidder (catering) | New (Apr 2025) SME caterer; demo on Discovery Trust ITT (FTS `076817-2025`) | LinkedIn (find David Anderson) |
 | 13 | **Fareport / Runway Training** | — | SME bidder (training) | Bid constantly into Skills Bootcamps/DPS2; under-tooled | company LinkedIn |
 | 14 | **Joghide / MC&DS** | — | SME bidder (care) | Herefordshire framework awardees; demo on that ITT | company LinkedIn |
@@ -81,7 +87,7 @@ are also the sharpest *validators* of the wedge (traceability, the disqualifier 
 
 | Firm | Size / signal | Niche focus | Person to approach | Channel |
 |------|---------------|-------------|--------------------|---------|
-| **Thornton & Lowe** ⭐ | ~48 staff, ~$8m rev, est 2009, Bolton — "largest UK bid consultancy"; ~75–78% win | Gov, local gov, NHS, housing, education, FM (~30% of work) | **Dave Thornton** (founder) · also new MD "Tom" (Oct 2025) | LinkedIn `/in/dave-thornton-56833625` |
+| **Thornton & Lowe** ⭐ | ~48 staff, est 2009, Bolton — "largest UK bid consultancy"; ~75–78% win (their claim) | Gov, local gov, NHS, housing, education, FM (~30% of work) | **Dave Thornton** (founder) · also new MD "Tom" (Oct 2025) | LinkedIn `/in/dave-thornton-56833625` |
 | **Executive Compass** ⭐ | est 2009, Newcastle, 7,000+ bids, ~85%, ISO 9001 team | PQQ/SQ + tender, social value, all sectors | **Neil Capstick** (founder; now leads "Social Value Practice") + the new MD | LinkedIn `/in/tenderwriter` |
 | **Hudson Succeed** | div. of Hudson Outsourcing, 2,000+ clients/40+ countries, 87% | Cross-sector, framework-heavy | **John Hudson** (COO) ✅; also a "Head of Bid Management (SMEs)" role + **Zoë Tumelty** (Succeed writer) | LinkedIn `/in/johnhudson3` |
 | **BidRight UK** | 13+ yrs, £200m+ secured | SMEs + not-for-profit: education, training, employment, **health & social care** | (founder TBD) *(verify)* | bidrightuk.co.uk contact |
@@ -89,7 +95,7 @@ are also the sharpest *validators* of the wedge (traceability, the disqualifier 
 | **Tenders UK** | est 2008, 4,000+ bids, 83% win | Domiciliary/adult social care frameworks, FM | **Christopher Martin** | LinkedIn `/in/winmoretenders` |
 | **Tender Victory** ⭐⭐ | est 2010, **majority clients are SMEs**; founder is **ex public-sector buyer** (Devon & Cornwall Police, 2005–10), MCIPS | SME-focused, cross-sector | **Vicki Stewart** (founder) ✅ | LinkedIn `/in/vicki-stewart-42a58a2a` · ☎ 07971 526587 (public on site) |
 | **Silverlock Tenders** | small/independent | Tenders, SME | **Dewi Hughes** (MD) | LinkedIn `/in/dewihughes` |
-| **Bid Writer Consultancy** | est 2014, "Best SMB" 2017, freelancer collective; markets **AI bid support** | Cross-sector, SME | **Sharon Welch** (founder; 30 yrs BD) | `/company/bid-writer-consultancy` · Co. House 09245742 *(personal handle ambiguous)* |
+| **Bid Writer Consultancy** | est 2014, "Best SMB" 2017, freelancer collective; markets **AI bid support** | Cross-sector, SME | **Sharon Welch** (founder; 30 yrs BD) — Director, CH 09245742 (now reg. "Sharon Welch Ltd") | `/company/bid-writer-consultancy` *(personal handle ambiguous)* |
 | **BFT Consult** ⭐ | est 2014, **80%+ win, £950m+ secured**; founder is ex-care-org BD (grew one £2m→£12m in <4 yrs), 18+ yrs in sector | **Health & social care** (homecare, supported living, mental health, dementia) | **Ian Evans** (Ian James Evans, founder/Bid Director) | BFT Consult Ltd 08918064 (Liverpool) · `/company/bftconsult` *(personal LinkedIn to pin)* |
 | **Della Pip** | founder-led, 15+ yrs | **Health & social care** (care homes, home care) | **Katrina Gibson** (Director) ✅ | LinkedIn `/in/katrina-gibson-2278516b` |
 | **Think Tenders** | award-winning, freelance model, £500m in 3 yrs | Public sector, cross-sector | **Amanda** + team *(surname/handle to verify)* | thinktenders.co.uk |
@@ -387,3 +393,17 @@ Two moments must land: **the catch** and **click-to-source**. Keep it ~60s; let 
   **Tussell/Contracts Finder award-notice** dig (JS-heavy, not WebFetch-friendly), or doing it by hand. Left
   as a documented method, not faked names. **We've reached polish/QA territory.** **Next (cycle 11):** full QA
   pass — verify every CRM handle + claim against source, dedupe, tighten, and flag remaining unverified items.
+- **2026-06-29 (cycle 11)** — ✅ **QA pass done.** Confirmed all 9 `✅` personal handles trace to a public
+  search result (Stewart, Thornton, Capstick, Gibson, Hughes, C. Martin, Reed, Clarke, J. Hudson). Tightened
+  the header convention + added a **Verification status** line. Fixed the **Sharon Welch** entity (CH 09245742
+  is now registered "Sharon Welch Ltd"; she's Director — kept as identity-confirmed, personal handle still
+  open). Dropped a conflicting Thornton & Lowe revenue figure (~$8m vs ~$2.1m across sources) and re-marked
+  win-rates/£-figures as firms' own claims. CRM ↔ Segment A ↔ Hit list are consistent (no bad dupes — same
+  firms intentionally appear in the ranked CRM and the detailed §A).
+  **🔎 STILL UNVERIFIED — double-check before sending:** ① personal LinkedIn handles for **Ian Evans** (BFT;
+  via `/company/bftconsult`) and **Sharon Welch** (via company page); ② the firm-only watchlist (Complete
+  Tenders, BidRight UK, Tsaks London, BWS, GovData, Glaxtons, Think Tenders/Amanda) — find a named person
+  first; ③ the `✅` handles are *search-sourced*, so glance at each profile to confirm role before DMing;
+  ④ SME-bidder rows (Joghide/MC&DS, Fareport/Runway, Agile Guarding/Brightr, David Anderson) need a specific
+  person + current LinkedIn; ⑤ **mytender.io** pricing/features (gated). **Substantive dossier is COMPLETE
+  → entering low-frequency maintenance mode** (long-interval cycles, only genuinely additive bits).
