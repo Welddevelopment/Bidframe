@@ -58,9 +58,10 @@ Ranked by **decides-fast × bids-often × reachable × wedge-fit**. Verify ✅ h
 | 14 | **Joghide / MC&DS** | — | SME bidder (care) | Herefordshire framework awardees; demo on that ITT | company LinkedIn |
 | 15 | **Agile Guarding / Brightr** | — | SME bidder (security/cleaning) | Regional SME FM bidders (ESPO/RM6257 + school cleaning) | company LinkedIn |
 | 16 | **Amanda Goode** — Think Tenders | ⭐ | Consultancy (SME, freelance) | Multi-award Birmingham SME bid shop; freelance → personal, fast reply (ranks with the ⭐ consultancies) | `/in/thinktenders` ✅ |
+| 17 | **Chris Hugo** — GovData | — | Consultancy (framework onboarding) | CEO, 1,800+ client base → as much a partnership/validator channel as a customer | `/in/christian-hugo-11059311` ✅ |
 
 > **Firm-only (no named contact yet — find a person before outreach):** Complete Tenders, Tsaks (London
-> office), Bid Writing Service (BWS), GovData, Glaxtons.
+> office), Glaxtons (founder).
 
 ## Day-3 sequencing (the play)
 
@@ -101,9 +102,9 @@ are also the sharpest *validators* of the wedge (traceability, the disqualifier 
 | **Della Pip** | founder-led, 15+ yrs | **Health & social care** (care homes, home care) | **Katrina Gibson** (Director) ✅ | LinkedIn `/in/katrina-gibson-2278516b` |
 | **Think Tenders** ⭐ | multi-award-winning ("Best SMB" 2017), freelance, Birmingham; £500m in 3 yrs | Public sector, cross-sector, SME | **Amanda Goode** (founder/owner) ✅ | LinkedIn `/in/thinktenders` |
 | **Tsaks Consulting** | 85% win; Sydney HQ + **London** office | Gov specialists, cross-sector | (London lead TBD) *(verify)* | tsaksconsulting.com |
-| **Bid Writing Service (BWS)** | award-winning, £5.5bn claimed | Public sector, local gov, NHS | (founder TBD) *(verify)* | bidwritingservice.com |
-| **GovData Services** | 20 yrs, "£37bn won for SMEs", framework-led | Framework onboarding + bid support | (BD lead TBD) *(verify)* | govdata.co.uk |
-| **Glaxtons Consulting** | 93% claimed | Cross-sector + procurement insights | (founder TBD) *(verify)* | glaxtons.co.uk |
+| **Bid Writing Service (BWS)** | award-winning, £5.5bn claimed; op. by Barkers Commercial Services Ltd (Manchester/Usk) | Public sector, local gov, NHS | **Mike Baron** (MD) + James Wignall (BD) | bidwritingservice.com *(personal handle to find)* |
+| **GovData Services** | est 2006 (Gary Coleman + Esther Hess), Warrington, 1,800+ clients, "£37bn won" | Framework onboarding + bid support | **Chris Hugo** (CEO) ✅ | LinkedIn `/in/christian-hugo-11059311` |
+| **Glaxtons Consulting** | 93% claimed; **publishes pricing "from £950"**; CCS CWAS3 + NHS frameworks | Cross-sector + procurement insights | (founder TBD) *(verify)* | glaxtons.co.uk |
 
 **Independent named bid writers worth a direct DM** (solo/small — fast decisions, active on LinkedIn):
 - **Stuart Reed** — "Bid Writing Expert" `/in/stuart-reed`
@@ -441,3 +442,8 @@ Two moments must land: **the catch** and **click-to-source**. Keep it ~60s; let 
   (Think Tenders, `/in/thinktenders` ✅, multi-award SME bid shop) added to the CRM (#16, ⭐); **Robin Clarkson**
   (BidRight UK, Dir. of Dev & Delivery, CH 07570878) named in Segment A. Watchlist now: Complete Tenders, Tsaks
   London, BWS, GovData, Glaxtons (Complete Tenders + Tsaks founders not surfaced via search). Maintenance mode.
+- **2026-06-29 (maintenance 6)** — Pinned 2 more: **Chris Hugo** (GovData CEO, `/in/christian-hugo-11059311`
+  ✅ → CRM #17; founders Gary Coleman + Esther Hess, 2006); **Mike Baron** (BWS MD, op. by Barkers Commercial
+  Services Ltd) named in Segment A. Both off the watchlist → only **Complete Tenders, Tsaks London, Glaxtons**
+  remain (their founders don't surface via search — need a manual LinkedIn/website check). Pricing data point:
+  **Glaxtons publishes "from £950"** (vs ~£3,800 avg SME bid-prep) — useful for our own pricing thinking. Maintenance mode.
