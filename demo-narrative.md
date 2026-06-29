@@ -27,10 +27,13 @@ your response from your own evidence. The human approves every call.**
 5. **Click-to-source (trust).** Click the row → source panel, exact clause highlighted. "And we don't ask
    you to trust us. One click shows the exact sentence on the exact page it came from. Every line is checkable."
 6. **Honesty (the flag).** Point at an amber `needs_review` item. "Where we're not sure, we say so — we
-   flag it for you instead of guessing. We found 98%, and we're upfront about the rest."
+   flag it for you instead of guessing. On this tender we caught **every disqualifier** and flagged the
+   rest — measured against a hand-labelled answer key, with **zero dangerous misses.**"
 7. **Autofill + the interview.** Approve a few requirements → answers draft from the bidder's capability
    docs, each with its evidence linked. Then the question list: "It drafts your response from your own
-   documents — and asks you only the handful of things it genuinely can't answer. Six questions, not a blank page."
+   documents — every claim cites the exact evidence behind it, or says *needs your input*. **It never
+   bluffs.** And it asks you only the handful of things it genuinely can't answer — a few questions, not a
+   blank page."
 8. **The after.** "Three weeks of reading and a disqualifier risk — down to minutes, with the killer
    requirement caught, every line verifiable, and a drafted response. The human approved every step."
 
@@ -68,12 +71,24 @@ decisions are the moat.
   guessing. Lead with it.
 - **The human is in control** — say it out loud at the approve step. That's the "user in control" score (20%).
 
-## What still needs the build before this locks
+## Build status (locked) + the numbers to quote
 
-- [ ] The catch must be *visually* unmissable (frontend Day-4 hero moment).
-- [ ] Click-to-source panel must actually highlight the excerpt (frontend Day-2).
-- [ ] A headline accuracy number from the eval harness ("caught 98%") — generalist.
-- [ ] A clean hero tender that runs flawlessly + proof it survives an ugly one.
+- [x] **The catch is visually unmissable** — the gating "deal-breaker" hero, shipped.
+- [x] **Click-to-source** highlights the exact clause/page — shipped.
+- [x] **Autofill is real + honest** — grounded answers, evidence citations, gap interview; live in the API.
+- [x] **Robustness proven** — 7/7 of the ugliest real tenders survive ingest→extract→reconcile→autofill (incl. a 66pp NHS framework, 472 reqs, no crash).
+- [x] **The numbers (locked, honest):** **gating recall 1.0 · 0 dangerous misses · 0 bluffs (42/42 citations verified).**
+  Overall extraction recall wiggles **~0.79–0.95** run-to-run (gpt-4o noise) → **quote the disqualifier catch +
+  groundedness, NOT a single recall %.** (Same discipline in outreach + README.)
+
+> **⚠️ Demo run = PRE-BAKED (key resilience).** We don't have a standing LLM key, so run the real
+> extract+autofill on the hero tenders **once** and serve the demo from the **cached real output** — no live
+> API on stage (no cost, latency, or flakiness). **Hero = SPSO** (clean 13pp); **messy proof = NHS 66pp
+> framework.** Live "judges upload" is a *backup*, run locally on a machine that has the key. (Generalist owns
+> the bake — see J-020. Claude is our live fallback: `LLM_PROVIDER=anthropic`.)
 
 ### Changelog
 - **2026-06-28 (Day 1)** — v1 draft by J. Incorporates autofill. Lock by Day 4.
+- **2026-06-29 (Day 2)** — Updated to the **locked, honest numbers** (gating recall 1.0 · 0 dangerous · 0
+  bluffs; stop quoting a single recall %); autofill beat is now real (groundedness/0-bluffs); added the
+  pre-baked-demo + key-resilience plan. Build is essentially demo-complete.

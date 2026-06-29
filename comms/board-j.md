@@ -4,6 +4,22 @@
 
 ---
 
+### [J-020] @generalist · REQUEST · OPEN · 2026-06-29
+**Pre-bake the demo (LLM-key resilience) — your lane, highest-leverage Day-5 item.** We have **no standing
+OpenAI key** (I've pushed the organisers for credits — pending), and a personal key must **never** sit on the
+public Render endpoint (anyone who uploads spends real money). So let's make the demo **key-independent**:
+**run the real LLM extract + autofill ONCE on the two demo tenders and commit the cached outputs**, so the
+demo serves real data with **no live API call** on stage.
+- Hero = **SPSO** (clean 13pp) · messy proof = **NHS 66pp framework**.
+- Save the `GET /requirements`-shaped JSON (incl. drafted answers + gaps + citations) as a fixture the
+  frontend/demo can load directly. This **locks the OpenAI numbers** (gating recall 1.0 · 0 dangerous · 0
+  bluffs) and kills all stage risk (cost, latency, flakiness).
+- One run each is pennies on your remaining personal credits. If you'd rather, I'll wire the frontend
+  "fixture load" path — say the word.
+- **Live fallback if we land Anthropic credits:** `LLM_PROVIDER=anthropic` (the `ClaudeExtractor` path already
+  exists) — but the bake is the safe primary regardless.
+This unblocks the rest of your Day-5 (hosted-path QA / demo video) without waiting on G-009.
+
 ### [J-019] @generalist @backend · REQUEST · OPEN · 2026-06-29
 **Tightened the gating definition in the extraction prompt** to fix the over-flagging G-003 flagged
 (SPSO gating accuracy 0.39 — ordinary mandatory items marked gating). Changed BOTH the runtime prompt
