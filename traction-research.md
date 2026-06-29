@@ -186,6 +186,38 @@ them. Consultancies are the better *first* target (value compounds), but SMEs gi
 > catch things on a doc you already know), or I send a 90-sec screen recording first. Which suits? If
 > you've a tender PDF handy, even better — we'll dissect it together.
 
+### Ready-to-paste variants (≤~500 chars, LinkedIn DM — swap the [brackets])
+
+**(a) Consultancy founder — cold:**
+> Hi [Name] — [Firm] runs more public-sector bids in a month than most see in a year, so your read would
+> mean a lot. I've built a tool that turns a tender into a verified requirements checklist, shouts the
+> pass/fail gates that disqualify a bid, and links each requirement to its exact clause for one-click
+> checking. Could I show you on a tender you know — 10 mins, no pitch, just after an expert's honest take?
+
+**(a′) Consultancy founder — warm (after engaging their post):**
+> Hi [Name] — enjoyed your post on [topic]. I've been building in your world: it reads a public-sector
+> tender, extracts every requirement with its source clause, flags the disqualifying ones, and *measures*
+> what it caught (18/19 on our first real tender). Given how many bids [Firm] handles, 10 mins to react to
+> it on a tender you pick? Genuinely after your honest read, not a sale.
+
+**(b) Health & social care specialist:**
+> Hi [Name] — I know [Firm] lives in social-care frameworks, where one missed pass/fail clause sinks the
+> whole bid. I've built a tool that reads a care ITT, pulls every requirement with its exact clause, surfaces
+> those disqualifying gates first, then flags anything it's unsure of rather than guessing. Could I run it
+> live on a domiciliary/care framework you've worked and get your honest take? 10 mins, no pitch.
+
+**(c) SME bidder (care / cleaning / catering / training / security):**
+> Hi [Name] — saw [Firm] bids for [council/NHS/sector] contracts. The bit everyone dreads is reading a
+> 100-page tender and hoping you didn't miss a mandatory requirement. I've built a tool that does that read
+> in minutes — every requirement pulled out, linked to its source, deal-breakers flagged up front. Could I
+> show you on a tender in your sector and get your honest reaction? No sell, just keen for a real user's view.
+
+**(d) Independent / solo bid writer:**
+> Hi [Name] — fellow tender obsessive here. I've built a tool that breaks a public-sector tender into a
+> verified requirements matrix, flags the pass/fail gates, and traces every line to its source clause — the
+> brutal first read done in minutes, with the disqualifier caught. As someone who does this daily, would you
+> try it on a live bid and tell me where it'd save you time (or where it falls short)? 10 mins, honest take.
+
 **The ask ladder (label honestly):** floor = "I'd use this" · middle = "send it, I'll run my next bid
 through it" · ceiling = a tiny paid pilot (even £50–100 = real money changing hands).
 
@@ -296,3 +328,9 @@ Ranked for: decides fast · bids often · reachable · strong wedge fit.
   (Director, Companies House 09245742). Updated objection table + Competitor watch with specifics. **Next
   (cycle 8):** 2–3 ready-to-paste ≤500-char LinkedIn outreach variants per segment; then warm-intro paths +
   a 60-second live-demo opener script (cycle 9); pin Ian Evans handle; deeper mytender.io fetch.
+- **2026-06-29 (cycle 8)** — ✍️ **Outreach variants:** added 5 ready-to-paste ≤500-char LinkedIn DM templates
+  under §Outreach — (a) consultancy cold, (a′) consultancy warm/after-engaging, (b) H&SC specialist, (c) SME
+  bidder, (d) independent/solo. Each personalises line 1 + ends in a low-friction "10 mins, honest take" ask.
+  **Next (cycle 9):** warm-intro paths (APMP/BIDx, shared sector, comment-then-connect) + a tight "first 60s
+  of the live demo" script for a bid pro; then cycle 10 = deeper mytender.io fetch + pin Ian Evans + 3–5 more
+  named SME bidders (cleaning, IT/MSP) from Contracts Finder award notices.
