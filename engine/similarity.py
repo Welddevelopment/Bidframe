@@ -37,6 +37,11 @@ def _content_tokens(text: str) -> set[str]:
     return {w for w in cleaned.split() if w and w not in _STOPWORDS}
 
 
+def content_tokens(text: str) -> set[str]:
+    """Public: meaningful (non-stopword) tokens of a text. Used by answer-draft retrieval."""
+    return _content_tokens(text)
+
+
 def similarity(a: str, b: str) -> float:
     """Deterministic char-level fuzzy ratio in [0,1] over normalised text."""
     return SequenceMatcher(None, _normalise(a), _normalise(b)).ratio()
