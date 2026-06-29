@@ -46,8 +46,8 @@ are also the sharpest *validators* of the wedge (traceability, the disqualifier 
 | **Tender Victory** ⭐⭐ | est 2010, **majority clients are SMEs**; founder is **ex public-sector buyer** (Devon & Cornwall Police, 2005–10), MCIPS | SME-focused, cross-sector | **Vicki Stewart** (founder) ✅ | LinkedIn `/in/vicki-stewart-42a58a2a` · ☎ 07971 526587 (public on site) |
 | **Silverlock Tenders** | small/independent | Tenders, SME | **Dewi Hughes** (MD) | LinkedIn `/in/dewihughes` |
 | **Bid Writer Consultancy** | est 2014, "Best SMB" 2017, freelancer collective; markets **AI bid support** | Cross-sector, SME | **Sharon Welch** (founder) *(verify handle)* | bidwriterconsultancy.co.uk |
-| **BFT Consult** ⭐ | est 2014, 80%+ win | **Health & social care** (homecare, supported living, mental health, dementia) | **Ian Evans** (Bid Director/founder) *(verify handle)* | bftconsult.com |
-| **Della Pip** | founder-led, 15+ yrs | **Health & social care** (care homes, home care) | **Katrina Gibson** (founder/lead strategist) *(verify handle)* | dellapip.co.uk |
+| **BFT Consult** ⭐ | est 2014, **80%+ win, £950m+ secured**; founder is ex-care-org BD (grew one £2m→£12m in <4 yrs), 18+ yrs in sector | **Health & social care** (homecare, supported living, mental health, dementia) | **Ian Evans** (founder/Bid Director) | via `/company/bftconsult` *(personal handle to confirm)* |
+| **Della Pip** | founder-led, 15+ yrs | **Health & social care** (care homes, home care) | **Katrina Gibson** (Director) ✅ | LinkedIn `/in/katrina-gibson-2278516b` |
 | **Think Tenders** | award-winning, freelance model, £500m in 3 yrs | Public sector, cross-sector | **Amanda** + team *(surname/handle to verify)* | thinktenders.co.uk |
 | **Tsaks Consulting** | 85% win; Sydney HQ + **London** office | Gov specialists, cross-sector | (London lead TBD) *(verify)* | tsaksconsulting.com |
 | **Bid Writing Service (BWS)** | award-winning, £5.5bn claimed | Public sector, local gov, NHS | (founder TBD) *(verify)* | bidwritingservice.com |
@@ -86,8 +86,9 @@ them. Consultancies are the better *first* target (value compounds), but SMEs gi
   Filter to small MSPs that have *won* call-offs (public £-spend data via Tussell/Contracts Finder) →
   these bid often and feel the tender-reading pain. *(cycle 3: pull 8–10 named small MSPs.)*
 - **Cleaning / FM** — our own demo tenders sit here (SPSO, museum, Shropshire), so we can demo on a doc
-  *they* recognise. Mine `facilitiestenders.co.uk` / Supply2Gov awardees for SME contract cleaners
-  (avoid the giants — Medirest/Compass, Mitie). *(cycle 3: name 6–8 regional SME cleaners.)*
+  *they* recognise. *Named regional SME cleaner found:* **Brightr** (school cleaning, Northampton). Harvest
+  more via `bidstats.uk` (search "school cleaning" award notices), `facilitiestenders.co.uk`, Supply2Gov
+  awardees — avoid the giants (Medirest/Compass, Mitie, OCS).
 - **Catering · Training providers · Grounds maintenance / security** — same method. *(later cycles.)*
 
 > **Method (repeat per sector):** recent Contracts Finder/Find-a-Tender award → SME awardee name → their
@@ -130,6 +131,23 @@ through it" · ceiling = a tiny paid pilot (even £50–100 = real money changin
 
 ---
 
+## Objection-handling + competitive one-liners (for the calls)
+
+Bid pros *will* push on these. Answer short and honest; **lead with trust/traceability, never prose
+quality** (we lose a prose fight to AutogenAI; we win on auditability).
+
+| They say | You say |
+|----------|---------|
+| "Isn't this just ChatGPT / NotebookLM?" | "Those summarise a PDF in a black box. We extract *every* requirement as structured data, link each to the exact clause/page, flag the pass/fail gates, and **measure what we caught** — none of which a chat tool does, or can prove." |
+| "AutogenAI already writes our bids." | "AutogenAI is generative, enterprise-priced, and treats *reading the tender* as solved. We're the layer underneath: auditable extraction you can trust, the disqualifier catch, measured recall. We draft answers too — but every claim traces to *your* evidence, not a black box." |
+| "We use Loopio / Responsive." | "Those reuse a content library you maintain. They don't read the tender and tell you what it actually requires, or catch the gate that disqualifies you. We sit *upstream* of the answer library." |
+| "How do I know it didn't miss something?" | "That's the fear we built for. We score recall against a hand-labelled answer key — on our first real tender we caught **18/19 and every disqualifier**, and we flag what we're unsure of instead of guessing. We *quantify* the miss rate; nobody else does." |
+| "AI hallucinates — I can't trust it." | "Exactly why every requirement shows its source clause in one click, and every drafted answer cites the evidence behind it. If we can't ground it, we say *'needs your input'* rather than bluff." |
+| "We're too small / can't afford tools." | "That's the point — AutogenAI is priced for big firms. This is built for SME bidders and small consultancies working in Word and spreadsheets today." |
+| "Does it replace my bid writer?" | "No — it does the brutal first read (≈3 weeks → minutes) and catches the disqualifier, so your expert spends time on win themes, not hunting requirements. The human approves every call." |
+
+---
+
 ## §Hit list — Day-3 first wave (start here) ⭐
 
 Ranked for: decides fast · bids often · reachable · strong wedge fit.
@@ -169,3 +187,12 @@ Ranked for: decides fast · bids often · reachable · strong wedge fit.
   (cycle 3):** name 8–10 small MSPs (G-Cloud) + 6–8 regional SME cleaners with their public contracts;
   verify remaining handles (Ian Evans/BFT, Katrina Gibson/Della Pip, Sharon Welch); add objection-handling
   + competitive one-liners (vs AutogenAI/Loopio) for the calls.
+- **2026-06-29 (cycle 3)** — ✅ Verified **Katrina Gibson** (`/in/katrina-gibson-2278516b`, Director DellaPip).
+  Strong profile on **Ian Evans / BFT Consult** (founder, 18+ yrs H&SC, ex-care-org BD £2m→£12m, 80%+ win,
+  £950m+ secured) — personal handle still to pin (reach via `/company/bftconsult`). Added named SME cleaner
+  **Brightr** (Northampton, schools) + harvest sources (bidstats.uk, facilitiestenders, Supply2Gov). Wrote the
+  **Objection-handling + competitive one-liners** table (vs ChatGPT/NotebookLM, AutogenAI, Loopio/Responsive,
+  hallucination, price, "replace my writer"). NOTE: naming specific small G-Cloud MSPs needs a direct Digital
+  Marketplace / Tussell pull (generic search only returns framework stats) — queued for a WebFetch next cycle.
+  **Next (cycle 4):** catering / training-provider / grounds-maintenance-security SME bidders + their public
+  contracts; verify Sharon Welch + a Hudson Outsourcing bid lead; attempt the Digital Marketplace MSP pull.
