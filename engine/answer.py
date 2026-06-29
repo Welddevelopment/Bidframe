@@ -196,14 +196,26 @@ def _answer_block(raw: dict) -> dict:
 
 
 def draft_all(requirements: list[dict], capability_docs: list[dict], answerer=None,
-              k: int = TOP_K) -> tuple[list[dict], list[dict]]:
+              k: int = TOP_K, max_workers: int = 1) -> tuple[list[dict], list[dict]]:
     """Enrich each requirement with an `answer` (+ per-req open_questions for gaps) and
-    return (enriched_requirements, deduped_gap_questions)."""
+    return (enriched_requirements, deduped_gap_questions).
+
+    `max_workers > 1` runs the per-requirement answerer calls concurrently (they're
+    I/O-bound LLM requests) to keep the live /draft endpoint snappy. Results are
+    re-ordered back to the input order, so a parallel run is identical to a sequential
+    one — only faster. Default 1 = sequential (deterministic, no threads)."""
     answerer = answerer or get_answerer()
     passages = all_passages(capability_docs)
+
+    if max_workers and max_workers > 1 and len(requirements) > 1:
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=max_workers) as pool:
+            raws = list(pool.map(lambda req: draft_answer(req, passages, answerer, k), requirements))
+    else:
+        raws = [draft_answer(req, passages, answerer, k) for req in requirements]
+
     enriched, gaps = [], []
-    for req in requirements:
-        raw = draft_answer(req, passages, answerer, k)
+    for req, raw in zip(requirements, raws):
         block = _answer_block(raw)
         out = {**req, "answer": block, "draft_answer": block["text"] or None, "open_questions": []}
         if raw["state"] == "needs_input":

@@ -97,12 +97,14 @@ def _route_confidence(req_type: str, confidence: float) -> bool:
     return confidence < threshold
 
 
-def _autofill(requirements: list[Requirement], capability_folder=None, answerer=None):
+def _autofill(requirements: list[Requirement], capability_folder=None, answerer=None,
+              max_workers: int = 1):
     """Enrich requirements with a grounded `answer` (or an honest `needs_input` gap) drawn
     from the bidder's capability docs, plus the `capability_docs` metadata for the envelope.
 
     Defaults to the MockAnswerer (deterministic, free, instant — safe to run on every upload
-    with no surprise LLM cost/latency); POST /tenders/{id}/draft re-runs with a real answerer.
+    with no surprise LLM cost/latency); POST /tenders/{id}/draft re-runs with a real answerer
+    and `max_workers > 1` so the per-requirement LLM calls run concurrently (snappy demo).
     Import-safe + never raises into the request: if engine.answer isn't on the path, or there
     are no docs, or anything fails, requirements pass through untouched."""
     if not _HAVE_ANSWER:
@@ -113,7 +115,8 @@ def _autofill(requirements: list[Requirement], capability_folder=None, answerer=
         if not caps:
             return requirements, []
         enriched, _questions = _engine_draft_all(
-            [r.model_dump() for r in requirements], caps, answerer or _MockAnswerer()
+            [r.model_dump() for r in requirements], caps, answerer or _MockAnswerer(),
+            max_workers=max_workers,
         )
         by_id = {e["id"]: e for e in enriched}
         for r in requirements:

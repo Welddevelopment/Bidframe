@@ -119,3 +119,20 @@ def test_draft_endpoint_enriches_and_persists(client):
 
 def test_draft_endpoint_404_on_unknown_tender(client):
     assert client.post("/tenders/nope/draft", params={"provider": "mock"}).status_code == 404
+
+
+def test_draft_endpoint_limit_drafts_gating_first(client):
+    """?limit=1 drafts only the most important (gating) requirement; the rest stay bare."""
+    tid = "tnd-limit"
+    reqs = [
+        _req(f"{tid}-r0001", "An optional nicety the bidder may provide."),
+        _req(f"{tid}-r0002", "The supplier must hold ISO 9001 certification.", is_gating=True),
+    ]
+    store.save_tender(TenderResponse(tender_id=tid, title="Limit", requirements=reqs),
+                      filename="limit.pdf")
+
+    resp = client.post(f"/tenders/{tid}/draft", params={"provider": "mock", "limit": 1})
+    assert resp.status_code == 200
+    by_id = {r["id"]: r for r in resp.json()["requirements"]}
+    assert by_id[f"{tid}-r0002"]["answer"] is not None   # gating one drafted
+    assert by_id[f"{tid}-r0001"]["answer"] is None        # non-gating left untouched by the cap

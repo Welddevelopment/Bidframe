@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import List, Optional
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
 
 from .extract import get_extractor
@@ -123,16 +124,23 @@ def get_requirements(tender_id: str):
     return resp
 
 
+DRAFT_CONCURRENCY = 8   # parallel LLM draft calls — keeps the live "Autofill with AI" snappy
+
+
 @app.post("/tenders/{tender_id}/draft", response_model=TenderResponse)
 async def draft_tender(
     tender_id: str,
     provider: Optional[str] = None,                       # "mock" | "openai" | None (env-driven)
+    limit: Optional[int] = None,                          # draft only the top-N (gating-first) for speed
     files: Optional[List[UploadFile]] = File(None),       # optional capability docs (.txt/.pdf)
 ):
     """Auditable autofill: draft a grounded answer per requirement from the bidder's
     capability docs — uploaded here, else the demo bidder — and persist them. Every claim
     is evidenced or the item is flagged needs_input; it never bluffs. Returns the enriched
-    tender in the locked schema (answers + open_questions + capability_docs)."""
+    tender in the locked schema (answers + open_questions + capability_docs).
+
+    Per-requirement LLM calls run concurrently; `?limit=N` drafts only the N most important
+    (gating first) for a fast live demo, leaving the rest with their upload-time drafts."""
     if not pipeline._HAVE_ANSWER or not _HAVE_ANSWER_API:
         raise HTTPException(status_code=503, detail="Autofill engine not on this deployment's path.")
     resp = store.get_tender(tender_id)
@@ -145,10 +153,16 @@ async def draft_tender(
     except Exception as exc:  # e.g. OpenAI requested with no key
         raise HTTPException(status_code=503, detail=f"Answerer unavailable: {exc}")
 
-    enriched, capability_docs = pipeline._autofill(
-        resp.requirements, capability_folder=folder, answerer=answerer
+    # Pick which requirements to (re)draft — gating first when capped. _autofill mutates
+    # the chosen Requirement objects in place, so resp.requirements stays the full set.
+    targets = resp.requirements
+    if limit and limit > 0:
+        targets = sorted(resp.requirements, key=lambda r: (not r.is_gating,))[:limit]
+
+    _enriched, capability_docs = await run_in_threadpool(
+        pipeline._autofill, targets, folder, answerer, DRAFT_CONCURRENCY
     )
-    store.replace_drafts(tender_id, enriched, capability_docs)
+    store.replace_drafts(tender_id, resp.requirements, capability_docs)
     return store.get_tender(tender_id)
 
 
