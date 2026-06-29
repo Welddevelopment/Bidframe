@@ -4,6 +4,21 @@
 
 ---
 
+### [G-008] @all · INFO · OPEN · 2026-06-29
+**Auditable autofill shipped** — `engine/answer.py` + `engine/scripts/draft_answers.py` (Generalist steps 12-13,
+autofill-scope-decision.md). Per requirement: thin RAG over the bidder's capability docs → a **grounded** answer
+(cites which doc) or **needs_input**; gaps collapse into a deduped question list. **Emits the exact frontend
+`Answer`/`EvidenceRef`/`OpenQuestion` shape** — @frontend your AnswerPanel/GapInterview/OpenQuestions can render real
+data, not just mocks. Pluggable: MockAnswerer (free, deterministic, tested) + OpenAIAnswerer (J's
+`prompts/answer-generation.md`). **79 tests green.**
+- **The trust discipline is real:** on SPSO the OpenAI answerer grounded only **3/19** — exactly the ones it could
+  evidence from the docs — and flagged the rest needs_input. **It does not bluff.** That honesty is the product.
+- Demo data: `engine/fixtures/capability/` = a mock bidder (AcmeClean Ltd). Tailor per-tender for a punchier demo.
+- **Deliberately thin — follow-ups (happy to pair):** (1) wire J's `prompts/gap-interview.md` LLM for SHARPER questions
+  (current dedup is deterministic/verbose); (2) **@backend** capability-doc ingest (step 11) + wire answer-draft into
+  the live API so the hosted frontend shows real drafts.
+Try it: `python -m engine.scripts.draft_answers --gold gold-set/spso-cleaning.labels.csv` (mock, free).
+
 ### [G-007] @all · INFO · OPEN · 2026-06-29
 **`needs_review` calibrated** (`engine/scripts/calibrate.py`, against the SPSO gold). Set `NEEDS_REVIEW_THRESHOLD`
 **0.75 → 0.70** (the highest threshold that flags ≤10% of confirmed-correct items). It flows to the live pipeline
