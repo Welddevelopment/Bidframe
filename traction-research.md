@@ -57,9 +57,10 @@ Ranked by **decides-fast × bids-often × reachable × wedge-fit**. Verify ✅ h
 | 13 | **Fareport / Runway Training** | — | SME bidder (training) | Bid constantly into Skills Bootcamps/DPS2; under-tooled | company LinkedIn |
 | 14 | **Joghide / MC&DS** | — | SME bidder (care) | Herefordshire framework awardees; demo on that ITT | company LinkedIn |
 | 15 | **Agile Guarding / Brightr** | — | SME bidder (security/cleaning) | Regional SME FM bidders (ESPO/RM6257 + school cleaning) | company LinkedIn |
+| 16 | **Amanda Goode** — Think Tenders | ⭐ | Consultancy (SME, freelance) | Multi-award Birmingham SME bid shop; freelance → personal, fast reply (ranks with the ⭐ consultancies) | `/in/thinktenders` ✅ |
 
-> **Firm-only (no named contact yet — find a person before outreach):** Complete Tenders, BidRight UK,
-> Tsaks (London office), Bid Writing Service, GovData, Glaxtons, Think Tenders (Amanda + team).
+> **Firm-only (no named contact yet — find a person before outreach):** Complete Tenders, Tsaks (London
+> office), Bid Writing Service (BWS), GovData, Glaxtons.
 
 ## Day-3 sequencing (the play)
 
@@ -90,7 +91,7 @@ are also the sharpest *validators* of the wedge (traceability, the disqualifier 
 | **Thornton & Lowe** ⭐ | ~48 staff, est 2009, Bolton — "largest UK bid consultancy"; ~75–78% win (their claim) | Gov, local gov, NHS, housing, education, FM (~30% of work) | **Dave Thornton** (founder) · also new MD "Tom" (Oct 2025) | LinkedIn `/in/dave-thornton-56833625` |
 | **Executive Compass** ⭐ | est 2009, Newcastle, 7,000+ bids, ~85%, ISO 9001 team | PQQ/SQ + tender, social value, all sectors | **Neil Capstick** (founder; now leads "Social Value Practice") + the new MD | LinkedIn `/in/tenderwriter` |
 | **Hudson Succeed** | div. of Hudson Outsourcing, 2,000+ clients/40+ countries, 87% | Cross-sector, framework-heavy | **John Hudson** (COO) ✅; also a "Head of Bid Management (SMEs)" role + **Zoë Tumelty** (Succeed writer) | LinkedIn `/in/johnhudson3` |
-| **BidRight UK** | 13+ yrs, £200m+ secured | SMEs + not-for-profit: education, training, employment, **health & social care** | (founder TBD) *(verify)* | bidrightuk.co.uk contact |
+| **BidRight UK** | 13+ yrs, £200m+ secured; CH 07570878 | SMEs + not-for-profit: education, training, employment, **health & social care** | **Robin Clarkson** (Dir. of Development & Delivery) | bidrightuk.co.uk *(personal handle to find)* |
 | **Complete Tenders** | senior consultants, UK-wide | SME tender writing, all sectors | (founder TBD) *(verify)* | completetenders.com |
 | **Tenders UK** | est 2008, 4,000+ bids, 83% win | Domiciliary/adult social care frameworks, FM | **Christopher Martin** | LinkedIn `/in/winmoretenders` |
 | **Tender Victory** ⭐⭐ | est 2010, **majority clients are SMEs**; founder is **ex public-sector buyer** (Devon & Cornwall Police, 2005–10), MCIPS | SME-focused, cross-sector | **Vicki Stewart** (founder) ✅ | LinkedIn `/in/vicki-stewart-42a58a2a` · ☎ 07971 526587 (public on site) |
@@ -98,7 +99,7 @@ are also the sharpest *validators* of the wedge (traceability, the disqualifier 
 | **Bid Writer Consultancy** | est 2014, "Best SMB" 2017, freelancer collective; markets **AI bid support** | Cross-sector, SME | **Sharon Welch** (founder; 30 yrs BD) — Director, CH 09245742 (now reg. "Sharon Welch Ltd") | `/company/bid-writer-consultancy` *(personal handle ambiguous)* |
 | **BFT Consult** ⭐ | est 2014, **80%+ win, £950m+ secured**; founder is ex-care-org BD (grew one £2m→£12m in <4 yrs), 18+ yrs in sector | **Health & social care** (homecare, supported living, mental health, dementia) | **Ian Evans** (Ian James Evans, founder/Bid Director) | BFT Consult Ltd 08918064 (Liverpool) · `/company/bftconsult` · **likely** `/in/evansi` *(Greater Liverpool — verify it's the BFT Ian Evans)* |
 | **Della Pip** | founder-led, 15+ yrs | **Health & social care** (care homes, home care) | **Katrina Gibson** (Director) ✅ | LinkedIn `/in/katrina-gibson-2278516b` |
-| **Think Tenders** | award-winning, freelance model, £500m in 3 yrs | Public sector, cross-sector | **Amanda** + team *(surname/handle to verify)* | thinktenders.co.uk |
+| **Think Tenders** ⭐ | multi-award-winning ("Best SMB" 2017), freelance, Birmingham; £500m in 3 yrs | Public sector, cross-sector, SME | **Amanda Goode** (founder/owner) ✅ | LinkedIn `/in/thinktenders` |
 | **Tsaks Consulting** | 85% win; Sydney HQ + **London** office | Gov specialists, cross-sector | (London lead TBD) *(verify)* | tsaksconsulting.com |
 | **Bid Writing Service (BWS)** | award-winning, £5.5bn claimed | Public sector, local gov, NHS | (founder TBD) *(verify)* | bidwritingservice.com |
 | **GovData Services** | 20 yrs, "£37bn won for SMEs", framework-led | Framework onboarding + bid support | (BD lead TBD) *(verify)* | govdata.co.uk |
@@ -436,3 +437,7 @@ Two moments must land: **the catch** and **click-to-source**. Keep it ~60s; let 
   Aspens, Caterlink, Edwards & Ward, Harrison, Innovate (Hampshire CC £16m schools framework); **grounds** —
   Cleanscapes, Countrywide Grounds Maintenance, Gould Landscapes (GM Services Framework, 6 Jan 2025) + Fusion21
   £85m GM framework (72% SME). Every SME sector now has real named bidders + a public framework. Maintenance mode.
+- **2026-06-29 (maintenance 5)** — Pinned named people for 2 watchlist firms → promoted them: **Amanda Goode**
+  (Think Tenders, `/in/thinktenders` ✅, multi-award SME bid shop) added to the CRM (#16, ⭐); **Robin Clarkson**
+  (BidRight UK, Dir. of Dev & Delivery, CH 07570878) named in Segment A. Watchlist now: Complete Tenders, Tsaks
+  London, BWS, GovData, Glaxtons (Complete Tenders + Tsaks founders not surfaced via search). Maintenance mode.
