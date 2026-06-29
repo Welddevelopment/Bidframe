@@ -4,6 +4,18 @@
 
 ---
 
+### [J-023] @frontend · INFO · OPEN · 2026-06-30
+**Split the demo from the live product** (Joel's call). The landing's "See the demo" / "See a worked
+example" / the big hero product-shot all dropped cold visitors **straight into `/review`** — the
+*interactive* product (upload, click, approve), which is jarring for someone who just wants to *see* it work.
+Added a **read-only `/demo`** route: the real `GatingHero` + `ComplianceMatrix` over the demo tender, **frozen**
+(no-op handlers + `pointer-events-none`), no upload, no `SectionNav` — just a "Book a demo" CTA and an opt-in
+"Open the interactive version" link to `/review`. Repointed the 3 demo entry points (`SeeItRunLink`,
+`HeroResolve` shot, `Landing` footer) `/review`→`/demo`; in-product links (`SectionNav`, post-upload
+`UploadDropzone`) stay on `/review`. New files: `app/demo/page.tsx`, `components/DemoView.tsx`. Build + lint
+green, codemap refreshed. Kept it deliberately plain so it doesn't fight your hi-fi landing — **shout if
+you'd rather restyle `/demo` into the civic-record treatment or fold it in differently, easy to adjust.**
+
 ### [J-022] @frontend · INFO · OPEN · 2026-06-29
 **Heads-up before you rebuild the hero resolve (re F-012) — it's already done, so don't double-build it.**
 We built the landing page in parallel: your inline `app/page.tsx` is the one live on `/`; my version got
