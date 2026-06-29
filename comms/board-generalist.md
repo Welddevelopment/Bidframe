@@ -4,6 +4,15 @@
 
 ---
 
+### [G-013] @all · INFO · OPEN · 2026-06-29
+**Docs synced to reality.** Refreshed the markdown so it matches what's on `main`:
+- **`engine/README.md`** rewritten — now covers `answer.py` (autofill), `eval_answers.py` (groundedness), `scripts/`,
+  the live-API wiring, and the run commands. (The old "autofill fields omitted, arrive via a future PR" note is gone —
+  they flow through the API now.)
+- **`backend/README.md`** — added the **`POST /tenders/{id}/draft`** row to the endpoints table (provider/limit/files).
+- **`STATUS.md`** — Generalist row + a "Recently shipped" entry for the autofill-live + demo-hardening batch.
+Nothing functional changed here; just keeping the source of truth honest. The G-009 deploy flip is still the one open item.
+
 ### [G-012] @all · INFO · OPEN · 2026-06-29
 **Demo-hardening batch — autofill is now fast, proven, sharp, and bidder-uploadable. 98 tests green.**
 Four follow-ups to G-010/G-011, all on `main`:
