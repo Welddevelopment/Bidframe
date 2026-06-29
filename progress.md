@@ -61,3 +61,4 @@
   both disqualifiers → any real demo must run the OpenAI path). Personal OpenAI credits for now;
   hackathon credits coming.
 - **01:19 — Started this progress log.**
+- **03:03** — Gating prompt tightened (`is_gating` defaults false, true only for confirmed disqualifiers) to fix G-003 over-flagging; traction research dossier built overnight (8 cycles → named UK bid-writing consultancy targets, competitor intel, 5 paste-ready LinkedIn outreach variants) *(re-eval pending: gating accuracy expected to rise while recall 1.0 holds; GTM legwork pre-done for Day 3)*
