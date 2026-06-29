@@ -17,9 +17,11 @@
 ## Snapshot (kept current)
 
 - **Where we are:** end-to-end spine proven on a **real** tender on Day 2; **auditable autofill
-  wired end-to-end** (98 tests green) — live API returns grounded answers, "Autofill with AI" UI
+  wired end-to-end** (98 tests green) — live API returns grounded answers, "Draft my answers" UI
   button fires POST /draft, groundedness eval proves 0 bluffs (42/42 citations verified). Backend
-  pipeline live on Render; full frontend live on Vercel; eval harness stress-tested on a 66pp NHS ITT.
+  **demo-locked (Day 5)** — no further features; judge-proof on any PDF input. Frontend layout
+  pass shipped (split-panel RequirementPanel, spine nav, section nav, DocumentHeader). Both live
+  on Render + Vercel; eval harness stress-tested on a 66pp NHS ITT.
 - **Headline number:** SPSO tender (pp.1–6), OpenAI extractor → **recall 0.947 (18/19), gating
   recall 1.0 · gating accuracy 1.0 (both disqualifiers caught, zero over-flagging), 0 dangerous
   misses.**
@@ -73,3 +75,4 @@
 - **16:04** — Demo-hardening batch (G-010–G-012): autofill wired into the live API + UI ("Autofill with AI" button → `POST /draft`), `/draft` parallelised + `?limit` for snappy demos, groundedness eval proves 0 bluffs (SPSO: 32 grounded · 42/42 citations verified), sharper gap questions via J's prompt, capability-doc upload for two-sided traceability (98 tests green) *(the end-to-end autofill demo path is complete — upload → grounded answers → click to re-draft → evidence citations live)*
 - **19:03** — Frontend layout system settled (F-009): `frontend/layout.md` + DESIGN-SYSTEM §12 + SLOP-CHECK updated — no global left rail, three-zone "Next" header, one-line matrix rows, split open state, friction scales with stakes *(every frontend component now has a concrete spatial contract to build to; no layout debates mid-sprint)*
 - **20:03** — Backend Day 3+4 hardened: retry/backoff on LLM calls, per-chunk error isolation, graceful 422 on bad PDFs (never crashes for a judge); museum tender gold-labelled (92 reqs, B-002) unblocking multi-tender aggregate headline; copywriting guide locked (`frontend/copywriting.md`, trust-first voice, "Draft my answers" replaces "Autofill with AI") *(pipeline judge-proof on any upload; "X% across 2 tenders" now computable; copy discipline in before the code sprint)*
+- **21:03** — **Backend demo-locked (Day 5):** `GET /tenders` list endpoint, 50 MB upload guard, 12 e2e demo scenarios verified, README final; frontend layout + anti-slop pass ships F-009 in code (RequirementPanel split-open, RequirementSpine, SectionNav, DocumentHeader); interactive CODEMAP Tier 2 live at `/codemap.html` *(no further backend features needed; spatial layout contract moves from docs to components)*
