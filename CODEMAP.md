@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `fcc12c3` · 2026-06-29T20:32:11Z
+> Map of commit `7d6112c` · 2026-06-29T22:09:56+01:00
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,7 +12,7 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 61 | 13,075 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **frontend** | 64 | 13,273 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
 | **backend** | 17 | 1,907 | Backend — FastAPI (PDF ingest, extraction, REST API) |
 | **engine** | 48 | 2,994 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 678 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
@@ -22,7 +22,7 @@
 | **docs** | 3 | 1,663 | Docs — plans & specs |
 | **ci** | 1 | 62 | CI — GitHub Actions |
 | **tooling** | 1 | 516 | Tooling — repo scripts (incl. this map generator) |
-| **root** | 29 | 2,345 | Root — docs, config, role briefs |
+| **root** | 29 | 2,347 | Root — docs, config, role briefs |
 
 ## System shape
 
@@ -51,53 +51,55 @@ graph LR
   n6[graph/page.tsx] --> n4[DocumentHeader.tsx]
   n6[graph/page.tsx] --> n7[GraphView.tsx]
   n8[app/layout.tsx] --> n9[RequirementsContext.tsx]
-  n10[upload/page.tsx] --> n1[AppMain.tsx]
-  n10[upload/page.tsx] --> n4[DocumentHeader.tsx]
-  n10[upload/page.tsx] --> n11[UploadDropzone.tsx]
-  n12[AnswerPanel.tsx] --> n13[AnswerStateBadge.tsx]
-  n12[AnswerPanel.tsx] --> n9[RequirementsContext.tsx]
-  n12[AnswerPanel.tsx] --> n14[requirement.ts]
-  n13[AnswerStateBadge.tsx] --> n14[requirement.ts]
+  n10[review/page.tsx] --> n11[MatrixView.tsx]
+  n10[review/page.tsx] --> n12[mock-requirements.ts]
+  n13[upload/page.tsx] --> n1[AppMain.tsx]
+  n13[upload/page.tsx] --> n4[DocumentHeader.tsx]
+  n13[upload/page.tsx] --> n14[UploadDropzone.tsx]
+  n15[AnswerPanel.tsx] --> n16[AnswerStateBadge.tsx]
+  n15[AnswerPanel.tsx] --> n9[RequirementsContext.tsx]
+  n15[AnswerPanel.tsx] --> n17[requirement.ts]
+  n16[AnswerStateBadge.tsx] --> n17[requirement.ts]
   n2[AutofillButton.tsx] --> n9[RequirementsContext.tsx]
   n3[CapabilityUpload.tsx] --> n9[RequirementsContext.tsx]
-  n15[ComplianceMatrix.tsx] --> n16[ConfidenceIndicator.tsx]
-  n15[ComplianceMatrix.tsx] --> n17[triage.ts]
-  n15[ComplianceMatrix.tsx] --> n14[requirement.ts]
-  n4[DocumentHeader.tsx] --> n18[SectionNav.tsx]
-  n4[DocumentHeader.tsx] --> n17[triage.ts]
-  n5[GapInterview.tsx] --> n13[AnswerStateBadge.tsx]
-  n5[GapInterview.tsx] --> n19[OpenQuestions.tsx]
+  n18[ComplianceMatrix.tsx] --> n19[ConfidenceIndicator.tsx]
+  n18[ComplianceMatrix.tsx] --> n20[triage.ts]
+  n18[ComplianceMatrix.tsx] --> n17[requirement.ts]
+  n4[DocumentHeader.tsx] --> n21[SectionNav.tsx]
+  n4[DocumentHeader.tsx] --> n20[triage.ts]
+  n5[GapInterview.tsx] --> n16[AnswerStateBadge.tsx]
+  n5[GapInterview.tsx] --> n22[OpenQuestions.tsx]
   n5[GapInterview.tsx] --> n9[RequirementsContext.tsx]
-  n20[GatingHero.tsx] --> n9[RequirementsContext.tsx]
+  n23[GatingHero.tsx] --> n9[RequirementsContext.tsx]
   n7[GraphView.tsx] --> n9[RequirementsContext.tsx]
-  n7[GraphView.tsx] --> n14[requirement.ts]
-  n21[MatrixView.tsx] --> n1[AppMain.tsx]
-  n21[MatrixView.tsx] --> n15[ComplianceMatrix.tsx]
-  n21[MatrixView.tsx] --> n4[DocumentHeader.tsx]
-  n21[MatrixView.tsx] --> n20[GatingHero.tsx]
-  n21[MatrixView.tsx] --> n22[RequirementDrawer.tsx]
-  n21[MatrixView.tsx] --> n23[RequirementPanel.tsx]
-  n21[MatrixView.tsx] --> n24[RequirementSpine.tsx]
-  n21[MatrixView.tsx] --> n9[RequirementsContext.tsx]
-  n21[MatrixView.tsx] --> n17[triage.ts]
-  n19[OpenQuestions.tsx] --> n9[RequirementsContext.tsx]
-  n19[OpenQuestions.tsx] --> n14[requirement.ts]
-  n22[RequirementDrawer.tsx] --> n23[RequirementPanel.tsx]
-  n22[RequirementDrawer.tsx] --> n14[requirement.ts]
-  n23[RequirementPanel.tsx] --> n12[AnswerPanel.tsx]
-  n23[RequirementPanel.tsx] --> n16[ConfidenceIndicator.tsx]
-  n23[RequirementPanel.tsx] --> n14[requirement.ts]
-  n24[RequirementSpine.tsx] --> n17[triage.ts]
-  n24[RequirementSpine.tsx] --> n14[requirement.ts]
-  n11[UploadDropzone.tsx] --> n9[RequirementsContext.tsx]
-  n11[UploadDropzone.tsx] --> n25[api.ts]
-  n9[RequirementsContext.tsx] --> n26[mock-requirements.ts]
-  n9[RequirementsContext.tsx] --> n25[api.ts]
-  n9[RequirementsContext.tsx] --> n14[requirement.ts]
-  n26[mock-requirements.ts] --> n14[requirement.ts]
-  n25[api.ts] --> n14[requirement.ts]
-  n17[triage.ts] --> n14[requirement.ts]
-  n27[app/page.tsx]
+  n7[GraphView.tsx] --> n17[requirement.ts]
+  n11[MatrixView.tsx] --> n1[AppMain.tsx]
+  n11[MatrixView.tsx] --> n18[ComplianceMatrix.tsx]
+  n11[MatrixView.tsx] --> n4[DocumentHeader.tsx]
+  n11[MatrixView.tsx] --> n23[GatingHero.tsx]
+  n11[MatrixView.tsx] --> n24[RequirementDrawer.tsx]
+  n11[MatrixView.tsx] --> n25[RequirementPanel.tsx]
+  n11[MatrixView.tsx] --> n26[RequirementSpine.tsx]
+  n11[MatrixView.tsx] --> n9[RequirementsContext.tsx]
+  n11[MatrixView.tsx] --> n20[triage.ts]
+  n22[OpenQuestions.tsx] --> n9[RequirementsContext.tsx]
+  n22[OpenQuestions.tsx] --> n17[requirement.ts]
+  n24[RequirementDrawer.tsx] --> n25[RequirementPanel.tsx]
+  n24[RequirementDrawer.tsx] --> n17[requirement.ts]
+  n25[RequirementPanel.tsx] --> n15[AnswerPanel.tsx]
+  n25[RequirementPanel.tsx] --> n19[ConfidenceIndicator.tsx]
+  n25[RequirementPanel.tsx] --> n17[requirement.ts]
+  n26[RequirementSpine.tsx] --> n20[triage.ts]
+  n26[RequirementSpine.tsx] --> n17[requirement.ts]
+  n14[UploadDropzone.tsx] --> n9[RequirementsContext.tsx]
+  n14[UploadDropzone.tsx] --> n27[api.ts]
+  n9[RequirementsContext.tsx] --> n12[mock-requirements.ts]
+  n9[RequirementsContext.tsx] --> n27[api.ts]
+  n9[RequirementsContext.tsx] --> n17[requirement.ts]
+  n12[mock-requirements.ts] --> n17[requirement.ts]
+  n27[api.ts] --> n17[requirement.ts]
+  n20[triage.ts] --> n17[requirement.ts]
+  n28[app/page.tsx]
 ```
 
 ## Backend + Engine module graph (Python, tests excluded)
@@ -172,11 +174,14 @@ graph LR
 - `frontend/package.json`
 - `frontend/postcss.config.mjs`
 - `frontend/public/codemap.html`
+- `frontend/public/codemap.html`
+- `frontend/public/codemap.html`
 - `frontend/src/app/answers/page.tsx` — exports `metadata`
 - `frontend/src/app/globals.css`
 - `frontend/src/app/graph/page.tsx` — exports `metadata`
 - `frontend/src/app/layout.tsx` — exports `metadata`
 - `frontend/src/app/page.tsx` — exports `metadata`
+- `frontend/src/app/review/page.tsx` — exports `ReviewPage`
 - `frontend/src/app/upload/page.tsx` — exports `metadata`
 - `frontend/src/components/AnswerPanel.tsx` — exports `AnswerPanel`
 - `frontend/src/components/AnswerStateBadge.tsx` — exports `AnswerStateBadge`
@@ -352,4 +357,4 @@ graph LR
 
 ---
 
-*192 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
+*195 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
