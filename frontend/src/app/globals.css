@@ -33,6 +33,20 @@
   --color-signal-amber: #bc6b2e;
   --color-signal-yellow: #d2a435;
   --color-signal-light-green: #6f9a57;
+
+  /* Design language: warmth at 45% (design-language.md) */
+  --depth-sheet: 0 6px 19px rgba(33, 29, 23, 0.1);
+  --depth-row: 0 2px 7px rgba(33, 29, 23, 0.07);
+  --depth-pressed: inset 0 1.5px 3px rgba(33, 29, 23, 0.066);
+  --depth-control: 0 1.6px 2px rgba(33, 29, 23, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.13);
+  --paper-recessed: #efe7d6;
+  --grain: 0.25;
+
+  /* Rule hierarchy (design-language.md) */
+  --rule-strong: 2px solid var(--ink);
+  --rule-section: 1px solid #d9cfbb;
+  --rule-hair: 1px solid var(--hairline);
 }
 
 body {

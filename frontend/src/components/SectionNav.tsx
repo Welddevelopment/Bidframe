@@ -11,15 +11,14 @@ import { usePathname } from "next/navigation";
 
 const SECTIONS = [
   { href: "/upload", label: "Upload" },
-  { href: "/", label: "Matrix" },
+  { href: "/review", label: "Matrix" },
   { href: "/answers", label: "Answers" },
   { href: "/graph", label: "Graph" },
 ];
 
 export function SectionNav() {
   const pathname = usePathname();
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const isActive = (href: string) => pathname.startsWith(href);
 
   return (
     <nav aria-label="Sections" className="flex items-center gap-2 text-xs">
