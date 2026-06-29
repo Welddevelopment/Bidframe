@@ -46,7 +46,7 @@ Ranked by **decides-fast × bids-often × reachable × wedge-fit**. Verify ✅ h
 | 8 | **Stuart Reed** — independent | — | Solo bid writer | Active "bid writing expert"; fast personal reply | `/in/stuart-reed` ✅ |
 | 9 | **Julian Clarke** — independent | — | Solo bid writer | Helps SMEs; personal reply likely | `/in/julian-clarke-a156bb50` ✅ |
 | 10 | **John Hudson** — Hudson Succeed | — | Consultancy (large) | COO of a 2,000-client bid shop; bigger/slower but high-volume validator | `/in/johnhudson3` ✅ |
-| 11 | **Sharon Welch** — Bid Writer Consultancy | — | Consultancy (SME, "AI bid") | Already markets AI bid support → receptive to the framing | `/company/bid-writer-consultancy` (route) |
+| 11 | **Sharon Welch** — Bid Writer Consultancy | — | Consultancy (SME, "AI bid") | Already markets AI bid support → receptive to the framing | `/company/bid-writer-consultancy` · identity ✅ (Director, CH 09245742) |
 | 12 | **David Anderson** — Fuelling Minds | — | SME bidder (catering) | New (Apr 2025) SME caterer; demo on Discovery Trust ITT (FTS `076817-2025`) | LinkedIn (find David Anderson) |
 | 13 | **Fareport / Runway Training** | — | SME bidder (training) | Bid constantly into Skills Bootcamps/DPS2; under-tooled | company LinkedIn |
 | 14 | **Joghide / MC&DS** | — | SME bidder (care) | Herefordshire framework awardees; demo on that ITT | company LinkedIn |
@@ -199,17 +199,21 @@ quality** (we lose a prose fight to AutogenAI; we win on auditability).
 | They say | You say |
 |----------|---------|
 | "Isn't this just ChatGPT / NotebookLM?" | "Those summarise a PDF in a black box. We extract *every* requirement as structured data, link each to the exact clause/page, flag the pass/fail gates, and **measure what we caught** — none of which a chat tool does, or can prove." |
-| "AutogenAI already writes our bids." | "AutogenAI is generative, enterprise-priced, and treats *reading the tender* as solved. We're the layer underneath: auditable extraction you can trust, the disqualifier catch, measured recall. We draft answers too — but every claim traces to *your* evidence, not a black box." |
+| "AutogenAI already writes our bids." | "AutogenAI is enterprise generative software — 300+ enterprise clients, undisclosed enterprise pricing. It has an extract step too, but it's a black box: you can't click a requirement and see the exact source clause, it doesn't measure what it *missed*, and it's priced for big bid teams, not you. We compete on auditability + measured recall + the loud disqualifier catch, at SME scale — every claim traces to *your* evidence." |
 | "We use Loopio / Responsive." | "Those reuse a content library you maintain. They don't read the tender and tell you what it actually requires, or catch the gate that disqualifies you. We sit *upstream* of the answer library." |
 | "How do I know it didn't miss something?" | "That's the fear we built for. We score recall against a hand-labelled answer key — on our first real tender we caught **18/19 and every disqualifier**, and we flag what we're unsure of instead of guessing. We *quantify* the miss rate; nobody else does." |
 | "AI hallucinates — I can't trust it." | "Exactly why every requirement shows its source clause in one click, and every drafted answer cites the evidence behind it. If we can't ground it, we say *'needs your input'* rather than bluff." |
 | "We're too small / can't afford tools." | "That's the point — AutogenAI is priced for big firms. This is built for SME bidders and small consultancies working in Word and spreadsheets today." |
 | "Does it replace my bid writer?" | "No — it does the brutal first read (≈3 weeks → minutes) and catches the disqualifier, so your expert spends time on win themes, not hunting requirements. The human approves every call." |
 
-**Competitor watch (AI-bid space):** **AutogenAI** (enterprise generative, the 800lb gorilla) · **mytender.io**
-(SME-facing AI bid platform — closest direct competitor for our segment; study their pricing/positioning) ·
-**Loopio / Responsive** (RFP answer libraries) · **NotebookLM / ChatGPT** (black-box PDF chat). Our lane:
-*auditable extraction + the disqualifier catch + measured recall* — none of them quantify what they missed.
+**Competitor watch (AI-bid space):** **AutogenAI** — enterprise generative ("Write More Winning Bids"),
+300+ enterprise clients, claims 70% faster drafting / 241% higher win rate; *has* a "Qualify & Extract"
+step but it's black-box + enterprise-priced (construction/healthcare/gov). · **mytender.io** — SME-facing
+AI bid platform ("Win More Bids with mytender"); our closest direct competitor by segment (pricing/features
+still to capture — site rendered thin; revisit /pricing). · **Loopio / Responsive** — RFP answer libraries.
+· **NotebookLM / ChatGPT** — black-box PDF chat. **Our defensible lane:** auditable extraction (click →
+exact source clause) + the *loud* disqualifier catch + **measured recall** — none of them quantify what
+they missed, and AutogenAI prices the SME long tail out.
 
 ---
 
@@ -284,3 +288,11 @@ Ranked for: decides fast · bids often · reachable · strong wedge fit.
   capture honestly; + a BIDx webinar slot as the scalable touch). Dossier is now outreach-ready. **Next
   (cycle 7):** WebFetch mytender.io + AutogenAI for sharper pricing/positioning intel; pin the two open
   handles (Ian Evans, Sharon Welch); polish per-segment outreach + add warm-intro paths.
+- **2026-06-29 (cycle 7)** — 🔎 **Competitive intel:** AutogenAI = enterprise generative ("Write More Winning
+  Bids"), 300+ enterprise clients, claims 70% faster / 241% higher win; **has a "Qualify & Extract" step** —
+  so sharpened our line from "they don't read the tender" to "their extract is black-box + enterprise-priced;
+  we win on auditability + measured recall + the loud catch at SME scale." mytender.io site rendered thin
+  (logo only) — pricing/features still to capture (revisit /pricing). ✅ **Sharon Welch identity confirmed**
+  (Director, Companies House 09245742). Updated objection table + Competitor watch with specifics. **Next
+  (cycle 8):** 2–3 ready-to-paste ≤500-char LinkedIn outreach variants per segment; then warm-intro paths +
+  a 60-second live-demo opener script (cycle 9); pin Ian Evans handle; deeper mytender.io fetch.
