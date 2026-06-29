@@ -38,7 +38,7 @@ Ranked by **decides-fast × bids-often × reachable × wedge-fit**. Verify ✅ h
 |---|---------------|------|---------|----------------------|------------------|
 | 1 | **Vicki Stewart** — Tender Victory | ⭐⭐ | Consultancy (SME-focused) | Ex public-sector *buyer* + SME-majority writer → ultimate validator of the disqualifier catch | `/in/vicki-stewart-42a58a2a` ✅ |
 | 2 | **Dave Thornton** — Thornton & Lowe | ⭐⭐ | Consultancy (largest UK) | Biggest SME-focused consultancy; posts actively → warm-comment then DM; his interest = a headline quote | `/in/dave-thornton-56833625` ✅ |
-| 3 | **Ian Evans** — BFT Consult | ⭐ | Consultancy (H&SC) | H&SC specialist, 80%+ win, £950m+; demo on a care-framework ITT he'll know cold | `/company/bftconsult` (route) |
+| 3 | **Ian Evans** (Ian James Evans) — BFT Consult | ⭐ | Consultancy (H&SC) | H&SC specialist, 80%+ win, £950m+; demo on a care-framework ITT he'll know cold | BFT Consult Ltd 08918064 (Liverpool) · `/company/bftconsult` · personal handle to pin |
 | 4 | **Neil Capstick** — Executive Compass | ⭐ | Consultancy | Social-value + auditability thought-leader; "trust not prose" lands; strong validator | `/in/tenderwriter` ✅ |
 | 5 | **Katrina Gibson** — Della Pip | ⭐ | Consultancy (H&SC) | Care-sector Director; pair with a domiciliary ITT | `/in/katrina-gibson-2278516b` ✅ |
 | 6 | **Dewi Hughes** — Silverlock | ⭐ | Consultancy (small) | Small/solo → replies personally, tries it on a live bid | `/in/dewihughes` ✅ |
@@ -90,7 +90,7 @@ are also the sharpest *validators* of the wedge (traceability, the disqualifier 
 | **Tender Victory** ⭐⭐ | est 2010, **majority clients are SMEs**; founder is **ex public-sector buyer** (Devon & Cornwall Police, 2005–10), MCIPS | SME-focused, cross-sector | **Vicki Stewart** (founder) ✅ | LinkedIn `/in/vicki-stewart-42a58a2a` · ☎ 07971 526587 (public on site) |
 | **Silverlock Tenders** | small/independent | Tenders, SME | **Dewi Hughes** (MD) | LinkedIn `/in/dewihughes` |
 | **Bid Writer Consultancy** | est 2014, "Best SMB" 2017, freelancer collective; markets **AI bid support** | Cross-sector, SME | **Sharon Welch** (founder; 30 yrs BD) | `/company/bid-writer-consultancy` · Co. House 09245742 *(personal handle ambiguous)* |
-| **BFT Consult** ⭐ | est 2014, **80%+ win, £950m+ secured**; founder is ex-care-org BD (grew one £2m→£12m in <4 yrs), 18+ yrs in sector | **Health & social care** (homecare, supported living, mental health, dementia) | **Ian Evans** (founder/Bid Director) | via `/company/bftconsult` *(personal handle to confirm)* |
+| **BFT Consult** ⭐ | est 2014, **80%+ win, £950m+ secured**; founder is ex-care-org BD (grew one £2m→£12m in <4 yrs), 18+ yrs in sector | **Health & social care** (homecare, supported living, mental health, dementia) | **Ian Evans** (Ian James Evans, founder/Bid Director) | BFT Consult Ltd 08918064 (Liverpool) · `/company/bftconsult` *(personal LinkedIn to pin)* |
 | **Della Pip** | founder-led, 15+ yrs | **Health & social care** (care homes, home care) | **Katrina Gibson** (Director) ✅ | LinkedIn `/in/katrina-gibson-2278516b` |
 | **Think Tenders** | award-winning, freelance model, £500m in 3 yrs | Public sector, cross-sector | **Amanda** + team *(surname/handle to verify)* | thinktenders.co.uk |
 | **Tsaks Consulting** | 85% win; Sydney HQ + **London** office | Gov specialists, cross-sector | (London lead TBD) *(verify)* | tsaksconsulting.com |
@@ -144,8 +144,9 @@ them. Consultancies are the better *first* target (value compounds), but SMEs gi
   award notices (e.g. Mastered) for more awardees + their ITTs.
 - **Grounds maintenance / security** — security via **ESPO** + **CCS RM6257** frameworks; grounds via
   council FTS/Contracts Finder notices (many live in 2025). *Named SME security:* **Agile Guarding**.
-  Avoid giants (Continental Landscapes, the big guarding firms). **Market context for the pitch:** local
-  government spent **£29.1bn with SMEs in 2025 (34% share)** — these contracts are genuinely SME-winnable.
+  Avoid giants (Continental Landscapes, the big guarding firms). **Market context for the pitch:** SMEs won
+  **£45.2bn of direct public-sector spend in 2025 (21% share — a six-year high)**; local government alone
+  spent **£29.1bn with SMEs (34% share)** — these contracts are genuinely SME-winnable.
 
 > **Method (repeat per sector):** recent Contracts Finder/Find-a-Tender award → SME awardee name → their
 > BD/bid lead on LinkedIn → pair with the public ITT for a live-demo on a doc they know.
@@ -241,8 +242,8 @@ quality** (we lose a prose fight to AutogenAI; we win on auditability).
 **Competitor watch (AI-bid space):** **AutogenAI** — enterprise generative ("Write More Winning Bids"),
 300+ enterprise clients, claims 70% faster drafting / 241% higher win rate; *has* a "Qualify & Extract"
 step but it's black-box + enterprise-priced (construction/healthcare/gov). · **mytender.io** — SME-facing
-AI bid platform ("Win More Bids with mytender"); our closest direct competitor by segment (pricing/features
-still to capture — site rendered thin; revisit /pricing). · **Loopio / Responsive** — RFP answer libraries.
+AI bid platform ("Win More Bids with mytender"); our closest direct competitor by segment. **Pricing not
+public** (no /pricing page — demo/contact-gated, like AutogenAI) → SMEs can't self-serve compare, an opening. · **Loopio / Responsive** — RFP answer libraries.
 · **NotebookLM / ChatGPT** — black-box PDF chat. **Our defensible lane:** auditable extraction (click →
 exact source clause) + the *loud* disqualifier catch + **measured recall** — none of them quantify what
 they missed, and AutogenAI prices the SME long tail out.
@@ -377,3 +378,12 @@ Two moments must land: **the catch** and **click-to-source**. Keep it ~60s; let 
   → ask for their reaction). The dossier now covers who · how to reach · what to say · how to demo. **Next
   (cycle 10):** deeper mytender.io fetch (/pricing,/features); pin Ian Evans (BFT) handle (CH officers +
   LinkedIn); 3–5 more named SME bidders in cleaning + IT/MSP via Contracts Finder/Find-a-Tender notices.
+- **2026-06-29 (cycle 10)** — ✅ **Ian Evans pinned** = Ian James Evans, BFT Consult Ltd **08918064** (Liverpool,
+  L23 0ST); personal LinkedIn still to confirm (the `ian-evans-bb41a9a` result is a different person at BT).
+  **mytender.io has no public pricing** (/pricing = 404, demo-gated like AutogenAI) → added as a wedge.
+  New market stat: **SMEs won £45.2bn of direct public-sector spend in 2025 (21%, six-year high)**.
+  **⚠️ HONEST NOTE — diminishing returns on NEW named targets:** generic search keeps returning framework
+  *stats*, not named small MSPs/cleaners — those need a direct **Digital Marketplace supplier search** +
+  **Tussell/Contracts Finder award-notice** dig (JS-heavy, not WebFetch-friendly), or doing it by hand. Left
+  as a documented method, not faked names. **We've reached polish/QA territory.** **Next (cycle 11):** full QA
+  pass — verify every CRM handle + claim against source, dedupe, tighten, and flag remaining unverified items.
