@@ -4,3 +4,7 @@
 *.yaml  text eol=lf
 *.py    text eol=lf
 *.sh    text eol=lf
+
+# Generated map files — LF so local (Windows) and CI (Linux) output is byte-identical (no churn).
+CODEMAP.md                  text eol=lf
+frontend/public/codemap.html text eol=lf

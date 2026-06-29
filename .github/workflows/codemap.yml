@@ -6,11 +6,12 @@ name: codemap
 on:
   push:
     branches: [main]
-    # The only thing the bot commits back is CODEMAP.md, so a push that changes
-    # *just* that file won't re-trigger this workflow (no loop). Belt-and-braces:
+    # The bot only commits the two generated map files, so a push that changes
+    # *just* those won't re-trigger this workflow (no loop). Belt-and-braces:
     # commits made with GITHUB_TOKEN don't trigger workflows anyway.
     paths-ignore:
       - "CODEMAP.md"
+      - "frontend/public/codemap.html"
   workflow_dispatch: {}
 
 # Never run two map-updates on main at once — they'd race on the push.
@@ -24,6 +25,10 @@ permissions:
 jobs:
   codemap:
     runs-on: ubuntu-latest
+    # Only the canonical repo regenerates the map. The jawadjalal/TenderBreak
+    # Vercel mirror also carries this workflow file, but must NOT run it — two
+    # bots committing on the same parent makes the remotes diverge at the tip.
+    if: github.repository == 'Welddevelopment/Tender_Breakdown_AI-Agent'
     steps:
       - uses: actions/checkout@v4
 
@@ -36,14 +41,15 @@ jobs:
 
       - name: Commit if the map changed
         run: |
-          if git diff --quiet -- CODEMAP.md; then
-            echo "CODEMAP.md unchanged — nothing to commit."
+          MAP_FILES="CODEMAP.md frontend/public/codemap.html"
+          if git diff --quiet -- $MAP_FILES; then
+            echo "Map unchanged — nothing to commit."
             exit 0
           fi
           git config user.name  "codemap-bot"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add CODEMAP.md
-          git commit -m "chore(codemap): refresh CODEMAP.md [skip ci]"
+          git add $MAP_FILES
+          git commit -m "chore(codemap): refresh map [skip ci]"
           # A teammate may have pushed while we ran — rebase and retry the push.
           for i in 1 2 3; do
             if git push; then

@@ -140,6 +140,18 @@ def describe(path: str) -> str:
     return ""
 
 
+# disambiguate route/package files whose basename repeats (page.tsx, __init__.py, …)
+AMBIGUOUS = {"page.tsx", "layout.tsx", "route.ts", "index.ts", "index.tsx", "__init__.py"}
+
+
+def smart_label(p: str) -> str:
+    parts = p.split("/")
+    base = parts[-1]
+    if base in AMBIGUOUS and len(parts) >= 2:
+        return "/".join(parts[-2:])
+    return base
+
+
 # ---------------------------------------------------------------- python edges
 
 def py_module(path: str) -> str:
@@ -239,6 +251,149 @@ def mermaid(edges: list[tuple[str, str]], label, nodes: list[str]) -> list[str]:
     return lines
 
 
+# ----------------------------------------------------- interactive html (tier 2)
+
+HTML_OUT = ROOT / "frontend" / "public" / "codemap.html"
+
+
+def node_area(p: str) -> str:
+    if p.startswith("frontend/"):
+        return "frontend"
+    if p.startswith("backend/"):
+        return "backend"
+    if p.startswith("engine/"):
+        return "engine"
+    return "other"
+
+
+def build_graph_data(by_area: dict, sha: str, cdate: str) -> dict:
+    fe = sorted(f for f in by_area.get("frontend", [])
+                if Path(f).suffix in {".ts", ".tsx", ".js", ".jsx", ".mjs"} and "/src/" in f)
+    py = sorted(f for f in (by_area.get("backend", []) + by_area.get("engine", [])) if f.endswith(".py"))
+    py_app = [f for f in py if "/tests/" not in f
+              and not f.split("/")[-1].startswith("test_")
+              and f.split("/")[-1] != "__init__.py"]
+    code = fe + py_app
+    nodes = [{"id": f, "label": smart_label(f), "area": node_area(f),
+              "desc": describe(f), "loc": line_count(f)} for f in code]
+    edges = ts_edges(fe) + py_edges(py_app)
+    links = [{"source": a, "target": b, "kind": "import"} for a, b in edges]
+    api, be_main = "frontend/src/lib/api.ts", "backend/app/main.py"
+    code_set = set(code)
+    if api in code_set and be_main in code_set:  # the HTTP boundary that imports can't see
+        links.append({"source": api, "target": be_main, "kind": "http"})
+    return {"meta": {"sha": sha, "date": cdate, "nodes": len(nodes), "links": len(links)},
+            "nodes": nodes, "links": links}
+
+
+# Self-contained: no CDN, no build step, no external fonts. Open the file directly
+# or hit /codemap.html on the Vercel deploy. DATA is injected between the two halves.
+HTML_HEAD = """<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CODEMAP — interactive codebase graph</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;height:100%;font:14px/1.4 system-ui,"Segoe UI",Roboto,sans-serif;color:#0f172a;background:#f8fafc}
+#bar{position:fixed;inset:0 0 auto 0;height:56px;display:flex;align-items:center;gap:14px;padding:0 16px;background:#ffffffe6;backdrop-filter:blur(6px);border-bottom:1px solid #e2e8f0;z-index:5}
+.title{font-weight:700;font-size:15px;letter-spacing:.3px}.sub{font-weight:400;color:#64748b;font-size:12px;margin-left:8px}
+#search{margin-left:auto;width:200px;padding:6px 10px;border:1px solid #cbd5e1;border-radius:8px;font:inherit}
+#legend{display:flex;gap:6px}
+.chip{display:flex;align-items:center;gap:6px;border:1px solid #e2e8f0;background:#fff;border-radius:999px;padding:4px 10px;font-size:12px;cursor:pointer;color:#334155}
+.chip i{width:10px;height:10px;border-radius:50%;background:var(--c)}.chip.off{opacity:.4}
+.hint{position:fixed;bottom:10px;left:16px;font-size:11px;color:#94a3b8;z-index:5}
+#svg{position:fixed;inset:56px 0 0 0;width:100%;height:calc(100% - 56px);cursor:grab;touch-action:none}#svg:active{cursor:grabbing}
+.link{stroke:#cbd5e1;stroke-width:1.2}.link.http{stroke:#94a3b8;stroke-dasharray:5 4}.link.dim{opacity:.06}
+.node{cursor:pointer}.node circle{stroke:#fff;stroke-width:1.5}
+.node .lbl{font-size:10px;fill:#475569;text-anchor:middle;paint-order:stroke;stroke:#f8fafc;stroke-width:3px;pointer-events:none}
+.node.sel circle{stroke:#0f172a;stroke-width:2.5}.node.dim{opacity:.12}.node.hide{display:none}
+#tip{position:fixed;z-index:9;max-width:300px;background:#0f172a;color:#f1f5f9;padding:8px 10px;border-radius:8px;font-size:12px;pointer-events:none;box-shadow:0 6px 24px #0003}
+#tip .p{color:#94a3b8;font-size:11px;word-break:break-all}#tip .m{color:#cbd5e1;font-size:11px}
+#panel{position:fixed;bottom:16px;right:16px;width:300px;max-height:62%;overflow:auto;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px 16px;box-shadow:0 10px 40px #0002;z-index:6}
+#panel h3{margin:0 0 2px;font-size:15px;word-break:break-all}#panel .path{color:#64748b;font-size:11px;word-break:break-all;margin-bottom:8px}
+#panel .meta2{color:#475569;font-size:12px;margin:6px 0}#panel p{margin:6px 0;color:#334155}
+#panel .x{position:absolute;top:8px;right:10px;border:0;background:none;font-size:18px;cursor:pointer;color:#94a3b8}
+#panel h4{margin:10px 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8}
+#panel ul{margin:0;padding-left:16px}#panel li{font-size:12px;margin:2px 0}
+</style></head><body>
+<header id="bar"><div class="title">CODEMAP<span class="sub" id="meta"></span></div>
+<input id="search" placeholder="search files…"><div id="legend"></div></header>
+<svg id="svg" xmlns="http://www.w3.org/2000/svg"><defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M0 0 L10 5 L0 10 z" fill="#94a3b8"/></marker></defs>
+<g id="view"><g id="links"></g><g id="nodes"></g></g></svg>
+<div class="hint">scroll = zoom · drag background = pan · drag node = move · click node = focus · click a legend chip to toggle an area</div>
+<aside id="panel" hidden></aside><div id="tip" hidden></div>
+<script>
+"""
+
+HTML_JS = r"""
+const AREA_COLORS={frontend:'#2563eb',backend:'#d97706',engine:'#7c3aed',other:'#64748b'};
+const AREA_LABEL={frontend:'Frontend (TS / React)',backend:'Backend (FastAPI)',engine:'Engine (Python)'};
+const $=id=>document.getElementById(id);
+const svg=$('svg'),view=$('view'),gL=$('links'),gN=$('nodes'),tip=$('tip'),panel=$('panel');
+$('meta').textContent=`map of commit ${DATA.meta.sha} · ${DATA.meta.nodes} files · ${DATA.meta.links} edges`;
+const NS='http://www.w3.org/2000/svg';
+const nodes=DATA.nodes,links=DATA.links,byId=new Map(nodes.map(n=>[n.id,n]));
+links.forEach(l=>{l.s=byId.get(l.source);l.t=byId.get(l.target);});
+const adj=new Map(nodes.map(n=>[n.id,new Set()]));
+links.forEach(l=>{if(l.s&&l.t){adj.get(l.s.id).add(l.t.id);adj.get(l.t.id).add(l.s.id);}});
+nodes.forEach(n=>n.deg=adj.get(n.id).size);
+const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const rnd=mulberry32(42);
+let W=svg.clientWidth||1100,H=svg.clientHeight||640;
+const cx={frontend:W*0.26,backend:W*0.74,engine:W*0.5,other:W*0.5};
+nodes.forEach(n=>{n.x=(cx[n.area]||W/2)+(rnd()-0.5)*240;n.y=H/2+(rnd()-0.5)*440;n.vx=0;n.vy=0;});
+const R=n=>6+Math.min(20,Math.sqrt(n.loc||1));
+const linkEls=links.map(l=>{const e=document.createElementNS(NS,'line');e.setAttribute('class','link'+(l.kind==='http'?' http':''));e.setAttribute('marker-end','url(#arrow)');gL.appendChild(e);return e;});
+const nodeEls=nodes.map(n=>{const g=document.createElementNS(NS,'g');g.setAttribute('class','node');const c=document.createElementNS(NS,'circle');c.setAttribute('r',R(n));c.setAttribute('fill',AREA_COLORS[n.area]||'#64748b');const t=document.createElementNS(NS,'text');t.setAttribute('class','lbl');t.setAttribute('dy',-R(n)-4);t.textContent=n.label;g.appendChild(c);g.appendChild(t);gN.appendChild(g);n._g=g;return g;});
+let vx=0,vy=0,vk=1;const applyView=()=>view.setAttribute('transform',`translate(${vx},${vy}) scale(${vk})`);applyView();
+let alpha=1,running=true;
+function stepForce(){for(const n of nodes){n.vx+=((cx[n.area]||W/2)-n.x)*0.0009*alpha;n.vy+=(H/2-n.y)*0.0007*alpha;}
+for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){const a=nodes[i],b=nodes[j];let dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy||0.01,d=Math.sqrt(d2),f=2800/d2,fx=dx/d*f,fy=dy/d*f;a.vx+=fx;a.vy+=fy;b.vx-=fx;b.vy-=fy;}
+for(const l of links){if(!l.s||!l.t)continue;let dx=l.t.x-l.s.x,dy=l.t.y-l.s.y,d=Math.hypot(dx,dy)||0.01,f=(d-95)/d*0.05*alpha,fx=dx*f,fy=dy*f;l.s.vx+=fx;l.s.vy+=fy;l.t.vx-=fx;l.t.vy-=fy;}
+for(const n of nodes){if(n._pin)continue;n.x+=n.vx;n.y+=n.vy;n.vx*=0.82;n.vy*=0.82;}alpha*=0.986;}
+function draw(){for(let i=0;i<links.length;i++){const l=links[i],e=linkEls[i];if(!l.s||!l.t)continue;let dx=l.t.x-l.s.x,dy=l.t.y-l.s.y,d=Math.hypot(dx,dy)||1,r1=R(l.s)+2,r2=R(l.t)+6;e.setAttribute('x1',l.s.x+dx/d*r1);e.setAttribute('y1',l.s.y+dy/d*r1);e.setAttribute('x2',l.t.x-dx/d*r2);e.setAttribute('y2',l.t.y-dy/d*r2);}
+for(const n of nodes)n._g.setAttribute('transform',`translate(${n.x},${n.y})`);}
+function loop(){for(let k=0;k<2;k++)stepForce();draw();if(alpha>0.012)requestAnimationFrame(loop);else running=false;}
+function reheat(a){alpha=Math.max(alpha,a||0.5);if(!running){running=true;loop();}}
+loop();
+// ---- interaction ----
+let selected=null;const hidden=new Set();
+function render(){const q=$('search').value.trim().toLowerCase();const nbr=selected?new Set([selected,...adj.get(selected)]):null;
+nodes.forEach(n=>{let dim=false;if(hidden.has(n.area))dim=true;if(nbr&&!nbr.has(n.id))dim=true;if(q&&!(n.label.toLowerCase().includes(q)||n.id.toLowerCase().includes(q)))dim=true;n._g.setAttribute('class','node'+(selected===n.id?' sel':'')+(dim?' dim':'')+(hidden.has(n.area)?' hide':''));});
+links.forEach((l,i)=>{if(!l.s||!l.t)return;let dim=false;if(hidden.has(l.s.area)||hidden.has(l.t.area))dim=true;if(selected)dim=dim||!(l.s.id===selected||l.t.id===selected);linkEls[i].setAttribute('class','link'+(l.kind==='http'?' http':'')+(dim?' dim':''));});}
+function lst(title,arr){return arr.length?`<h4>${title} (${arr.length})</h4><ul>${arr.map(x=>'<li>'+esc(x)+'</li>').join('')}</ul>`:'';}
+function showPanel(id){if(!id){panel.hidden=true;return;}const n=byId.get(id);const out=links.filter(l=>l.s&&l.s.id===id&&l.t).map(l=>l.t.label).sort();const inc=links.filter(l=>l.t&&l.t.id===id&&l.s).map(l=>l.s.label).sort();panel.hidden=false;panel.innerHTML=`<button class="x" onclick="select(null)">×</button><h3>${esc(n.label)}</h3><div class="path">${esc(n.id)}</div>${n.desc?'<p>'+esc(n.desc)+'</p>':''}<div class="meta2">${n.loc} lines · ${n.area}</div>${lst('imports',out)}${lst('imported by',inc)}`;}
+window.select=function(id){selected=id;render();showPanel(id);};
+// build legend
+Object.keys(AREA_LABEL).forEach(a=>{const b=document.createElement('button');b.className='chip';b.style.setProperty('--c',AREA_COLORS[a]);b.innerHTML='<i></i>'+AREA_LABEL[a];b.onclick=()=>{hidden.has(a)?hidden.delete(a):hidden.add(a);b.classList.toggle('off');render();reheat(0.25);};$('legend').appendChild(b);});
+$('search').addEventListener('input',render);
+// zoom
+svg.addEventListener('wheel',e=>{e.preventDefault();const r=svg.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,k2=Math.min(4,Math.max(0.2,vk*(1-e.deltaY*0.0015)));vx=mx-(mx-vx)*(k2/vk);vy=my-(my-vy)*(k2/vk);vk=k2;applyView();},{passive:false});
+// pan + drag
+let dragN=null,panning=false,last=null,down=null,moved=false;
+svg.addEventListener('pointerdown',e=>{const nd=e.target.closest('.node');down=last={x:e.clientX,y:e.clientY};moved=false;if(nd){dragN=nodes[nodeEls.indexOf(nd)];dragN._pin=true;}else panning=true;svg.setPointerCapture(e.pointerId);});
+svg.addEventListener('pointermove',e=>{if(!dragN&&!panning)return;if(dragN){const r=svg.getBoundingClientRect();dragN.x=(e.clientX-r.left-vx)/vk;dragN.y=(e.clientY-r.top-vy)/vk;reheat(0.2);draw();}else{vx+=e.clientX-last.x;vy+=e.clientY-last.y;applyView();}if(Math.hypot(e.clientX-down.x,e.clientY-down.y)>4)moved=true;last={x:e.clientX,y:e.clientY};});
+svg.addEventListener('pointerup',e=>{if(dragN){dragN._pin=false;dragN=null;}panning=false;});
+// hover tooltip
+gN.addEventListener('mousemove',e=>{const nd=e.target.closest('.node');if(!nd){tip.hidden=true;return;}const n=nodes[nodeEls.indexOf(nd)];tip.hidden=false;tip.innerHTML=`<b>${esc(n.label)}</b><br><span class="p">${esc(n.id)}</span>${n.desc?'<br>'+esc(n.desc):''}<br><span class="m">${n.loc} lines · ${n.deg} link(s)</span>`;tip.style.left=Math.min(e.clientX+14,innerWidth-300)+'px';tip.style.top=(e.clientY+14)+'px';});
+gN.addEventListener('mouseleave',()=>tip.hidden=true);
+// click to focus (ignore if it was a drag)
+svg.addEventListener('click',e=>{if(moved)return;const nd=e.target.closest('.node');if(nd){const n=nodes[nodeEls.indexOf(nd)];select(n.id===selected?null:n.id);}else select(null);});
+addEventListener('resize',()=>{W=svg.clientWidth;H=svg.clientHeight;});
+</script></body></html>
+"""
+
+
+def write_html(data: dict) -> None:
+    import json
+    payload = json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
+    HTML_OUT.parent.mkdir(parents=True, exist_ok=True)
+    HTML_OUT.write_text(HTML_HEAD + "const DATA=" + payload + ";\n" + HTML_JS,
+                        encoding="utf-8", newline="\n")
+
+
 # --------------------------------------------------------------------- render
 
 def main() -> int:
@@ -258,6 +413,10 @@ def main() -> int:
     L.append("")
     L.append("> **Do not hand-edit.** Regenerated by `scripts/gen_codemap.py` on every push to `main` "
              "(`.github/workflows/codemap.yml`). To refresh locally: `python scripts/gen_codemap.py`.")
+    L.append(">")
+    L.append("> **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — "
+             "drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. "
+             "(The diagrams below render right here on GitHub.)")
     L.append(">")
     L.append(f"> Map of commit `{sha}` · {cdate}")
     L.append("")
@@ -299,16 +458,6 @@ def main() -> int:
     L.append("")
 
     # ---- dependency graphs from real edges
-    # disambiguate route/package files whose basename repeats (page.tsx, __init__.py, …)
-    AMBIGUOUS = {"page.tsx", "layout.tsx", "route.ts", "index.ts", "index.tsx", "__init__.py"}
-
-    def smart_label(p: str) -> str:
-        parts = p.split("/")
-        base = parts[-1]
-        if base in AMBIGUOUS and len(parts) >= 2:
-            return "/".join(parts[-2:])
-        return base
-
     fe = sorted(f for f in by_area.get("frontend", []) if Path(f).suffix in {".ts", ".tsx", ".js", ".jsx", ".mjs"} and "/src/" in f)
     if fe:
         L.append("## Frontend module graph (`frontend/src`)")
@@ -353,9 +502,13 @@ def main() -> int:
     L.append("")
     L.append(f"*{len(files)} tracked files mapped. Generated by `scripts/gen_codemap.py`.*")
 
-    OUT.write_text("\n".join(L) + "\n", encoding="utf-8")
-    print(f"wrote {OUT.relative_to(ROOT)} — {len(files)} files, "
-          f"{len(by_area)} areas, commit {sha}")
+    OUT.write_text("\n".join(L) + "\n", encoding="utf-8", newline="\n")
+
+    graph = build_graph_data(by_area, sha, cdate)
+    write_html(graph)
+
+    print(f"wrote {OUT.relative_to(ROOT)} — {len(files)} files, {len(by_area)} areas, commit {sha}")
+    print(f"wrote {HTML_OUT.relative_to(ROOT)} — {graph['meta']['nodes']} nodes, {graph['meta']['links']} edges")
     return 0
 
 
