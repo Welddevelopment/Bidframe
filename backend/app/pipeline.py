@@ -21,8 +21,24 @@ from .graph import build_graph
 from .ingest import ingest_pdf
 from .schema import Requirement, TenderResponse
 
-NEEDS_REVIEW_BELOW = 0.65   # placeholder threshold — generalist calibrates this
-DUP_SIMILARITY = 0.86       # text similarity above which we treat two raws as the same
+# The generalist's real reconcile/dedupe + confidence routing lives in the top-level
+# `engine/` package (engine.reconcile). Import it when it's on the path — locally and
+# from the repo root, which is the live-demo runtime + what the eval harness uses. The
+# Render deploy roots at backend/ (see render.yaml), so engine/ may be absent there;
+# fall back to the thin placeholders so production never breaks. To make the real engine
+# live on Render too, the deploy needs engine/ on the path (J's lane — see comms G-005).
+try:
+    from engine.reconcile import (
+        group_candidates as _engine_group,
+        merge_group as _engine_merge,
+        NEEDS_REVIEW_THRESHOLD as _ENGINE_NEEDS_REVIEW,
+    )
+    _HAVE_ENGINE = True
+except ImportError:  # pragma: no cover - deploy without engine/ on path
+    _HAVE_ENGINE = False
+
+NEEDS_REVIEW_BELOW = 0.65   # fallback threshold (used only when engine/ isn't importable)
+DUP_SIMILARITY = 0.86       # fallback dedupe similarity (placeholder only)
 
 
 def _similar(a: str, b: str) -> float:
@@ -30,9 +46,16 @@ def _similar(a: str, b: str) -> float:
 
 
 def _reconcile(raws: list[dict]) -> list[dict]:
-    """Thin dedupe: drop near-identical requirements, keeping the highest-confidence
-    (and, on a tie, the one with a clause label). PLACEHOLDER — generalist owns the
-    real, careful version (conservative merging, best source reference)."""
+    """Reconcile/dedupe raw extraction candidates into clean requirement dicts.
+
+    Prefers the generalist's conservative engine (engine.reconcile): merge only on a
+    high text + token + same-page + same-clause match, noisy-OR confidence, and safety
+    escalation so a disqualifier is never downgraded. Falls back to a thin similarity
+    dedupe only when engine/ isn't importable (e.g. a backend-rooted deploy)."""
+    if _HAVE_ENGINE:
+        return [_engine_merge(group) for group in _engine_group(raws)]
+
+    # --- fallback placeholder (engine/ not on path) ---
     kept: list[dict] = []
     for r in sorted(raws, key=lambda x: x["confidence"], reverse=True):
         dup = False
@@ -46,8 +69,11 @@ def _reconcile(raws: list[dict]) -> list[dict]:
 
 
 def _route_confidence(req_type: str, confidence: float) -> bool:
-    """Flag low-confidence items for human review. PLACEHOLDER threshold."""
-    return confidence < NEEDS_REVIEW_BELOW
+    """Flag low-confidence items for human review (the generalist's needs_review).
+
+    Uses the engine's threshold when available; the placeholder threshold otherwise."""
+    threshold = _ENGINE_NEEDS_REVIEW if _HAVE_ENGINE else NEEDS_REVIEW_BELOW
+    return confidence < threshold
 
 
 def run_pipeline(pdf_path: str, tender_id: str, title: str) -> TenderResponse:

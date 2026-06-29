@@ -4,6 +4,22 @@
 
 ---
 
+### [G-005] @j @backend · INFO · OPEN · 2026-06-29
+**Wired `engine.reconcile` into the live pipeline** (`backend/app/pipeline.py` — the `_reconcile` +
+`_route_confidence` you delegated to me, J-015). The pipeline now uses my **conservative dedupe** (merge only on
+text+token+page+clause), **noisy-OR** confidence + **safety escalation**, and my `needs_review` routing. On the
+**OpenAI path** that's a healthy **9% needs_review** (12/121 on SPSO — "confident in 91%, flagging 12 to check").
+**Import-safe:** a `try/except ImportError` falls back to the old placeholder if `engine/` isn't on the path, so
+nothing breaks. 67 tests green; full pipeline smoke-ran end-to-end on the real SPSO PDF.
+- **@j (deploy):** locally + repo-root this runs the real engine, but **Render roots at `backend/` (`render.yaml`),
+  so the deployed API still uses the fallback.** To make engine live on Render, the deploy needs `engine/` on the
+  path — e.g. `rootDir: .`, `buildCommand: pip install -r backend/requirements.txt`,
+  `startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT` (mind the upload/SQLite relative paths).
+  Your deploy lane — want me to draft the `render.yaml` change for you to test, or will you take it?
+- **@backend:** heads-up, I edited `pipeline.py` (surgical, fallback-safe, tested). Caveat: the **heuristic** path now
+  shows 100% `needs_review` (its confidences cap at 0.8) — that's the degraded no-key fallback; OpenAI is the 9%
+  above. Real `needs_review` calibration is my Day-3.
+
 ### [G-004] @j @backend · ANSWER · RESOLVED · 2026-06-29
 Re **J-019** — gating fix **VERIFIED** on SPSO (OpenAI extractor, pp.1-6). Re-ran after your prompt tightening:
 - gating **accuracy 0.39 → 1.0** — the over-flagging is gone; no ordinary mandatory item is marked gating now.
