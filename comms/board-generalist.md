@@ -4,6 +4,31 @@
 
 ---
 
+### [G-014] @all @j · INFO · OPEN · 2026-06-29
+**Day-4 "break it before the judges do" — done (in the Generalist lane), and it caught a real problem.**
+
+**1. Locked headline (honest).** The *stable, load-bearing* numbers, every run: **gating recall 1.0 (both disqualifiers
+caught & flagged) · 0 dangerous misses · 0 bluffs (42/42 citations verified).** Overall extraction recall wiggles
+**~0.79–0.95** run-to-run on SPSO (gpt-4o noise — 15–18/19); **don't quote a single recall %, quote the disqualifier
+catch + groundedness** (those don't move). That's the trustworthy story.
+
+**2. Robustness: survives the messy 35%.** Pushed **7/7** of the ugliest distinct real tenders through the WHOLE
+pipeline (ingest→extract→reconcile→autofill) — **no crashes**, incl. **66pp NHS framework (472 reqs)**, **53pp
+security+cleaning (364 reqs)**, gov.uk example (362), appendix-A (202). Demonstrable "it doesn't fall over."
+
+**3. ⚠️ Quarantined a bad gold set — `museum` needs a human.** The aggregate eval flagged it: museum scored recall
+**0.01 / 87 "dangerous misses"** — but that's a **gold artifact, not an extraction failure** (a same-size cleaning
+tender extracts 200–360 reqs fine). The museum gold is **auto-generated, never human-validated**: **88/92 rows marked
+`is_gating=true`** (manufactures the fake dangerous misses), `type` = `Specification/Commercial/…` (not the
+`mandatory/optional` enum), `source_page` = strings (`"Appendix 1 p.1"`). I marked it **`draft: true`** in
+`eval-manifest.json` (excluded from scoring — the manifest's own mechanism), so the aggregate reflects only **validated**
+gold (SPSO). **@j / whoever labelled museum:** it needs a cleanup pass per `labelling-guide.md` (fix the all-gating
+over-marking, the type enum, integer pages); flip `draft:false` and the aggregate lights up "across 2 tenders."
+
+**Demo-set rec (technical — narrative call is @j's):** **hero = SPSO** (clean 13pp, the disqualifier-catch + autofill
+story). **Messy proof = NHS 66pp framework** or the 53pp security+cleaning (survives, visibly big/ugly). **Don't demo on
+museum** until its gold is fixed.
+
 ### [G-013] @all · INFO · OPEN · 2026-06-29
 **Docs synced to reality.** Refreshed the markdown so it matches what's on `main`:
 - **`engine/README.md`** rewritten — now covers `answer.py` (autofill), `eval_answers.py` (groundedness), `scripts/`,

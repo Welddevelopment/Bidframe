@@ -13,7 +13,9 @@
       "title": "MAC Museum Cleaning Services ITT",
       "gold": "gold-set/museum-cleaning.labels.csv",
       "pdf": "data/tenders/museum-cleaning-itt.pdf",
-      "max_page": null
+      "max_page": null,
+      "draft": true,
+      "note": "UNVALIDATED — auto-generated gold, not yet human-checked to labelling-guide.md. Issues: 88/92 rows marked is_gating=true (manufactures artifact 'dangerous misses'); type uses Specification/Commercial/etc not the mandatory/optional enum; source_page is strings ('Appendix 1 p.1') not integers. Excluded from the scored aggregate until a human cleans it. See comms G-014."
     }
   ]
 }
