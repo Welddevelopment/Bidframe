@@ -13,14 +13,28 @@ import os
 import shutil
 import uuid
 from pathlib import Path
+from typing import List, Optional
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 from .extract import get_extractor
+from .ingest import ingest_pdf
 from .pipeline import run_pipeline
 from .schema import DecisionUpdate, Requirement, TenderResponse
-from . import store
+from . import pipeline, store
+
+# The generalist's autofill answerers (engine.answer). Guarded like the pipeline import:
+# present at repo-root runtime, absent on a backend-rooted deploy (then /draft returns 503).
+try:
+    from engine.answer import (
+        MockAnswerer as _MockAnswerer,
+        OpenAIAnswerer as _OpenAIAnswerer,
+        get_answerer as _get_answerer,
+    )
+    _HAVE_ANSWER_API = True
+except ImportError:  # pragma: no cover - deploy without engine/ on path
+    _HAVE_ANSWER_API = False
 
 app = FastAPI(title="Tender Breakdown API")
 
@@ -37,6 +51,36 @@ app.add_middleware(
 )
 
 UPLOAD_DIR = Path(__file__).resolve().parent.parent / "data" / "uploads"
+CAPABILITY_DIR = Path(__file__).resolve().parent.parent / "data" / "capability"
+
+
+def _resolve_answerer(provider: Optional[str]):
+    """mock -> free/deterministic · openai -> J's answer-generation prompt · None -> env-driven."""
+    if provider == "mock":
+        return _MockAnswerer()
+    if provider == "openai":
+        return _OpenAIAnswerer()
+    return _get_answerer()
+
+
+def _save_capability_files(tender_id: str, files: List[UploadFile]) -> str:
+    """Persist uploaded capability docs as .txt under data/capability/{tender_id} so the
+    autofill retriever can read them. PDFs are run through the same ingest as tenders."""
+    folder = CAPABILITY_DIR / tender_id
+    folder.mkdir(parents=True, exist_ok=True)
+    for f in files or []:
+        name = f.filename or "doc"
+        raw = f.file.read()
+        stem = Path(name).stem
+        if name.lower().endswith(".pdf"):
+            pdf_path = folder / name
+            pdf_path.write_bytes(raw)
+            doc = ingest_pdf(str(pdf_path))
+            text = "\n\n".join(p.text for p in doc.pages)
+        else:
+            text = raw.decode("utf-8", "replace")
+        (folder / f"{stem}.txt").write_text(text, encoding="utf-8")
+    return str(folder)
 
 
 @app.on_event("startup")
@@ -77,6 +121,35 @@ def get_requirements(tender_id: str):
     if resp is None:
         raise HTTPException(status_code=404, detail="Tender not found.")
     return resp
+
+
+@app.post("/tenders/{tender_id}/draft", response_model=TenderResponse)
+async def draft_tender(
+    tender_id: str,
+    provider: Optional[str] = None,                       # "mock" | "openai" | None (env-driven)
+    files: Optional[List[UploadFile]] = File(None),       # optional capability docs (.txt/.pdf)
+):
+    """Auditable autofill: draft a grounded answer per requirement from the bidder's
+    capability docs — uploaded here, else the demo bidder — and persist them. Every claim
+    is evidenced or the item is flagged needs_input; it never bluffs. Returns the enriched
+    tender in the locked schema (answers + open_questions + capability_docs)."""
+    if not pipeline._HAVE_ANSWER or not _HAVE_ANSWER_API:
+        raise HTTPException(status_code=503, detail="Autofill engine not on this deployment's path.")
+    resp = store.get_tender(tender_id)
+    if resp is None:
+        raise HTTPException(status_code=404, detail="Tender not found.")
+
+    folder = _save_capability_files(tender_id, files) if files else None
+    try:
+        answerer = _resolve_answerer(provider)
+    except Exception as exc:  # e.g. OpenAI requested with no key
+        raise HTTPException(status_code=503, detail=f"Answerer unavailable: {exc}")
+
+    enriched, capability_docs = pipeline._autofill(
+        resp.requirements, capability_folder=folder, answerer=answerer
+    )
+    store.replace_drafts(tender_id, enriched, capability_docs)
+    return store.get_tender(tender_id)
 
 
 @app.patch("/requirements/{req_id}", response_model=Requirement)

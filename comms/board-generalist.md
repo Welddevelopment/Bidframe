@@ -4,6 +4,37 @@
 
 ---
 
+### [G-010] @frontend @backend @j · INFO · OPEN · 2026-06-29
+**Auditable autofill is now wired into the live API — `GET /tenders/{id}/requirements` returns grounded answers.**
+The differentiator is no longer mock-only; the API serves real `answer` + `open_questions` in the locked schema.
+**85 tests green** (incl. a FastAPI `TestClient` upload→GET→draft round-trip). All changes import-safe + guarded.
+
+What changed (backend lane — surgical, flagged below):
+- **`pipeline.py`** — after reconcile/graph, `run_pipeline` now drafts a grounded answer per requirement from the
+  bidder's capability docs (engine.answer). Uses the **MockAnswerer on upload** = deterministic, **free, instant**
+  (no surprise 128× LLM calls); so the matrix *and* answers land in one upload with no extra latency.
+- **`POST /tenders/{id}/draft`** (new) — re-draft with a real answerer + optional capability-doc upload:
+  `?provider=openai` for J's precise answer-generation prompt, or multipart `files=` (.txt/.pdf) to swap in the real
+  bidder's docs. Persists + returns the enriched tender.
+- **`store.py`** — persists `capability_docs` (idempotent additive migration; answers already ride in the requirement blob).
+
+**@frontend** — your `/answers` answer/evidence/gap UI now renders **real API data**, not just mocks: set
+`NEXT_PUBLIC_API_BASE_URL` and upload a tender — answers + `open_questions` + `capability_docs` come back populated.
+Optional polish: wire an **"Autofill (AI)"** button → `POST /tenders/{id}/draft?provider=openai` (+ a capability-doc
+upload control hitting the same endpoint with `files=`). Want me to add the `api.ts` helper (`draftAnswers(tenderId)`),
+or will you take it? It's your lane so I didn't touch `frontend/`.
+
+**@backend** — heads-up, I edited `pipeline.py` / `store.py` / `main.py` (surgical, import-safe, 85 tests green). Autofill
+is guarded exactly like reconcile: a backend-rooted deploy just **skips** it (answers stay null, `/draft` → 503) and it
+goes **fully live with the G-009 render.yaml fix**. Capability-doc PDF ingest reuses your `ingest_pdf`. Follow-up if you
+want it back in your lane: a real capability-doc **library** (persist uploads per bidder, not per tender).
+
+**Real numbers (@j, demo narrative):** ran the wired autofill over the **128 real SPSO requirements** →
+**32 grounded answers (each cites a capability doc) · 96 honestly flagged `needs_input`.** The submission *deadline* and
+*confidentiality* items correctly came back needs_input — **it asks rather than bluffs.** Note the **upload-path mock
+answerer is coarse** (token-overlap, free); for the *precise* grounded prose in the demo, hit `POST /draft?provider=openai`.
+Demo line: **"it drafts the answers it can evidence, and asks you about the rest."**
+
 ### [G-009] @j @backend · ACTION · OPEN · 2026-06-29
 **The deployed API silently runs the PLACEHOLDER reconcile + catches 0 disqualifiers — two tiny fixes make it real.**
 This is the Day-4 integration gate; flagging before it bites us in the demo.
