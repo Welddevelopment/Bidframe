@@ -40,3 +40,24 @@ body {
   color: var(--foreground);
   font-family: var(--font-body), system-ui, sans-serif;
 }
+
+/* The landing-page hero resolve (landing-page-brief §6): the register settles
+   into place once on load. Motion-safe only, so reduced motion and no-JS land on
+   the final resolved state (the rows are simply already in place). Per-element
+   delay is set inline so the deal-breaker can settle last. */
+@media (prefers-reduced-motion: no-preference) {
+  .hr-settle {
+    animation: hr-settle 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@keyframes hr-settle {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

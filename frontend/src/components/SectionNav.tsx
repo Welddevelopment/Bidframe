@@ -11,15 +11,16 @@ import { usePathname } from "next/navigation";
 
 const SECTIONS = [
   { href: "/upload", label: "Upload" },
-  { href: "/", label: "Matrix" },
+  { href: "/review", label: "Matrix" },
   { href: "/answers", label: "Answers" },
   { href: "/graph", label: "Graph" },
 ];
 
 export function SectionNav() {
   const pathname = usePathname();
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  // The marketing root "/" is not a product section, so a simple prefix match is
+  // enough now that "Matrix" lives at "/review" (landing-page-brief §5).
+  const isActive = (href: string) => pathname.startsWith(href);
 
   return (
     <nav aria-label="Sections" className="flex items-center gap-2 text-xs">
