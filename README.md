@@ -2,7 +2,8 @@
 
 > **First thing — humans and AI agents both read [AGENTS.md](AGENTS.md) before doing anything.**
 > It holds the locked data contract and the git workflow every teammate (and their agent) must follow.
-> For *where the project is right now*, read [STATUS.md](STATUS.md).
+> For *where the project is right now*, read [STATUS.md](STATUS.md). For *how the codebase fits together*
+> (structure + import graphs, auto-updated on every push), read [CODEMAP.md](CODEMAP.md).
 
 **Bidframe turns a 150-page public-sector tender into a verified, source-linked compliance checklist
 in minutes** — it catches the requirement that would have disqualified the bid, flags what it's unsure

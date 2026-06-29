@@ -1,0 +1,56 @@
+name: codemap
+
+# Regenerate CODEMAP.md on every push to main — no matter who pushes — so the
+# repo always carries a current map for humans and agents. See scripts/gen_codemap.py.
+
+on:
+  push:
+    branches: [main]
+    # The only thing the bot commits back is CODEMAP.md, so a push that changes
+    # *just* that file won't re-trigger this workflow (no loop). Belt-and-braces:
+    # commits made with GITHUB_TOKEN don't trigger workflows anyway.
+    paths-ignore:
+      - "CODEMAP.md"
+  workflow_dispatch: {}
+
+# Never run two map-updates on main at once — they'd race on the push.
+concurrency:
+  group: codemap-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  codemap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Regenerate CODEMAP.md
+        run: python scripts/gen_codemap.py
+
+      - name: Commit if the map changed
+        run: |
+          if git diff --quiet -- CODEMAP.md; then
+            echo "CODEMAP.md unchanged — nothing to commit."
+            exit 0
+          fi
+          git config user.name  "codemap-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add CODEMAP.md
+          git commit -m "chore(codemap): refresh CODEMAP.md [skip ci]"
+          # A teammate may have pushed while we ran — rebase and retry the push.
+          for i in 1 2 3; do
+            if git push; then
+              echo "pushed."; exit 0
+            fi
+            echo "push rejected (attempt $i) — rebasing on latest main…"
+            git pull --rebase --autostash origin main || true
+          done
+          echo "::error::could not push CODEMAP.md after 3 attempts"
+          exit 1

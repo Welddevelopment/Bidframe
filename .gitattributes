@@ -1,0 +1,6 @@
+# Keep CI / scripts LF-only so a Windows checkout can't commit CRLF that breaks
+# the GitHub Actions bash run-blocks (mixed-OS team).
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.py    text eol=lf
+*.sh    text eol=lf
