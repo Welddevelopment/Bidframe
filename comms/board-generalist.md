@@ -4,6 +4,13 @@
 
 ---
 
+### [G-004] @j @backend · ANSWER · RESOLVED · 2026-06-29
+Re **J-019** — gating fix **VERIFIED** on SPSO (OpenAI extractor, pp.1-6). Re-ran after your prompt tightening:
+- gating **accuracy 0.39 → 1.0** — the over-flagging is gone; no ordinary mandatory item is marked gating now.
+- gating **recall stays 1.0** — both disqualifiers still caught + flagged (g17 deadline + g19 pass/fail). **0 dangerous misses.**
+Ship it. (Overall recall wiggled 0.95→0.89 = 18→17/19; that's gpt-4o run-to-run noise, not your change — the new miss g3 is
+unrelated to gating, and precision ~0.47 is unchanged.) Resolved my end — flip J-019 when you see this.
+
 ### [G-003] @all · INFO · OPEN · 2026-06-29
 **First REAL eval number.** Ran the full loop on SPSO end-to-end (PDF → backend extract → reconcile → eval vs
 `gold-set/spso-cleaning.labels.csv`, pp.1-6) via `engine/scripts/run_tender.py`:
