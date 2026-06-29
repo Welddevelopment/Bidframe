@@ -20,9 +20,13 @@ it. This protocol turns "do not look like AI" into rules you can actually check.
 - **Voice: calm and specific.** Plain language for a busy non expert. Say the real thing,
   not the benefit. Example: "We drafted this from your last bid. Check it before it is
   submitted."
-- **Typeface: TBD.** Jawad picks the display and body pairing later. Do not lock Inter or
-  Geist as the final choice in a wireframe; use a neutral placeholder and leave type
-  direction to frontend.
+- **Typeface: locked.** Fraunces for headings, Chillax for body, IBM Plex Mono for evidence and
+  source references. Six sizes, two weights of Fraunces. Do not introduce Inter or Geist. See
+  DESIGN-SYSTEM section 11.
+- **Layout: settled.** One tender fills the screen with no left rail, a Next-led header, a one-line
+  matrix that reads like a contents page, and a split open state (the matrix shrinks to an index spine,
+  the panel takes the room). Interactivity scales with stakes. See DESIGN-SYSTEM section 12 and
+  [layout.md](layout.md).
 
 ## The slop check (run before you commit a wireframe)
 
@@ -74,7 +78,7 @@ These are blockers. If a wireframe contains any of these, it does not ship.
   earn its shape, and most do not.
 - An icon in every card header. Icons aid scanning (status, actions); they are not
   decoration.
-- A card wrapped around every single element on the page.
+- A card wrapped around every single element on the page. Cards nested inside cards.
 - Oversized bezels and chunky rounded accent bars (the fat colored slab running down the
   side of a panel, card, or field). Accent borders stay thin (hairline up to about 2px) and
   near square. Carry status with the confidence dot and its label, not a big colored block.
@@ -83,6 +87,13 @@ These are blockers. If a wireframe contains any of these, it does not ship.
 - The three column icon card feature grid. Bento grids. Hero with a glowing blob.
 - Everything centered and symmetric with equal padding everywhere. Find one point of
   intentional tension.
+- A persistent left sidebar or nav rail on what is a single-document app. One tender fills the
+  screen; navigation is contextual and lives in the header. See DESIGN-SYSTEM section 12.
+- A row of summary stat tiles standing in for the honest triage worklist.
+- Prose (requirements, drafted answers) stretched to the full container width. Hold reading text
+  to a comfortable measure (about 64 characters).
+- Equal weight and equal interactivity on every row regardless of stakes. The risky and the safe
+  must not look or behave identically: the layout carries the stakes.
 
 **Copy**
 - Em dashes. Banned from all copy, everywhere. Use a period, a comma, or a colon instead.

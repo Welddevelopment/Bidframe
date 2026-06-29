@@ -7,7 +7,9 @@ guided, and honest. This document is the source of truth for how Bidframe looks 
 wireframe against.
 
 **Status:** living draft, open for team feedback. Exact color values are provisional and will be tuned
-by frontend. The typeface is locked: Fraunces for headings, Chillax for body (see section 11).
+by frontend. The typeface is locked: Fraunces for headings, Chillax for body (see section 11). The layout
+is settled: split open state, a Next-led header, one-line matrix rows (see section 12 and
+[layout.md](layout.md)).
 
 ## 1. Philosophy: confident calm
 
@@ -204,7 +206,40 @@ densest rows during the build, swapping `--font-body` to Hanken Grotesk is a one
 else moves. Full reference with the scale shown in context:
 [design/typography.html](design/typography.html).
 
-## 12. Relationship to the slop check
+## 12. Layout: the working document
+
+The layout principle is **calm by default, friction by stakes, and the layout itself carries the stakes.**
+Slop is uniform: every element equal weight, equal spacing, equal interactivity. Bidframe is deliberately
+unequal in a way that maps to risk, so the structure tells you how hard to look before you read a word.
+This extends section 8 from interaction into layout.
+
+- **No global rail.** One tender fills the screen. Navigation is contextual, in the header, never a
+  standing left sidebar. A persistent rail on a single-document app is the number one dashboard tell.
+- **Header: three zones, one action.** Tender title and back link on the left, the triage line as an
+  in-page router in the centre, and exactly one primary action on the right: **Next**, which always routes
+  to the highest-priority unresolved item and becomes "Export response" when the work is done. The bulk
+  "approve all confident" sweep is not here, it sits scoped at the head of the Ready group.
+- **The matrix is a contents page, not a table.** One line per requirement on a shared grid (dot, text,
+  status), grouped by the ask. The drafted-answer preview shows on hover or focus, never as a permanent
+  second line. Gating items look heavier and never get the inline approve.
+- **Interactivity scales with stakes.** Confident, non-gating rows can be approved straight from the list
+  via a single quiet affordance (the single-item form of the section 8 sweep). Gating, low-confidence, and
+  needs-you rows expose no shortcut: clicking only opens the panel.
+- **Split open state.** Opening a row collapses the matrix to a ~300px index spine and gives the panel the
+  room, so you flow through the worklist without losing your place. Below ~1100px the panel becomes a
+  drawer and the spine drops. The spine is content (this document's items), not a nav rail.
+- **Two width caps.** A centred app container (~1160px) holds the screen, prose inside the panel is capped
+  tighter (~64ch) and left-aligned. The space beside the prose is the margin, the home for mono evidence,
+  source refs, and the audit line.
+- **Hierarchy without boxes.** Hairlines separate kinds of content (panel zones), whitespace separates
+  peers (matrix rows). No per-row borders, no nested cards.
+
+Full structure, every rule in technical and plain-English form, plus the slop-layout gate:
+[layout.md](layout.md). A richer skeuomorphic / paper treatment is planned but deferred; the layout
+commits now only to "depth means focus" (the panel sits above the matrix, nothing else floats), which the
+later paper pass builds on without undoing. Section 10's "near-flat" wording stands until that pass.
+
+## 13. Relationship to the slop check
 
 `SLOP-CHECK.md` is the enforceable subset of this system: the banned list and the pre-wireframe gate.
 If this document is the intent, the slop check is the gate. When the two disagree, fix one to match

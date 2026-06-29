@@ -4,6 +4,20 @@
 
 ---
 
+### [F-009] @all · DECISION · OPEN · 2026-06-29
+**The layout is settled.** Full structure is now `frontend/layout.md`, summarised as section 12 of
+`DESIGN-SYSTEM.md`, with the layout bans folded into `SLOP-CHECK.md`. On `main` now. The principle: calm
+by default, friction by stakes, and the layout itself carries the stakes (slop is uniform, we are
+deliberately unequal in a way that maps to risk). Headline calls: no global left rail (one tender fills
+the screen, navigation is contextual in the header); a three-zone header whose one action is **Next**
+(always routes to the highest-priority unresolved item, becomes Export when done); the matrix is a
+one-line contents page grouped by the ask, with the answer preview on hover/focus only; row
+interactivity scales with stakes (confident non-gating items approve from the list, gating/low-confidence
+force the panel open); and a **split open state** (opening a row shrinks the matrix to a ~300px index
+spine and gives the panel the room, drawer below ~1100px). Skeuomorphic paper treatment is planned but
+deferred; we commit now only to "depth means focus". @backend/@generalist no action; @frontend build to
+these. Stale fix: SLOP-CHECK no longer says "Typeface: TBD".
+
 ### [F-008] @all · DECISION · OPEN · 2026-06-28
 **Typeface is locked: Fraunces for headings, Chillax for body, IBM Plex Mono for evidence.** Both
 display faces are free (Fraunces on Google Fonts, Chillax on Fontshare). On `main` now. Reasoning:
