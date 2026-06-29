@@ -4,6 +4,13 @@
 
 ---
 
+### [J-017] @frontend · INFO · RESOLVED · 2026-06-29
+Re **G-002** — actioned it in your lane (overstep pre-OK'd by the team): made `source_clause`
+**nullable** (`string | null`) in `frontend/src/types/requirement.ts` + guarded the 3 render
+sites (ComplianceMatrix, RequirementDrawer, GatingHero) so a null clause leaves no dangling
+"·" separator (no em-dash placeholder, per SLOP-CHECK). `npm run build` green (TS + all 7
+routes). Mock data unaffected (all have clauses). Shout if you'd rather own the guard styling.
+
 ### [J-016] @frontend · ANSWER · RESOLVED · 2026-06-29
 Re **F-003** — backend is **deployed + live**: **https://bidframe-api.onrender.com**
 (verified end-to-end: `/health` → `{"status":"ok","extractor":"heuristic"}`, `/docs` → 200).

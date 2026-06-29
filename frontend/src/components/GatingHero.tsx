@@ -50,7 +50,8 @@ export function GatingHero() {
             <span className="leading-snug">
               {req.text}
               <span className="ml-2 font-mono text-xs text-ink-muted">
-                p.{req.source_page} · {req.source_clause}
+                p.{req.source_page}
+                {req.source_clause ? ` · ${req.source_clause}` : ""}
               </span>
             </span>
           </li>

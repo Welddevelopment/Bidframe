@@ -198,8 +198,12 @@ function DrawerContent({
             <span className="font-medium text-ink">
               p.{requirement.source_page}
             </span>
-            <span aria-hidden>·</span>
-            <span>{requirement.source_clause}</span>
+            {requirement.source_clause && (
+              <>
+                <span aria-hidden>·</span>
+                <span>{requirement.source_clause}</span>
+              </>
+            )}
           </div>
         </div>
 

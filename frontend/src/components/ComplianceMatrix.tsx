@@ -175,9 +175,11 @@ export function ComplianceMatrix({
                   <div className="font-mono text-ink">
                     <span className="font-medium">p.{req.source_page}</span>
                   </div>
-                  <div className="font-mono text-xs text-ink-muted">
-                    {req.source_clause}
-                  </div>
+                  {req.source_clause && (
+                    <div className="font-mono text-xs text-ink-muted">
+                      {req.source_clause}
+                    </div>
+                  )}
                 </td>
                 <td className="px-4 py-3.5 align-top">
                   <ConfidenceIndicator

@@ -40,7 +40,7 @@ export interface Requirement {
   id: string;
   text: string;
   source_page: number;
-  source_clause: string;
+  source_clause: string | null; // nullable — raw extraction may have no detectable clause heading
   source_excerpt: string;
   type: RequirementType;
   is_gating: boolean;
