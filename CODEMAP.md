@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `43370c3` · 2026-06-29T23:05:06Z
+> Map of commit `0c45452` · 2026-06-30T00:19:06+01:00
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,7 +12,7 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 68 | 13,771 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **frontend** | 70 | 13,870 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
 | **backend** | 17 | 1,907 | Backend — FastAPI (PDF ingest, extraction, REST API) |
 | **engine** | 48 | 2,994 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 678 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
@@ -47,69 +47,76 @@ graph LR
   n0[answers/page.tsx] --> n3[CapabilityUpload.tsx]
   n0[answers/page.tsx] --> n4[DocumentHeader.tsx]
   n0[answers/page.tsx] --> n5[GapInterview.tsx]
-  n6[graph/page.tsx] --> n1[AppMain.tsx]
-  n6[graph/page.tsx] --> n4[DocumentHeader.tsx]
-  n6[graph/page.tsx] --> n7[GraphView.tsx]
-  n8[app/layout.tsx] --> n9[RequirementsContext.tsx]
-  n10[app/page.tsx] --> n11[Landing.tsx]
-  n12[review/page.tsx] --> n13[MatrixView.tsx]
-  n12[review/page.tsx] --> n14[mock-requirements.ts]
-  n15[upload/page.tsx] --> n1[AppMain.tsx]
-  n15[upload/page.tsx] --> n4[DocumentHeader.tsx]
-  n15[upload/page.tsx] --> n16[UploadDropzone.tsx]
-  n17[AnswerPanel.tsx] --> n18[AnswerStateBadge.tsx]
-  n17[AnswerPanel.tsx] --> n9[RequirementsContext.tsx]
-  n17[AnswerPanel.tsx] --> n19[requirement.ts]
-  n18[AnswerStateBadge.tsx] --> n19[requirement.ts]
-  n2[AutofillButton.tsx] --> n9[RequirementsContext.tsx]
-  n3[CapabilityUpload.tsx] --> n9[RequirementsContext.tsx]
-  n20[ComplianceMatrix.tsx] --> n21[ConfidenceIndicator.tsx]
-  n20[ComplianceMatrix.tsx] --> n22[triage.ts]
-  n20[ComplianceMatrix.tsx] --> n19[requirement.ts]
-  n4[DocumentHeader.tsx] --> n23[SectionNav.tsx]
-  n4[DocumentHeader.tsx] --> n22[triage.ts]
-  n5[GapInterview.tsx] --> n18[AnswerStateBadge.tsx]
-  n5[GapInterview.tsx] --> n24[OpenQuestions.tsx]
-  n5[GapInterview.tsx] --> n9[RequirementsContext.tsx]
-  n25[GatingHero.tsx] --> n9[RequirementsContext.tsx]
-  n7[GraphView.tsx] --> n9[RequirementsContext.tsx]
-  n7[GraphView.tsx] --> n19[requirement.ts]
-  n13[MatrixView.tsx] --> n1[AppMain.tsx]
-  n13[MatrixView.tsx] --> n20[ComplianceMatrix.tsx]
-  n13[MatrixView.tsx] --> n4[DocumentHeader.tsx]
-  n13[MatrixView.tsx] --> n25[GatingHero.tsx]
-  n13[MatrixView.tsx] --> n26[RequirementDrawer.tsx]
-  n13[MatrixView.tsx] --> n27[RequirementPanel.tsx]
-  n13[MatrixView.tsx] --> n28[RequirementSpine.tsx]
-  n13[MatrixView.tsx] --> n9[RequirementsContext.tsx]
-  n13[MatrixView.tsx] --> n22[triage.ts]
-  n24[OpenQuestions.tsx] --> n9[RequirementsContext.tsx]
-  n24[OpenQuestions.tsx] --> n19[requirement.ts]
-  n26[RequirementDrawer.tsx] --> n27[RequirementPanel.tsx]
-  n26[RequirementDrawer.tsx] --> n19[requirement.ts]
-  n27[RequirementPanel.tsx] --> n17[AnswerPanel.tsx]
-  n27[RequirementPanel.tsx] --> n21[ConfidenceIndicator.tsx]
-  n27[RequirementPanel.tsx] --> n19[requirement.ts]
-  n28[RequirementSpine.tsx] --> n21[ConfidenceIndicator.tsx]
-  n28[RequirementSpine.tsx] --> n22[triage.ts]
-  n16[UploadDropzone.tsx] --> n9[RequirementsContext.tsx]
-  n16[UploadDropzone.tsx] --> n29[api.ts]
-  n30[HeroResolve.tsx] --> n20[ComplianceMatrix.tsx]
-  n30[HeroResolve.tsx] --> n25[GatingHero.tsx]
-  n30[HeroResolve.tsx] --> n9[RequirementsContext.tsx]
-  n30[HeroResolve.tsx] --> n22[triage.ts]
-  n11[Landing.tsx] --> n21[ConfidenceIndicator.tsx]
-  n11[Landing.tsx] --> n31[ApprovalStamp.tsx]
-  n11[Landing.tsx] --> n32[BookDemoButton.tsx]
-  n11[Landing.tsx] --> n33[BotanicalSprig.tsx]
-  n11[Landing.tsx] --> n30[HeroResolve.tsx]
-  n11[Landing.tsx] --> n34[WaitlistForm.tsx]
-  n9[RequirementsContext.tsx] --> n14[mock-requirements.ts]
-  n9[RequirementsContext.tsx] --> n29[api.ts]
-  n9[RequirementsContext.tsx] --> n19[requirement.ts]
-  n14[mock-requirements.ts] --> n19[requirement.ts]
-  n29[api.ts] --> n19[requirement.ts]
-  n22[triage.ts] --> n19[requirement.ts]
+  n6[demo/page.tsx] --> n7[DemoView.tsx]
+  n8[graph/page.tsx] --> n1[AppMain.tsx]
+  n8[graph/page.tsx] --> n4[DocumentHeader.tsx]
+  n8[graph/page.tsx] --> n9[GraphView.tsx]
+  n10[app/layout.tsx] --> n11[RequirementsContext.tsx]
+  n12[app/page.tsx] --> n13[Landing.tsx]
+  n14[review/page.tsx] --> n15[MatrixView.tsx]
+  n14[review/page.tsx] --> n16[mock-requirements.ts]
+  n17[upload/page.tsx] --> n1[AppMain.tsx]
+  n17[upload/page.tsx] --> n4[DocumentHeader.tsx]
+  n17[upload/page.tsx] --> n18[UploadDropzone.tsx]
+  n19[AnswerPanel.tsx] --> n20[AnswerStateBadge.tsx]
+  n19[AnswerPanel.tsx] --> n11[RequirementsContext.tsx]
+  n19[AnswerPanel.tsx] --> n21[requirement.ts]
+  n20[AnswerStateBadge.tsx] --> n21[requirement.ts]
+  n2[AutofillButton.tsx] --> n11[RequirementsContext.tsx]
+  n3[CapabilityUpload.tsx] --> n11[RequirementsContext.tsx]
+  n22[ComplianceMatrix.tsx] --> n23[ConfidenceIndicator.tsx]
+  n22[ComplianceMatrix.tsx] --> n24[triage.ts]
+  n22[ComplianceMatrix.tsx] --> n21[requirement.ts]
+  n7[DemoView.tsx] --> n22[ComplianceMatrix.tsx]
+  n7[DemoView.tsx] --> n25[GatingHero.tsx]
+  n7[DemoView.tsx] --> n26[BookDemoButton.tsx]
+  n7[DemoView.tsx] --> n11[RequirementsContext.tsx]
+  n7[DemoView.tsx] --> n16[mock-requirements.ts]
+  n7[DemoView.tsx] --> n24[triage.ts]
+  n4[DocumentHeader.tsx] --> n27[SectionNav.tsx]
+  n4[DocumentHeader.tsx] --> n24[triage.ts]
+  n5[GapInterview.tsx] --> n20[AnswerStateBadge.tsx]
+  n5[GapInterview.tsx] --> n28[OpenQuestions.tsx]
+  n5[GapInterview.tsx] --> n11[RequirementsContext.tsx]
+  n25[GatingHero.tsx] --> n11[RequirementsContext.tsx]
+  n9[GraphView.tsx] --> n11[RequirementsContext.tsx]
+  n9[GraphView.tsx] --> n21[requirement.ts]
+  n15[MatrixView.tsx] --> n1[AppMain.tsx]
+  n15[MatrixView.tsx] --> n22[ComplianceMatrix.tsx]
+  n15[MatrixView.tsx] --> n4[DocumentHeader.tsx]
+  n15[MatrixView.tsx] --> n25[GatingHero.tsx]
+  n15[MatrixView.tsx] --> n29[RequirementDrawer.tsx]
+  n15[MatrixView.tsx] --> n30[RequirementPanel.tsx]
+  n15[MatrixView.tsx] --> n31[RequirementSpine.tsx]
+  n15[MatrixView.tsx] --> n11[RequirementsContext.tsx]
+  n15[MatrixView.tsx] --> n24[triage.ts]
+  n28[OpenQuestions.tsx] --> n11[RequirementsContext.tsx]
+  n28[OpenQuestions.tsx] --> n21[requirement.ts]
+  n29[RequirementDrawer.tsx] --> n30[RequirementPanel.tsx]
+  n29[RequirementDrawer.tsx] --> n21[requirement.ts]
+  n30[RequirementPanel.tsx] --> n19[AnswerPanel.tsx]
+  n30[RequirementPanel.tsx] --> n23[ConfidenceIndicator.tsx]
+  n30[RequirementPanel.tsx] --> n21[requirement.ts]
+  n31[RequirementSpine.tsx] --> n23[ConfidenceIndicator.tsx]
+  n31[RequirementSpine.tsx] --> n24[triage.ts]
+  n18[UploadDropzone.tsx] --> n11[RequirementsContext.tsx]
+  n18[UploadDropzone.tsx] --> n32[api.ts]
+  n33[HeroResolve.tsx] --> n22[ComplianceMatrix.tsx]
+  n33[HeroResolve.tsx] --> n25[GatingHero.tsx]
+  n33[HeroResolve.tsx] --> n11[RequirementsContext.tsx]
+  n33[HeroResolve.tsx] --> n24[triage.ts]
+  n13[Landing.tsx] --> n23[ConfidenceIndicator.tsx]
+  n13[Landing.tsx] --> n34[ApprovalStamp.tsx]
+  n13[Landing.tsx] --> n26[BookDemoButton.tsx]
+  n13[Landing.tsx] --> n35[BotanicalSprig.tsx]
+  n13[Landing.tsx] --> n33[HeroResolve.tsx]
+  n13[Landing.tsx] --> n36[WaitlistForm.tsx]
+  n11[RequirementsContext.tsx] --> n16[mock-requirements.ts]
+  n11[RequirementsContext.tsx] --> n32[api.ts]
+  n11[RequirementsContext.tsx] --> n21[requirement.ts]
+  n16[mock-requirements.ts] --> n21[requirement.ts]
+  n32[api.ts] --> n21[requirement.ts]
+  n24[triage.ts] --> n21[requirement.ts]
 ```
 
 ## Backend + Engine module graph (Python, tests excluded)
@@ -185,6 +192,7 @@ graph LR
 - `frontend/postcss.config.mjs`
 - `frontend/public/codemap.html`
 - `frontend/src/app/answers/page.tsx` — exports `metadata`
+- `frontend/src/app/demo/page.tsx` — exports `metadata`
 - `frontend/src/app/globals.css`
 - `frontend/src/app/graph/page.tsx` — exports `metadata`
 - `frontend/src/app/layout.tsx` — exports `metadata`
@@ -198,6 +206,7 @@ graph LR
 - `frontend/src/components/CapabilityUpload.tsx` — exports `CapabilityUpload`
 - `frontend/src/components/ComplianceMatrix.tsx` — exports `ComplianceMatrix`
 - `frontend/src/components/ConfidenceIndicator.tsx` — The confidence bead (DESIGN-SYSTEM section 4, axis 1). Four tiers, worst to
+- `frontend/src/components/DemoView.tsx` — exports `DemoView`
 - `frontend/src/components/DocumentHeader.tsx` — exports `DocumentHeader`
 - `frontend/src/components/GapInterview.tsx` — exports `GapInterview`
 - `frontend/src/components/GatingHero.tsx` — exports `GatingHero`
@@ -371,4 +380,4 @@ graph LR
 
 ---
 
-*199 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
+*201 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
