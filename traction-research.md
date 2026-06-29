@@ -44,7 +44,7 @@ Ranked by **decides-fast × bids-often × reachable × wedge-fit**. Verify ✅ h
 |---|---------------|------|---------|----------------------|------------------|
 | 1 | **Vicki Stewart** — Tender Victory | ⭐⭐ | Consultancy (SME-focused) | Ex public-sector *buyer* + SME-majority writer → ultimate validator of the disqualifier catch | `/in/vicki-stewart-42a58a2a` ✅ |
 | 2 | **Dave Thornton** — Thornton & Lowe | ⭐⭐ | Consultancy (largest UK) | Biggest SME-focused consultancy; posts actively → warm-comment then DM; his interest = a headline quote | `/in/dave-thornton-56833625` ✅ |
-| 3 | **Ian Evans** (Ian James Evans) — BFT Consult | ⭐ | Consultancy (H&SC) | H&SC specialist, 80%+ win, £950m+; demo on a care-framework ITT he'll know cold | BFT Consult Ltd 08918064 (Liverpool) · `/company/bftconsult` · **likely** `/in/evansi` (Greater Liverpool — verify it's the BFT one) |
+| 3 | **Ian Evans** (Ian James Evans) — BFT Consult | ⭐ | Consultancy (H&SC) | H&SC specialist, 80%+ win, £950m+; demo on a care-framework ITT he'll know cold | `/in/evansi` ✅ (posts #bidwriting, Greater Liverpool) · BFT Consult Ltd 08918064 · `/company/bftconsult` |
 | 4 | **Neil Capstick** — Executive Compass | ⭐ | Consultancy | Social-value + auditability thought-leader; "trust not prose" lands; strong validator | `/in/tenderwriter` ✅ |
 | 5 | **Katrina Gibson** — Della Pip | ⭐ | Consultancy (H&SC) | Care-sector Director; pair with a domiciliary ITT | `/in/katrina-gibson-2278516b` ✅ |
 | 6 | **Dewi Hughes** — Silverlock | ⭐ | Consultancy (small) | Small/solo → replies personally, tries it on a live bid | `/in/dewihughes` ✅ |
@@ -100,7 +100,7 @@ are also the sharpest *validators* of the wedge (traceability, the disqualifier 
 | **Tender Victory** ⭐⭐ | est 2010, **majority clients are SMEs**; founder is **ex public-sector buyer** (Devon & Cornwall Police, 2005–10), MCIPS | SME-focused, cross-sector | **Vicki Stewart** (founder) ✅ | LinkedIn `/in/vicki-stewart-42a58a2a` · ☎ 07971 526587 (public on site) |
 | **Silverlock Tenders** | small/independent | Tenders, SME | **Dewi Hughes** (MD) | LinkedIn `/in/dewihughes` |
 | **Bid Writer Consultancy** | est 2014, "Best SMB" 2017, freelancer collective; markets **AI bid support** | Cross-sector, SME | **Sharon Welch** (founder; 30 yrs BD) — Director, CH 09245742 (now reg. "Sharon Welch Ltd") | `/company/bid-writer-consultancy` *(personal handle ambiguous)* |
-| **BFT Consult** ⭐ | est 2014, **80%+ win, £950m+ secured**; founder is ex-care-org BD (grew one £2m→£12m in <4 yrs), 18+ yrs in sector | **Health & social care** (homecare, supported living, mental health, dementia) | **Ian Evans** (Ian James Evans, founder/Bid Director) | BFT Consult Ltd 08918064 (Liverpool) · `/company/bftconsult` · **likely** `/in/evansi` *(Greater Liverpool — verify it's the BFT Ian Evans)* |
+| **BFT Consult** ⭐ | est 2014, **80%+ win, £950m+ secured**; founder is ex-care-org BD (grew one £2m→£12m in <4 yrs), 18+ yrs in sector | **Health & social care** (homecare, supported living, mental health, dementia) | **Ian Evans** (Ian James Evans, founder/Bid Director) | `/in/evansi` ✅ *(posts bid/tender content, Greater Liverpool)* · BFT Consult Ltd 08918064 · `/company/bftconsult` |
 | **Della Pip** | founder-led, 15+ yrs | **Health & social care** (care homes, home care) | **Katrina Gibson** (Director) ✅ | LinkedIn `/in/katrina-gibson-2278516b` |
 | **Think Tenders** ⭐ | multi-award-winning ("Best SMB" 2017), freelance, Birmingham; £500m in 3 yrs | Public sector, cross-sector, SME | **Amanda Goode** (founder/owner) ✅ | LinkedIn `/in/thinktenders` |
 | **Tsaks Consulting** | 85% win; Sydney HQ + **London** office; 70% gov bids | Gov specialists, cross-sector | **Jason Cooney** (founder/director, London-based) ✅ | tsaksconsulting.com · info@tsaksconsulting.com |
@@ -464,3 +464,8 @@ Two moments must land: **the catch** and **click-to-source**. Keep it ~60s; let 
   `/in/richmond-gordon-2090b1358` — flagged *verify*, profile reads "Glaxton Consultancy"). Every consultancy
   in §A now has a named contact. **CRM = 19 targets, 13 verified handles.** Research is now genuinely complete;
   expect no-op cycles from here.
+- **2026-06-29 (maintenance 10–12)** — Mostly no-op (correct — research exhausted). Sharon Welch personal handle
+  still ambiguous (200+ same-name profiles); Glaxtons/Richmond Gordon link still unconfirmed (LinkedIn reads
+  "Glaxton Consultancy"). **One confirmation:** upgraded **Ian Evans → `/in/evansi` ✅** — that profile posts
+  bid/tender content (#bidwriting #tenders) from Greater Liverpool, matching BFT Consult's base. **CRM now 19
+  targets, 14 verified handles.** Only Sharon Welch + Richmond Gordon handles remain soft.
