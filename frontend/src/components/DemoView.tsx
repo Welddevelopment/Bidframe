@@ -55,14 +55,8 @@ export function DemoView() {
             deal-breakers surface first, every requirement links back to its
             clause, and nothing here is yours to upload or break.
           </p>
-          <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
+          <div className="mt-6">
             <BookDemoButton location="demo-intro" />
-            <Link
-              href="/review"
-              className="rounded-sm text-sm text-ink-muted underline decoration-hairline decoration-1 underline-offset-4 transition-colors hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
-            >
-              Open the interactive version
-            </Link>
           </div>
         </div>
 
@@ -137,16 +131,10 @@ export function DemoView() {
 
       {/* Footer. */}
       <footer className="bg-ink text-paper">
-        <div className="mx-auto flex max-w-[1160px] flex-wrap items-center justify-between gap-4 px-6 py-8">
+        <div className="mx-auto max-w-[1160px] px-6 py-8">
           <span className="font-mono text-sm font-medium uppercase tracking-[0.22em] text-paper">
             Bidframe
           </span>
-          <Link
-            href="/review"
-            className="rounded-sm text-sm text-paper/70 underline decoration-paper/30 decoration-1 underline-offset-4 transition-colors hover:text-paper"
-          >
-            Open the interactive version
-          </Link>
         </div>
       </footer>
     </div>
