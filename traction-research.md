@@ -98,7 +98,10 @@ them. Consultancies are the better *first* target (value compounds), but SMEs gi
   procurement routes). *Named SME providers:* **Fareport Training** (Ofsted "Good"; apprenticeships +
   bootcamps), **Runway Training** (Ofsted "Good", independent). Mine Contracts Finder "Skills Bootcamp"
   award notices (e.g. Mastered) for more awardees + their ITTs.
-- **Grounds maintenance / security** — same method. *(next cycle.)*
+- **Grounds maintenance / security** — security via **ESPO** + **CCS RM6257** frameworks; grounds via
+  council FTS/Contracts Finder notices (many live in 2025). *Named SME security:* **Agile Guarding**.
+  Avoid giants (Continental Landscapes, the big guarding firms). **Market context for the pitch:** local
+  government spent **£29.1bn with SMEs in 2025 (34% share)** — these contracts are genuinely SME-winnable.
 
 > **Method (repeat per sector):** recent Contracts Finder/Find-a-Tender award → SME awardee name → their
 > BD/bid lead on LinkedIn → pair with the public ITT for a live-demo on a doc they know.
@@ -107,8 +110,12 @@ them. Consultancies are the better *first* target (value compounds), but SMEs gi
 
 ## Communities & channels (warm, scalable) — *to expand*
 
-- **APMP UK** (Association of Proposal Management Professionals) — the bid profession's body; LinkedIn
-  group + events; where bid managers congregate.
+- **APMP UK** ⭐ (Association for Proposal Management Professionals) — **the** bid profession's body: est
+  2001, **~3,000 members** (largest international chapter); where bid managers + consultancies congregate.
+  Channels in: **BIDx Roadshow** (1-day regional events through the year), **BIDx "The Big One"** (Europe's
+  largest annual bid/proposal conference), **BIDx Digital Festival** (monthly community webinars — a possible
+  slot to *show Bidframe*). Contact `members@apmpuk.co.uk`. Best play: engage a BIDx event/webinar — the
+  audience *is* the target market.
 - **LinkedIn**: hashtags/feeds around `#bidwriting` `#tendering` `#publicsector` — the founders above post
   actively (e.g. Dave Thornton). Engaging on their posts is a warm first touch.
 - **Bid/procurement newsletters & insight blogs** (Tussell, Thornton & Lowe blog, Glaxtons insights) —
@@ -154,6 +161,11 @@ quality** (we lose a prose fight to AutogenAI; we win on auditability).
 | "AI hallucinates — I can't trust it." | "Exactly why every requirement shows its source clause in one click, and every drafted answer cites the evidence behind it. If we can't ground it, we say *'needs your input'* rather than bluff." |
 | "We're too small / can't afford tools." | "That's the point — AutogenAI is priced for big firms. This is built for SME bidders and small consultancies working in Word and spreadsheets today." |
 | "Does it replace my bid writer?" | "No — it does the brutal first read (≈3 weeks → minutes) and catches the disqualifier, so your expert spends time on win themes, not hunting requirements. The human approves every call." |
+
+**Competitor watch (AI-bid space):** **AutogenAI** (enterprise generative, the 800lb gorilla) · **mytender.io**
+(SME-facing AI bid platform — closest direct competitor for our segment; study their pricing/positioning) ·
+**Loopio / Responsive** (RFP answer libraries) · **NotebookLM / ChatGPT** (black-box PDF chat). Our lane:
+*auditable extraction + the disqualifier catch + measured recall* — none of them quantify what they missed.
 
 ---
 
@@ -213,3 +225,11 @@ Ranked for: decides fast · bids often · reachable · strong wedge fit.
   communities/channels (APMP UK, LinkedIn bid voices like Dave Thornton/Vicki Stewart who post actively);
   then cycle 6 = ranked CRM master table + Day-3 sequencing. (Digital Marketplace MSP names still need a direct
   fetch — try `applytosupply.digitalmarketplace.service.gov.uk` search, else leave as a method note.)
+- **2026-06-29 (cycle 5)** — ⭐ **APMP UK** = the scalable warm channel: ~3,000 bid pros, **BIDx** Roadshow /
+  "The Big One" / Digital Festival (webinar = a possible Bidframe demo slot), `members@apmpuk.co.uk`. Filled
+  grounds-maintenance/security (ESPO + CCS RM6257 routes; Agile Guarding; **£29.1bn local-gov SME spend 2025**
+  market stat for the pitch). Added a **Competitor watch** (AutogenAI, **mytender.io** = closest SME AI-bid
+  competitor, Loopio, NotebookLM). **Next (cycle 6):** synthesise everything into ONE ranked CRM-style master
+  table (firm/person · tier · segment · fit · verified handle · hook · status) + tightened Day-3 sequencing.
+  Then cycle 7+: pin remaining handles (Ian Evans/BFT, Sharon Welch), study mytender.io + AutogenAI pricing,
+  polish outreach per segment.
