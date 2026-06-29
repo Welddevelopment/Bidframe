@@ -2,7 +2,7 @@ import type { Tender } from "@/types/requirement";
 
 export const mockTender: Tender = {
   tender_id: "tender-demo-001",
-  title: "Framework Agreement — IT Managed Services (Demo)",
+  title: "Framework Agreement, IT Managed Services (Demo)",
   requirements: [
     {
       id: "req-0001",
@@ -70,7 +70,7 @@ export const mockTender: Tender = {
           {
             doc_id: "cap-002",
             excerpt:
-              "Cyber Essentials Plus — certified (annual reassessment current); certificate valid at submission date.",
+              "Cyber Essentials Plus: certified (annual reassessment current); certificate valid at submission date.",
             page: 2,
           },
         ],
@@ -141,7 +141,7 @@ export const mockTender: Tender = {
           {
             doc_id: "cap-001",
             excerpt:
-              "Case study — NHS Greater Manchester: fully managed IT service across 14 sites (2023), 99.9% uptime; comparable scope and scale.",
+              "Case study, NHS Greater Manchester: fully managed IT service across 14 sites (2023), 99.9% uptime; comparable scope and scale.",
             page: 3,
           },
         ],
@@ -221,7 +221,7 @@ export const mockTender: Tender = {
     },
     {
       id: "req-0008",
-      text: "GDPR compliance statement — classification uncertain; may be pass/fail or informational only.",
+      text: "GDPR compliance statement: classification uncertain; may be pass/fail or informational only.",
       source_page: 27,
       source_clause: "Section 7.2",
       source_excerpt:
@@ -234,7 +234,7 @@ export const mockTender: Tender = {
       needs_review: true,
       decision: {
         action: "flag",
-        note: "Classification unclear — confirm with bid lead.",
+        note: "Classification unclear. Confirm with bid lead.",
         timestamp: "2026-06-28T10:18:00.000Z",
       },
       criteria_ref: "award-criterion-3",
@@ -247,7 +247,7 @@ export const mockTender: Tender = {
       source_page: 38,
       source_clause: "Section 9.4",
       source_excerpt:
-        "9.4 Service Delivery. The supplier shall provide a named account manager available during UK business hours (09:00–17:00 GMT).",
+        "9.4 Service Delivery. The supplier shall provide a named account manager available during UK business hours (09:00 to 17:00 GMT).",
       type: "mandatory",
       is_gating: false,
       category: "service",
@@ -261,7 +261,7 @@ export const mockTender: Tender = {
     },
     {
       id: "req-0010",
-      text: "Carbon reduction plan aligned with PPN 06/21 — optional but may affect scoring.",
+      text: "Carbon reduction plan aligned with PPN 06/21, optional but may affect scoring.",
       source_page: 46,
       source_clause: "Section 11.3",
       source_excerpt:

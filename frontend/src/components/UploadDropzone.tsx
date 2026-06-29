@@ -68,22 +68,8 @@ export function UploadDropzone() {
 
   if (stage === "done") {
     return (
-      <div className="w-full max-w-xl rounded-xl border border-hairline bg-paper-raised p-8 text-center shadow-sm">
-        <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-forest/10 text-forest ring-1 ring-inset ring-forest/30">
-          <svg
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            className="h-6 w-6"
-            aria-hidden
-          >
-            <path
-              fillRule="evenodd"
-              d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0l-3.5-3.5a1 1 0 1 1 1.4-1.4l2.8 2.8 6.8-6.8a1 1 0 0 1 1.4 0Z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </span>
-        <h2 className="mt-4 font-serif text-lg font-semibold tracking-tight text-ink">
+      <div className="w-full max-w-xl">
+        <h2 className="text-base font-semibold text-ink">
           Requirements extracted
         </h2>
         <p className="mt-1 text-sm text-ink-muted">
@@ -96,18 +82,17 @@ export function UploadDropzone() {
             "Built the compliance matrix from your tender."
           )}
         </p>
-        <div className="mt-6 flex items-center justify-center gap-3">
+        <div className="mt-5 flex items-center gap-4">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 rounded-md bg-forest px-4 py-2 text-sm font-medium text-paper transition-colors hover:bg-forest-hover"
+            className="inline-flex items-center rounded-md bg-forest px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-forest-hover"
           >
             View extracted requirements
-            <span aria-hidden>&rarr;</span>
           </Link>
           <button
             type="button"
             onClick={reset}
-            className="rounded-md px-3 py-2 text-sm font-medium text-ink-muted transition-colors hover:bg-paper hover:text-ink"
+            className="text-sm text-ink-muted transition-colors hover:text-ink"
           >
             Upload another
           </button>
@@ -118,35 +103,19 @@ export function UploadDropzone() {
 
   if (stage === "error") {
     return (
-      <div className="w-full max-w-xl rounded-xl border border-signal-oxblood/30 bg-paper-raised p-8 text-center shadow-sm">
-        <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-signal-oxblood/10 text-signal-oxblood ring-1 ring-inset ring-signal-oxblood/30">
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 9v3.75m0 3.5h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
-            />
-          </svg>
-        </span>
-        <h2 className="mt-4 font-serif text-lg font-semibold tracking-tight text-ink">
-          Couldn&rsquo;t reach the extractor
+      <div className="w-full max-w-xl">
+        <h2 className="text-base font-semibold text-ink">
+          Couldn&rsquo;t reach the server.
         </h2>
         <p className="mt-1 text-sm text-ink-muted">
-          The backend didn&rsquo;t respond. Check it&rsquo;s running and
-          reachable at <code className="font-mono text-ink">NEXT_PUBLIC_API_BASE_URL</code>, then try again.
+          The server didn&rsquo;t respond. Check it&rsquo;s running, then try
+          again.
         </p>
-        <div className="mt-6 flex items-center justify-center">
+        <div className="mt-5">
           <button
             type="button"
             onClick={reset}
-            className="inline-flex items-center rounded-md bg-forest px-4 py-2 text-sm font-medium text-paper transition-colors hover:bg-forest-hover"
+            className="inline-flex items-center rounded-md bg-forest px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-forest-hover"
           >
             Try again
           </button>
@@ -157,23 +126,28 @@ export function UploadDropzone() {
 
   if (stage === "extracting") {
     return (
-      <div className="w-full max-w-xl rounded-xl border border-hairline bg-paper-raised p-8 text-center shadow-sm">
+      <div className="flex w-full max-w-xl items-center gap-3">
         <span
-          className="inline-block h-10 w-10 animate-spin rounded-full border-[3px] border-hairline border-t-forest"
+          className="inline-block h-5 w-5 shrink-0 animate-spin rounded-full border-[3px] border-hairline border-t-forest"
           aria-hidden
         />
-        <h2 className="mt-4 font-serif text-lg font-semibold tracking-tight text-ink">
-          Extracting requirements&hellip;
-        </h2>
-        <p className="mt-1 truncate text-sm text-ink-muted" title={fileName ?? undefined}>
-          {fileName}
-        </p>
+        <div className="min-w-0">
+          <h2 className="text-base font-semibold text-ink">
+            Extracting requirements&hellip;
+          </h2>
+          <p
+            className="truncate text-sm text-ink-muted"
+            title={fileName ?? undefined}
+          >
+            {fileName}
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-xl">
+    <div className="w-full max-w-3xl">
       <div
         role="button"
         tabIndex={0}
@@ -187,13 +161,13 @@ export function UploadDropzone() {
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
-        className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-8 py-16 text-center transition-colors ${
+        className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-8 py-24 text-center transition-colors ${
           isDragging
             ? "border-forest bg-forest/5"
             : "border-hairline bg-paper-raised hover:border-forest hover:bg-paper"
         }`}
       >
-        <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-paper text-ink-muted">
+        <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-paper text-ink-muted">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -201,7 +175,7 @@ export function UploadDropzone() {
             strokeWidth={1.75}
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="h-6 w-6"
+            className="h-7 w-7"
             aria-hidden
           >
             <path d="M12 16V4" />
@@ -209,10 +183,10 @@ export function UploadDropzone() {
             <path d="M5 16v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2" />
           </svg>
         </span>
-        <p className="mt-4 text-sm font-medium text-ink">
+        <p className="mt-5 text-base font-medium text-ink">
           Drop a tender PDF here, or click to browse
         </p>
-        <p className="mt-1 text-xs text-ink-muted">
+        <p className="mt-1 text-sm text-ink-muted">
           We&rsquo;ll extract every requirement into a compliance matrix.
         </p>
       </div>

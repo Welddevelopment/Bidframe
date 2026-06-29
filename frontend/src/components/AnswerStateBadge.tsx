@@ -8,10 +8,10 @@ const styles: Record<AnswerState, string> = {
 };
 
 const labels: Record<AnswerState, string> = {
-  auto: "Auto-drafted",
+  auto: "Drafted for you",
   needs_input: "Needs your input",
   human_edited: "Edited by you",
-  empty: "No draft",
+  empty: "No draft yet",
 };
 
 export function AnswerStateBadge({ state }: { state: AnswerState }) {

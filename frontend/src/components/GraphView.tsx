@@ -142,8 +142,8 @@ export function GraphView() {
   }, [requirements]);
 
   return (
-    <div className="rounded-xl border border-hairline bg-paper-raised shadow-sm">
-      <div className="flex flex-wrap items-center gap-4 border-b border-hairline px-4 py-2.5 text-xs text-ink-muted">
+    <div>
+      <div className="flex flex-wrap items-center gap-4 border-b border-hairline pb-2.5 text-xs text-ink-muted">
         <span className="font-medium text-ink">Legend</span>
         <span className="inline-flex items-center gap-1.5">
           <span className="h-2.5 w-2.5 rounded-sm border border-signal-oxblood bg-signal-oxblood/10" />
@@ -173,7 +173,7 @@ export function GraphView() {
         </span>
       </div>
 
-      <div className="h-[70vh] w-full">
+      <div className="mt-3 h-[70vh] w-full">
         <ReactFlow
           nodes={nodes}
           edges={edges}

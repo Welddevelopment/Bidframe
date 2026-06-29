@@ -1,53 +1,92 @@
-interface ConfidenceIndicatorProps {
-  confidence: number;
-  needsReview: boolean;
-}
+// The confidence dot (DESIGN-SYSTEM section 4, axis 1). Four tiers, worst to
+// best, carried in greyscale by a fill level and a 1px ink ring, and by a hue.
+// The word beside it uses the fixed four-tier lexicon (copywriting.md), never a
+// number. Two renders: a compact dot-only for the matrix left cell, and a
+// dot+word for the spine and panel.
 
-function confidenceLabel(confidence: number, needsReview: boolean): string {
-  if (needsReview) return "Uncertain — needs review";
-  if (confidence >= 0.85) return "High confidence";
-  if (confidence >= 0.65) return "Moderate confidence";
-  return "Low confidence";
+type ConfidenceTier = "oxblood" | "amber" | "yellow" | "light-green";
+
+const TIER_WORD: Record<ConfidenceTier, string> = {
+  oxblood: "Can't answer this",
+  amber: "Low confidence",
+  yellow: "Fairly sure",
+  "light-green": "Confident",
+};
+
+const TIER_HUE: Record<ConfidenceTier, string> = {
+  oxblood: "bg-signal-oxblood",
+  amber: "bg-signal-amber",
+  yellow: "bg-signal-yellow",
+  "light-green": "bg-signal-light-green",
+};
+
+// How full the dot reads, so the tier survives the greyscale test.
+const TIER_FILL: Record<ConfidenceTier, string> = {
+  oxblood: "25%",
+  amber: "50%",
+  yellow: "75%",
+  "light-green": "100%",
+};
+
+// confidence -> tier. An explicit unanswerable case (a gating item with no good
+// answer) forces oxblood regardless of the raw number.
+function tierOf(confidence: number, unanswerable: boolean): ConfidenceTier {
+  if (unanswerable || confidence < 0.4) return "oxblood";
+  if (confidence < 0.6) return "amber";
+  if (confidence < 0.8) return "yellow";
+  return "light-green";
 }
 
 export function ConfidenceIndicator({
   confidence,
-  needsReview,
-}: ConfidenceIndicatorProps) {
-  const pct = Math.round(confidence * 100);
+  needsReview = false,
+  unanswerable = false,
+  variant = "word",
+}: {
+  confidence: number;
+  needsReview?: boolean;
+  unanswerable?: boolean;
+  variant?: "dot" | "word";
+}) {
+  // needs_review never reads better than amber: a flagged-for-review item is at
+  // most a rough draft.
+  const rawTier = tierOf(confidence, unanswerable);
+  const tier: ConfidenceTier =
+    needsReview && (rawTier === "yellow" || rawTier === "light-green")
+      ? "amber"
+      : rawTier;
 
-  const barColor = needsReview
-    ? "bg-signal-amber"
-    : confidence >= 0.85
-      ? "bg-signal-light-green"
-      : confidence >= 0.65
-        ? "bg-signal-yellow"
-        : "bg-signal-amber";
+  const word = TIER_WORD[tier];
 
-  const dotColor = needsReview
-    ? "bg-signal-amber"
-    : confidence >= 0.85
-      ? "bg-signal-light-green"
-      : confidence >= 0.65
-        ? "bg-signal-yellow"
-        : "bg-signal-amber";
-
-  return (
-    <div
-      className="flex items-center gap-2.5 min-w-[7rem]"
-      title={confidenceLabel(confidence, needsReview)}
-      aria-label={confidenceLabel(confidence, needsReview)}
+  const dot = (
+    <span
+      className="relative inline-block h-2.5 w-2.5 shrink-0 overflow-hidden rounded-full ring-1 ring-inset ring-ink/70"
+      aria-hidden
     >
       <span
-        className={`h-2.5 w-2.5 shrink-0 rounded-full ${dotColor} ${needsReview ? "animate-pulse" : ""}`}
-        aria-hidden
+        className={`absolute inset-x-0 bottom-0 ${TIER_HUE[tier]}`}
+        style={{ height: TIER_FILL[tier] }}
       />
-      <div className="h-1.5 w-16 overflow-hidden rounded-full bg-hairline">
-        <div
-          className={`h-full rounded-full transition-all ${barColor} ${needsReview ? "opacity-70" : ""}`}
-          style={{ width: `${pct}%` }}
-        />
-      </div>
-    </div>
+    </span>
+  );
+
+  if (variant === "dot") {
+    return (
+      <span
+        className="inline-flex items-center"
+        title={word}
+        aria-label={word}
+        role="img"
+      >
+        {dot}
+      </span>
+    );
+  }
+
+  return (
+    <span className="inline-flex items-center gap-2 text-sm text-ink-muted">
+      {dot}
+      <span>{word}</span>
+    </span>
   );
 }

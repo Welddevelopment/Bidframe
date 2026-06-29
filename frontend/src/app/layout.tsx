@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Fraunces, IBM_Plex_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
-import { NavBar } from "@/components/NavBar";
 import { RequirementsProvider } from "@/context/RequirementsContext";
 
 // Bidframe type system (DESIGN-SYSTEM.md §11): Fraunces headings, Chillax body,
@@ -33,7 +32,7 @@ const chillax = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Bidframe — Compliance Matrix",
+  title: "Bidframe · Compliance Matrix",
   description:
     "Extract and review tender requirements. Deal-breakers flagged, uncertainty surfaced.",
 };
@@ -48,11 +47,8 @@ export default function RootLayout({
       lang="en"
       className={`${fraunces.variable} ${chillax.variable} ${plexMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <RequirementsProvider>
-          <NavBar />
-          {children}
-        </RequirementsProvider>
+      <body className="min-h-full flex flex-col bg-paper">
+        <RequirementsProvider>{children}</RequirementsProvider>
       </body>
     </html>
   );

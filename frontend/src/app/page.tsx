@@ -1,18 +1,10 @@
-import { Header } from "@/components/Header";
 import { MatrixView } from "@/components/MatrixView";
 import { mockTender } from "@/data/mock-requirements";
 
+// The document view: one tender filling the screen. The full-bleed header (title,
+// triage line, single Next action) and the centred worklist body both live inside
+// MatrixView, which owns the shared selection and filter state (layout.md sections
+// 1, 2 and 8). This page is the thin shell that names the tender.
 export default function Home() {
-  return (
-    <div className="flex min-h-full flex-col bg-paper">
-      <Header
-        title={mockTender.title}
-        subtitle={`${mockTender.requirements.length} requirements extracted · Day 1 compliance matrix`}
-      />
-
-      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-8">
-        <MatrixView />
-      </main>
-    </div>
-  );
+  return <MatrixView title={mockTender.title} />;
 }

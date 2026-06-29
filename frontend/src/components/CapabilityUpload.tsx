@@ -3,8 +3,10 @@
 import { useRef, useState } from "react";
 import { useRequirements } from "@/context/RequirementsContext";
 
-// Two-sided traceability: drop in the bidder's own capability docs (.pdf/.txt) and the
-// API re-grounds every answer against them. Hidden on the mock default (no live tender).
+// Two-sided traceability: drop in the bidder's own capability docs (.pdf/.txt)
+// and the API re-checks every answer against them. Secondary to the draft
+// action, so this reads as a quiet panel, not a co-equal hero. Hidden on the
+// mock default (no live tender).
 export function CapabilityUpload() {
   const { tenderId, capabilityDocs, drafting, draftAnswers } = useRequirements();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -26,25 +28,25 @@ export function CapabilityUpload() {
   }
 
   return (
-    <div className="rounded-xl border border-hairline bg-paper-raised p-4 shadow-sm">
+    <div className="rounded-lg border border-hairline p-4">
       <div className="flex items-center justify-between gap-3">
-        <div>
+        <div className="min-w-0">
           <p className="text-sm font-medium text-ink">Capability evidence</p>
-          <p className="mt-0.5 text-xs text-ink-muted">
+          <p className="mt-0.5 max-w-[64ch] text-xs text-ink-muted">
             {capabilityDocs.length > 0
-              ? `Answers are grounded against ${capabilityDocs.length} document${
+              ? `Answers are backed by ${capabilityDocs.length} of your document${
                   capabilityDocs.length > 1 ? "s" : ""
                 }.`
-              : "Upload your capability docs to ground the draft in your own evidence."}
+              : "Upload your capability docs so the draft is backed by your own evidence."}
           </p>
         </div>
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={drafting}
-          className="shrink-0 rounded-md border border-hairline px-3 py-1.5 text-sm font-medium text-ink transition-colors hover:bg-paper disabled:cursor-not-allowed disabled:opacity-60"
+          className="shrink-0 rounded-md border border-hairline px-3 py-1.5 text-sm font-medium text-ink transition-colors hover:bg-paper-raised disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {drafting ? "Re-grounding…" : "Add evidence docs"}
+          {drafting ? "Re-checking the evidence…" : "Add evidence docs"}
         </button>
       </div>
 
@@ -53,7 +55,7 @@ export function CapabilityUpload() {
           {capabilityDocs.map((doc) => (
             <li
               key={doc.doc_id}
-              className="rounded-md bg-paper px-2 py-0.5 font-mono text-xs text-ink-muted ring-1 ring-inset ring-hairline"
+              className="rounded-md bg-paper-raised px-2 py-0.5 font-mono text-xs text-ink-muted ring-1 ring-inset ring-hairline"
             >
               {doc.filename}
             </li>
