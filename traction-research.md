@@ -59,9 +59,10 @@ Ranked by **decides-fast × bids-often × reachable × wedge-fit**. Verify ✅ h
 | 15 | **Agile Guarding / Brightr** | — | SME bidder (security/cleaning) | Regional SME FM bidders (ESPO/RM6257 + school cleaning) | company LinkedIn |
 | 16 | **Amanda Goode** — Think Tenders | ⭐ | Consultancy (SME, freelance) | Multi-award Birmingham SME bid shop; freelance → personal, fast reply (ranks with the ⭐ consultancies) | `/in/thinktenders` ✅ |
 | 17 | **Chris Hugo** — GovData | — | Consultancy (framework onboarding) | CEO, 1,800+ client base → as much a partnership/validator channel as a customer | `/in/christian-hugo-11059311` ✅ |
+| 18 | **Matt Smith** — Complete Tenders | ⭐ | Consultancy (SME) | MD & founder; SME-focused, strong NHS + council win record | `/in/mattsmith-completetenders` ✅ |
 
-> **Firm-only (no named contact yet — find a person before outreach):** Complete Tenders, Tsaks (London
-> office), Glaxtons (founder).
+> **Firm-only (no named contact yet — find a person before outreach):** Tsaks (London office), Glaxtons
+> (founder; CH 12065176).
 
 ## Day-3 sequencing (the play)
 
@@ -93,7 +94,7 @@ are also the sharpest *validators* of the wedge (traceability, the disqualifier 
 | **Executive Compass** ⭐ | est 2009, Newcastle, 7,000+ bids, ~85%, ISO 9001 team | PQQ/SQ + tender, social value, all sectors | **Neil Capstick** (founder; now leads "Social Value Practice") + the new MD | LinkedIn `/in/tenderwriter` |
 | **Hudson Succeed** | div. of Hudson Outsourcing, 2,000+ clients/40+ countries, 87% | Cross-sector, framework-heavy | **John Hudson** (COO) ✅; also a "Head of Bid Management (SMEs)" role + **Zoë Tumelty** (Succeed writer) | LinkedIn `/in/johnhudson3` |
 | **BidRight UK** | 13+ yrs, £200m+ secured; CH 07570878 | SMEs + not-for-profit: education, training, employment, **health & social care** | **Robin Clarkson** (Dir. of Development & Delivery) | bidrightuk.co.uk *(personal handle to find)* |
-| **Complete Tenders** | senior consultants, UK-wide | SME tender writing, all sectors | (founder TBD) *(verify)* | completetenders.com |
+| **Complete Tenders** ⭐ | est 2015, Welwyn GC (CH 09777717); 100+ NHS + 70+ council wins | SME tender writing, all sectors | **Matt Smith** (MD & founder) ✅ | LinkedIn `/in/mattsmith-completetenders` |
 | **Tenders UK** | est 2008, 4,000+ bids, 83% win | Domiciliary/adult social care frameworks, FM | **Christopher Martin** | LinkedIn `/in/winmoretenders` |
 | **Tender Victory** ⭐⭐ | est 2010, **majority clients are SMEs**; founder is **ex public-sector buyer** (Devon & Cornwall Police, 2005–10), MCIPS | SME-focused, cross-sector | **Vicki Stewart** (founder) ✅ | LinkedIn `/in/vicki-stewart-42a58a2a` · ☎ 07971 526587 (public on site) |
 | **Silverlock Tenders** | small/independent | Tenders, SME | **Dewi Hughes** (MD) | LinkedIn `/in/dewihughes` |
@@ -104,7 +105,7 @@ are also the sharpest *validators* of the wedge (traceability, the disqualifier 
 | **Tsaks Consulting** | 85% win; Sydney HQ + **London** office | Gov specialists, cross-sector | (London lead TBD) *(verify)* | tsaksconsulting.com |
 | **Bid Writing Service (BWS)** | award-winning, £5.5bn claimed; op. by Barkers Commercial Services Ltd (Manchester/Usk) | Public sector, local gov, NHS | **Mike Baron** (MD) + James Wignall (BD) | bidwritingservice.com *(personal handle to find)* |
 | **GovData Services** | est 2006 (Gary Coleman + Esther Hess), Warrington, 1,800+ clients, "£37bn won" | Framework onboarding + bid support | **Chris Hugo** (CEO) ✅ | LinkedIn `/in/christian-hugo-11059311` |
-| **Glaxtons Consulting** | 93% claimed; **publishes pricing "from £950"**; CCS CWAS3 + NHS frameworks | Cross-sector + procurement insights | (founder TBD) *(verify)* | glaxtons.co.uk |
+| **Glaxtons Consulting** | 93% claimed; **publishes pricing "from £950"**; CCS CWAS3 + NHS frameworks | Cross-sector + procurement insights | (founder TBD; CH 12065176, London) *(verify)* | glaxtons.co.uk |
 
 **Independent named bid writers worth a direct DM** (solo/small — fast decisions, active on LinkedIn):
 - **Stuart Reed** — "Bid Writing Expert" `/in/stuart-reed`
@@ -447,3 +448,7 @@ Two moments must land: **the catch** and **click-to-source**. Keep it ~60s; let 
   Services Ltd) named in Segment A. Both off the watchlist → only **Complete Tenders, Tsaks London, Glaxtons**
   remain (their founders don't surface via search — need a manual LinkedIn/website check). Pricing data point:
   **Glaxtons publishes "from £950"** (vs ~£3,800 avg SME bid-prep) — useful for our own pricing thinking. Maintenance mode.
+- **2026-06-29 (maintenance 7)** — Pinned **Matt Smith** (Complete Tenders MD & founder,
+  `/in/mattsmith-completetenders` ✅ → CRM #18; est 2015, Welwyn GC, CH 09777717, strong NHS+council record).
+  Watchlist now just **Tsaks (London lead) + Glaxtons (founder, CH 12065176)** — neither surfaces by name in
+  search; would need a manual LinkedIn/website look. CRM now 18 targets, 12 verified handles. Maintenance mode.
