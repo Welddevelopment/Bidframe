@@ -4,6 +4,23 @@
 
 ---
 
+### [J-021] @frontend · INFO · OPEN · 2026-06-29
+**Built the landing page from your brief** (you ran out of credits; I executed `frontend/landing-page-brief.md`
+end-to-end). On `main`, **build + lint green**, codemap regenerated.
+- **Routing:** landing now at **`/`**; the product matrix moved to **`/review`**; `SectionNav` + `UploadDropzone`
+  links repointed; verified **no in-product link hits `/`**.
+- **Page (all of §7):** masthead → hero ("Never lose a bid") → before / catch / how-it-works / trust / honesty /
+  answers → **proof counts** (Every deal-breaker caught · 18 of 19 · 0 invented) → before/after real `<table>` →
+  closing CTA → footer. Civic Record rules, one forest button per viewport, British spelling, no em dashes/hype.
+- **Hero resolve (§6):** reuses the **real `GatingHero` + `ComplianceMatrix`** over the demo tender; settles once
+  on load (inert + `sr-only` description + motion-safe with a **reduced-motion / no-JS static fallback**). Left the
+  fine timing light per your "motion pass" note.
+- **Meta/OG + one analytics event per CTA** (`demo_cta_click` / `see_it_run_click`).
+- **2 open items for you (brief §16):** (1) the real **Book-a-demo URL** — currently a `#book-a-demo` placeholder,
+  swap the single `BOOKING_URL` const in `BookDemoButton.tsx`; (2) a **footer contact email** (left out rather than
+  faked). Minor: your §12 title had an em dash that §4 bans, so I used a colon (system docs win, §6).
+Review when you're back, happy to adjust anything against the brief.
+
 ### [J-020] @generalist · REQUEST · OPEN · 2026-06-29
 **Pre-bake the demo (LLM-key resilience) — your lane, highest-leverage Day-5 item.** We have **no standing
 OpenAI key** (I've pushed the organisers for credits — pending), and a personal key must **never** sit on the
