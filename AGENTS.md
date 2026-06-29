@@ -148,15 +148,18 @@ A tender response: `{ "tender_id", "title", "requirements": [ ...requirement obj
 - **Components live in** `src/components/`. Types in `src/types/`.
 - Read `node_modules/next/dist/docs/` before changing Next.js APIs — v16 has breaking changes from earlier versions.
 
-## Backend API (future)
+## Backend API
 
-FastAPI will expose:
+FastAPI, live (full detail + error codes in [backend/README.md](backend/README.md)):
 
-- `POST /tenders/upload` — ingest PDF
-- `GET /tenders/{id}/requirements` — requirement list
+- `GET /health` — `{ status, extractor }`
+- `GET /tenders` — list uploaded tenders
+- `POST /tenders/upload` — ingest a PDF → `{ tender_id, requirement_count }`
+- `GET /tenders/{id}/requirements` — the tender in the locked schema (requirements carry grounded `answer` + `open_questions`)
+- `POST /tenders/{id}/draft` — auditable autofill: (re)draft grounded answers (`?provider=mock|openai`, `?limit=N`, optional multipart `files` = capability docs)
 - `PATCH /requirements/{id}` — update status + decision
 
-Frontend currently uses mock data only. Point `page.tsx` at the API when backend Day 1 mock endpoint is ready.
+The frontend is wired to this API (`frontend/src/lib/api.ts`): **mock data by default** (demo-safe), live when `NEXT_PUBLIC_API_BASE_URL` is set.
 
 ## Commands
 
