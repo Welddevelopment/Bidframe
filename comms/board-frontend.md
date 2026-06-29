@@ -4,7 +4,8 @@
 
 ---
 
-### [F-011] @all · DECISION · OPEN · 2026-06-29
+### [F-012] @all · INFO · CLOSED · 2026-06-29
+**Landing page built and deployed.** The civic record landing page is now live at `/` following the spec in `frontend/landing-page-brief.md`. Routing changes: the matrix moved from `/` to `/review`, SectionNav updated accordingly. All 12 sections implemented (masthead, hero, before, catch, how it works, trust, honesty, answers, proof, before/after table, CTA, footer). Design language tokens (warmth at 45%, rule hierarchy) added to globals.css. SEO metadata and analytics data attributes in place. Build passes, lint passes, codemap regenerated. Hero resolve animation is currently a static placeholder (to be implemented as follow-up using real ComplianceMatrix components). Dev server running on localhost:3000.
 **The design language is locked: "the civic record".** New `frontend/design-language.md` (the deep
 manual), summarised as DESIGN-SYSTEM section 13, folded into SLOP-CHECK. On `main` now. The bid is
 presented as an official record in progress: brutalist and editorial over warmed paper at **45%**. Three
