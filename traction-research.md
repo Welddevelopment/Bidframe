@@ -130,6 +130,10 @@ them. Consultancies are the better *first* target (value compounds), but SMEs gi
     Secondary Home Care framework.
   - *Named SME awardees found so far:* **Joghide Ltd**, **MC&DS Ltd** (Herefordshire framework). → find
     their registered manager / BD lead on LinkedIn; pair with the Herefordshire ITT for the live demo.
+  - *Named SME providers on the **St Helens** Domiciliary Care Approved List 2025/26 (public PDF, Lot 1):*
+    **Care at Home Group** (cahg.co.uk), **Lumina Care**, **Able Support**, **Yes Care**, + **Bluebird Care
+    St Helens** (national franchise). The council list publishes each provider's **registered manager + phone/
+    email** — so you can approach a named person and demo on the St Helens domiciliary ITT they bid into.
   - *Sources to harvest named providers:* the **St Helens Domiciliary Care Approved List 2025/26** (public PDF
     — lists the SME providers admitted to the framework); Care England tender-opportunities; Essex Provider Hub.
 - **IT / managed services** ⭐ — the **G-Cloud / Digital Marketplace** is a goldmine: ~4,000 suppliers,
@@ -419,3 +423,7 @@ Two moments must land: **the catch** and **click-to-source**. Keep it ~60s; let 
   Area" — consistent with BFT's Crosby/Liverpool base; flagged as *verify*, not ✅, since the result didn't name
   BFT). Added the **St Helens Domiciliary Care Approved List 2025/26** (public PDF) as a source of *named* SME
   care providers on a live framework. Staying in maintenance mode.
+- **2026-06-29 (maintenance 3)** — Extracted the St Helens list (PyMuPDF) → added **5 named SME domiciliary
+  care providers** (Care at Home Group, Lumina Care, Able Support, Yes Care, Bluebird Care St Helens) to
+  Segment B; the public council list also names each provider's registered manager + contact, so these are
+  approachable with a real framework to demo on. Real named bidders for the care segment. Maintenance mode.
