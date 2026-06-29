@@ -37,6 +37,27 @@ export async function getTender(tenderId: string): Promise<Tender> {
   return (await res.json()) as Tender;
 }
 
+// POST /tenders/{id}/draft — auditable autofill: draft a grounded answer per
+// requirement from the bidder's capability docs (or flag needs_input). Returns the
+// enriched tender. provider "openai" = precise grounded prose, "mock" = free
+// deterministic; omit for the server default. Optional capability files (.txt/.pdf)
+// swap in the real bidder's evidence for this draft.
+export async function draftAnswers(
+  tenderId: string,
+  opts: { provider?: "openai" | "mock"; files?: File[] } = {}
+): Promise<Tender> {
+  const query = opts.provider ? `?provider=${opts.provider}` : "";
+  const init: RequestInit = { method: "POST" };
+  if (opts.files && opts.files.length > 0) {
+    const form = new FormData();
+    for (const file of opts.files) form.append("files", file);
+    init.body = form;
+  }
+  const res = await fetch(`${BASE}/tenders/${tenderId}/draft${query}`, init);
+  if (!res.ok) throw new Error(`Autofill failed (${res.status})`);
+  return (await res.json()) as Tender;
+}
+
 // PATCH /requirements/{id} — persist a status + decision change.
 export async function patchRequirement(
   id: string,

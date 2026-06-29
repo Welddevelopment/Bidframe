@@ -8,11 +8,18 @@ import type {
   RequirementStatus,
 } from "@/types/requirement";
 import { mockTender } from "@/data/mock-requirements";
-import { getTender, isApiEnabled, patchRequirement } from "@/lib/api";
+import {
+  draftAnswers as apiDraftAnswers,
+  getTender,
+  isApiEnabled,
+  patchRequirement,
+} from "@/lib/api";
 
 interface RequirementsContextValue {
   requirements: Requirement[];
   capabilityDocs: CapabilityDoc[];
+  tenderId: string | null;
+  drafting: boolean;
   updateRequirement: (id: string, patch: Partial<Requirement>) => void;
   approve: (id: string) => void;
   editRequirement: (id: string, note: string) => void;
@@ -24,6 +31,7 @@ interface RequirementsContextValue {
     answerText: string
   ) => void;
   loadTender: (tenderId: string) => Promise<void>;
+  draftAnswers: (provider?: "openai" | "mock") => Promise<void>;
 }
 
 const RequirementsContext = createContext<RequirementsContextValue | null>(null);
@@ -41,6 +49,10 @@ export function RequirementsProvider({
   const [capabilityDocs, setCapabilityDocs] = useState<CapabilityDoc[]>(
     () => mockTender.capability_docs ?? []
   );
+  // The live tender currently loaded (null on the mock default). Needed so the
+  // autofill action knows which tender to draft against.
+  const [tenderId, setTenderId] = useState<string | null>(null);
+  const [drafting, setDrafting] = useState(false);
 
   function updateRequirement(id: string, patch: Partial<Requirement>) {
     setRequirements((prev) =>
@@ -49,10 +61,25 @@ export function RequirementsProvider({
   }
 
   // Replace the in-memory tender with one fetched from the live backend.
-  async function loadTender(tenderId: string) {
-    const tender = await getTender(tenderId);
+  async function loadTender(id: string) {
+    const tender = await getTender(id);
     setRequirements(tender.requirements);
     setCapabilityDocs(tender.capability_docs ?? []);
+    setTenderId(id);
+  }
+
+  // Auditable autofill: ask the API to (re)draft grounded answers for the loaded
+  // tender, then swap the enriched requirements + capability docs into the UI.
+  async function draftAnswers(provider: "openai" | "mock" = "openai") {
+    if (!tenderId || !isApiEnabled()) return;
+    setDrafting(true);
+    try {
+      const tender = await apiDraftAnswers(tenderId, { provider });
+      setRequirements(tender.requirements);
+      setCapabilityDocs(tender.capability_docs ?? []);
+    } finally {
+      setDrafting(false);
+    }
   }
 
   // Optimistic in-memory update + best-effort persistence to the API when wired.
@@ -138,6 +165,8 @@ export function RequirementsProvider({
       value={{
         requirements,
         capabilityDocs,
+        tenderId,
+        drafting,
         updateRequirement,
         approve,
         editRequirement,
@@ -145,6 +174,7 @@ export function RequirementsProvider({
         editAnswer,
         answerOpenQuestion,
         loadTender,
+        draftAnswers,
       }}
     >
       {children}

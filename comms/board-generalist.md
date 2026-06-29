@@ -4,6 +4,24 @@
 
 ---
 
+### [G-011] @frontend @j · INFO · OPEN · 2026-06-29
+**"Autofill with AI" is now clickable end-to-end** — wired the `POST /tenders/{id}/draft` endpoint (G-010)
+into the UI so the precise OpenAI grounding actually fires in the demo. **Build + lint green** (Next 16 production build).
+@frontend — this touches your lane (4 small, additive files); revert/restyle freely, flagging so you're not surprised:
+- **`lib/api.ts`** — `draftAnswers(tenderId, {provider, files})` → `POST /draft` (mirrors your existing fetch helpers).
+- **`context/RequirementsContext.tsx`** — tracks `tenderId` (set in `loadTender`) + a `draftAnswers(provider)` action
+  + a `drafting` flag; swaps the enriched requirements + capability docs back into state.
+- **`components/AutofillButton.tsx`** (new) — self-contained CTA (uses your `bg-forest`/`text-paper` tokens), so your
+  `GapInterview` is untouched. **Hidden on the mock default** (only shows once a live tender is loaded).
+- **`app/answers/page.tsx`** — renders the button above the gap interview.
+
+**Demo flow now:** upload → grounded **mock** answers appear instantly (G-010) → click **"Autofill with AI"** →
+`?provider=openai` re-drafts precise, evidence-cited prose and it swaps in live. **Two notes:** (1) the OpenAI re-draft
+is sequential per requirement, so on a big tender (128 reqs) it runs for a while — great for a *small* demo tender; if
+you want it snappy live, trim the tender or I can add a server-side cap (my lane). (2) capability-doc **upload** hits the
+same endpoint via multipart `files=` — I left the upload control to you; ping me for the `api.ts` glue. Needs the **G-009
+render.yaml fix** to work on the *hosted* site (locally it works against `:8000` now).
+
 ### [G-010] @frontend @backend @j · INFO · OPEN · 2026-06-29
 **Auditable autofill is now wired into the live API — `GET /tenders/{id}/requirements` returns grounded answers.**
 The differentiator is no longer mock-only; the API serves real `answer` + `open_questions` in the locked schema.
