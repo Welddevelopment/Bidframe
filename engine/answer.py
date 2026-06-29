@@ -62,6 +62,26 @@ def _evidence_ref(passage: dict) -> dict:
     return {"doc_id": passage["doc_id"], "excerpt": passage["text"], "page": passage["page"]}
 
 
+def _build_gap_questions(raw_questions: list[dict], gaps: list[dict]) -> list[dict]:
+    """Validate LLM-produced gap questions against the real gaps: keep only questions
+    that unblock a known requirement, and re-derive `unblocks_gating` from the gaps so a
+    model slip can't mislabel a disqualifier. Pure (no network) — the testable core."""
+    valid_ids = {g["req_id"] for g in gaps}
+    gating_ids = {g["req_id"] for g in gaps if g.get("is_gating")}
+    out: list[dict] = []
+    for i, q in enumerate(raw_questions, 1):
+        unblocks = [rid for rid in (q.get("unblocks") or []) if rid in valid_ids]
+        if not unblocks:
+            continue
+        out.append({
+            "id": q.get("id") or f"q-{i}",
+            "question": (q.get("question") or "").strip(),
+            "unblocks": unblocks,
+            "unblocks_gating": bool(q.get("unblocks_gating")) or bool(set(unblocks) & gating_ids),
+        })
+    return out
+
+
 # --------------------------------------------------------------------------- #
 # Answerers
 # --------------------------------------------------------------------------- #
@@ -166,8 +186,64 @@ class OpenAIAnswerer:
         out.setdefault("confidence", 0.0)
         return out
 
-    # Reuse the mock's deterministic deduper for the gap list (cheap, no extra LLM call).
-    dedupe_gaps = MockAnswerer.dedupe_gaps
+    # Gap interview (J's prompts/gap-interview.md): turn the raw needs_input gaps into the
+    # SHORTEST set of plain-English questions, deduping shared facts. One LLM call for the
+    # whole list; falls back to the mock's deterministic deduper if it's unavailable.
+    _GAP_SYSTEM = (
+        "You turn a list of unanswered tender-requirement gaps into the SHORTEST possible set of "
+        "clear questions for a human bid manager. Ask the fewest questions that unblock the most "
+        "requirements.\nRULES\n- DEDUPE aggressively: if several requirements need the same fact, ask "
+        "for it ONCE and link all the requirements it unblocks.\n- Make each question specific and "
+        "answerable in one line — a fact, a number, a yes/no, or a document to attach. No essays.\n"
+        "- Order by impact: questions unblocking GATING requirements first, then by how many each "
+        "unblocks.\n- Plain English, second person (\"Do you hold…?\", \"What is your…?\"). No jargon, "
+        "no restating the clause.\n- Do not invent gaps. Only ask about the gaps provided.\n"
+        "Each question carries the list of requirement ids it would unblock."
+    )
+    _GAP_SCHEMA = {
+        "type": "object",
+        "properties": {
+            "questions": {"type": "array", "items": {"type": "object", "properties": {
+                "id": {"type": "string"},
+                "question": {"type": "string"},
+                "unblocks": {"type": "array", "items": {"type": "string"}},
+                "unblocks_gating": {"type": "boolean"},
+            }, "required": ["id", "question", "unblocks", "unblocks_gating"]}},
+        },
+        "required": ["questions"],
+    }
+
+    def _call_gap_interview(self, gaps: list[dict]) -> dict:
+        lines = [
+            f"- req {g['req_id']}{' (GATING)' if g.get('is_gating') else ''}: "
+            f"needs — {g.get('missing') or g.get('text', '')}"
+            for g in gaps
+        ]
+        user = ("The following requirements need input from the human (each with the gap the drafter "
+                "identified):\n\n" + "\n".join(lines) +
+                "\n\nProduce the shortest set of questions that unblocks these. Dedupe shared needs. "
+                "Gating first.")
+        resp = self._client.chat.completions.create(
+            model=self._model,
+            messages=[{"role": "system", "content": self._GAP_SYSTEM}, {"role": "user", "content": user}],
+            tools=[{"type": "function", "function": {
+                "name": "emit_questions", "description": "Return the deduped question list.",
+                "parameters": self._GAP_SCHEMA}}],
+            tool_choice={"type": "function", "function": {"name": "emit_questions"}},
+        )
+        calls = resp.choices[0].message.tool_calls or []
+        return json.loads(calls[0].function.arguments) if calls else {"questions": []}
+
+    def dedupe_gaps(self, gaps: list[dict]) -> list[dict]:
+        if not gaps:
+            return []
+        try:
+            questions = _build_gap_questions(self._call_gap_interview(gaps).get("questions", []), gaps)
+            if questions:
+                return questions
+        except Exception as exc:  # pragma: no cover - network/parse failure → deterministic fallback
+            print(f"[answer] gap-interview LLM failed ({exc}); using deterministic dedupe.")
+        return MockAnswerer.dedupe_gaps(self, gaps)
 
 
 def get_answerer():
