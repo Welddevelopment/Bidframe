@@ -20,7 +20,7 @@ from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
 
 from .extract import get_extractor
-from .ingest import ingest_pdf
+from .ingest import ingest_pdf, PDFIngestError
 from .pipeline import run_pipeline
 from .schema import DecisionUpdate, Requirement, TenderResponse
 from . import pipeline, store
@@ -108,9 +108,17 @@ async def upload_tender(file: UploadFile = File(...), title: str = Form(None)):
     with dest.open("wb") as out:
         shutil.copyfileobj(file.file, out)
 
-    resp = run_pipeline(
-        str(dest), tender_id=tender_id, title=title or file.filename
-    )
+    try:
+        resp = run_pipeline(
+            str(dest), tender_id=tender_id, title=title or file.filename
+        )
+    except PDFIngestError as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Pipeline failed on this PDF: {exc}. The file may be corrupt or unsupported.",
+        )
     store.save_tender(resp, filename=file.filename)
     return {"tender_id": tender_id, "requirement_count": len(resp.requirements)}
 

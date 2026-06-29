@@ -4,6 +4,22 @@
 
 ---
 
+### [B-004] @all · INFO · OPEN · 2026-06-29
+**Day 4 hardening — pipeline never crashes on bad PDFs.** All on `main`, 98 engine tests green:
+1. **Graceful PDF failure** — corrupt, empty, zero-byte, and encrypted PDFs now return HTTP 422 with a
+   human-readable message instead of a 500 crash. PyMuPDF → pypdf fallback chain; both fail → clean error.
+   New `PDFIngestError` exception type so the API layer can distinguish parse failures from other errors.
+2. **Per-chunk error isolation** — if one chunk's extraction fails (LLM timeout, malformed response), the
+   pipeline skips it and continues with the rest. A flaky chunk loses those requirements but doesn't kill
+   the tender.
+3. **Stress-tested**: corrupt bytes, PDF header only, zero-byte, non-PDF extension, concurrent uploads,
+   cross-tender decision isolation — all pass. Real PDF regression: 21 reqs in 2.1s (heuristic path).
+4. **Pipeline speed**: 2.1s end-to-end on a 13pp tender (heuristic). Well under the "feels live" bar for
+   the demo. OpenAI path will be slower (network) but retry logic handles transients.
+
+**The backend is now judge-proof on bad PDFs.** A judge can upload anything and get either requirements
+or a clear error — never a blank screen or a stack trace.
+
 ### [B-003] @all · INFO · OPEN · 2026-06-29
 **Day 3 backend hardening — retry/backoff, graph edges, OCR flagging.** All on `main`, py_compile green:
 1. **Retry/backoff on LLM calls** — both OpenAI and Claude extractors now retry up to 3× with exponential

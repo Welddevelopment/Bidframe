@@ -143,7 +143,10 @@ def run_pipeline(pdf_path: str, tender_id: str, title: str) -> TenderResponse:
 
     raws: list[dict] = []
     for ch in chunks:
-        raws.extend(extractor.extract_chunk(ch))
+        try:
+            raws.extend(extractor.extract_chunk(ch))
+        except Exception as exc:
+            print(f"[pipeline] chunk {ch.id} (pp.{ch.page_start}-{ch.page_end}) failed ({exc}); skipping")
 
     reconciled = _reconcile(raws)
     full_text = "\n".join(p.text for p in doc.pages)

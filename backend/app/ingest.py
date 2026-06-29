@@ -139,18 +139,31 @@ def _flag_sparse_pages(pages_text: list[str]) -> list[str]:
     return flagged
 
 
+class PDFIngestError(RuntimeError):
+    """Raised when a PDF cannot be parsed by any available engine."""
+    pass
+
+
 def ingest_pdf(pdf_path: str | Path, *, enrich: bool = True) -> IngestedDoc:
-    """Read a PDF into page-numbered text. Raises on missing file / no PDF engine."""
+    """Read a PDF into page-numbered text. Raises PDFIngestError on unparseable files."""
     path = Path(pdf_path)
     if not path.exists():
         raise FileNotFoundError(f"PDF not found: {path}")
 
-    raw_pages = _extract_with_fitz(path)
+    raw_pages = None
+    try:
+        raw_pages = _extract_with_fitz(path)
+    except Exception as exc:
+        print(f"[ingest] PyMuPDF failed on {path.name} ({exc}); trying pypdf")
     if raw_pages is None:
-        raw_pages = _extract_with_pypdf(path)
+        try:
+            raw_pages = _extract_with_pypdf(path)
+        except Exception as exc:
+            print(f"[ingest] pypdf also failed on {path.name} ({exc})")
     if raw_pages is None:
-        raise RuntimeError(
-            "No PDF engine available. Install one: pip install pymupdf (preferred) or pypdf"
+        raise PDFIngestError(
+            f"Could not parse {path.name} — the file may be corrupt, encrypted, "
+            f"or image-only. Please check the PDF and try again."
         )
 
     if enrich:
