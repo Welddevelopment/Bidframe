@@ -27,6 +27,10 @@ it. This protocol turns "do not look like AI" into rules you can actually check.
   matrix that reads like a contents page, and a split open state (the matrix shrinks to an index spine,
   the panel takes the room). Interactivity scales with stakes. See DESIGN-SYSTEM section 12 and
   [layout.md](layout.md).
+- **Design language: the civic record.** Brutalist and editorial over warmed paper at 45%: the bid
+  presented as an official record (masthead, three-weight rules, a numbered register, a ruled margin, the
+  mono record voice, an approval stamp). Warmth is the material, the record is the form, the form leads.
+  See DESIGN-SYSTEM section 13 and [design-language.md](design-language.md).
 
 ## The slop check (run before you commit a wireframe)
 
@@ -70,7 +74,9 @@ These are blockers. If a wireframe contains any of these, it does not ship.
 **Type and headlines**
 - Really long headlines. Keep them short and human. If it runs to two long lines, cut it.
 - Eyebrow labels (the little kicker line above a heading). Not needed.
-- Numbered website sections (01 / 02 / 03 section markers). The content should carry itself.
+- Numbered website sections (decorative 01 / 02 / 03 kicker markers). The content should carry itself.
+  This is not the register: real clause and requirement references (`Section 4.2.1`, `req-0001`) are data,
+  and the matrix is allowed to carry them down a quiet margin (see DESIGN-SYSTEM section 13).
 - Gradient text. Centered paragraph blocks. One weight doing every job.
 
 **Components**
@@ -94,6 +100,16 @@ These are blockers. If a wireframe contains any of these, it does not ship.
   to a comfortable measure (about 64 characters).
 - Equal weight and equal interactivity on every row regardless of stakes. The risky and the safe
   must not look or behave identically: the layout carries the stakes.
+
+**Material and the civic record** (see DESIGN-SYSTEM section 13)
+- Paper grain or texture on the scanning matrix rows or the page background. Grain lives only on raised
+  surfaces (the lifted sheet, the gating callout, the upload card).
+- Depth that does not mean focus. If a surface is not the thing being worked on, it does not lift, and
+  nothing floats decoratively. Warmth stays at the 45% tokens, it does not creep up.
+- More than one heavy (2px ink) rule per screen. The masthead rule is the one.
+- Nostalgia or newspaper costume: drop caps, halftone, sepia, faux-newsprint. The civic look comes from
+  structure and restraint, not period pastiche.
+- A distressed or rubber-stamp texture on the approval mark. Keep it a clean geometric mark.
 
 **Copy**
 - Em dashes. Banned from all copy, everywhere. Use a period, a comma, or a colon instead.

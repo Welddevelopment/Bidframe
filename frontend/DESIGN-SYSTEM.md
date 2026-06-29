@@ -9,7 +9,8 @@ wireframe against.
 **Status:** living draft, open for team feedback. Exact color values are provisional and will be tuned
 by frontend. The typeface is locked: Fraunces for headings, Chillax for body (see section 11). The layout
 is settled: split open state, a Next-led header, one-line matrix rows (see section 12 and
-[layout.md](layout.md)).
+[layout.md](layout.md)). The design language is locked: the civic record, brutalist and editorial over
+warmed paper at 45% (see section 13 and [design-language.md](design-language.md)).
 
 ## 1. Philosophy: confident calm
 
@@ -177,9 +178,12 @@ to forest on approval).
 ## 10. Surfaces and shape
 
 - Backgrounds are warm paper, never pure white or pure black.
-- Flat or near-flat. One soft shadow language, used sparingly.
+- Warmed paper with depth that means focus (the civic record, see section 13). One soft shadow language,
+  ink-tinted, used only on raised surfaces (the lifted sheet, the gating callout, the upload card), never
+  on the scanning list or the page. A faint paper grain lives on those raised surfaces only.
 - Modest radii. No oversized bezels or chunky rounded accent bars (see SLOP-CHECK).
-- Accent edges are thin (hairline up to 2px) and near square.
+- Accent edges are thin (hairline up to 2px) and near square. Structural rules come in three weights only
+  (a 2px ink masthead rule at most once per screen, a section rule, a hairline), see section 13.
 
 ## 11. Typography
 
@@ -238,11 +242,43 @@ This extends section 8 from interaction into layout.
   peers (matrix rows). No per-row borders, no nested cards.
 
 Full structure, every rule in technical and plain-English form, plus the slop-layout gate:
-[layout.md](layout.md). A richer skeuomorphic / paper treatment is planned but deferred; the layout
-commits now only to "depth means focus" (the panel sits above the matrix, nothing else floats), which the
-later paper pass builds on without undoing. Section 10's "near-flat" wording stands until that pass.
+[layout.md](layout.md). The layout commits to "depth means focus" (the panel sits above the matrix,
+nothing else floats), and the paper treatment that builds on it is now defined as the civic record in
+section 13.
 
-## 13. Relationship to the slop check
+## 13. Design language: the civic record
+
+The visual identity over the top of the layout. Where section 12 decides structure, this decides feel.
+The principle: **Bidframe presents your bid as an official record in progress**, a public document with a
+masthead, ruled structure, numbered clauses, a margin of citations, and an approval stamp. Three
+ingredients, in order of authority: **editorial structure** (the form), **brutalist honesty** (the
+discipline, the form is the function, which is the same promise as auditability), and **warmed paper at
+45%** (the material).
+
+The two pull in opposite directions on purpose. Warmth stops the civic record going cold (a cold one reads
+like a forbidding tax form), and the civic record stops the warmth going twee. The holding rule: **warmth
+is the material, the civic record is the form, and the form leads. Where they conflict, structure wins.**
+
+- **The masthead.** The header reads like an official letterhead: a mono running head, the tender title in
+  Fraunces, a mono reference line from real metadata, one 2px ink rule beneath. It is the focal anchor.
+- **A rule hierarchy.** Three weights by meaning: a 2px ink masthead rule (once per screen), a section
+  rule, a hairline. Lines do the structural work.
+- **The register.** The matrix carries each row's real clause reference down a quiet mono left margin, so
+  it reads like an official compliance schedule, not a flat list. Real data, not decorative numbering.
+- **The ruled margin.** The working sheet has a ledger margin: warm body text in its 64ch column,
+  citations and the audit line in mono past a hairline rule.
+- **The mono record voice.** Mono is the official printed record (refs, IDs, timestamps, the audit line),
+  Chillax is the human draft, Fraunces is the titles. Three voices, three jobs.
+- **The approval stamp.** Approving stamps the sheet: a clean forest mark set slightly off-axis that
+  settles into place, with your name and the time in mono beside it. The signature moment.
+
+Depth and the paper grain live only on raised surfaces (the lifted sheet, the gating callout, the upload
+card), never on the scanning rows or the page. Warmth is capped at the 45% tokens. The light-paper
+identity has no dark mode. Full manual, with the material tokens (the concrete 45% values), the device
+specs in technical and plain form, the guardrails, and the civic-record check:
+[design-language.md](design-language.md).
+
+## 14. Relationship to the slop check
 
 `SLOP-CHECK.md` is the enforceable subset of this system: the banned list and the pre-wireframe gate.
 If this document is the intent, the slop check is the gate. When the two disagree, fix one to match

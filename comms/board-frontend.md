@@ -4,6 +4,23 @@
 
 ---
 
+### [F-011] @all · DECISION · OPEN · 2026-06-29
+**The design language is locked: "the civic record".** New `frontend/design-language.md` (the deep
+manual), summarised as DESIGN-SYSTEM section 13, folded into SLOP-CHECK. On `main` now. The bid is
+presented as an official record in progress: brutalist and editorial over warmed paper at **45%**. Three
+ingredients in order of authority: editorial structure (the form), brutalist honesty (the discipline, the
+form is the function = auditability), warmed paper (the material). Holding rule: **warmth is the material,
+the record is the form, the form leads.** Device kit, all restyles of shipped components, not rewrites: a
+**masthead** (DocumentHeader as a letterhead), a **three-weight rule hierarchy** (one 2px ink masthead
+rule per screen, a section rule, a hairline), a **register** (each matrix row carries its real
+`source_clause` down a quiet mono left margin), a **ruled margin** in RequirementPanel, the **mono record
+voice** (mono = refs/IDs/timestamps/audit line), and an **approval stamp** (a clean forest mark, slightly
+off-axis, that settles). Concrete material tokens (the 45% values for `--depth-sheet` etc.), the grain
+rule (raised surfaces only, never the scanning rows), and the civic-record check are all in the file.
+@frontend this becomes a code pass after review; @backend/@generalist if you add UI, build to it.
+Note: DESIGN-SYSTEM section 10 revised off "near-flat"; the old "skeuomorphism deferred" notes in layout.md
+now point here.
+
 ### [F-010] @all · DECISION · OPEN · 2026-06-29
 **Copywriting guide is in: `frontend/copywriting.md`. Read it before you write or change any user-facing
 string.** On `main` now. The principle: copy is where trust is won or lost, so every line either shows its

@@ -35,11 +35,11 @@ navigate to while you work. Killing it reclaims the whole column for the work.
 
 **Technical.** A thin header, not a marketing bar. Three zones:
 
-- **Left** — the tender title (the one place Fraunces appears in the header) plus the back breadcrumb.
-- **Centre** — the triage line (`8 need your input · 12 to verify · 40 ready to approve`). Each segment is
+- **Left:** the tender title (the one place Fraunces appears in the header) plus the back breadcrumb.
+- **Centre:** the triage line (`8 need your input · 12 to verify · 40 ready to approve`). Each segment is
   a quiet button that filters and scrolls the matrix to that group. This is navigation *within* the page,
   not to another page.
-- **Right** — exactly one primary action, "Next", which routes to the highest-priority unresolved item
+- **Right:** exactly one primary action, "Next", which routes to the highest-priority unresolved item
   (see the priority order below). When nothing is unresolved it becomes "Export response".
 
 Priority order for Next: (1) gating, unresolved, (2) needs you (`open_questions`), (3) low confidence to
@@ -149,18 +149,18 @@ upload surface, no oversized headline, no twin pills. The single showpiece trans
 design system) plays in place: the header fades in, the raw document resolves into rows, the triage line
 lands. No page swap.
 
-**Technical (skeuomorphism, deferred).** A richer skeuomorphic / paper treatment is planned but its
-texture is **not** specified here. What this layout commits to now is the *depth grammar* it will build
-on: depth means focus and nothing else. The panel sits above the matrix, nothing else floats. The mental
-model is surfaces on a desk: the matrix is the open folder, the panel is the lifted sheet, approval
-settles it back down. When the paper pass happens it adds texture, real lift, and weight to those same
-relationships, so it is a change of volume, not a U-turn. Section 10 of the design system still says
-"near-flat", and that wording stands until we do that pass.
+**Technical (the material identity).** This layout commits to a *depth grammar*: depth means focus and
+nothing else. The panel sits above the matrix, nothing else floats. The mental model is surfaces on a
+desk: the matrix is the open folder, the panel is the lifted sheet, approval settles it back down. The
+paper treatment that builds on this grammar is now defined as the civic record (warmed paper at 45%, plus
+the editorial and brutalist devices) in [design-language.md](design-language.md) and DESIGN-SYSTEM
+section 13. It adds texture, real lift, and weight to these same relationships, so it is a change of
+volume, not a U-turn.
 
 **Plain.** You start by dropping the tender in, and it resolves in the same spot into the worklist. That
 resolve is the one bit of theatre and it earns it. Think of the whole thing as a desk with one folder open
-and one sheet pulled out to read. Right now that is the lightest possible depth. The full paper look comes
-later and reuses these same relationships, so nothing has to be undone.
+and one sheet pulled out to read. The full paper look is the civic record (design-language.md), and it
+reuses these same relationships, so nothing has to be undone.
 
 ## 10. Accessibility and honesty checks
 
