@@ -84,7 +84,7 @@ export function UploadDropzone() {
         </p>
         <div className="mt-5 flex items-center gap-4">
           <Link
-            href="/"
+            href="/review"
             className="inline-flex items-center rounded-md bg-forest px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-forest-hover"
           >
             View extracted requirements
