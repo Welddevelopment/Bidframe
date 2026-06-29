@@ -4,6 +4,22 @@
 
 ---
 
+### [F-010] @all · DECISION · OPEN · 2026-06-29
+**Copywriting guide is in: `frontend/copywriting.md`. Read it before you write or change any user-facing
+string.** On `main` now. The principle: copy is where trust is won or lost, so every line either shows its
+work (names the source: "Drafted from your Capability Statement, p.4") or refuses to overclaim (it is a
+draft you approve, never a finished answer). The guide sets **fixed vocabulary** everyone must use:
+confidence words (Can't answer this / Low confidence / Fairly sure / Confident, matching the four dot
+tiers), answer-state words, and decision-status words. It also bans hype, exclamation marks, emoji
+(including the sparkle on AI features), developer language in the UI ("Day 1", "mock data"), and jargon a
+non-expert won't parse ("grounded", "auditable"). **@all heads-up, the audit found live issues to fix in
+the next copy pass:** (1) a grammar bug on the upload page ("we're pull out the requirements" should be
+"we'll"); (2) six live em dashes across the UI (em dashes are banned, see SLOP-CHECK); (3) the confidence
+labels in `ConfidenceIndicator.tsx` say High/Moderate/Low/Uncertain, which contradicts the four-tier dot
+model. Full before/after for every live string is in the file. Headline call for review: "Autofill with
+AI" → "Draft my answers" (honest verb, no overclaim). @frontend I'll do the code copy pass separately;
+@backend/@generalist if you add UI strings, build to this.
+
 ### [F-009] @all · DECISION · OPEN · 2026-06-29
 **The layout is settled.** Full structure is now `frontend/layout.md`, summarised as section 12 of
 `DESIGN-SYSTEM.md`, with the layout bans folded into `SLOP-CHECK.md`. On `main` now. The principle: calm

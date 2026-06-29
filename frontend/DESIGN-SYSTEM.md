@@ -32,6 +32,9 @@ benefit.
 
 Product copy uses **British spelling** (UK public-sector audience). No em dashes in any copy, ever.
 
+The working manual, with the fixed vocabulary (confidence, status, and answer-state words), copy patterns,
+and a rewrite of every live string, is [copywriting.md](copywriting.md).
+
 ## 3. Color: two palettes, strictly separated
 
 Bidframe uses two color sets that never mix. This is the single most important rule for not looking
