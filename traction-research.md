@@ -43,7 +43,7 @@ are also the sharpest *validators* of the wedge (traceability, the disqualifier 
 | **BidRight UK** | 13+ yrs, £200m+ secured | SMEs + not-for-profit: education, training, employment, **health & social care** | (founder TBD) *(verify)* | bidrightuk.co.uk contact |
 | **Complete Tenders** | senior consultants, UK-wide | SME tender writing, all sectors | (founder TBD) *(verify)* | completetenders.com |
 | **Tenders UK** | est 2008, 4,000+ bids, 83% win | Domiciliary/adult social care frameworks, FM | **Christopher Martin** | LinkedIn `/in/winmoretenders` |
-| **Tender Victory** ⭐ | est 2010, **majority clients are SMEs** | SME-focused, cross-sector | **Vicki Stewart** (founder) *(verify handle)* | tendervictory.co.uk |
+| **Tender Victory** ⭐⭐ | est 2010, **majority clients are SMEs**; founder is **ex public-sector buyer** (Devon & Cornwall Police, 2005–10), MCIPS | SME-focused, cross-sector | **Vicki Stewart** (founder) ✅ | LinkedIn `/in/vicki-stewart-42a58a2a` · ☎ 07971 526587 (public on site) |
 | **Silverlock Tenders** | small/independent | Tenders, SME | **Dewi Hughes** (MD) | LinkedIn `/in/dewihughes` |
 | **Bid Writer Consultancy** | est 2014, "Best SMB" 2017, freelancer collective; markets **AI bid support** | Cross-sector, SME | **Sharon Welch** (founder) *(verify handle)* | bidwriterconsultancy.co.uk |
 | **BFT Consult** ⭐ | est 2014, 80%+ win | **Health & social care** (homecare, supported living, mental health, dementia) | **Ian Evans** (Bid Director/founder) *(verify handle)* | bftconsult.com |
@@ -67,20 +67,31 @@ correction. Lead by asking their expertise, not pitching.
 
 ---
 
-## B) SME public-sector bidders, by sector (priority 2) — *being built out (cycle 2+)*
+## B) SME public-sector bidders, by sector (priority 2)
 
-Target frequent-bidder, under-tooled SMEs. The killer move here: open Contracts Finder / Find a Tender,
-find a **recent award in their sector**, and run Bidframe live on that exact ITT in front of them.
+Target frequent-bidder, under-tooled SMEs. **The killer move:** open Contracts Finder / Find a Tender,
+find a **recent award/ITT in their sector**, and run Bidframe live on that exact document in front of
+them. Consultancies are the better *first* target (value compounds), but SMEs give visceral live demos.
 
-- **Cleaning / FM** — (our own demo tenders are here: SPSO, museum cleaning, Shropshire) — *to populate*
-- **Care / supported living / domiciliary** — under-tooled, high bid frequency — *to populate*
-- **Catering** — *to populate*
-- **IT / managed services** — *to populate*
-- **Training providers** — *to populate*
-- **Grounds maintenance / security** — *to populate*
+- **Care / supported living / domiciliary** ⭐ (under-tooled, bid constantly into council frameworks):
+  - *Live framework procurements to mine for SME awardees + ITTs:* **Essex** "Live at Home 2025" (6-yr,
+    started Nov 2025), **Portsmouth** open framework, **Leicestershire** Home Care (Cabinet Sep 2025),
+    **St Helens** domiciliary (Mar 2025), **Barking & Dagenham** (LBBD) homecare, **Herefordshire**
+    Secondary Home Care framework.
+  - *Named SME awardees found so far:* **Joghide Ltd**, **MC&DS Ltd** (Herefordshire framework). → find
+    their registered manager / BD lead on LinkedIn; pair with the Herefordshire ITT for the live demo.
+  - *Sources to harvest more:* Care England tender-opportunities page; Essex Provider Hub contracts list.
+- **IT / managed services** ⭐ — the **G-Cloud / Digital Marketplace** is a goldmine: ~4,000 suppliers,
+  **~90% SMEs**, all publicly listed + searchable at `applytosupply.digitalmarketplace.service.gov.uk`.
+  Filter to small MSPs that have *won* call-offs (public £-spend data via Tussell/Contracts Finder) →
+  these bid often and feel the tender-reading pain. *(cycle 3: pull 8–10 named small MSPs.)*
+- **Cleaning / FM** — our own demo tenders sit here (SPSO, museum, Shropshire), so we can demo on a doc
+  *they* recognise. Mine `facilitiestenders.co.uk` / Supply2Gov awardees for SME contract cleaners
+  (avoid the giants — Medirest/Compass, Mitie). *(cycle 3: name 6–8 regional SME cleaners.)*
+- **Catering · Training providers · Grounds maintenance / security** — same method. *(later cycles.)*
 
-> Method for cycle 2: pull recent Contracts Finder awards per sector → identify the SME awardees/bidders
-> → find their BD/bid lead on LinkedIn → pair each with the public ITT for the live-demo move.
+> **Method (repeat per sector):** recent Contracts Finder/Find-a-Tender award → SME awardee name → their
+> BD/bid lead on LinkedIn → pair with the public ITT for a live-demo on a doc they know.
 
 ---
 
@@ -125,7 +136,9 @@ Ranked for: decides fast · bids often · reachable · strong wedge fit.
 
 1. **Dave Thornton (Thornton & Lowe)** — biggest, SME-focused, founder posts on LinkedIn (warm-engage
    first). If the largest UK consultancy is interested, that's the headline quote.
-2. **Vicki Stewart (Tender Victory)** — explicitly SME-majority, founder-led, fast decision.
+2. **Vicki Stewart (Tender Victory)** ⭐⭐ — SME-majority, founder-led, fast decision, AND an **ex
+   public-sector buyer** (evaluated tenders from the inside, MCIPS). The single best *validator* of
+   "would this help + does the disqualifier catch matter" — she's scored bids for a living. Handle ✅.
 3. **Ian Evans (BFT Consult)** — health & social care; pair with a care-framework ITT for the live demo.
 4. **Neil Capstick (Executive Compass)** — social-value + auditability angle fits our "trust" brand;
    thought-leader, great validator even if a slower buyer.
@@ -148,3 +161,11 @@ Ranked for: decides fast · bids often · reachable · strong wedge fit.
   Clarke). Drafted tailored outreach + the Day-3 hit list. **Next (cycle 2):** verify the unverified
   LinkedIn handles; build out **Segment B** (SME bidders by sector) using Contracts Finder awards so each
   SME pairs with a real ITT for the live-demo move; expand communities/channels; add objection-handling.
+- **2026-06-29 (cycle 2)** — ✅ Verified **Vicki Stewart** (`/in/vicki-stewart-42a58a2a`) — surfaced she's
+  an **ex public-sector buyer** (Devon & Cornwall Police), MCIPS → elevated to top validator (⭐⭐).
+  Populated **Segment B**: care/domiciliary council frameworks to mine (Essex, Portsmouth, Leicestershire,
+  St Helens, LBBD, Herefordshire) + first SME awardees (Joghide Ltd, MC&DS Ltd); flagged **G-Cloud /
+  Digital Marketplace** (~4,000 suppliers, ~90% SME, publicly searchable) as the IT/MSP goldmine. **Next
+  (cycle 3):** name 8–10 small MSPs (G-Cloud) + 6–8 regional SME cleaners with their public contracts;
+  verify remaining handles (Ian Evans/BFT, Katrina Gibson/Della Pip, Sharon Welch); add objection-handling
+  + competitive one-liners (vs AutogenAI/Loopio) for the calls.
