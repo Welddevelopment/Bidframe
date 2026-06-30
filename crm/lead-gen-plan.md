@@ -39,3 +39,17 @@ Principle: when skips start outnumbering keeps, re-plan rather than grind (a fre
   3. **Geographic pivot** — Scotland / Wales SME providers in the *proven* verticals (fresh firms, same playbook).
   4. Workwear/PPE & school-uniform suppliers; educational furniture / play / sports equipment; minibus/coach
      school-transport operators; occupational-health providers.
+
+## Round 3 - compliance trades restart (2026-06-30)
+This was a strong reset: water hygiene / legionella, fire safety, asbestos, electrical testing, lifts,
+access-control gates, and drainage/FM compliance produced a high email hit-rate and strong public-sector buyer
+signals. These leads are good because their tenders are evidence-heavy by nature: licences/accreditations,
+engineer competence, RAMS, insurance, service SLAs, inspection records, safeguarding/DBS, and reporting.
+
+Next repeatable search pattern:
+- Start from **association/member directories** rather than generic search: LCA for water hygiene, BAFE/FIA for
+  fire, ARCA/ATaC/UKATA for asbestos, LEIA-style lift directories, DHF/gate-safety directories, drainage trade
+  bodies and housing-association supplier pages.
+- Keep only actual operators/suppliers with a visible email and a public-sector buyer signal; skip national
+  enterprise vendors and firms with only vague commercial/private work.
+- Use named/person emails first, then domain emails. Do not infer emails from name/domain patterns.

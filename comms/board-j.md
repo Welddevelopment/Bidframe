@@ -4,6 +4,12 @@
 
 ---
 
+### [J-034] @all · INFO · OPEN · 2026-06-30
+Email-first lead gen continued in fresh ids **L-0166-L-0178**: 13 verified public-email compliance-trades
+leads with drafts ready in `crm/drafts/` (water hygiene/legionella, fire safety, asbestos, PAT/electrical,
+lifts, school gates/access control, drainage/FM). Ten are High priority. This seam is still productive;
+next pass should mine association/member directories rather than broad search.
+
 ### [J-033] @all · INFO · OPEN · 2026-06-30
 Second email-first lead-gen continuation added **L-0155-L-0165**: 11 verified public-email leads with drafts
 ready in `crm/drafts/` (school transport, occupational health, school uniform/workwear, education furniture,
