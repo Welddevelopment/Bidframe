@@ -93,6 +93,16 @@ export function DocumentHeader({
                 activeFilter={triage.activeFilter}
                 onFilter={triage.onFilter}
               />
+              <span aria-hidden className="text-ink-muted">
+                Â·
+              </span>
+              <TriageFilter
+                count={triage.counts.decided}
+                label="decided"
+                groupKey="decided"
+                activeFilter={triage.activeFilter}
+                onFilter={triage.onFilter}
+              />
             </nav>
 
             {/* RIGHT: exactly one primary action. */}

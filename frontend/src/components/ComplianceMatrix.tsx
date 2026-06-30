@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Requirement, RequirementStatus } from "@/types/requirement";
 import {
   isConfidentNonGating,
@@ -173,17 +174,32 @@ function MatrixGroup({
   selectedId,
   onSelect,
   onApprove,
+  onApproveAll,
 }: {
   group: TriageGroup;
   selectedId: string | null;
   onSelect: (id: string) => void;
   onApprove: (id: string) => void;
+  onApproveAll: (ids: string[]) => void;
 }) {
+  const approvable = group.items.filter(isConfidentNonGating);
+
   return (
     <section>
-      <h3 className="border-b border-hairline pb-2 text-[12.5px] font-medium uppercase tracking-wide text-ink-muted">
-        {group.label}
-      </h3>
+      <div className="flex items-center justify-between gap-3 border-b border-hairline pb-2">
+        <h3 className="text-[12.5px] font-medium uppercase tracking-wide text-ink-muted">
+          {group.label}
+        </h3>
+        {group.key === "ready" && approvable.length > 1 && (
+          <button
+            type="button"
+            onClick={() => onApproveAll(approvable.map((req) => req.id))}
+            className="text-xs font-medium text-forest transition-colors hover:text-forest-hover hover:underline"
+          >
+            Approve all confident ({approvable.length})
+          </button>
+        )}
+      </div>
       <div className="mt-2 flex flex-col gap-0.5">
         {group.items.map((req) => (
           <MatrixRow
@@ -212,13 +228,53 @@ export function ComplianceMatrix({
   onApprove: (id: string) => void;
   activeFilter: GroupKey | null;
 }) {
+  const [query, setQuery] = useState("");
+  const normalisedQuery = query.trim().toLowerCase();
   // Skip empty groups; when a filter is active, show only that group.
-  const visible = groups.filter(
-    (g) => g.items.length > 0 && (activeFilter === null || g.key === activeFilter)
-  );
+  const visible = groups
+    .map((group) => ({
+      ...group,
+      items:
+        normalisedQuery.length === 0
+          ? group.items
+          : group.items.filter((req) =>
+              [
+                req.text,
+                req.category,
+                req.source_clause ?? "",
+                req.answer?.text ?? "",
+              ]
+                .join(" ")
+                .toLowerCase()
+                .includes(normalisedQuery)
+            ),
+    }))
+    .filter(
+      (g) =>
+        g.items.length > 0 && (activeFilter === null || g.key === activeFilter)
+    );
+
+  function approveAll(ids: string[]) {
+    for (const id of ids) onApprove(id);
+  }
 
   return (
     <div className="flex w-full flex-col gap-10">
+      <div className="flex flex-col gap-2 border-b border-hairline pb-4 sm:flex-row sm:items-center sm:justify-between">
+        <label className="max-w-md flex-1">
+          <span className="sr-only">Search requirements</span>
+          <input
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search requirements, clauses or answers"
+            className="w-full rounded-md border border-hairline bg-paper px-3 py-2 text-sm text-ink outline-none transition-colors placeholder:text-ink-muted focus:border-forest focus:ring-1 focus:ring-forest"
+          />
+        </label>
+        <span className="font-mono text-xs text-ink-muted">
+          {visible.reduce((sum, group) => sum + group.items.length, 0)} shown
+        </span>
+      </div>
+
       {visible.map((group) => (
         <MatrixGroup
           key={group.key}
@@ -226,8 +282,14 @@ export function ComplianceMatrix({
           selectedId={selectedId}
           onSelect={onSelect}
           onApprove={onApprove}
+          onApproveAll={approveAll}
         />
       ))}
+      {visible.length === 0 && (
+        <p className="text-sm text-ink-muted">
+          No requirements match this view.
+        </p>
+      )}
     </div>
   );
 }

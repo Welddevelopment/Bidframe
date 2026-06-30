@@ -2,6 +2,48 @@
 
 *Backend writes here. Everyone reads. Newest at top. See [README.md](README.md) for the protocol.*
 
+### [B-007] @all - INFO - OPEN - 2026-06-30
+**Started P's demo-day hardening pass.** Pulled latest `main`, read the full `demo-day/` kit, and checked
+the backend-owned cue card/Q&A against the live backend state. Focus for this pass: make P's stage beat
+more concrete, tighten the live-vs-prebaked risk language, and make the backend Q&A answers crisp enough
+to defend scanned/corrupt/huge PDFs, Render cold starts, and the heuristic fallback without weakening the
+gating-catch story.
+
+**Update:** tightened P's opening beat in `demo-day/run-sheet.md` and `demo-day/cue-cards/p-backend.md`.
+The script now clearly distinguishes the safe default (pre-baked output from a real backend run) from the
+live-key variant, so P never implies a fresh model call is happening unless Render has a tested key that
+day. Also added P-owned Q&A lines for cached-vs-live and the six backend API endpoints.
+
+**Update 2:** hardened the operational docs. `demo-day/pre-show-checklist.md` now forces an A/B/C demo-mode
+decision before rehearsal, adds a P-owned backend check (`/health`, `GET /tenders`, requirements fetch, and
+live upload only if key mode is chosen), and says to demote immediately if live mode returns heuristic output.
+`demo-day/backup-plan.md` now has exact P recovery lines for cold Render, heuristic fallback, bad PDFs, and
+judge-requested live uploads.
+
+**Update 3:** finished the demo-day content pass. `demo-day/README.md` now names the three demo modes
+(pre-baked real run, live-key run, recorded fallback) and assigns ownership: P checks backend health and
+wording, Bobby owns measured numbers, Jawad owns screen state, Joel makes the final mode call. `qa-prep.md`
+now has stronger P answers for the backend pipeline, cached-vs-live honesty, and missing-key behavior.
+Next: validation, codemap refresh for the new `demo-day/` files, commit, pull/rebase, push.
+
+### [B-008] @frontend @all - INFO - OPEN - 2026-06-30
+**Jumped onto the frontend UX audit at Pranav's request, with a worker subagent on the answers/autofill
+slice.** Three fast improvement loops are now in code:
+1. **Blocking honesty/export:** mock upload no longer claims it parsed the user's file, upload errors surface
+   backend messages, client-side PDF/multi-file/50MB guards are in, and the review header now exports a CSV
+   instead of dead-ending.
+2. **Workflow speed/scale:** matrix has search, a proper `Decided` group instead of mixing flagged/edited rows
+   under "Ready to approve", inline "approve all confident", a completion summary, panel Next skips resolved
+   work, and the deal-breaker hero opens the exact requirement.
+3. **Autofill visibility:** in sample mode the Draft/Evidence controls stay visible with honest disabled copy;
+   evidence docs show as sample docs; gap answers are multiline and deep-linked from the requirement panel.
+Validation running next (`npm.cmd run lint` / build) before I push.
+
+**Validation:** `npm.cmd run lint` passed. `npm.cmd run build` initially hit the expected restricted-network
+Google Fonts fetch failure, then passed with network allowed. Codemap regenerated after the frontend import
+changes. I am committing/pushing this with the demo-day hardening pass unless a final rebase surfaces a
+conflict.
+
 ---
 
 ### [B-006] @j · INFO · OPEN · 2026-06-30

@@ -2,6 +2,7 @@
 
 import { useCallback, useState, useSyncExternalStore } from "react";
 import { useRequirements } from "@/context/RequirementsContext";
+import type { Requirement } from "@/types/requirement";
 import {
   deriveTriage,
   nextPriorityId,
@@ -46,6 +47,52 @@ function useIsWide(): boolean {
   return useSyncExternalStore(subscribeWide, getWideSnapshot, () => true);
 }
 
+function csvCell(value: unknown): string {
+  const text = String(value ?? "").replace(/\r?\n/g, " ");
+  return `"${text.replace(/"/g, '""')}"`;
+}
+
+function exportRequirements(requirements: Requirement[]) {
+  const header = [
+    "id",
+    "status",
+    "type",
+    "gating",
+    "category",
+    "source_page",
+    "source_clause",
+    "requirement",
+    "decision_note",
+    "answer",
+    "evidence",
+  ];
+  const rows = requirements.map((req) => [
+    req.id,
+    req.status,
+    req.type,
+    req.is_gating ? "yes" : "no",
+    req.category,
+    req.source_page,
+    req.source_clause ?? "",
+    req.text,
+    req.decision?.note ?? "",
+    req.answer?.text ?? req.draft_answer ?? "",
+    req.answer?.evidence_refs
+      ?.map((ref) => `${ref.doc_id} p.${ref.page}: ${ref.excerpt}`)
+      .join(" | ") ?? "",
+  ]);
+  const csv = [header, ...rows]
+    .map((row) => row.map(csvCell).join(","))
+    .join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "bidframe-compliance-matrix.csv";
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
 export function MatrixView({ title }: { title: string }) {
   const { requirements, approve, editRequirement, flag } = useRequirements();
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -55,6 +102,7 @@ export function MatrixView({ title }: { title: string }) {
   const triage = deriveTriage(requirements);
   const selected = requirements.find((r) => r.id === selectedId) ?? null;
   const priorityId = nextPriorityId(requirements);
+  const decidedCount = requirements.filter((req) => req.status !== "pending").length;
 
   const close = useCallback(() => setSelectedId(null), []);
 
@@ -71,6 +119,7 @@ export function MatrixView({ title }: { title: string }) {
   // export route is a later pass).
   function onNext() {
     if (priorityId) setSelectedId(priorityId);
+    else exportRequirements(requirements);
   }
 
   // The panel Next advances to the next item within its current triage group,
@@ -78,7 +127,11 @@ export function MatrixView({ title }: { title: string }) {
   // order). It keeps the worklist flowing: approve, next, approve, next.
   const goNext = useCallback(
     (currentId: string) => {
-      const ordered = triage.groups.flatMap((group) => group.items);
+      const pending = triage.groups
+        .flatMap((group) => group.items)
+        .filter((req) => req.status === "pending");
+      const ordered =
+        pending.length > 0 ? pending : triage.groups.flatMap((group) => group.items);
       const index = ordered.findIndex((r) => r.id === currentId);
       if (index === -1 || ordered.length === 0) return;
       const nextItem = ordered[(index + 1) % ordered.length];
@@ -128,7 +181,21 @@ export function MatrixView({ title }: { title: string }) {
           // RESTING, plus the narrow-viewport open state: the matrix stays put and
           // the panel arrives as a drawer over it (rendered below).
           <>
-            <GatingHero />
+            <GatingHero onSelect={setSelectedId} />
+            {priorityId === null && requirements.length > 0 && (
+              <CompletionSummary
+                total={requirements.length}
+                approved={requirements.filter((req) => req.status === "accepted").length}
+                edited={requirements.filter((req) => req.status === "edited").length}
+                flagged={requirements.filter((req) => req.status === "flagged").length}
+                onExport={() => exportRequirements(requirements)}
+              />
+            )}
+            {priorityId !== null && decidedCount > 0 && (
+              <p className="mb-2 font-mono text-xs text-ink-muted">
+                {decidedCount} of {requirements.length} requirements decided.
+              </p>
+            )}
             <ComplianceMatrix
               groups={triage.groups}
               selectedId={selectedId}
@@ -153,5 +220,42 @@ export function MatrixView({ title }: { title: string }) {
         />
       )}
     </>
+  );
+}
+
+function CompletionSummary({
+  total,
+  approved,
+  edited,
+  flagged,
+  onExport,
+}: {
+  total: number;
+  approved: number;
+  edited: number;
+  flagged: number;
+  onExport: () => void;
+}) {
+  return (
+    <section className="mb-8 border-y-2 border-ink py-5">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h2 className="font-serif text-2xl font-semibold text-ink">
+            Matrix ready to export
+          </h2>
+          <p className="mt-1 text-sm text-ink-muted">
+            {total} requirements reviewed: {approved} approved, {edited} edited,
+            {flagged} flagged.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={onExport}
+          className="shrink-0 rounded-md bg-forest px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-forest-hover"
+        >
+          Export CSV
+        </button>
+      </div>
+    </section>
   );
 }

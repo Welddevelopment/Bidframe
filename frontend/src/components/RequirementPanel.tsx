@@ -248,7 +248,7 @@ function NeedsInputNotice({ requirement }: { requirement: Requirement }) {
         </p>
       )}
       <Link
-        href="/answers"
+        href={`/answers#${open[0]?.id ?? ""}`}
         className="text-sm text-forest transition-colors hover:text-forest-hover hover:underline"
       >
         Answer this in the gap review

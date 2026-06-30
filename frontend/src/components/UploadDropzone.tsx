@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { isApiEnabled, uploadTender } from "@/lib/api";
+import { ApiError, isApiEnabled, uploadTender } from "@/lib/api";
 import { useRequirements } from "@/context/RequirementsContext";
 
 type UploadStage = "idle" | "extracting" | "done" | "error";
@@ -12,12 +12,39 @@ export function UploadDropzone() {
   const [stage, setStage] = useState<UploadStage>("idle");
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function handleFiles(files: FileList | null) {
     if (stage === "extracting") return;
     const file = files?.[0];
     if (!file) return;
+    setErrorMessage(null);
+
+    if (files && files.length > 1) {
+      setFileName(`${files.length} files`);
+      setErrorMessage(
+        "Upload one tender PDF at a time for this demo. Tender-pack upload is next."
+      );
+      setStage("error");
+      return;
+    }
+
+    if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
+      setFileName(file.name);
+      setErrorMessage("Use a PDF tender document. Other file types are not parsed yet.");
+      setStage("error");
+      return;
+    }
+
+    if (file.size > 50 * 1024 * 1024) {
+      setFileName(file.name);
+      setErrorMessage(
+        "This PDF is over 50MB. The backend rejects oversized tenders before parsing."
+      );
+      setStage("error");
+      return;
+    }
 
     setFileName(file.name);
     setStage("extracting");
@@ -33,7 +60,12 @@ export function UploadDropzone() {
       const tenderId = await uploadTender(file, file.name);
       await loadTender(tenderId);
       setStage("done");
-    } catch {
+    } catch (error) {
+      setErrorMessage(
+        error instanceof ApiError
+          ? error.message
+          : "The server did not respond. Check that the API is running, then try again."
+      );
       setStage("error");
     }
   }
@@ -63,6 +95,7 @@ export function UploadDropzone() {
   function reset() {
     setStage("idle");
     setFileName(null);
+    setErrorMessage(null);
     if (inputRef.current) inputRef.current.value = "";
   }
 
@@ -73,7 +106,13 @@ export function UploadDropzone() {
           Requirements extracted
         </h2>
         <p className="mt-1 text-sm text-ink-muted">
-          {fileName ? (
+          {!isApiEnabled() ? (
+            <>
+              Sample matrix ready. We did not parse{" "}
+              <span className="font-medium text-ink">{fileName}</span> because
+              no live API is configured on this deployment.
+            </>
+          ) : fileName ? (
             <>
               Parsed <span className="font-medium text-ink">{fileName}</span>{" "}
               and built the compliance matrix.
@@ -87,7 +126,7 @@ export function UploadDropzone() {
             href="/review"
             className="inline-flex items-center rounded-md bg-forest px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-forest-hover"
           >
-            View extracted requirements
+            {isApiEnabled() ? "View extracted requirements" : "View sample matrix"}
           </Link>
           <button
             type="button"
@@ -105,11 +144,15 @@ export function UploadDropzone() {
     return (
       <div className="w-full max-w-xl">
         <h2 className="text-base font-semibold text-ink">
-          Couldn&rsquo;t reach the server.
+          {errorMessage?.toLowerCase().includes("pdf") ||
+          errorMessage?.toLowerCase().includes("50mb") ||
+          errorMessage?.toLowerCase().includes("file")
+            ? "We cannot parse that file yet."
+            : "Couldn&rsquo;t complete the upload."}
         </h2>
         <p className="mt-1 text-sm text-ink-muted">
-          The server didn&rsquo;t respond. Check it&rsquo;s running, then try
-          again.
+          {errorMessage ??
+            "The server did not respond. Check it is running, then try again."}
         </p>
         <div className="mt-5">
           <button
@@ -133,7 +176,9 @@ export function UploadDropzone() {
         />
         <div className="min-w-0">
           <h2 className="text-base font-semibold text-ink">
-            Extracting requirements&hellip;
+            {isApiEnabled()
+              ? "Extracting requirements&hellip;"
+              : "Opening the sample matrix&hellip;"}
           </h2>
           <p
             className="truncate text-sm text-ink-muted"
@@ -187,7 +232,9 @@ export function UploadDropzone() {
           Drop a tender PDF here, or click to browse
         </p>
         <p className="mt-1 text-sm text-ink-muted">
-          We&rsquo;ll extract every requirement into a compliance matrix.
+          {isApiEnabled()
+            ? "We&rsquo;ll extract every requirement into a compliance matrix."
+            : "No live API is configured here, so upload opens the worked example honestly."}
         </p>
       </div>
 

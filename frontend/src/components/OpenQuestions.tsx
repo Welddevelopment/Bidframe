@@ -42,14 +42,57 @@ export function OpenQuestionItem({
   requirementId: string;
   question: OpenQuestion;
 }) {
-  const { answerOpenQuestion } = useRequirements();
+  const { answerOpenQuestion, requirements, updateRequirement } =
+    useRequirements();
   const [value, setValue] = useState(question.answer ?? "");
+  const [saved, setSaved] = useState(false);
   const answered = question.answer !== null;
   const trimmed = value.trim();
   const dirty = trimmed.length > 0 && trimmed !== (question.answer ?? "");
+  const requirement = requirements.find((req) => req.id === requirementId);
+  const questionAnswer = question.answer ?? "";
+
+  function saveAnswer() {
+    if (!requirement) {
+      answerOpenQuestion(requirementId, question.id, trimmed);
+      setSaved(true);
+      return;
+    }
+
+    const nextQuestions = (requirement.open_questions ?? []).map((q) =>
+      q.id === question.id
+        ? { ...q, answer: trimmed, answered_at: new Date().toISOString() }
+        : q
+    );
+    const allAnswered = nextQuestions.every((q) => q.answer);
+    const baseText =
+      requirement.answer?.text ??
+      requirement.draft_answer ??
+      "Draft answer ready for review.";
+    const answerText =
+      allAnswered && !baseText.includes(trimmed)
+        ? `${baseText}\n\nBid team input: ${trimmed}`
+        : baseText;
+
+    updateRequirement(requirementId, {
+      open_questions: nextQuestions,
+      draft_answer: allAnswered ? answerText : requirement.draft_answer,
+      answer: requirement.answer
+        ? {
+            ...requirement.answer,
+            text: answerText,
+            state: allAnswered ? "human_edited" : requirement.answer.state,
+            confidence: allAnswered
+              ? Math.max(requirement.answer.confidence, 0.7)
+              : requirement.answer.confidence,
+          }
+        : requirement.answer,
+    });
+    setSaved(true);
+  }
 
   return (
-    <li>
+    <li id={question.id} className="scroll-mt-24">
       {/* The answered/unanswered distinction is carried by a quiet dot plus a
           word and whitespace, not a full coloured card. */}
       <div className="flex items-baseline gap-2">
@@ -70,25 +113,31 @@ export function OpenQuestionItem({
           {answered ? "Answered" : "Needs your input"}
         </span>
       </div>
-      <div className="mt-2 flex items-center gap-2 pl-4">
-        <input
-          type="text"
+      <div className="mt-2 flex items-start gap-2 pl-4">
+        <textarea
           value={value}
-          onChange={(event) => setValue(event.target.value)}
+          onChange={(event) => {
+            setValue(event.target.value);
+            setSaved(false);
+          }}
           placeholder="Type your answer"
-          className="min-w-0 flex-1 rounded-md border border-hairline px-2.5 py-1.5 text-sm text-ink outline-none transition-colors focus:border-forest focus:ring-1 focus:ring-forest"
+          rows={answered || value.includes("\n") ? 3 : 2}
+          className="min-w-0 flex-1 resize-y rounded-md border border-hairline px-2.5 py-1.5 text-sm leading-relaxed text-ink outline-none transition-colors focus:border-forest focus:ring-1 focus:ring-forest"
         />
         <button
           type="button"
           disabled={!dirty}
-          onClick={() =>
-            answerOpenQuestion(requirementId, question.id, trimmed)
-          }
+          onClick={saveAnswer}
           className="shrink-0 rounded-md bg-forest px-3 py-1.5 text-sm font-medium text-paper transition-colors hover:bg-forest-hover disabled:cursor-not-allowed disabled:opacity-40"
         >
           {answered ? "Update" : "Save"}
         </button>
       </div>
+      {(saved || (!dirty && answered && questionAnswer.length > 0)) && (
+        <p className="mt-1 pl-4 text-xs text-forest">
+          Saved. The draft now includes your input for review.
+        </p>
+      )}
     </li>
   );
 }

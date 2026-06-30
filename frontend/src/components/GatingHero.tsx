@@ -8,7 +8,7 @@ import { useRequirements } from "@/context/RequirementsContext";
 // never by a coloured slab on chrome. Depth means focus, so this is the one
 // element that lifts above the matrix. Conditional on gating items existing.
 
-export function GatingHero() {
+export function GatingHero({ onSelect }: { onSelect?: (id: string) => void }) {
   const { requirements } = useRequirements();
   const gating = requirements.filter((r) => r.is_gating);
 
@@ -36,13 +36,21 @@ export function GatingHero() {
               className="mt-[5px] h-2.5 w-2.5 shrink-0 rounded-full bg-signal-oxblood shadow-[0_0_0_1px_rgba(33,29,23,0.35),inset_0_1px_1px_rgba(255,255,255,0.3),0_1px_2px_rgba(33,29,23,0.3)]"
               aria-hidden
             />
-            <span className="leading-snug">
+            <button
+              type="button"
+              onClick={() => onSelect?.(req.id)}
+              className={`text-left leading-snug ${
+                onSelect
+                  ? "transition-colors hover:text-forest hover:underline"
+                  : ""
+              }`}
+            >
               {req.text}
               <span className="ml-2 font-mono text-xs text-ink-muted">
                 p.{req.source_page}
                 {req.source_clause ? ` · ${req.source_clause}` : ""}
               </span>
-            </span>
+            </button>
           </li>
         ))}
       </ul>

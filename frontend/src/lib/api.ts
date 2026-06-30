@@ -14,6 +14,36 @@ interface UploadResult {
   requirement_count?: number;
 }
 
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    readonly status: number
+  ) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
+
+async function apiError(res: Response, fallback: string): Promise<ApiError> {
+  let message = fallback;
+  try {
+    const body = (await res.clone().json()) as {
+      detail?: unknown;
+      message?: unknown;
+    };
+    const detail = body.detail ?? body.message;
+    if (typeof detail === "string" && detail.trim()) message = detail;
+  } catch {
+    try {
+      const text = await res.text();
+      if (text.trim()) message = text.trim();
+    } catch {
+      // Some error responses are empty; keep the fallback.
+    }
+  }
+  return new ApiError(message, res.status);
+}
+
 // POST /tenders/upload — multipart form with the PDF; returns the new tender id.
 export async function uploadTender(file: File, title?: string): Promise<string> {
   const form = new FormData();
@@ -24,7 +54,7 @@ export async function uploadTender(file: File, title?: string): Promise<string> 
     method: "POST",
     body: form,
   });
-  if (!res.ok) throw new Error(`Upload failed (${res.status})`);
+  if (!res.ok) throw await apiError(res, `Upload failed (${res.status})`);
 
   const data = (await res.json()) as UploadResult;
   return data.tender_id;
@@ -33,7 +63,7 @@ export async function uploadTender(file: File, title?: string): Promise<string> 
 // GET /tenders/{id}/requirements — returns the full tender in the locked schema.
 export async function getTender(tenderId: string): Promise<Tender> {
   const res = await fetch(`${BASE}/tenders/${tenderId}/requirements`);
-  if (!res.ok) throw new Error(`Fetch failed (${res.status})`);
+  if (!res.ok) throw await apiError(res, `Fetch failed (${res.status})`);
   return (await res.json()) as Tender;
 }
 
@@ -54,7 +84,7 @@ export async function draftAnswers(
     init.body = form;
   }
   const res = await fetch(`${BASE}/tenders/${tenderId}/draft${query}`, init);
-  if (!res.ok) throw new Error(`Autofill failed (${res.status})`);
+  if (!res.ok) throw await apiError(res, `Autofill failed (${res.status})`);
   return (await res.json()) as Tender;
 }
 
@@ -68,5 +98,5 @@ export async function patchRequirement(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error(`Update failed (${res.status})`);
+  if (!res.ok) throw await apiError(res, `Update failed (${res.status})`);
 }

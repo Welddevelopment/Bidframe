@@ -4,14 +4,20 @@ import type { Requirement } from "@/types/requirement";
 // from you (layout.md section 2 and 3). Pure functions, no React, so the header,
 // matrix, and panel all derive the same grouping from a single source.
 
-export type GroupKey = "needs-you" | "to-verify" | "ready";
+export type GroupKey = "needs-you" | "to-verify" | "ready" | "decided";
 
-export const GROUP_ORDER: GroupKey[] = ["needs-you", "to-verify", "ready"];
+export const GROUP_ORDER: GroupKey[] = [
+  "needs-you",
+  "to-verify",
+  "ready",
+  "decided",
+];
 
 export const GROUP_LABELS: Record<GroupKey, string> = {
   "needs-you": "Needs you",
   "to-verify": "To verify",
   ready: "Ready to approve",
+  decided: "Decided",
 };
 
 // Below this, a pending non-gating item still wants a second look before approval.
@@ -20,6 +26,8 @@ export const LOW_CONFIDENCE = 0.75;
 // Which group a single requirement belongs to. Order of the checks matters:
 // a needs-you item is always needs-you even if it would otherwise verify.
 export function groupOf(req: Requirement): GroupKey {
+  if (req.status !== "pending") return "decided";
+
   const needsInput =
     req.answer?.state === "needs_input" ||
     (req.open_questions?.some((q) => !q.answer) ?? false);
@@ -32,7 +40,7 @@ export function groupOf(req: Requirement): GroupKey {
     return "to-verify";
   }
 
-  // Confident and non-gating but still pending, or already resolved.
+  // Confident and non-gating but still pending.
   return "ready";
 }
 
@@ -65,6 +73,7 @@ export function deriveTriage(reqs: Requirement[]): Triage {
     "needs-you": [],
     "to-verify": [],
     ready: [],
+    decided: [],
   };
 
   for (const req of reqs) {
@@ -75,6 +84,7 @@ export function deriveTriage(reqs: Requirement[]): Triage {
     "needs-you": buckets["needs-you"].length,
     "to-verify": buckets["to-verify"].length,
     ready: buckets.ready.length,
+    decided: buckets.decided.length,
   };
 
   const groups: TriageGroup[] = GROUP_ORDER.map((key) => ({
