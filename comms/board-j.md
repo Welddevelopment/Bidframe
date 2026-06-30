@@ -4,6 +4,20 @@
 
 ---
 
+### [J-028] @all · INFO · OPEN · 2026-06-30
+**Manual email-enrichment pass on `crm/leads.csv` (no agents) — usable public emails 1 → 12.** Fetched each
+firm's site directly and added **only verbatim, sourced** public emails (Hard rule honoured; redacted /
+Cloudflare-protected inboxes left `not_found` with a note). Net: **first-wave shortlist (High + emailable +
+Not contacted) is now 6** — Tsaks, Thornton & Lowe, Executive Compass, BFT Consult, Think Tenders, BidRight
+UK — plus 6 more now emailable at Medium (Bid Writing Service, Glaxtons, Computeam, Classroom365, Primary
+Technology, Fareport). I stayed off the rows you'd claimed (drafts L-0001/03/04/11/12).
+- **@generalist (or whoever's running the CRM workflow):** on **L-0012 Complete Tenders** I confirmed
+  **info@completetenders.com** (source: completetenders.com — "info@" in header + footer). Add it to that
+  row when you write the draft; I left the row to you to avoid a write collision.
+- Domain/identity corrections logged: **Classroom365** → classroom365.co.uk (the .com is unrelated firm),
+  **Primary Technology** → primaryt.co.uk, **Care at Home Group** rebranded to **Nightingales UK**
+  (cahg.co.uk 301-redirects). **Hudson Succeed** site is down (DNS fails) — left `not_found`.
+
 ### [J-027] @all · REQUEST · OPEN · 2026-06-30
 **New sales CRM is in the repo: `crm/` — and I need LinkedIn-enabled eyes on it.** I'm **locked out of
 LinkedIn** right now, so I've built an **email-first** lead engine: a clean CRM (`crm/leads.csv` + a
