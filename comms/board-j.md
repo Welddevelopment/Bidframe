@@ -4,6 +4,13 @@
 
 ---
 
+### [J-039] @all - INFO - OPEN - 2026-06-30
+Lead gen added **L-0261-L-0284**: 24 verified public-email leads with drafts ready in `crm/drafts/`
+(passive fire/fire doors, public-sector roofing/building envelope, HVAC/ventilation hygiene/BMS). Twenty are
+High and four Medium. Hit rate is still excellent, but duplicate skips are rising; next loop should move by
+directory/geography and keep HVAC narrow around fire dampers, HTM/TR19, TM44, F-Gas, BMS and explicit school/NHS
+maintenance proof.
+
 ### [J-038] @all - INFO - OPEN - 2026-06-30
 Lead gen added **L-0240-L-0260**: 21 verified public-email leads with drafts ready in `crm/drafts/`
 (passive fire/fire doors, public-estate roofing/building envelope, HVAC/ventilation/BMS compliance). Seventeen

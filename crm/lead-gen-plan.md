@@ -109,3 +109,16 @@ Next repeatable pattern:
   housing and framework proof. This looks like a fresh high-yield seam.
 - Keep **HVAC/ventilation hygiene/BMS** narrow: TM44, F-Gas, Refcom, TR19, fire dampers, DBS engineers, NHS/school
   maintenance and framework language. Generic commercial AC should stay Medium or be skipped.
+
+## Round 8 - same seams still hot (2026-06-30)
+Continuing the same three-way split produced 24 verified email-bearing leads, 20 High and 4 Medium. This is still
+above the re-plan threshold, but duplicate skips are increasing, so the next loop should stay disciplined and move
+by directory/geography rather than broad search.
+
+Working patterns:
+- **Passive fire:** still strong, but many obvious names are now already in CRM. Prioritise FIRAS/BM TRADA/fire-door
+  specialists with social housing, NHS, schools, local-authority or university pages; skip Cloudflare-obscured emails.
+- **Roofing:** still excellent. Named contacts appear on NFRC/team pages, and public-sector/framework pages create
+  high-confidence hooks. Keep mining frameworks, NFRC/LRWA members and regional public-sector pages.
+- **HVAC/ventilation:** very good when it is ventilation hygiene, fire damper, HTM/TR19, TM44, F-Gas or BMS energy
+  controls. Avoid generic commercial AC unless schools/NHS/councils are explicit.
