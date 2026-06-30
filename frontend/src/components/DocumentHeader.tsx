@@ -1,13 +1,18 @@
 "use client";
 
 import type { GroupKey } from "@/lib/triage";
+import { useRequirements } from "@/context/RequirementsContext";
 import { SectionNav } from "./SectionNav";
 
-// The document header (layout.md section 2): a thin three-zone bar, not a
-// marketing one. Left is a quiet section switcher above the tender title. Centre
-// is the triage line: three in-page filters for the worklist groups. Right is
-// exactly one primary action, Next. On views without a worklist (answers, graph)
-// only the left zone renders.
+// The document header (layout.md section 2; design-language section 1: the
+// masthead). A thin nameplate, not a marketing bar. The title zone stacks the
+// running head "BIDFRAME", the section switcher, the tender title in Fraunces,
+// and a reference line in mono drawn from real tender metadata (the requirement
+// count, and the tender id when a live tender is loaded, never an invented
+// reference). Centre is the triage line: three in-page filters for the worklist
+// groups. Right is exactly one primary action, Next. Beneath the whole header
+// sits the one 2px ink rule (--rule-strong). On views without a worklist
+// (answers, graph) only the title zone renders.
 
 interface TriageHeader {
   counts: Record<GroupKey, number>;
@@ -24,15 +29,33 @@ export function DocumentHeader({
   title: string;
   triage?: TriageHeader;
 }) {
+  const { requirements, tenderId } = useRequirements();
+  const count = requirements.length;
+  const reference =
+    count > 0
+      ? `${count} requirement${count === 1 ? "" : "s"}${
+          tenderId ? ` · ${tenderId}` : ""
+        }`
+      : null;
+
   return (
-    <header className="border-b border-hairline bg-paper-raised">
+    <header className="border-b-2 border-ink bg-paper-raised">
       <div className="mx-auto flex max-w-[1160px] items-center justify-between gap-6 px-6 py-5">
-        {/* LEFT: the section switcher above the tender title (the one Fraunces use). */}
+        {/* LEFT: the masthead nameplate. Running head, section switcher, the tender
+            title (the one Fraunces use), and the mono reference line. */}
         <div className="flex min-w-0 flex-col gap-1.5">
+          <span className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-ink-muted">
+            Bidframe
+          </span>
           <SectionNav />
-          <h1 className="truncate font-serif text-lg font-semibold tracking-tight text-ink">
+          <h1 className="truncate font-serif text-2xl font-semibold leading-tight tracking-tight text-ink">
             {title}
           </h1>
+          {reference && (
+            <span className="font-mono text-[11px] text-ink-muted">
+              {reference}
+            </span>
+          )}
         </div>
 
         {triage && (

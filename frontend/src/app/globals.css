@@ -180,3 +180,19 @@ body {
     inset 0 -2px 2.5px rgba(33, 29, 23, 0.22),
     0 2px 3px rgba(33, 29, 23, 0.3);
 }
+
+/* The relationship map (GraphView). Strip React Flow's default node chrome so our
+   register cards own the look, and make selection the one earned forest mark
+   instead of the library's blue box. The canvas itself is the recessed drafting
+   surface; the cards are the raised sheets on it. */
+.graph-canvas .react-flow__node {
+  outline: none;
+}
+.graph-canvas .react-flow__node.selected > div {
+  outline: 1.5px solid var(--color-forest);
+  outline-offset: 1px;
+}
+/* Keep the animated dependency dashes calm, not a racing stripe. */
+.graph-canvas .react-flow__edge.animated path {
+  animation-duration: 1.6s;
+}

@@ -2,7 +2,8 @@
 // slightly off-axis, the way an officer stamps a form, with the self-writing
 // audit line in mono beside it. The slight rotation is the one earned
 // imperfection. It settles when motion is allowed and rests at the off-axis
-// angle under reduced motion (the inline transform is the static base).
+// angle under reduced motion (the inline transform is the static base). Shared:
+// the landing's approval moment and the real decision zone use the one device.
 
 export function ApprovalStamp({ time = "14:32" }: { time?: string }) {
   return (

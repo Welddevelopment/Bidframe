@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `d4e6366` · 2026-06-30T19:52:27+01:00
+> Map of commit `8b86bd7` · 2026-06-30T18:52:42Z
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,13 +12,13 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 69 | 13,841 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **frontend** | 71 | 14,385 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
 | **backend** | 17 | 1,907 | Backend — FastAPI (PDF ingest, extraction, REST API) |
 | **engine** | 48 | 2,994 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 678 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
 | **gold** | 4 | 219 | Eval gold-set — hand-labelled requirements for accuracy measurement |
 | **data** | 17 | 0 | Data — tender source PDFs (not parsed here) |
-| **comms** | 5 | 754 | Comms — async agent message boards |
+| **comms** | 5 | 758 | Comms — async agent message boards |
 | **docs** | 3 | 1,663 | Docs — plans & specs |
 | **ci** | 1 | 62 | CI — GitHub Actions |
 | **tooling** | 1 | 516 | Tooling — repo scripts (incl. this map generator) |
@@ -76,11 +76,13 @@ graph LR
   n7[DemoView.tsx] --> n16[mock-requirements.ts]
   n7[DemoView.tsx] --> n24[triage.ts]
   n4[DocumentHeader.tsx] --> n28[SectionNav.tsx]
+  n4[DocumentHeader.tsx] --> n11[RequirementsContext.tsx]
   n4[DocumentHeader.tsx] --> n24[triage.ts]
   n5[GapInterview.tsx] --> n20[AnswerStateBadge.tsx]
   n5[GapInterview.tsx] --> n29[OpenQuestions.tsx]
   n5[GapInterview.tsx] --> n11[RequirementsContext.tsx]
   n25[GatingHero.tsx] --> n11[RequirementsContext.tsx]
+  n9[GraphView.tsx] --> n23[ConfidenceIndicator.tsx]
   n9[GraphView.tsx] --> n11[RequirementsContext.tsx]
   n9[GraphView.tsx] --> n21[requirement.ts]
   n15[MatrixView.tsx] --> n1[AppMain.tsx]
@@ -97,26 +99,27 @@ graph LR
   n30[RequirementDrawer.tsx] --> n31[RequirementPanel.tsx]
   n30[RequirementDrawer.tsx] --> n21[requirement.ts]
   n31[RequirementPanel.tsx] --> n19[AnswerPanel.tsx]
+  n31[RequirementPanel.tsx] --> n33[ApprovalStamp.tsx]
   n31[RequirementPanel.tsx] --> n23[ConfidenceIndicator.tsx]
   n31[RequirementPanel.tsx] --> n21[requirement.ts]
   n32[RequirementSpine.tsx] --> n23[ConfidenceIndicator.tsx]
   n32[RequirementSpine.tsx] --> n24[triage.ts]
   n18[UploadDropzone.tsx] --> n11[RequirementsContext.tsx]
-  n18[UploadDropzone.tsx] --> n33[api.ts]
-  n34[HeroResolve.tsx] --> n22[ComplianceMatrix.tsx]
-  n34[HeroResolve.tsx] --> n25[GatingHero.tsx]
-  n34[HeroResolve.tsx] --> n11[RequirementsContext.tsx]
-  n34[HeroResolve.tsx] --> n24[triage.ts]
+  n18[UploadDropzone.tsx] --> n34[api.ts]
+  n35[HeroResolve.tsx] --> n22[ComplianceMatrix.tsx]
+  n35[HeroResolve.tsx] --> n25[GatingHero.tsx]
+  n35[HeroResolve.tsx] --> n11[RequirementsContext.tsx]
+  n35[HeroResolve.tsx] --> n24[triage.ts]
+  n13[Landing.tsx] --> n33[ApprovalStamp.tsx]
   n13[Landing.tsx] --> n23[ConfidenceIndicator.tsx]
-  n13[Landing.tsx] --> n35[ApprovalStamp.tsx]
   n13[Landing.tsx] --> n26[BookDemoButton.tsx]
   n13[Landing.tsx] --> n27[BotanicalSprig.tsx]
-  n13[Landing.tsx] --> n34[HeroResolve.tsx]
+  n13[Landing.tsx] --> n35[HeroResolve.tsx]
   n11[RequirementsContext.tsx] --> n16[mock-requirements.ts]
-  n11[RequirementsContext.tsx] --> n33[api.ts]
+  n11[RequirementsContext.tsx] --> n34[api.ts]
   n11[RequirementsContext.tsx] --> n21[requirement.ts]
   n16[mock-requirements.ts] --> n21[requirement.ts]
-  n33[api.ts] --> n21[requirement.ts]
+  n34[api.ts] --> n21[requirement.ts]
   n24[triage.ts] --> n21[requirement.ts]
 ```
 
@@ -192,6 +195,8 @@ graph LR
 - `frontend/package.json`
 - `frontend/postcss.config.mjs`
 - `frontend/public/codemap.html`
+- `frontend/public/codemap.html`
+- `frontend/public/codemap.html`
 - `frontend/src/app/answers/page.tsx` — exports `metadata`
 - `frontend/src/app/demo/page.tsx` — exports `metadata`
 - `frontend/src/app/globals.css`
@@ -203,6 +208,7 @@ graph LR
 - `frontend/src/components/AnswerPanel.tsx` — exports `AnswerPanel`
 - `frontend/src/components/AnswerStateBadge.tsx` — exports `AnswerStateBadge`
 - `frontend/src/components/AppMain.tsx` — The shared page container (layout.md section 8): one centred column capped at
+- `frontend/src/components/ApprovalStamp.tsx` — The approval stamp (design-language.md, device 6): a clean forest mark set
 - `frontend/src/components/AutofillButton.tsx` — exports `AutofillButton`
 - `frontend/src/components/CapabilityUpload.tsx` — exports `CapabilityUpload`
 - `frontend/src/components/ComplianceMatrix.tsx` — exports `ComplianceMatrix`
@@ -219,7 +225,6 @@ graph LR
 - `frontend/src/components/RequirementSpine.tsx` — exports `RequirementSpine`
 - `frontend/src/components/SectionNav.tsx` — exports `SectionNav`
 - `frontend/src/components/UploadDropzone.tsx` — exports `UploadDropzone`
-- `frontend/src/components/landing/ApprovalStamp.tsx` — The approval stamp (design-language.md, device 6): a clean forest mark set
 - `frontend/src/components/landing/BookDemoButton.tsx` — exports `BookDemoButton`
 - `frontend/src/components/landing/BotanicalSprig.tsx` — A delicate botanical sprig in forest line-art, used to frame the hero and the
 - `frontend/src/components/landing/HeroResolve.tsx` — exports `HeroResolve`
@@ -398,4 +403,4 @@ graph LR
 
 ---
 
-*218 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
+*220 tracked files mapped. Generated by `scripts/gen_codemap.py`.*

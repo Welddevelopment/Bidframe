@@ -24,9 +24,9 @@ export function AnswerPanel({ requirement }: { requirement: Requirement }) {
   }
 
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
+    <div className="flex flex-col gap-4 sm:flex-row sm:gap-0">
       {/* Prose column: the warm reading measure, left-aligned, capped at 64ch. */}
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1 sm:pr-8">
         {!answer ? (
           <p className="max-w-[64ch] text-sm leading-relaxed text-ink-muted">
             No draft yet. Run autofill and we&rsquo;ll draft an answer from your
@@ -86,7 +86,7 @@ export function AnswerPanel({ requirement }: { requirement: Requirement }) {
       {/* Mono margin: the answer-state badge, then the evidence refs as quiet
           source lines that expand in place to the verbatim excerpt. */}
       {answer && (
-        <div className="flex shrink-0 flex-col gap-3 sm:w-56">
+        <div className="flex shrink-0 flex-col gap-3 sm:w-56 sm:border-l sm:border-hairline sm:pl-8">
           <AnswerStateBadge state={answer.state} />
 
           {answer.evidence_refs.length === 0 ? (
@@ -136,7 +136,7 @@ function EvidenceRefItem({
         Backed by your {doc}, p.{page}
       </button>
       {open && (
-        <p className="mt-1 border-l-2 border-hairline pl-2 italic text-ink-muted">
+        <p className="mt-2 rounded bg-paper-recessed p-2.5 leading-relaxed text-ink-muted shadow-[var(--depth-pressed)]">
           &ldquo;{excerpt}&rdquo;
         </p>
       )}

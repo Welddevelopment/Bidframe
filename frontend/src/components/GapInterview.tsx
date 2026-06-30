@@ -77,7 +77,7 @@ export function GapInterview() {
               )}
               {req.answer && <AnswerStateBadge state={req.answer.state} />}
               <span className="font-mono text-ink-muted">
-                {req.category} · p.{req.source_page}
+                {req.category.replace(/[_-]/g, " ")} · p.{req.source_page}
               </span>
             </div>
             <p className="mb-3 max-w-[64ch] text-sm font-medium leading-snug text-ink">

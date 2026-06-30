@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { BookDemoButton, SeeItRunLink } from "./BookDemoButton";
 import { HeroResolve } from "./HeroResolve";
-import { ApprovalStamp } from "./ApprovalStamp";
+import { ApprovalStamp } from "@/components/ApprovalStamp";
 import { BotanicalSprig } from "./BotanicalSprig";
 import { ConfidenceIndicator } from "@/components/ConfidenceIndicator";
 

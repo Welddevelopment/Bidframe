@@ -161,13 +161,13 @@ export function UploadDropzone() {
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
-        className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-8 py-24 text-center transition-colors ${
+        className={`surface-grain flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-8 py-24 text-center shadow-[var(--depth-sheet)] transition-colors ${
           isDragging
             ? "border-forest bg-forest/5"
             : "border-hairline bg-paper-raised hover:border-forest hover:bg-paper"
         }`}
       >
-        <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-paper text-ink-muted">
+        <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-paper-recessed text-ink-muted shadow-[var(--depth-pressed)]">
           <svg
             viewBox="0 0 24 24"
             fill="none"

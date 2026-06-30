@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { Requirement, RequirementStatus } from "@/types/requirement";
 import { AnswerPanel } from "./AnswerPanel";
+import { ApprovalStamp } from "./ApprovalStamp";
 import { ConfidenceIndicator } from "./ConfidenceIndicator";
 
 // The open-state panel internals (layout.md section 6). One sheet on a
@@ -89,7 +90,10 @@ export function RequirementPanel({
   // stateful zones (form notes, expanded source/evidence) are keyed by the
   // requirement id to reset per item. The drawer already keys the whole panel.
   return (
-    <div className="flex h-full max-h-full flex-col bg-paper-raised">
+    <div
+      className="surface-grain flex h-full max-h-full flex-col bg-paper-raised"
+      style={{ "--grain": "0.14" } as React.CSSProperties}
+    >
       <div className="flex-1 overflow-y-auto px-5 py-4 sm:px-6">
         <RequirementZone key={`req-${requirement.id}`} requirement={requirement} />
 
@@ -145,8 +149,8 @@ function RequirementZone({ requirement }: { requirement: Requirement }) {
 
   return (
     <Zone title="Requirement">
-      <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
-        <div className="min-w-0 flex-1">
+      <div className="flex flex-col gap-4 sm:flex-row sm:gap-0">
+        <div className="min-w-0 flex-1 sm:pr-8">
           <p className="max-w-[64ch] text-base leading-relaxed text-ink">
             {requirement.text}
           </p>
@@ -160,7 +164,7 @@ function RequirementZone({ requirement }: { requirement: Requirement }) {
           </div>
         </div>
 
-        <div className="flex shrink-0 flex-col gap-2 sm:w-56">
+        <div className="flex shrink-0 flex-col gap-2 sm:w-56 sm:border-l sm:border-hairline sm:pl-8">
           {requirement.is_gating ? (
             <p className="font-mono text-xs text-ink-muted">
               Deal-breaker. Miss it and the bid is disqualified.
@@ -206,7 +210,7 @@ function SourceRef({
         {ref}
       </button>
       {open && excerpt && (
-        <p className="mt-1 border-l-2 border-hairline pl-2 italic text-ink-muted">
+        <p className="mt-2 rounded bg-paper-recessed p-2.5 leading-relaxed text-ink-muted shadow-[var(--depth-pressed)]">
           &ldquo;{excerpt}&rdquo;
         </p>
       )}
@@ -304,11 +308,18 @@ function DecisionZone({
 
   return (
     <div className="border-t border-hairline bg-paper-raised px-5 py-4 sm:px-6">
-      {/* Current decision and its audit line, when one has been recorded. */}
+      {/* Current decision. Approval stamps the sheet (design-language device 6);
+          every other status keeps the quiet word plus its mono audit line. */}
       <div className="mb-3 flex items-baseline justify-between gap-4">
-        <span className="text-sm text-ink-muted">{statusWord}</span>
-        {audit && (
-          <span className="font-mono text-xs text-ink-muted">{audit}</span>
+        {requirement.status === "accepted" && requirement.decision ? (
+          <ApprovalStamp time={formatTime(requirement.decision.timestamp)} />
+        ) : (
+          <>
+            <span className="text-sm text-ink-muted">{statusWord}</span>
+            {audit && (
+              <span className="font-mono text-xs text-ink-muted">{audit}</span>
+            )}
+          </>
         )}
       </div>
 
