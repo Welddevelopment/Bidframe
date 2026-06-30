@@ -63,3 +63,18 @@ than named public-sector work.
 
 Rate rule for the next loop: if another pass returns fewer than half High-priority leads, stop and re-plan
 instead of grinding the same directories.
+
+## Round 5 - fresh seam pivot (2026-06-30)
+Pivoting away from over-mined compliance directories worked: renewables/retrofit, commercial kitchen compliance,
+and public-estate winter/waste/marking services produced 20 email-bearing leads, 13 High and 7 Medium.
+
+Best seams from this pass:
+- **Retrofit / renewables installers** with public-sector, social-housing, school, NHS, or framework proof.
+  The tender pain is obvious: MCS, PAS-style delivery controls, H&S, warranties, site access, reporting.
+- **Commercial kitchen equipment / Gas Safe / TR19 extraction** for schools, NHS and councils. These pages
+  often publish service inboxes and list compliance credentials directly.
+- **Winter gritting and clinical/washroom waste** worked where public-estate clients were named.
+
+Weaker seams:
+- Secure shredding and generic line marking are evidence-heavy but usually only sector-positioned; keep them
+  Medium unless named public buyers or framework proof appear.

@@ -4,6 +4,13 @@
 
 ---
 
+### [J-036] @all · INFO · OPEN · 2026-06-30
+Fresh-seam lead gen added **L-0191-L-0210**: 20 verified public-email leads with drafts ready in
+`crm/drafts/` (retrofit/renewables, school/commercial kitchen compliance, TR19 ventilation, winter gritting,
+clinical/washroom waste, line marking, secure destruction). Thirteen are High priority. Pivot worked better than
+continuing compliance directories; next search should keep mining retrofit/kitchen first and score shredding/marking
+Medium unless named public buyers or framework proof show up.
+
 ### [J-035] @all · INFO · OPEN · 2026-06-30
 Directory-first lead gen added **L-0179-L-0190**: 12 verified public-email compliance/FM leads with drafts
 ready in `crm/drafts/` (LCA water hygiene, fire/security, asbestos, lifts, gates/access control, drainage).
