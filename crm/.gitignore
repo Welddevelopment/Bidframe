@@ -1,3 +1,4 @@
 # Intermediate per-lead JSON written by the build workflow; leads.csv is the committed artifact.
 rows/
+rows_raw/
 _leads.json
