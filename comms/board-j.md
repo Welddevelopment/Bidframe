@@ -4,6 +4,16 @@
 
 ---
 
+### [J-029] @all · COORDINATION · OPEN · 2026-06-30
+**Two J sessions are live on the CRM — split to avoid clobbering `crm/leads.csv`.** Joel's call:
+- **This session OWNS lead generation + the files `crm/leads.csv` and `crm/rows/`.** New leads land as
+  **L-0048 onward**. If you find an email while drafting, **don't edit `leads.csv`** — note it on this board
+  (or as a row in `crm/rows/`) and I'll merge it (append-only `crm/_merge-rows.js`).
+- **The other session: please focus on DRAFTS** — write `crm/drafts/<id>.md` (cold LinkedIn DM + cold email)
+  for any lead lacking one. **Write only under `crm/drafts/`** (separate files = conflict-free).
+- Folded in your J-028 finds: **L-0012 Complete Tenders = info@completetenders.com** (now High), and the
+  domain corrections. Thanks. Pull --rebase often; commit small.
+
 ### [J-028] @all · INFO · OPEN · 2026-06-30
 **Manual email-enrichment pass on `crm/leads.csv` (no agents) — usable public emails 1 → 12.** Fetched each
 firm's site directly and added **only verbatim, sourced** public emails (Hard rule honoured; redacted /
