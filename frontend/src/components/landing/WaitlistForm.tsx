@@ -3,26 +3,28 @@
 import { useState } from "react";
 
 // The waitlist capture (lower priority than Book a demo, per the build call): a
-// single email field so interest has somewhere to land if outreach works. It is
-// wired by configuration, not a code change: it POSTs to a no-code form endpoint
-// (NEXT_PUBLIC_WAITLIST_ENDPOINT) when set, else opens a mailto to
-// NEXT_PUBLIC_WAITLIST_EMAIL. TODO before outreach: set one of those env vars so
-// the address is actually stored.
+// single email field so interest has somewhere to land if outreach works. It
+// POSTs to the same-origin /api/waitlist route, which holds the spam check and
+// the storage (it forwards to WAITLIST_WEBHOOK if set, else logs). A hidden
+// honeypot field below catches bots, and a one-line consent note sits under the
+// input. No login: a waitlist is a zero-friction capture by design.
 
-const ENDPOINT = process.env.NEXT_PUBLIC_WAITLIST_ENDPOINT;
-const MAILTO = process.env.NEXT_PUBLIC_WAITLIST_EMAIL;
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
 type State = "idle" | "loading" | "done";
 
-function track(email: string): void {
+// Record only that a signup happened, never the address: keep PII out of analytics.
+function track(): void {
   if (typeof window === "undefined") return;
   const w = window as unknown as { dataLayer?: Record<string, unknown>[] };
-  w.dataLayer?.push({ event: "waitlist_submit", email });
+  w.dataLayer?.push({ event: "waitlist_submit" });
 }
 
 export function WaitlistForm() {
   const [email, setEmail] = useState("");
+  // Honeypot: a hidden field real users never see. If it comes back filled, the
+  // server treats the submission as a bot and drops it.
+  const [website, setWebsite] = useState("");
   const [state, setState] = useState<State>("idle");
   const [error, setError] = useState<string | null>(null);
 
@@ -34,20 +36,14 @@ export function WaitlistForm() {
     }
     setError(null);
     setState("loading");
-    track(email);
+    track();
     try {
-      if (ENDPOINT) {
-        const res = await fetch(ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        });
-        if (!res.ok) throw new Error("bad status");
-      } else if (MAILTO) {
-        const subject = encodeURIComponent("Bidframe waitlist");
-        const body = encodeURIComponent(`Please add me to the waitlist: ${email}`);
-        window.location.href = `mailto:${MAILTO}?subject=${subject}&body=${body}`;
-      }
+      const res = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, website }),
+      });
+      if (!res.ok) throw new Error("bad status");
       setState("done");
     } catch {
       setState("idle");
@@ -65,6 +61,23 @@ export function WaitlistForm() {
 
   return (
     <form onSubmit={onSubmit} className="mt-4" noValidate>
+      {/* Honeypot: hidden from people, irresistible to bots. It must stay empty;
+          the server drops any submission that fills it. Off-screen, not in the
+          tab order, and aria-hidden, so assistive tech ignores it too. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-[-9999px] h-0 w-0 overflow-hidden"
+      >
+        <label htmlFor="waitlist-website">Leave this field empty</label>
+        <input
+          id="waitlist-website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
+        />
+      </div>
       <div className="mx-auto flex max-w-[24rem] flex-col gap-2 sm:flex-row">
         <label htmlFor="waitlist-email" className="sr-only">
           Your email
@@ -92,6 +105,9 @@ export function WaitlistForm() {
           {state === "loading" ? "Adding…" : "Join the waitlist"}
         </button>
       </div>
+      <p className="mx-auto mt-2 max-w-[24rem] text-xs text-ink-muted">
+        We&rsquo;ll only use this to tell you when a place opens.
+      </p>
       {error && (
         <p className="mt-2 text-sm text-signal-oxblood" role="alert">
           {error}
