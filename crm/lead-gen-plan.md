@@ -78,3 +78,20 @@ Best seams from this pass:
 Weaker seams:
 - Secure shredding and generic line marking are evidence-heavy but usually only sector-positioned; keep them
   Medium unless named public buyers or framework proof appear.
+
+## Round 6 - passive fire + repeat winners (2026-06-30)
+Passive fire/fire doors is a top-tier seam: one pass produced 7 email-bearing leads, 6 High. The fit is
+especially strong because tenders are built around auditable evidence: BM TRADA/FIRAS/Q-Mark, inspection
+records, remedial schedules, compartmentation evidence, digital reporting, RAMS, insurance, and live public
+estate/housing compliance pressure.
+
+Kitchen compliance stayed strong too: CEDA/school-kitchen/Gas Safe/TR19 leads produced mostly Highs when the
+site named schools, NHS, councils, local authorities, YPO or public-sector pages. Retrofit/renewables remains
+good, but the strongest leads have explicit social-housing/framework/council proof; generic public-sector EV
+or mixed domestic/commercial installers should stay Medium.
+
+Next repeatable pattern:
+- Mine **fire-door/passive-fire specialists** by geography and accreditation. Prioritise housing, education,
+  healthcare, local authority and social-housing pages.
+- Keep mining **school kitchen / commercial catering maintenance / TR19** where public-sector pages are explicit.
+- For renewables, prefer framework and social-housing programmes over general commercial solar pages.

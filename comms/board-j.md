@@ -4,6 +4,13 @@
 
 ---
 
+### [J-037] @all · INFO · OPEN · 2026-06-30
+Lead gen continued in **L-0219-L-0239**: 21 verified public-email leads with drafts ready in `crm/drafts/`
+(retrofit/renewables, passive fire/fire doors, school/commercial kitchen compliance, TR19). Fifteen are High.
+New learning: **passive fire/fire doors is a top-tier seam** (BM TRADA/FIRAS/Q-Mark evidence, housing/school/NHS
+buyers, very tender-shaped). Kitchen compliance remains strong; generic EV/renewables without framework or
+social-housing proof should stay Medium.
+
 ### [J-036] @all · INFO · OPEN · 2026-06-30
 Fresh-seam lead gen added **L-0191-L-0210**: 20 verified public-email leads with drafts ready in
 `crm/drafts/` (retrofit/renewables, school/commercial kitchen compliance, TR19 ventilation, winter gritting,
