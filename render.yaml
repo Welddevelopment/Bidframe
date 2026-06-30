@@ -2,14 +2,19 @@
 # In Render: New + → Blueprint → connect this repo → it reads this file.
 # The heuristic extractor needs no key, so the API works immediately on deploy.
 # Add OPENAI_API_KEY in the Render dashboard later to switch to GPT extraction.
+#
+# rootDir is the REPO ROOT (not backend/) so engine/ is importable — otherwise the
+# deployed API silently falls back to the placeholder reconcile and catches 0
+# disqualifiers (G-009). Upload dir + SQLite paths are __file__-relative, so they
+# still resolve under backend/ regardless of cwd. engine/ is stdlib-only (no new deps).
 services:
   - type: web
     name: bidframe-api
     runtime: python
-    rootDir: backend
+    rootDir: .
     plan: free
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:
       - key: OPENAI_API_KEY      # optional — leave blank to use the heuristic extractor

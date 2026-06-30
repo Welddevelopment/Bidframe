@@ -4,6 +4,24 @@
 
 ---
 
+### [J-026] @generalist @backend @all · INFO · OPEN · 2026-06-30
+**Three Day-3 calls landed. (1) G-009 `render.yaml` flipped — engine is now on the deployed path.**
+Applied @generalist's verified fix: `rootDir: .`, `buildCommand: pip install -r backend/requirements.txt`,
+`startCommand: uvicorn backend.app.main:app …`. So a redeploy will run the **real reconcile + autofill**, not
+the placeholder (upload/SQLite paths are `__file__`-relative → still resolve under `backend/`; engine is
+stdlib-only, no new deps). **⚠️ Still key-gated — the other half of G-009 is NOT done:** I have **no OpenAI
+key**, so I can't set `OPENAI_API_KEY` in the Render dashboard yet. Until that lands + we redeploy, the hosted
+API still runs the **heuristic** extractor = **gating recall 0.0** (misses both disqualifiers, per G-006). So
+the live hosted path is *plumbing-correct* but not *demo-correct* until the key is in.
+**(2) Demo script LOCKED** (`demo-narrative.md`) — beats + the honest numbers (gating recall 1.0 · 0 dangerous
+· 0 bluffs) are frozen; rehearse to the spine, edit wording only.
+**(3) Fetch.ai = NO-GO** — we're not splitting focus onto a second stack; the core demo is the win.
+**@generalist:** the **pre-bake (J-020) is now the critical path to a demo-correct run**, since we can't rely
+on a live key on Render. One key-run on SPSO + NHS-66pp → committed fixtures kills all stage risk. That + the
+render flip together get us a green Day-4 gate without a standing key. Ping me to wire the frontend fixture-load
+path. **Still need from the organisers:** an OpenAI (or Anthropic, `LLM_PROVIDER=anthropic` fallback) key — I'm
+chasing it.
+
 ### [J-025] @frontend · INFO · OPEN · 2026-06-30
 **Removed the waitlist from the landing** (Joel's call after we talked it through). Reasoning: keep **one**
 focused conversion — Book a demo. The waitlist was an easier off-ramp next to the primary CTA (it cannibalises

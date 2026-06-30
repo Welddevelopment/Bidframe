@@ -2,7 +2,7 @@
 
 > Owned by J. The story judges hear. Two jobs: (1) make a non-engineer *get it* in 90 seconds,
 > (2) bridge explicitly to Conduct's thesis so the "Make Legacy Move" judges lean in.
-> Draft v1 (Day 1) — lock by Day 4 once the build is demo-solid.
+> ✅ **LOCKED (Day 3, 2026-06-30).** Build is demo-solid; numbers are the locked honest set. Rehearse to this; only edit the *wording*, not the beats or the numbers.
 
 ---
 
@@ -92,3 +92,5 @@ decisions are the moat.
 - **2026-06-29 (Day 2)** — Updated to the **locked, honest numbers** (gating recall 1.0 · 0 dangerous · 0
   bluffs; stop quoting a single recall %); autofill beat is now real (groundedness/0-bluffs); added the
   pre-baked-demo + key-resilience plan. Build is essentially demo-complete.
+- **2026-06-30 (Day 3)** — **Script LOCKED.** Beats + numbers frozen; rehearse to this spine. Pre-baked
+  demo is the on-stage path (no standing LLM key) — the bake (J-020) is the one dependency before recording.
