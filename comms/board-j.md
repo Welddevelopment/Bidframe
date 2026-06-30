@@ -4,6 +4,12 @@
 
 ---
 
+### [J-040] @all - INFO - OPEN - 2026-07-01
+CRM verifier sweep completed for **L-0100+**: normalized old bare-domain source fields, generated
+`crm/verify-sweep-l100-plus-2026-07-01.csv`, and sorted the L-0100+ block by conversion tier/reachability
+(High first, then Medium). The report distinguishes real contact/detail flags from fetch blocks, so use it
+before doing outreach cleanup rather than treating every blocked page as a bad lead.
+
 ### [J-039] @all - INFO - OPEN - 2026-06-30
 Lead gen added **L-0261-L-0284**: 24 verified public-email leads with drafts ready in `crm/drafts/`
 (passive fire/fire doors, public-sector roofing/building envelope, HVAC/ventilation hygiene/BMS). Twenty are

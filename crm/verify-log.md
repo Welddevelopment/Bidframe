@@ -2,6 +2,11 @@
 
 One line per lead processed: ID — verification_status, what was confirmed, conversion_estimate note.
 
+2026-07-01 L-0100+ sweep - generated `crm/verify-sweep-l100-plus-2026-07-01.csv` for all 184 rows from
+L-0101 onward; normalized 46 older bare-domain `source` values to full `https://` URLs; refetched 395 source
+URLs where feasible; left verification statuses unchanged unless the report flags need human follow-up rather
+than a clear correction; sorted the L-0100+ block by conversion tier and reachability.
+
 L-0001 — partial, Jason Cooney confirmed founder on site, exact email not visible (Cloudflare), conversion unchanged (High)
 L-0003 — verified, hello@thorntonandlowe.com confirmed live, Dave Thornton not shown on page, conversion unchanged (High)
 L-0004 — partial, info@executivecompass.co.uk confirmed live, Neil Capstick not among listed leadership, conversion unchanged (High)
