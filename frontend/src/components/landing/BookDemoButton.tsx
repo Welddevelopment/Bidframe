@@ -8,10 +8,11 @@ import Link from "next/link";
 // viewport. The secondary is a quiet "See it run" link into the preloaded demo
 // at /review. Each fires one analytics event; nothing else is instrumented.
 //
-// The destination is a scheduling link, set via NEXT_PUBLIC_BOOKING_URL so it
-// can be swapped without a code change (brief §16.1). Until it is set, the
-// button falls back to an on-page anchor.
-const BOOKING_URL = process.env.NEXT_PUBLIC_BOOKING_URL ?? "#book-a-demo";
+// The destination is a scheduling link. Default is Joel's live Cal.com booking
+// page so the deployed CTA works out of the box; NEXT_PUBLIC_BOOKING_URL still
+// overrides it without a code change (brief §16.1) if we move scheduler.
+const BOOKING_URL =
+  process.env.NEXT_PUBLIC_BOOKING_URL ?? "https://cal.com/joel-jeon-o29lfr/bidframe";
 
 type Tone = "light" | "dark";
 
