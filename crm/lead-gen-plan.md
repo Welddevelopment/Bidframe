@@ -95,3 +95,17 @@ Next repeatable pattern:
   healthcare, local authority and social-housing pages.
 - Keep mining **school kitchen / commercial catering maintenance / TR19** where public-sector pages are explicit.
 - For renewables, prefer framework and social-housing programmes over general commercial solar pages.
+
+## Round 7 - passive fire, roofing and HVAC (2026-06-30)
+The 3-agent pass stayed productive: 21 verified email-bearing leads, 17 High and 4 Medium. Passive fire repeated
+as a top seam; roofing/building envelope was stronger than expected because school, NHS, local-authority and
+framework references often sit beside NFRC/CHAS/SafeContractor/Constructionline evidence; HVAC also worked when
+the page exposed a crisp compliance trigger such as TM44, F-Gas/Refcom, TR19, fire dampers, BEMS or school PPM.
+
+Next repeatable pattern:
+- Continue **passive fire/fire doors** until the High share drops below half; prioritise named public estates,
+  social housing, healthcare, schools and third-party accreditation pages.
+- Mine **roofing/building-envelope specialists** via NFRC/LRWA/member pages and search for school, NHS, council,
+  housing and framework proof. This looks like a fresh high-yield seam.
+- Keep **HVAC/ventilation hygiene/BMS** narrow: TM44, F-Gas, Refcom, TR19, fire dampers, DBS engineers, NHS/school
+  maintenance and framework language. Generic commercial AC should stay Medium or be skipped.

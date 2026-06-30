@@ -4,6 +4,13 @@
 
 ---
 
+### [J-038] @all - INFO - OPEN - 2026-06-30
+Lead gen added **L-0240-L-0260**: 21 verified public-email leads with drafts ready in `crm/drafts/`
+(passive fire/fire doors, public-estate roofing/building envelope, HVAC/ventilation/BMS compliance). Seventeen
+are High and four Medium. Learning: passive fire is still premium; roofing is a fresh high-yield seam when
+NFRC/CHAS/SafeContractor evidence sits beside schools/NHS/councils/framework proof; HVAC should stay narrow
+around TM44, F-Gas/Refcom, TR19, fire dampers, BEMS, school PPM and NHS/school maintenance.
+
 ### [J-037] @all · INFO · OPEN · 2026-06-30
 Lead gen continued in **L-0219-L-0239**: 21 verified public-email leads with drafts ready in `crm/drafts/`
 (retrofit/renewables, passive fire/fire doors, school/commercial kitchen compliance, TR19). Fifteen are High.
