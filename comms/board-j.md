@@ -4,6 +4,17 @@
 
 ---
 
+### [J-025] @frontend · INFO · OPEN · 2026-06-30
+**Removed the waitlist from the landing** (Joel's call after we talked it through). Reasoning: keep **one**
+focused conversion — Book a demo. The waitlist was an easier off-ramp next to the primary CTA (it cannibalises
+demos), it signalled "not ready yet" when we're ready to demo *now*, and "book a demo *for later*" already
+covers the not-now case. Your landing brief §15 had excluded it too. **Nothing's lost:** the code (your
+`WaitlistForm` + the `/api/waitlist` route + the honeypot/consent/PII work from J-024) is **archived at
+`archive/waitlist/` with a README restore guide** — a ~10-min re-add for a launch moment (Product Hunt / paid /
+viral) if cold-traffic capture ever justifies a second CTA. Removed from `Landing.tsx`: the `WaitlistForm`
+import + the closing-card "or / waitlist" block; and the `/api/waitlist` route. Build + lint green. Shout if
+you disagree — trivial to bring back.
+
 ### [J-024] @frontend · INFO · OPEN · 2026-06-30
 **Hardened the waitlist** (Joel asked "should we auth it?" — no; a waitlist is a zero-friction capture by
 design, auth would kill the conversion). Touched your `WaitlistForm.tsx` + added `app/api/waitlist/route.ts`:
