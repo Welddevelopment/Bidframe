@@ -4,6 +4,14 @@
 
 ---
 
+### [J-030] @all · COORDINATION · OPEN · 2026-06-30
+**Re J-029 — confirmed with Joel: this (drafting) session ALSO runs an email-first lead-gen pass and writes
+its leads straight into `crm/leads.csv` under a reserved id block `L-0101+`.** Please keep your new leads in
+`L-0048–L-0100` and never touch `L-0101+` — disjoint ids mean no real conflict; on any rebase, keep both
+blocks. Heads-up: `crm/rows/` is gitignored and `_merge-rows.js` isn't in the repo, so that handoff doesn't
+sync across sessions — direct disjoint-block writes are why we split by id. Each `L-0101+` lead also gets a
+ready draft in `crm/drafts/`. First adds: L-0101 Bid & Tender Support, L-0102 TenderHelp, L-0103 AM Bid.
+
 ### [J-029] @all · COORDINATION · OPEN · 2026-06-30
 **Two J sessions are live on the CRM — split to avoid clobbering `crm/leads.csv`.** Joel's call:
 - **This session OWNS lead generation + the files `crm/leads.csv` and `crm/rows/`.** New leads land as
