@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `c5ef1c1` · 2026-06-30T01:03:59Z
+> Map of commit `943b47e` · 2026-06-30T01:04:14Z
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,7 +12,7 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 71 | 14,026 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **frontend** | 69 | 13,840 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
 | **backend** | 17 | 1,907 | Backend — FastAPI (PDF ingest, extraction, REST API) |
 | **engine** | 48 | 2,994 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 678 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
@@ -22,7 +22,7 @@
 | **docs** | 3 | 1,663 | Docs — plans & specs |
 | **ci** | 1 | 62 | CI — GitHub Actions |
 | **tooling** | 1 | 516 | Tooling — repo scripts (incl. this map generator) |
-| **root** | 29 | 2,354 | Root — docs, config, role briefs |
+| **root** | 31 | 2,526 | Root — docs, config, role briefs |
 
 ## System shape
 
@@ -112,14 +112,12 @@ graph LR
   n13[Landing.tsx] --> n26[BookDemoButton.tsx]
   n13[Landing.tsx] --> n27[BotanicalSprig.tsx]
   n13[Landing.tsx] --> n34[HeroResolve.tsx]
-  n13[Landing.tsx] --> n36[WaitlistForm.tsx]
   n11[RequirementsContext.tsx] --> n16[mock-requirements.ts]
   n11[RequirementsContext.tsx] --> n33[api.ts]
   n11[RequirementsContext.tsx] --> n21[requirement.ts]
   n16[mock-requirements.ts] --> n21[requirement.ts]
   n33[api.ts] --> n21[requirement.ts]
   n24[triage.ts] --> n21[requirement.ts]
-  n37[waitlist/route.ts]
 ```
 
 ## Backend + Engine module graph (Python, tests excluded)
@@ -195,7 +193,6 @@ graph LR
 - `frontend/postcss.config.mjs`
 - `frontend/public/codemap.html`
 - `frontend/src/app/answers/page.tsx` — exports `metadata`
-- `frontend/src/app/api/waitlist/route.ts` — exports `POST`
 - `frontend/src/app/demo/page.tsx` — exports `metadata`
 - `frontend/src/app/globals.css`
 - `frontend/src/app/graph/page.tsx` — exports `metadata`
@@ -227,7 +224,6 @@ graph LR
 - `frontend/src/components/landing/BotanicalSprig.tsx` — A delicate botanical sprig in forest line-art, used to frame the hero and the
 - `frontend/src/components/landing/HeroResolve.tsx` — exports `HeroResolve`
 - `frontend/src/components/landing/Landing.tsx` — exports `Landing`
-- `frontend/src/components/landing/WaitlistForm.tsx` — exports `WaitlistForm`
 - `frontend/src/context/RequirementsContext.tsx` — exports `RequirementsProvider`
 - `frontend/src/data/mock-requirements.ts` — exports `mockTender`
 - `frontend/src/lib/api.ts` — exports `isApiEnabled`
@@ -361,6 +357,8 @@ graph LR
 - `LICENSE`
 - `README.md`
 - `STATUS.md`
+- `archive/waitlist/WaitlistForm.tsx` — exports `WaitlistForm`
+- `archive/waitlist/route.ts` — exports `POST`
 - `autofill-scope-decision.md`
 - `demo-narrative.md`
 - `fetch-agent-scope.md`

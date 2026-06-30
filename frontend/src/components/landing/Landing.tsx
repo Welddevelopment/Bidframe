@@ -2,7 +2,6 @@ import Link from "next/link";
 import { BookDemoButton, SeeItRunLink } from "./BookDemoButton";
 import { HeroResolve } from "./HeroResolve";
 import { ApprovalStamp } from "./ApprovalStamp";
-import { WaitlistForm } from "./WaitlistForm";
 import { BotanicalSprig } from "./BotanicalSprig";
 import { ConfidenceIndicator } from "@/components/ConfidenceIndicator";
 
@@ -276,8 +275,7 @@ export function Landing() {
       </main>
 
       {/* Ink band 2: the closing. A lifted response card on the dark ground,
-          carrying the demo CTA (primary) and the softer waitlist capture, so
-          interest has somewhere to land if outreach works. */}
+          carrying the one primary action: Book a demo. */}
       <section className="bg-ink">
         <div className={`${CONTAINER} py-20 sm:py-24`}>
           <div className="surface-grain mx-auto max-w-[600px] rounded-2xl border border-hairline bg-paper-raised p-8 text-center shadow-[var(--depth-sheet)] sm:p-10">
@@ -291,18 +289,6 @@ export function Landing() {
             <div className="mt-7 flex justify-center">
               <BookDemoButton location="closing" />
             </div>
-            <div className="mx-auto mt-9 flex max-w-[20rem] items-center gap-4">
-              <span className="h-px flex-1 bg-hairline" />
-              <span className="font-mono text-xs uppercase tracking-wide text-ink-muted">
-                or
-              </span>
-              <span className="h-px flex-1 bg-hairline" />
-            </div>
-            <p className="mt-6 text-sm text-ink-muted">
-              Not ready for a demo? Join the waitlist and we&rsquo;ll email you
-              when a place opens.
-            </p>
-            <WaitlistForm />
           </div>
         </div>
       </section>
