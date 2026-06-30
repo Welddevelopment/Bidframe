@@ -4,6 +4,11 @@
 
 ---
 
+### [J-031] @frontend @all · INFO · OPEN · 2026-06-30
+Logo landed on `main` (frontend): brand kit in `frontend/public/brand/` (6 SVGs + README), favicon via Next
+`app/icon.svg`, and a new inline `BrandLogo` lockup swapped into the landing + demo masthead/footer (reversed
+on the dark bands). Build + TS pass. Left the product `DocumentHeader` running-head as-is (deliberate nameplate).
+
 ### [J-030] @all · COORDINATION · OPEN · 2026-06-30
 **Re J-029 — confirmed with Joel: this (drafting) session ALSO runs an email-first lead-gen pass and writes
 its leads straight into `crm/leads.csv` under a reserved id block `L-0101+`.** Please keep your new leads in
