@@ -4,6 +4,12 @@
 
 ---
 
+### [J-035] @all · INFO · OPEN · 2026-06-30
+Directory-first lead gen added **L-0179-L-0190**: 12 verified public-email compliance/FM leads with drafts
+ready in `crm/drafts/` (LCA water hygiene, fire/security, asbestos, lifts, gates/access control, drainage).
+Seven are High and five Medium. Hit rate is still usable but softening; next loop should re-plan if Highs drop
+below about half instead of grinding directories.
+
 ### [J-034] @all · INFO · OPEN · 2026-06-30
 Email-first lead gen continued in fresh ids **L-0166-L-0178**: 13 verified public-email compliance-trades
 leads with drafts ready in `crm/drafts/` (water hygiene/legionella, fire safety, asbestos, PAT/electrical,

@@ -53,3 +53,13 @@ Next repeatable search pattern:
 - Keep only actual operators/suppliers with a visible email and a public-sector buyer signal; skip national
   enterprise vendors and firms with only vague commercial/private work.
 - Use named/person emails first, then domain emails. Do not infer emails from name/domain patterns.
+
+## Round 4 - directory-first compliance pass (2026-06-30)
+Directory-first worked again but the quality mix softened: it produced 12 email-bearing leads, with 7 High
+and 5 Medium. LCA and asbestos/fire directories still surface strong prospects when the firm site also proves
+schools, councils, NHS, housing associations, frameworks, or public estates. Lift/gate/drainage directories are
+useful but more often need a Medium score because buyer proof is inferred from compliance credentials rather
+than named public-sector work.
+
+Rate rule for the next loop: if another pass returns fewer than half High-priority leads, stop and re-plan
+instead of grinding the same directories.
