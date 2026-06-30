@@ -19,15 +19,16 @@
 - **Where we are:** end-to-end spine proven on a **real** tender on Day 2; **auditable autofill
   wired end-to-end** (**116 tests green**) — live API returns grounded answers, "Draft my answers" UI
   button fires POST /draft, groundedness eval proves 0 bluffs (42/42 citations verified). Backend
-  **demo-locked (Day 5)** — no further features; judge-proof on any PDF input. Frontend layout
-  pass shipped (split-panel RequirementPanel, spine nav, section nav, DocumentHeader). Both live
-  on Render + Vercel; eval harness stress-tested on a 66pp NHS ITT. Design language locked
-  ("the civic record"). Demo narrative locked to honest numbers.
+  **demo-locked** — no further features; judge-proof on any PDF input. Frontend civic-record design
+  sweep complete (graph view, landing, `/demo` route, all components). `render.yaml` fixed (G-009)
+  — deployed API now runs real reconcile + autofill. **Demo-day playbook complete:** run-sheet,
+  4 cue-cards, QA prep (12 scenarios), backup plan all in `demo-day/`. CRM at **198 named leads**
+  with humanized drafts across every public-sector SME segment.
 - **Headline number:** SPSO tender (pp.1–6), OpenAI extractor → **recall 0.947 (18/19), gating
   recall 1.0 · gating accuracy 1.0 (both disqualifiers caught, zero over-flagging), 0 dangerous
   misses.**
-- **Next up:** flip `render.yaml` rootDir + set `OPENAI_API_KEY` on Render (G-009) to make the
-  full stack live on the hosted site; finish SPSO gold set + expand to 2+ tenders.
+- **Next up:** set `OPENAI_API_KEY` on Render to make recall 1.0 live on hosted site; execute
+  Day-4 outreach (198 named leads); 33-issue frontend UX audit fix pass; expand gold set to 2+ tenders.
 
 ---
 
@@ -92,3 +93,7 @@
 - **21:04** — **Bidframe logo + favicon** wired into landing + demo (frontend); CRM email-first lead gen extended to **115 named leads** (L-0101–L-0115: bid consultancies, SME caterers, grounds, fire-safety, pest-control) + all high-priority outreach drafts rewritten to a locked anti-pitch motion *(product now has its visual identity on every tab/share; Day-3 outreach funnel is 115 real named targets deep with battle-tested copy)*
 - **22:04** — CRM extended to **146 named leads** (L-0116–L-0146: M&E/waste, SEND/EOTAS tuition, allied health/EHCP, paediatric physio, translation, arboriculture) + `START-HERE.md` orientation doc added (agent/Codex onboarding, read-order index, hard rules) *(new-sector seams unlock health + SEND outreach lanes; repo is now Codex-ready for parallel AI agent sessions)*
 - **23:04** — CRM extended to **190 named leads** (L-0147–L-0190: school transport, occupational health, workwear/uniform, education furniture, playground equipment, compliance trades — water hygiene, fire, asbestos, PAT, lifts, gates, drainage) via email-first + directory-sourced passes *(outreach funnel at 190 named targets with ready drafts across every public-sector SME segment, poised for Day-4 send)*
+
+## Day 4 — Wed 01 Jul 2026
+
+- **00:04** — **Demo-day ops playbook complete** (P): `demo-day/` folder added with minute-by-minute run-sheet, 4 role-specific cue-cards, 12-scenario QA-prep, backup plan + pre-show checklist; frontend hardened across 10 components (ComplianceMatrix, GatingHero, MatrixView, UploadDropzone, OpenQuestions + API/triage); CRM quality pass — 100 leads re-verified, all 108 outreach drafts humanized (personalized openers), 8 new leads → **198 named targets** *(the team is ops-ready for demo day; no improvisation needed — and the full outreach funnel is battle-tested)*
