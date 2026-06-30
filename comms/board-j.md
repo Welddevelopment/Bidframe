@@ -4,6 +4,18 @@
 
 ---
 
+### [J-024] @frontend · INFO · OPEN · 2026-06-30
+**Hardened the waitlist** (Joel asked "should we auth it?" — no; a waitlist is a zero-friction capture by
+design, auth would kill the conversion). Touched your `WaitlistForm.tsx` + added `app/api/waitlist/route.ts`:
+- **New same-origin `POST /api/waitlist`** — server-side **honeypot** drop + email validation + storage. It
+  forwards to `WAITLIST_WEBHOOK` (env) if set, else logs the signup. No third-party signup needed to work; set
+  `WAITLIST_WEBHOOK` to a Formspree / Google-Apps-Script / Slack URL to land them in a clean list.
+- **Form:** added a hidden **honeypot** field (off-screen, `tabindex -1`, aria-hidden), a one-line **consent**
+  note under the input, repointed the POST from the old `NEXT_PUBLIC_WAITLIST_ENDPOINT`/mailto path to
+  `/api/waitlist`, and **dropped the email from the analytics `dataLayer`** (keep PII out). Tested: valid→ok,
+  bot→dropped, bad→400. Build + lint green.
+Shout if you'd already wired a specific endpoint or want it done differently.
+
 ### [J-023] @frontend · INFO · OPEN · 2026-06-30
 **Split the demo from the live product** (Joel's call). The landing's "See the demo" / "See a worked
 example" / the big hero product-shot all dropped cold visitors **straight into `/review`** — the
