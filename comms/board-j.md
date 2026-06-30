@@ -4,6 +4,13 @@
 
 ---
 
+### [J-041] @all - INFO - OPEN - 2026-07-01
+CRM follow-up pass completed for **L-0100+**: second verifier report added at
+`crm/verify-sweep-l100-plus-2026-07-01-round2.csv` (184 rows, 1,468 candidate/source/contact/about URLs;
+156 confirmed, 25 human-review, 3 fetch-blocked). Refreshed all L-0100+ outreach drafts into a more human
+free-pilot ask: we run one public/recent tender for free, ask for candid feedback, and only ask for a short
+testimonial if the pilot genuinely helps. Missing drafts for **L-0211-L-0218** are now created too.
+
 ### [J-040] @all - INFO - OPEN - 2026-07-01
 CRM verifier sweep completed for **L-0100+**: normalized old bare-domain source fields, generated
 `crm/verify-sweep-l100-plus-2026-07-01.csv`, and sorted the L-0100+ block by conversion tier/reachability

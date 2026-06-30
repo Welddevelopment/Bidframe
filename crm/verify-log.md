@@ -2,6 +2,10 @@
 
 One line per lead processed: ID — verification_status, what was confirmed, conversion_estimate note.
 
+2026-07-01 L-0100+ round-two sweep - generated `crm/verify-sweep-l100-plus-2026-07-01-round2.csv`;
+checked 184 leads against 1,468 source/home/contact/about URL candidates; 156 confirmed, 25 need human
+review, 3 fetch-blocked. No CRM downgrades made from automated fetch misses alone.
+
 2026-07-01 L-0100+ sweep - generated `crm/verify-sweep-l100-plus-2026-07-01.csv` for all 184 rows from
 L-0101 onward; normalized 46 older bare-domain `source` values to full `https://` URLs; refetched 395 source
 URLs where feasible; left verification statuses unchanged unless the report flags need human follow-up rather

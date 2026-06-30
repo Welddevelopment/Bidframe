@@ -20,12 +20,20 @@ Never "buy this" — **ask for their expertise**, then run it **live on a tender
 reaction to it catching something on a tender they know is the quotable moment. Capture: name, role,
 company, verbatim quote, ideally a short screen-recording.
 
+**Free-pilot framing (current outreach, 2026-07-01):** offer to run one recent public tender through
+Bidframe for free and send back the requirements matrix plus any evidence-linked draft answers. The ask is
+blunt feedback first; only ask for a short testimonial if it genuinely saves them time. Phrase it as earned:
+"No pressure on the testimonial; it has to earn it." Avoid asking for confidential docs - they can point us
+at a public ITT or share something they are comfortable sharing.
+
+
 ## LinkedIn — first-touch (connection note / DM)
 
 > Hi [Name] — I've built a tool that breaks a public-sector tender into a requirements checklist, flags
 > the mandatory ones that would disqualify a bid, and links each back to the exact clause so you can
 > verify it. Given your work at [Company], could I show you on a tender you know and get your honest take
-> on whether you'd actually use it? 10 minutes, no pitch — I genuinely want your read.
+> on whether you'd actually use it? I am offering a free pilot in return for blunt feedback; if it genuinely
+> helps, I'd also ask for a one-sentence testimonial we can quote. 10 minutes, no pitch — I genuinely want your read.
 
 ## LinkedIn — follow-up (after they say yes)
 
