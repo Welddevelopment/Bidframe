@@ -15,15 +15,21 @@ import {
   patchRequirement,
 } from "@/lib/api";
 
+const SAVE_FAILED =
+  "Couldn't save that change to the server. It shows here, but may not have been kept. Check your connection, then redo it.";
+
 interface RequirementsContextValue {
   requirements: Requirement[];
   capabilityDocs: CapabilityDoc[];
   tenderId: string | null;
   drafting: boolean;
+  notice: string | null;
+  dismissNotice: () => void;
   updateRequirement: (id: string, patch: Partial<Requirement>) => void;
   approve: (id: string) => void;
   editRequirement: (id: string, note: string) => void;
   flag: (id: string, note: string) => void;
+  reopen: (id: string) => void;
   editAnswer: (id: string, text: string) => void;
   answerOpenQuestion: (
     reqId: string,
@@ -53,6 +59,8 @@ export function RequirementsProvider({
   // autofill action knows which tender to draft against.
   const [tenderId, setTenderId] = useState<string | null>(null);
   const [drafting, setDrafting] = useState(false);
+  // A transient notice (e.g. a failed save) shown as a small toast.
+  const [notice, setNotice] = useState<string | null>(null);
 
   function updateRequirement(id: string, patch: Partial<Requirement>) {
     setRequirements((prev) =>
@@ -92,7 +100,7 @@ export function RequirementsProvider({
     updateRequirement(id, { status, decision });
     if (isApiEnabled()) {
       patchRequirement(id, { status, decision }).catch(() => {
-        // Best-effort: the optimistic update already reflects the change in the UI.
+        setNotice(SAVE_FAILED);
       });
     }
   }
@@ -119,6 +127,17 @@ export function RequirementsProvider({
       note,
       timestamp: new Date().toISOString(),
     });
+  }
+
+  // Undo a decision: return the requirement to pending and clear the recorded
+  // decision. Optimistic in-memory, best-effort persistence like applyDecision.
+  function reopen(id: string) {
+    updateRequirement(id, { status: "pending", decision: null });
+    if (isApiEnabled()) {
+      patchRequirement(id, { status: "pending", decision: null }).catch(() => {
+        setNotice(SAVE_FAILED);
+      });
+    }
   }
 
   // Human revises the drafted answer — record it as human-edited and keep the
@@ -172,14 +191,45 @@ export function RequirementsProvider({
         approve,
         editRequirement,
         flag,
+        reopen,
         editAnswer,
         answerOpenQuestion,
         loadTender,
         draftAnswers,
+        notice,
+        dismissNotice: () => setNotice(null),
       }}
     >
       {children}
+      {notice && (
+        <SaveNotice message={notice} onDismiss={() => setNotice(null)} />
+      )}
     </RequirementsContext.Provider>
+  );
+}
+
+// A small, dismissible toast pinned to the bottom of the viewport. The oxblood
+// reading edge marks it as a problem without a coloured slab (the status system).
+function SaveNotice({
+  message,
+  onDismiss,
+}: {
+  message: string;
+  onDismiss: () => void;
+}) {
+  return (
+    <div className="fixed inset-x-0 bottom-4 z-[70] flex justify-center px-4">
+      <div className="surface-grain flex max-w-md items-start gap-3 rounded-lg border border-l-2 border-hairline border-l-signal-oxblood bg-paper-raised p-3 shadow-[var(--depth-sheet)]">
+        <p className="text-sm leading-snug text-ink">{message}</p>
+        <button
+          type="button"
+          onClick={onDismiss}
+          className="shrink-0 text-xs text-ink-muted transition-colors hover:text-ink"
+        >
+          Dismiss
+        </button>
+      </div>
+    </div>
   );
 }
 
