@@ -21,6 +21,28 @@ So for outreach the site is effectively mock-only, which is why the mock path ha
 
 ---
 
+## Status update — 2026-07-01
+
+Most of the frontend audit was implemented on `main` by **Pranav's `c17edb0` "Harden demo day and frontend
+UX flow"** (worked straight from this doc). Verified here: `npm run lint` + `npm run build` green.
+
+**Done in `c17edb0`:** #1 honest upload · #3 real upload errors (`ApiError` + `detail`) · #6/#9 bulk
+"Approve all confident" · #7 CSV export · #8 completion summary · #10 matrix search · #11 the `decided`
+group · #12 clickable deal-breaker hero · #13 in-panel Next skips resolved · #18 decided-count line ·
+#19 autofill visible in sample mode · #20 answering a gap re-drafts the answer · #21 deep-link anchor on
+questions · #23 multiline gap inputs · #32 matrix empty state.
+
+**Review caught 5 render bugs** (HTML entities / a mojibake char inside JS string literals — `lint`/`build`
+miss these, users see them); **fixed on `frontend/fix-ux-render-bugs`:** a stray `Â·` in the `/review`
+header, plus `&rsquo;`/`&hellip;` showing literally in four upload strings.
+
+**Still open (not in `c17edb0`):** #24 source-on-the-page (backend) · #25/#26 graph (clickable nodes,
+scale) · #28 URL / tender state · #29 tenders-list screen · #30 silent PATCH failures · #4/#5 multi-file +
+extract progress (backend) · #27 criterion titles (backend) · #33 global error boundary. A printable
+**response pack** (print → PDF, beyond the CSV) is built on `frontend/close-the-loop` if wanted.
+
+---
+
 ## TL;DR — the outreach-blocking shortlist
 
 If we only fix four things before sending leads, fix these:

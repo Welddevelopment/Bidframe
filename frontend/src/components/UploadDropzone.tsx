@@ -148,7 +148,7 @@ export function UploadDropzone() {
           errorMessage?.toLowerCase().includes("50mb") ||
           errorMessage?.toLowerCase().includes("file")
             ? "We cannot parse that file yet."
-            : "Couldn&rsquo;t complete the upload."}
+            : "Couldn't complete the upload."}
         </h2>
         <p className="mt-1 text-sm text-ink-muted">
           {errorMessage ??
@@ -177,8 +177,8 @@ export function UploadDropzone() {
         <div className="min-w-0">
           <h2 className="text-base font-semibold text-ink">
             {isApiEnabled()
-              ? "Extracting requirements&hellip;"
-              : "Opening the sample matrix&hellip;"}
+              ? "Extracting requirements…"
+              : "Opening the sample matrix…"}
           </h2>
           <p
             className="truncate text-sm text-ink-muted"
@@ -233,7 +233,7 @@ export function UploadDropzone() {
         </p>
         <p className="mt-1 text-sm text-ink-muted">
           {isApiEnabled()
-            ? "We&rsquo;ll extract every requirement into a compliance matrix."
+            ? "We'll extract every requirement into a compliance matrix."
             : "No live API is configured here, so upload opens the worked example honestly."}
         </p>
       </div>

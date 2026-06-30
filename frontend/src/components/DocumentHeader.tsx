@@ -94,7 +94,7 @@ export function DocumentHeader({
                 onFilter={triage.onFilter}
               />
               <span aria-hidden className="text-ink-muted">
-                Â·
+                ·
               </span>
               <TriageFilter
                 count={triage.counts.decided}
