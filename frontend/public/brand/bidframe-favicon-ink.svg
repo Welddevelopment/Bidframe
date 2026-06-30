@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Bidframe">
+  <title>Bidframe</title>
+  <circle cx="32" cy="32" r="32" fill="#211d17"></circle>
+  <path d="M20 14L27 23L14 22Z" fill="#f6f2e9"></path>
+  <path d="M44 14L37 23L50 22Z" fill="#f6f2e9"></path>
+  <path d="M32 13C20 13 14 24 14 35C14 47 22 53 32 53C42 53 50 47 50 35C50 24 44 13 32 13Z" fill="#f6f2e9"></path>
+  <circle cx="25" cy="31" r="6.6" fill="#211d17"></circle>
+  <circle cx="39" cy="31" r="6.6" fill="#211d17"></circle>
+  <circle cx="25" cy="31" r="2.8" fill="#f6f2e9"></circle>
+  <circle cx="39" cy="31" r="3.3" fill="#d2785a"></circle>
+  <path d="M32 35L35.5 40H28.5Z" fill="#d2a435"></path>
+</svg>

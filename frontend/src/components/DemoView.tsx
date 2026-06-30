@@ -8,6 +8,7 @@ import { GatingHero } from "@/components/GatingHero";
 import { GraphView } from "@/components/GraphView";
 import { BookDemoButton } from "@/components/landing/BookDemoButton";
 import { BotanicalSprig } from "@/components/landing/BotanicalSprig";
+import { BrandLogo } from "@/components/BrandLogo";
 import { mockTender } from "@/data/mock-requirements";
 
 // A read-only walkthrough of the product for cold visitors arriving from the
@@ -32,9 +33,10 @@ export function DemoView() {
         <div className="mx-auto flex max-w-[1160px] items-center justify-between px-6 py-4">
           <Link
             href="/"
-            className="rounded-sm font-mono text-sm font-medium uppercase tracking-[0.2em] text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+            aria-label="Bidframe — home"
+            className="rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
           >
-            Bidframe
+            <BrandLogo className="h-7 w-auto" />
           </Link>
           <BookDemoButton location="demo-masthead" variant="link" />
         </div>
@@ -132,9 +134,7 @@ export function DemoView() {
       {/* Footer. */}
       <footer className="bg-ink text-paper">
         <div className="mx-auto max-w-[1160px] px-6 py-8">
-          <span className="font-mono text-sm font-medium uppercase tracking-[0.22em] text-paper">
-            Bidframe
-          </span>
+          <BrandLogo reversed className="h-7 w-auto" />
         </div>
       </footer>
     </div>

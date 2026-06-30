@@ -4,6 +4,7 @@ import { HeroResolve } from "./HeroResolve";
 import { ApprovalStamp } from "@/components/ApprovalStamp";
 import { BotanicalSprig } from "./BotanicalSprig";
 import { ConfidenceIndicator } from "@/components/ConfidenceIndicator";
+import { BrandLogo } from "@/components/BrandLogo";
 
 // The public landing page (landing-page-brief). It is itself a civic record: the
 // same paper, masthead, rules, mono record voice, and real product components as
@@ -26,9 +27,7 @@ export function Landing() {
           prominent forest CTA. */}
       <header className="sticky top-0 z-30 border-b-2 border-ink bg-paper/85 backdrop-blur-sm">
         <div className={`${CONTAINER} flex items-center justify-between py-3`}>
-          <span className="font-mono text-sm font-medium uppercase tracking-[0.22em] text-ink">
-            Bidframe
-          </span>
+          <BrandLogo className="h-7 w-auto" />
           <BookDemoButton location="masthead" />
         </div>
       </header>
@@ -298,10 +297,8 @@ export function Landing() {
           className={`${CONTAINER} flex flex-wrap items-end justify-between gap-4 border-t border-paper/15 py-8`}
         >
           <div>
-            <span className="font-mono text-sm font-medium uppercase tracking-[0.22em] text-paper">
-              Bidframe
-            </span>
-            <p className="mt-1.5 text-sm text-paper/60">
+            <BrandLogo reversed className="h-7 w-auto" />
+            <p className="mt-2.5 text-sm text-paper/60">
               For SME bidders and small bid-writing consultancies.
             </p>
           </div>
