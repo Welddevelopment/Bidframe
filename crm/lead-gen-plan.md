@@ -27,3 +27,15 @@ each → a row (`L-0101+`) + a ready draft in `crm/drafts/`. Never fake a contac
 ## Proven low-hit — skip
 Care (CQC pages only), SEND *transport* (council portals only), generic "security company" (SIA
 register), generic IT support (not school-specific). Big firms, private-only, council services.
+
+## Round 2 — re-plan (2026-06-30, hit rate slowing)
+Principle: when skips start outnumbering keeps, re-plan rather than grind (a fresh plan worked far better).
+- **Tapped / saturated:** top bid consultancies; SEND/EOTAS tuition; SLT, OT, ed-psych, paediatric physio;
+  school counselling (dominated by big charities — Place2Be / The Spark / Spurgeons / EHP). The early SME
+  sectors (cleaning, grounds, catering, fire, pest) had their easy hits too.
+- **Fresh seams next (clearly-SME + heavy public-sector buyers + universal email culture):**
+  1. **Translation & interpreting agencies** — councils / NHS / courts buy heavily; SME agencies publish emails.
+  2. **Arboriculture / tree surgery** — council + housing-association contracts; owner-run, emails on site.
+  3. **Geographic pivot** — Scotland / Wales SME providers in the *proven* verticals (fresh firms, same playbook).
+  4. Workwear/PPE & school-uniform suppliers; educational furniture / play / sports equipment; minibus/coach
+     school-transport operators; occupational-health providers.
