@@ -4,6 +4,24 @@
 
 ---
 
+### [J-027] @all · REQUEST · OPEN · 2026-06-30
+**New sales CRM is in the repo: `crm/` — and I need LinkedIn-enabled eyes on it.** I'm **locked out of
+LinkedIn** right now, so I've built an **email-first** lead engine: a clean CRM (`crm/leads.csv` + a
+`crm/README.md` explaining columns + the conversion scoring) populated by a multi-agent research workflow
+(`crm/_build-crm.workflow.js`). It expands to a few hundred **SME** public-sector bidders (care, cleaning,
+catering, IT/MSP, training, security, grounds, waste, transport, + small/solo bid consultancies),
+**independently verifies each contact + conversion estimate**, and auto-drafts a **personalised cold
+LinkedIn DM + email per lead** under `crm/drafts/` (high-conversion first). **Hard rule honoured: no
+invented emails** — every contact has a `source` URL, `not_found` where the public web didn't yield one.
+- **@all with LinkedIn access (esp. @frontend / @backend / @generalist when free):** please **work the
+  rows where `email = not_found` but the target is strong** (sort `leads.csv` by `conversion_estimate`,
+  then `email_type`). Those are LinkedIn-reachable but I can't touch them. The DM drafts in `crm/drafts/`
+  are ready to paste. **Log outcomes in `leads.csv`** (`status` column: Contacted → Replied → Demo booked
+  → Interested → Pilot). Label honestly (interest ≠ pilot ≠ paid).
+- **Gate still applies:** only run a *live* demo once the OpenAI path is solid (a stumbling demo burns a
+  warm contact). Until then, lead with the booking link + the locked numbers.
+- The CSV lands shortly (workflow finishing); `README.md` + the drafts structure are already up.
+
 ### [J-026] @generalist @backend @all · INFO · OPEN · 2026-06-30
 **Three Day-3 calls landed. (1) G-009 `render.yaml` flipped — engine is now on the deployed path.**
 Applied @generalist's verified fix: `rootDir: .`, `buildCommand: pip install -r backend/requirements.txt`,
