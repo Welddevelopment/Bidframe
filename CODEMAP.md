@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `5ce3f47` · 2026-06-30T19:46:43Z
+> Map of commit `244c635` · 2026-06-30T20:56:06+01:00
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,7 +12,7 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 69 | 14,182 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **frontend** | 78 | 14,293 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
 | **backend** | 17 | 1,907 | Backend — FastAPI (PDF ingest, extraction, REST API) |
 | **engine** | 48 | 2,994 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 678 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
@@ -67,59 +67,61 @@ graph LR
   n22[ComplianceMatrix.tsx] --> n23[ConfidenceIndicator.tsx]
   n22[ComplianceMatrix.tsx] --> n24[triage.ts]
   n22[ComplianceMatrix.tsx] --> n21[requirement.ts]
+  n7[DemoView.tsx] --> n25[BrandLogo.tsx]
   n7[DemoView.tsx] --> n22[ComplianceMatrix.tsx]
-  n7[DemoView.tsx] --> n25[GatingHero.tsx]
+  n7[DemoView.tsx] --> n26[GatingHero.tsx]
   n7[DemoView.tsx] --> n9[GraphView.tsx]
-  n7[DemoView.tsx] --> n26[BookDemoButton.tsx]
-  n7[DemoView.tsx] --> n27[BotanicalSprig.tsx]
+  n7[DemoView.tsx] --> n27[BookDemoButton.tsx]
+  n7[DemoView.tsx] --> n28[BotanicalSprig.tsx]
   n7[DemoView.tsx] --> n11[RequirementsContext.tsx]
   n7[DemoView.tsx] --> n16[mock-requirements.ts]
   n7[DemoView.tsx] --> n24[triage.ts]
-  n4[DocumentHeader.tsx] --> n28[SectionNav.tsx]
+  n4[DocumentHeader.tsx] --> n29[SectionNav.tsx]
   n4[DocumentHeader.tsx] --> n11[RequirementsContext.tsx]
   n4[DocumentHeader.tsx] --> n24[triage.ts]
   n5[GapInterview.tsx] --> n20[AnswerStateBadge.tsx]
-  n5[GapInterview.tsx] --> n29[OpenQuestions.tsx]
+  n5[GapInterview.tsx] --> n30[OpenQuestions.tsx]
   n5[GapInterview.tsx] --> n11[RequirementsContext.tsx]
-  n25[GatingHero.tsx] --> n11[RequirementsContext.tsx]
+  n26[GatingHero.tsx] --> n11[RequirementsContext.tsx]
   n9[GraphView.tsx] --> n23[ConfidenceIndicator.tsx]
   n9[GraphView.tsx] --> n11[RequirementsContext.tsx]
   n9[GraphView.tsx] --> n21[requirement.ts]
   n15[MatrixView.tsx] --> n1[AppMain.tsx]
   n15[MatrixView.tsx] --> n22[ComplianceMatrix.tsx]
   n15[MatrixView.tsx] --> n4[DocumentHeader.tsx]
-  n15[MatrixView.tsx] --> n25[GatingHero.tsx]
-  n15[MatrixView.tsx] --> n30[RequirementDrawer.tsx]
-  n15[MatrixView.tsx] --> n31[RequirementPanel.tsx]
-  n15[MatrixView.tsx] --> n32[RequirementSpine.tsx]
+  n15[MatrixView.tsx] --> n26[GatingHero.tsx]
+  n15[MatrixView.tsx] --> n31[RequirementDrawer.tsx]
+  n15[MatrixView.tsx] --> n32[RequirementPanel.tsx]
+  n15[MatrixView.tsx] --> n33[RequirementSpine.tsx]
   n15[MatrixView.tsx] --> n11[RequirementsContext.tsx]
   n15[MatrixView.tsx] --> n24[triage.ts]
-  n29[OpenQuestions.tsx] --> n11[RequirementsContext.tsx]
-  n29[OpenQuestions.tsx] --> n21[requirement.ts]
-  n30[RequirementDrawer.tsx] --> n31[RequirementPanel.tsx]
-  n30[RequirementDrawer.tsx] --> n21[requirement.ts]
-  n31[RequirementPanel.tsx] --> n19[AnswerPanel.tsx]
-  n31[RequirementPanel.tsx] --> n33[ApprovalStamp.tsx]
-  n31[RequirementPanel.tsx] --> n23[ConfidenceIndicator.tsx]
-  n31[RequirementPanel.tsx] --> n21[requirement.ts]
-  n32[RequirementSpine.tsx] --> n23[ConfidenceIndicator.tsx]
-  n32[RequirementSpine.tsx] --> n24[triage.ts]
+  n30[OpenQuestions.tsx] --> n11[RequirementsContext.tsx]
+  n30[OpenQuestions.tsx] --> n21[requirement.ts]
+  n31[RequirementDrawer.tsx] --> n32[RequirementPanel.tsx]
+  n31[RequirementDrawer.tsx] --> n21[requirement.ts]
+  n32[RequirementPanel.tsx] --> n19[AnswerPanel.tsx]
+  n32[RequirementPanel.tsx] --> n34[ApprovalStamp.tsx]
+  n32[RequirementPanel.tsx] --> n23[ConfidenceIndicator.tsx]
+  n32[RequirementPanel.tsx] --> n21[requirement.ts]
+  n33[RequirementSpine.tsx] --> n23[ConfidenceIndicator.tsx]
+  n33[RequirementSpine.tsx] --> n24[triage.ts]
   n18[UploadDropzone.tsx] --> n11[RequirementsContext.tsx]
-  n18[UploadDropzone.tsx] --> n34[api.ts]
-  n35[HeroResolve.tsx] --> n22[ComplianceMatrix.tsx]
-  n35[HeroResolve.tsx] --> n25[GatingHero.tsx]
-  n35[HeroResolve.tsx] --> n11[RequirementsContext.tsx]
-  n35[HeroResolve.tsx] --> n24[triage.ts]
-  n13[Landing.tsx] --> n33[ApprovalStamp.tsx]
+  n18[UploadDropzone.tsx] --> n35[api.ts]
+  n36[HeroResolve.tsx] --> n22[ComplianceMatrix.tsx]
+  n36[HeroResolve.tsx] --> n26[GatingHero.tsx]
+  n36[HeroResolve.tsx] --> n11[RequirementsContext.tsx]
+  n36[HeroResolve.tsx] --> n24[triage.ts]
+  n13[Landing.tsx] --> n34[ApprovalStamp.tsx]
+  n13[Landing.tsx] --> n25[BrandLogo.tsx]
   n13[Landing.tsx] --> n23[ConfidenceIndicator.tsx]
-  n13[Landing.tsx] --> n26[BookDemoButton.tsx]
-  n13[Landing.tsx] --> n27[BotanicalSprig.tsx]
-  n13[Landing.tsx] --> n35[HeroResolve.tsx]
+  n13[Landing.tsx] --> n27[BookDemoButton.tsx]
+  n13[Landing.tsx] --> n28[BotanicalSprig.tsx]
+  n13[Landing.tsx] --> n36[HeroResolve.tsx]
   n11[RequirementsContext.tsx] --> n16[mock-requirements.ts]
-  n11[RequirementsContext.tsx] --> n34[api.ts]
+  n11[RequirementsContext.tsx] --> n35[api.ts]
   n11[RequirementsContext.tsx] --> n21[requirement.ts]
   n16[mock-requirements.ts] --> n21[requirement.ts]
-  n34[api.ts] --> n21[requirement.ts]
+  n35[api.ts] --> n21[requirement.ts]
   n24[triage.ts] --> n21[requirement.ts]
 ```
 
@@ -194,6 +196,7 @@ graph LR
 - `frontend/package-lock.json`
 - `frontend/package.json`
 - `frontend/postcss.config.mjs`
+- `frontend/public/brand/README.md`
 - `frontend/public/codemap.html`
 - `frontend/src/app/answers/page.tsx` — exports `metadata`
 - `frontend/src/app/demo/page.tsx` — exports `metadata`
@@ -208,6 +211,7 @@ graph LR
 - `frontend/src/components/AppMain.tsx` — The shared page container (layout.md section 8): one centred column capped at
 - `frontend/src/components/ApprovalStamp.tsx` — The approval stamp (design-language.md, device 6): a clean forest mark set
 - `frontend/src/components/AutofillButton.tsx` — exports `AutofillButton`
+- `frontend/src/components/BrandLogo.tsx` — The Bidframe lockup (brand kit lives in frontend/public/brand). The owl mark
 - `frontend/src/components/CapabilityUpload.tsx` — exports `CapabilityUpload`
 - `frontend/src/components/ComplianceMatrix.tsx` — exports `ComplianceMatrix`
 - `frontend/src/components/ConfidenceIndicator.tsx` — The confidence bead (DESIGN-SYSTEM section 4, axis 1). Four tiers, worst to
@@ -234,7 +238,7 @@ graph LR
 - `frontend/src/types/requirement.ts` — exports `RequirementType`
 - `frontend/tsconfig.json`
 - `frontend/vercel.json`
-- *(+9 binary/asset file(s))*
+- *(+16 binary/asset file(s))*
 
 ### backend — Backend — FastAPI (PDF ingest, extraction, REST API)
 
@@ -419,4 +423,4 @@ graph LR
 
 ---
 
-*236 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
+*245 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
