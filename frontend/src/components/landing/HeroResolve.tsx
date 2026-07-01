@@ -22,7 +22,7 @@ import { GatingHero } from "@/components/GatingHero";
 const noop = () => {};
 
 // How far the cursor tips the sheet from its resting angle, in degrees.
-const TILT_RANGE = 5;
+const TILT_RANGE = 3;
 
 export function HeroResolve() {
   const { requirements } = useRequirements();
@@ -52,8 +52,8 @@ export function HeroResolve() {
       const py = (e.clientY - r.top) / r.height - 0.5;
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
-        card.style.setProperty("--rx", `${15 - py * TILT_RANGE}deg`);
-        card.style.setProperty("--ry", `${-13 + px * TILT_RANGE}deg`);
+        card.style.setProperty("--rx", `${5 - py * TILT_RANGE}deg`);
+        card.style.setProperty("--ry", `${-6 + px * TILT_RANGE}deg`);
       });
     };
     const onLeave = () => {
@@ -95,7 +95,7 @@ export function HeroResolve() {
         <div
           ref={cardRef}
           aria-hidden="true"
-          className="hero-sheet surface-grain mx-auto max-w-[860px] rounded-xl border border-forest/25 bg-paper-raised p-5 shadow-[var(--depth-sheet)] transition-shadow group-hover:shadow-[0_18px_44px_-18px_rgba(33,29,23,0.38)] sm:p-7"
+          className="hero-sheet surface-grain mx-auto max-w-[960px] rounded-xl border border-forest/25 bg-paper-raised p-5 shadow-[var(--depth-sheet)] transition-shadow group-hover:shadow-[0_18px_44px_-18px_rgba(33,29,23,0.38)] sm:p-7"
         >
           {/* The deal-breaker callout sits on top but settles last (longer delay). */}
           <div className="hr-settle" style={{ animationDelay: "560ms" }}>

@@ -102,13 +102,15 @@ function MatrixRow({
   const ref =
     req.source_clause?.replace(/^section\s+/i, "") ?? `p.${req.source_page}`;
 
-  // Gating rows take a 2px oxblood reading edge; depth lifts only the open row.
-  const shape = req.is_gating
-    ? "rounded-r-md border-l-2 border-signal-oxblood-frame"
-    : "rounded-md";
+  // Gating rows read as a flagged zone, not a pinstripe: a faint oxblood wash
+  // that deepens on hover, plus a pennant in the mono margin and the alarm meter.
+  // No naked coloured border. Depth lifts only the open row.
+  const shape = "rounded-md";
   const state = isSelected
     ? "bg-paper-raised shadow-[var(--depth-row)] ring-1 ring-inset ring-ink/30"
-    : "hover:bg-paper-raised";
+    : req.is_gating
+      ? "bg-[color-mix(in_oklab,var(--color-signal-oxblood)_5%,transparent)] hover:bg-[color-mix(in_oklab,var(--color-signal-oxblood)_9%,transparent)]"
+      : "hover:bg-paper-raised";
 
   return (
     <div
@@ -122,10 +124,25 @@ function MatrixRow({
           onSelect(req.id);
         }
       }}
-      className={`group grid w-full cursor-pointer grid-cols-[40px_28px_1fr_auto] items-start gap-x-3 px-2.5 py-2 text-left transition-[background-color,box-shadow] focus:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ink/40 ${shape} ${state}`}
+      className={`group grid w-full cursor-pointer grid-cols-[46px_30px_1fr_auto] items-start gap-x-3 px-2.5 py-2 text-left transition-[background-color,box-shadow] focus:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ink/40 ${shape} ${state}`}
     >
-      {/* The register margin: the clause ref, right-aligned in mono. */}
-      <span className="pt-1 text-right font-mono text-[11px] leading-tight text-ink-muted/75">
+      {/* The register margin: a gating pennant then the clause ref, right-aligned
+          in mono. The pennant marks the deal-breaker even on decided rows, where
+          the alarm meter no longer shows. */}
+      <span className="flex items-start justify-end gap-1 pt-1 text-right font-mono text-[11px] leading-tight text-accent/85">
+        {req.is_gating && (
+          <svg
+            width="8"
+            height="10"
+            viewBox="0 0 8 10"
+            fill="none"
+            aria-hidden
+            className="mt-px shrink-0 text-signal-oxblood"
+          >
+            <path d="M1 .5v9" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+            <path d="M1 1h5L4.6 3 6 5H1z" fill="currentColor" />
+          </svg>
+        )}
         {ref}
       </span>
 
@@ -196,14 +213,47 @@ function MatrixRow({
   );
 }
 
+// A quiet mono chevron: points right when folded, rotates down when open. The
+// direction (not colour) carries the state, so it passes the greyscale test.
+function Chevron({ expanded }: { expanded: boolean }) {
+  return (
+    <svg
+      width="9"
+      height="9"
+      viewBox="0 0 10 10"
+      fill="none"
+      aria-hidden="true"
+      className={`shrink-0 text-ink-muted transition-transform duration-150 ${
+        expanded ? "rotate-90" : ""
+      }`}
+    >
+      <path
+        d="M3 1.5l4 3.5-4 3.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function MatrixGroup({
   group,
+  expanded,
+  collapsible,
+  onToggle,
   selectedId,
   onSelect,
   onApprove,
   onApproveAll,
 }: {
   group: TriageGroup;
+  // Whether this group's rows are shown. When collapsible is false (frozen/demo
+  // surfaces) this is always true and no toggle renders.
+  expanded: boolean;
+  collapsible: boolean;
+  onToggle: () => void;
   selectedId: string | null;
   onSelect: (id: string) => void;
   onApprove: (id: string) => void;
@@ -215,14 +265,33 @@ function MatrixGroup({
   // action stay consistent with what is on screen. See lib/dedupe.ts.
   const { representatives, meta } = collapseDuplicates(group.items);
   const approvable = representatives.filter(isConfidentNonGating);
+  const rowsId = `group-rows-${group.key}`;
 
   return (
     <section>
       <div className="flex items-center justify-between gap-3 border-b border-hairline pb-2">
-        <h3 className="text-[12.5px] font-medium uppercase tracking-wide text-ink-muted">
-          {group.label}
-        </h3>
-        {group.key === "ready" && approvable.length > 1 && (
+        {collapsible ? (
+          <button
+            type="button"
+            onClick={onToggle}
+            aria-expanded={expanded}
+            aria-controls={rowsId}
+            className="group/head flex min-w-0 items-center gap-2 rounded-sm text-left focus:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ink/40"
+          >
+            <Chevron expanded={expanded} />
+            <h3 className="text-[12.5px] font-medium uppercase tracking-wide text-ink-muted transition-colors group-hover/head:text-ink">
+              {group.label}
+            </h3>
+            <span className="font-mono text-[11px] text-ink-muted/75">
+              {representatives.length}
+            </span>
+          </button>
+        ) : (
+          <h3 className="text-[12.5px] font-medium uppercase tracking-wide text-ink-muted">
+            {group.label}
+          </h3>
+        )}
+        {expanded && group.key === "ready" && approvable.length > 1 && (
           <button
             type="button"
             onClick={() => onApproveAll(approvable.map((req) => req.id))}
@@ -232,18 +301,20 @@ function MatrixGroup({
           </button>
         )}
       </div>
-      <div className="mt-2 flex flex-col gap-0.5">
-        {representatives.map((req) => (
-          <MatrixRow
-            key={req.id}
-            req={req}
-            isSelected={req.id === selectedId}
-            alsoCitedOn={meta.get(req.id)?.alsoCitedOn ?? []}
-            onSelect={onSelect}
-            onApprove={onApprove}
-          />
-        ))}
-      </div>
+      {expanded && (
+        <div id={rowsId} className="mt-2 flex flex-col gap-0.5">
+          {representatives.map((req) => (
+            <MatrixRow
+              key={req.id}
+              req={req}
+              isSelected={req.id === selectedId}
+              alsoCitedOn={meta.get(req.id)?.alsoCitedOn ?? []}
+              onSelect={onSelect}
+              onApprove={onApprove}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
@@ -254,12 +325,18 @@ export function ComplianceMatrix({
   onSelect,
   onApprove,
   activeFilter,
+  collapsed,
+  onToggleGroup,
 }: {
   groups: TriageGroup[];
   selectedId: string | null;
   onSelect: (id: string) => void;
   onApprove: (id: string) => void;
   activeFilter: GroupKey | null;
+  // Folded groups + the toggle handler. Omitted on the frozen demo/hero surfaces,
+  // where every group stays open and no toggle renders.
+  collapsed?: Set<GroupKey>;
+  onToggleGroup?: (key: GroupKey) => void;
 }) {
   const [query, setQuery] = useState("");
   const normalisedQuery = query.trim().toLowerCase();
@@ -313,16 +390,31 @@ export function ComplianceMatrix({
         </span>
       </div>
 
-      {visible.map((group) => (
-        <MatrixGroup
-          key={group.key}
-          group={group}
-          selectedId={selectedId}
-          onSelect={onSelect}
-          onApprove={onApprove}
-          onApproveAll={approveAll}
-        />
-      ))}
+      {visible.map((group) => {
+        const collapsible = onToggleGroup !== undefined;
+        // Force a group open when its rows must be seen regardless of the fold:
+        // while searching (never hide a hit), when filtered to it, or when it holds
+        // the selected row. Otherwise honour the user's fold state.
+        const expanded =
+          !collapsible ||
+          normalisedQuery.length > 0 ||
+          activeFilter === group.key ||
+          group.items.some((req) => req.id === selectedId) ||
+          !(collapsed?.has(group.key) ?? false);
+        return (
+          <MatrixGroup
+            key={group.key}
+            group={group}
+            expanded={expanded}
+            collapsible={collapsible}
+            onToggle={() => onToggleGroup?.(group.key)}
+            selectedId={selectedId}
+            onSelect={onSelect}
+            onApprove={onApprove}
+            onApproveAll={approveAll}
+          />
+        );
+      })}
       {visible.length === 0 && (
         <p className="text-sm text-ink-muted">
           No requirements match this view.

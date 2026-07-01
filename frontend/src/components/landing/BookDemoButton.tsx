@@ -68,7 +68,7 @@ export function BookDemoButton({
       target="_blank"
       rel="noopener noreferrer"
       onClick={() => track("demo_cta_click", { location })}
-      className={`group inline-flex items-center rounded-md font-semibold shadow-[var(--depth-control)] transition-[transform,background-color,box-shadow] hover:-translate-y-0.5 hover:shadow-[0_8px_18px_-8px_rgba(33,29,23,0.45)] active:translate-y-0 active:shadow-[var(--depth-control)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${sizeCls} ${btnTone} ${className}`}
+      className={`group inline-flex items-center rounded-md font-semibold shadow-[var(--depth-control)] transition-[transform,background-color,box-shadow] duration-150 ease-out hover:-translate-y-1 hover:shadow-[0_11px_24px_-9px_rgba(33,29,23,0.42),0_3px_9px_-4px_rgba(33,29,23,0.26)] active:translate-y-px active:shadow-[var(--depth-pressed)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${sizeCls} ${btnTone} ${className}`}
     >
       Book a demo
       <svg
@@ -77,7 +77,7 @@ export function BookDemoButton({
         viewBox="0 0 14 14"
         fill="none"
         aria-hidden="true"
-        className="transition-transform group-hover:translate-x-0.5"
+        className="transition-transform duration-150 ease-out group-hover:translate-x-1 group-active:translate-x-0.5"
       >
         <path
           d="M2.5 7h9M8 3.5 11.5 7 8 10.5"
@@ -102,15 +102,31 @@ export function SeeItRunLink({
 }) {
   const t =
     tone === "dark"
-      ? "text-paper/80 hover:text-paper focus-visible:ring-paper focus-visible:ring-offset-ink"
-      : "text-ink-muted hover:text-ink focus-visible:ring-forest focus-visible:ring-offset-paper";
+      ? "text-paper/60 hover:text-paper/90 focus-visible:ring-paper focus-visible:ring-offset-ink"
+      : "text-ink-muted/85 hover:text-ink-muted focus-visible:ring-forest focus-visible:ring-offset-paper";
   return (
     <Link
       href="/demo"
       onClick={() => track("see_it_run_click")}
-      className={`rounded-sm ${size === "lg" ? "text-base" : "text-sm"} underline decoration-hairline decoration-1 underline-offset-4 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${t} ${className}`}
+      className={`group inline-flex items-center gap-1 rounded-sm ${size === "lg" ? "text-sm" : "text-xs"} transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${t} ${className}`}
     >
       See a worked example
+      <svg
+        width="11"
+        height="11"
+        viewBox="0 0 14 14"
+        fill="none"
+        aria-hidden="true"
+        className="transition-transform group-hover:translate-x-0.5"
+      >
+        <path
+          d="M2.5 7h9M8 3.5 11.5 7 8 10.5"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
     </Link>
   );
 }

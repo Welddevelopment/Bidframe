@@ -36,6 +36,9 @@ export const metadata: Metadata = {
   title: "Bidframe · Compliance Matrix",
   description:
     "Extract and review tender requirements. Deal-breakers flagged, uncertainty surfaced.",
+  icons: {
+    icon: { url: "/icon.svg", type: "image/svg+xml" },
+  },
 };
 
 export default function RootLayout({
