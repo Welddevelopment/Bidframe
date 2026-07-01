@@ -11,6 +11,8 @@ from __future__ import annotations
 
 import os
 import shutil
+import threading
+import time
 import uuid
 from pathlib import Path
 from typing import List, Optional
@@ -94,6 +96,59 @@ def _startup() -> None:
 MAX_UPLOAD_MB = 50
 
 
+# ---- Extraction jobs (live progress) ----------------------------------------
+# In-memory registry of running/finished extraction jobs, keyed by job_id. Single
+# process only (Render free tier is one instance); a multi-instance deploy would move
+# this to Redis. Cosmetic progress state — the real result is persisted via store.
+JOBS: dict[str, dict] = {}
+_JOBS_LOCK = threading.Lock()
+_JOBS_MAX = 100  # keep the last N jobs, drop the oldest beyond that
+
+
+def _set_job(job_id: str, **patch) -> None:
+    with _JOBS_LOCK:
+        job = JOBS.get(job_id) or {}
+        job.update(patch)
+        job["updated_at"] = time.time()
+        JOBS[job_id] = job
+        if len(JOBS) > _JOBS_MAX:
+            stale = sorted(JOBS.items(), key=lambda kv: kv[1].get("updated_at", 0))
+            for jid, _ in stale[: len(JOBS) - _JOBS_MAX]:
+                JOBS.pop(jid, None)
+
+
+def _run_extract_job(job_id: str, pdf_path: str, tender_id: str, title: str, filename: str) -> None:
+    """Run the pipeline on a background thread, streaming progress into JOBS. The result
+    is persisted; the UI polls GET /tenders/jobs/{job_id} until status=done."""
+    def on_progress(**ev) -> None:
+        _set_job(job_id, status="processing", **ev)
+
+    try:
+        resp = run_pipeline(pdf_path, tender_id=tender_id, title=title, on_progress=on_progress)
+        store.save_tender(resp, filename=filename)
+        _set_job(
+            job_id,
+            status="done",
+            stage="done",
+            message="Ready",
+            progress=1.0,
+            tender_id=tender_id,
+            requirement_count=len(resp.requirements),
+            deal_breaker_count=sum(1 for r in resp.requirements if r.is_gating),
+        )
+    except PDFIngestError as exc:
+        _set_job(job_id, status="error", stage="error", code=422, detail=str(exc))
+    except Exception as exc:  # surface a calm message, log the real detail
+        print(f"[jobs] extraction failed for {job_id}: {exc}")
+        _set_job(
+            job_id,
+            status="error",
+            stage="error",
+            code=500,
+            detail="We could not process this PDF. It may be corrupt or unsupported.",
+        )
+
+
 @app.get("/health")
 def health():
     return {"status": "ok", "extractor": get_extractor().name}
@@ -107,8 +162,16 @@ def list_tenders():
 
 
 @app.post("/tenders/upload")
-async def upload_tender(file: UploadFile = File(...), title: str = Form(None)):
-    """Ingest a PDF, run the extraction pipeline, persist, return { tender_id }."""
+async def upload_tender(
+    file: UploadFile = File(...),
+    title: str = Form(None),
+    sync: bool = False,   # ?sync=1 → block until done (eval harness / back-compat)
+):
+    """Save the PDF, then run extraction on a background job so the upload UI can show
+    live progress. Returns { job_id, tender_id } immediately; poll
+    GET /tenders/jobs/{job_id} until status=done, then load the tender. With ?sync=1 it
+    blocks and returns { tender_id, requirement_count } (the original behaviour, used by
+    the eval harness)."""
     if not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Please upload a PDF.")
 
@@ -127,19 +190,44 @@ async def upload_tender(file: UploadFile = File(...), title: str = Form(None)):
             detail=f"File too large ({size_mb:.1f} MB). Maximum is {MAX_UPLOAD_MB} MB.",
         )
 
-    try:
-        resp = run_pipeline(
-            str(dest), tender_id=tender_id, title=title or file.filename
-        )
-    except PDFIngestError as exc:
-        raise HTTPException(status_code=422, detail=str(exc))
-    except Exception as exc:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Pipeline failed on this PDF: {exc}. The file may be corrupt or unsupported.",
-        )
-    store.save_tender(resp, filename=file.filename)
-    return {"tender_id": tender_id, "requirement_count": len(resp.requirements)}
+    resolved_title = title or file.filename
+
+    if sync:
+        try:
+            resp = run_pipeline(str(dest), tender_id=tender_id, title=resolved_title)
+        except PDFIngestError as exc:
+            raise HTTPException(status_code=422, detail=str(exc))
+        except Exception as exc:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Pipeline failed on this PDF: {exc}. The file may be corrupt or unsupported.",
+            )
+        store.save_tender(resp, filename=file.filename)
+        return {"tender_id": tender_id, "requirement_count": len(resp.requirements)}
+
+    job_id = f"job-{uuid.uuid4().hex[:8]}"
+    _set_job(
+        job_id, status="processing", stage="queued",
+        message="Starting", progress=0.02, tender_id=tender_id,
+    )
+    threading.Thread(
+        target=_run_extract_job,
+        args=(job_id, str(dest), tender_id, resolved_title, file.filename),
+        daemon=True,
+    ).start()
+    return {"job_id": job_id, "tender_id": tender_id}
+
+
+@app.get("/tenders/jobs/{job_id}")
+def get_job(job_id: str):
+    """Live progress for an extraction job — poll this after upload. Returns the current
+    stage / message / progress (0–1) + counts, and status: processing | done | error
+    (with detail on error)."""
+    with _JOBS_LOCK:
+        snapshot = dict(JOBS[job_id]) if job_id in JOBS else None
+    if snapshot is None:
+        raise HTTPException(status_code=404, detail="Job not found (it may have expired).")
+    return {"job_id": job_id, **snapshot}
 
 
 @app.get("/tenders/{tender_id}/requirements", response_model=TenderResponse)
