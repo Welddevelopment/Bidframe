@@ -77,10 +77,16 @@ def group_candidates(raws: list[dict]) -> list[list[dict]]:
 # Merge a group -> one interim dict (canonical + noisy-OR + safety escalation)
 # --------------------------------------------------------------------------- #
 def _canonical(group: list[dict]) -> dict:
-    """Highest confidence, then longest excerpt, then lowest char_start."""
+    """Highest confidence, then longest excerpt, then lowest char_start.
+
+    char_start is `None` (not just missing) when a real extractor couldn't locate its
+    excerpt verbatim in the chunk — so `.get(..., 0)` isn't enough (the default only
+    fills a MISSING key, not a present-but-None one). Coalesce None→0 like `_key` and
+    `merge_group` do, else a group mixing located (int) and unlocated (None) candidates
+    that ties on confidence + excerpt length crashes the sort with None < int."""
     return sorted(
         group,
-        key=lambda m: (-m["confidence"], -len(m.get("source_excerpt", "")), m.get("char_start", 0)),
+        key=lambda m: (-m["confidence"], -len(m.get("source_excerpt", "")), m.get("char_start") or 0),
     )[0]
 
 

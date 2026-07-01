@@ -86,3 +86,19 @@ def test_canonical_tiebreak_excerpt_length_then_char_start():
          "source_excerpt": "same length here!!", "char_start": 99,
          "type": "optional", "is_gating": False, "category": "x", "confidence": 0.80}
     assert merge_group([c, d])["text"] == "tc"      # equal len => lower char_start => c
+
+
+def test_canonical_tiebreak_tolerates_none_char_start():
+    """Regression: a real (OpenAI) extractor sets char_start=None when it can't locate
+    an excerpt verbatim. A merge group that ties on confidence + excerpt length and mixes
+    an int char_start with a None one must NOT crash the canonical sort (None < int).
+    Reproduced a live async-upload job failure on the OpenAI path (found via J-048)."""
+    located = {"raw_id": "loc", "text": "t", "source_page": 4, "source_clause": "4.2",
+               "source_excerpt": "must hold ISO 9001 cert", "char_start": 12,
+               "type": "mandatory", "is_gating": True, "category": "certification", "confidence": 0.9}
+    unlocated = {"raw_id": "unl", "text": "t", "source_page": 4, "source_clause": "4.2",
+                 "source_excerpt": "must hold ISO 9001 cert", "char_start": None,
+                 "type": "mandatory", "is_gating": True, "category": "certification", "confidence": 0.9}
+    m = merge_group([located, unlocated])           # must not raise TypeError (None < int)
+    assert m["is_gating"] is True                   # gating survives the merge
+    assert m["_char_start"] == 0                     # None coalesces to 0, never leaks out
