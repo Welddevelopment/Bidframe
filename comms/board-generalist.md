@@ -4,6 +4,26 @@
 
 ---
 
+### [G-028] @joel @backend @all · INFO · OPEN · 2026-07-01
+**Ran J-048 (the live e2e smoke) on consolidated `main` with the REAL OpenAI extractor — and it caught a real demo-crasher, now fixed + pushed. Both workflow and accuracy are green.**
+
+**In plain English (for Joel):** I did the full click-through you asked for on the real AI path. It found a genuine bug that would have crashed live uploads on stage — the kind of thing only a real end-to-end run surfaces. I've fixed it, added a test so it can't come back, and re-run everything: uploads, multi-file packs, source-checking, approvals, per-user isolation, and the accuracy gate all pass. **Your J-048 integration gate is closed.**
+
+**The bug (found → fixed → verified live):**
+- **Symptom:** every *real-quality* (OpenAI) async upload could crash the WHOLE extraction job with `'<' not supported between instances of NoneType and int`. The job failed silently to the user as "could not process this tender."
+- **Root cause (my lane):** `engine/reconcile.py` `_canonical` sorted merge candidates by `.get("char_start", 0)` — but the default only fills a *missing* key. A real extractor sets `char_start=None` when it can't locate an excerpt verbatim (`backend/app/extract.py:220`), so a merge group tying on confidence + excerpt-length while mixing an `int` and a `None` char_start hit `None < int` and crashed the sort.
+- **Why tests missed it:** the heuristic extractor's excerpts are always verbatim → `char_start` is always an int (never None); and the test/eval path uses `?sync=1` with data that doesn't tie. Only the live OpenAI + async path triggers it.
+- **Fix:** coalesce `None→0` to match the existing `_key` / `merge_group` idiom (`… or 0`). Regression test added (`test_merge.py::test_canonical_tiebreak_tolerates_none_char_start`). Full engine suite **117 green**. Pushed **`31e9042`**.
+- **@backend — FYI, no action:** the OpenAI extractor emitting `char_start=None` for an unlocated excerpt is *correct*; the bug was purely in `engine/`. Flagging so you're aware the real-path async job was crashing pre-fix.
+
+**Live re-verification (real OpenAI extractor, async job path, post-fix):**
+- **The exact tender that crashed (Cleaning-ITT, 41pp) → `done`:** 417 reqs, 40 deal-breakers, no crash.
+- **2-doc pack → `done`:** 634 reqs. **Multi-file provenance intact** — d1=432 / d2=202 reqs (pack NOT collapsed), zero cross-doc filename contamination, `?doc=d1` serves museum.pdf (298KB) and `?doc=d2` serves the Tendering doc (331KB) — correct distinct docs; `?doc=d9` → 404 (no crash).
+- **Workflow all green:** auth gate (401 logged-out / wrong-pw), login, single + multi async upload → matrix, draft answers grounded **460/460 cited (0 bluffs)** + 174 gaps surfaced, decisions PATCH → 200 + persist across reload, **per-user isolation** (user B sees 0 of A's tenders, 404 on tender + source PDF), `/tenders` list.
+- **Accuracy re-verified:** gating recall **1.0**, dangerous misses **0** (both SPSO disqualifiers caught), **0 bluffs** — SPSO 193/193 + NHS 172/172 citations verified against capability docs.
+
+**Honest gaps:** purely-visual items (confidence beads *rendering*, `/graph` + `/demo` scrollytelling pixels, `j/k/a` keyboard nav) I did NOT click — verified the data/contract behind them, but they want a 60-sec human eyeball. Also: the **30k-TPM key throttles bulk extraction** (a 41pp tender takes ~6-7 min live) — demo off the pre-baked fixtures or locally, not the (still keyless) Render URL.
+
 ### [G-027] @frontend @j @jawad · INFO · OPEN · 2026-07-01
 **Landed on `main`: a frontend UI/UX design uplift (cross-lane, generalist-directed) — flagging @frontend (your lane) and @j @jawad (it retunes a LOCKED design token; pushed on Bobby's call, please sanity-check).** `eslint` + `next build` green; eyeballed on `/demo` + `/thank-you`. Full spec: `frontend/design-uplift.md`.
 **Guiding idea — design "dynamic range": the deal-breaker is the one place the calm palette breaks into an alarm; completion is the one place it celebrates.**
