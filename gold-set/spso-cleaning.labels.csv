@@ -1,11 +1,14 @@
 id,text,type,is_gating,source_page,source_clause,notes
 # GOLD LABEL — SPSO Cleaning Services ITT (data/tenders/spso-cleaning.pdf)
-# FIRST-PASS DRAFT by J's agent from the tender text — Joel: read down it, fix anything wrong,
-#   delete non-requirements, add anything missed. Then delete these comment lines.
-# SCOPE — label PAGES 1-6 ONLY (the tender instructions). Pages 7-13 are appendices and are NOT
-#   labelled line-by-line: the detailed cleaning checklist (pp.7-11) is summarised as g1-g3, and the
-#   section 19 legal/confidentiality text (pp.12-13) is summarised as g4. When verifying, only read
-#   pages 1-6 to check for anything missed; ignore pages 7-13. (Eval scores tool output for pp.1-6.)
+# VERIFIED 2026-07-01 (generalist): all 19 rows checked row-by-row against the source text
+#   (pp.1-6, extracted via the repo ingester). Every row is grounded in the tender, source_page is
+#   correct, and the two gating rows are the true disqualifiers: g17 (submission deadline, 12:00
+#   06/11/2013) and g19 (substantial-conformance pass/fail). No gating miss, no mislabel. One soft
+#   item left out on purpose: the p5 FOI "disclosure presumption" note (a 'should be aware', not a
+#   hard obligation) — add as optional/no if you want fuller non-gating recall. Scored answer key for pp.1-6.
+# SCOPE — labels PAGES 1-6 ONLY (the tender instructions). Pages 7-13 are appendices, NOT labelled
+#   line-by-line: the detailed cleaning checklist is summarised as g1-g3, the section 19 legal text
+#   as g4. (Eval scores tool output for pp.1-6.)
 # type = mandatory|optional ; is_gating = yes|no
 g1,"Provide cleaning services for the office at 4 Melville St Edinburgh per the detailed specification",mandatory,no,3,Project Specification,core service; full task list in Appendix 1
 g2,"Keep risk assessment and COSHH manuals up to date and on site",mandatory,no,3,Project Specification,from the spec task list
