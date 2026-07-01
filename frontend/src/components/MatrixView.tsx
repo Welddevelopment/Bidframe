@@ -173,11 +173,12 @@ export function MatrixView({ title }: { title: string }) {
   ).sort((a, b) => a.localeCompare(b));
   const selected = requirements.find((r) => r.id === selectedId) ?? null;
   const priorityId = nextPriorityId(requirements);
-  const decidedCount = requirements.filter((req) => req.status !== "pending").length;
   // What still needs a human: gaps to fill + deal-breakers / low-confidence to verify.
-  // Everything else, Bidframe has handled (ready to approve, or already decided).
+  // Everything else, Bidframe has "handled" (ready to approve, or already decided).
+  // Deliberately "handled", not "verified" — a flagged low-confidence item is off your
+  // plate but was never verified, so counting it as verified would over-claim.
   const needInput = triage.counts["needs-you"] + triage.counts["to-verify"];
-  const verifiedCount = requirements.length - needInput;
+  const handledCount = requirements.length - needInput;
 
   // Live product, no tender loaded yet → show an onboarding empty state rather than
   // the sample data. The mock showcase build (no API) keeps its sample matrix.
@@ -359,10 +360,9 @@ export function MatrixView({ title }: { title: string }) {
               <div className="mb-3">
                 <p className="font-mono text-xs text-ink-muted">
                   <span className="text-ink">
-                    Bidframe verified {verifiedCount} of {requirements.length}
+                    Bidframe handled {handledCount} of {requirements.length}
                   </span>{" "}
-                  — {needInput} need your input
-                  {decidedCount > 0 ? ` · ${decidedCount} decided` : ""}.
+                  — {needInput} still need your input.
                 </p>
                 {/* A slim derived progress track: forest fill on a hairline
                     rule, showing how much Bidframe has already carried. No new
@@ -372,15 +372,15 @@ export function MatrixView({ title }: { title: string }) {
                   role="progressbar"
                   aria-valuemin={0}
                   aria-valuemax={requirements.length}
-                  aria-valuenow={verifiedCount}
-                  aria-label="Requirements verified by Bidframe"
+                  aria-valuenow={handledCount}
+                  aria-label="Requirements Bidframe has handled"
                 >
                   <div
                     className="h-full rounded-full bg-forest transition-[width] duration-500"
                     style={{
                       width: `${
                         requirements.length > 0
-                          ? (verifiedCount / requirements.length) * 100
+                          ? (handledCount / requirements.length) * 100
                           : 0
                       }%`,
                     }}
