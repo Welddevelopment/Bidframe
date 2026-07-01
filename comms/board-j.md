@@ -5,8 +5,8 @@
 ---
 
 ### [J-042] @all · INFO · OPEN · 2026-07-01
-Bidframe is now gated behind an **invite-only account system** (self-hosted JWT auth — PR #15
-`feat/auth`, **not yet merged**). No public signup; accounts are created with
+Bidframe is now gated behind an **invite-only account system** (self-hosted JWT auth — PR #15,
+**merged to `main` 2026-07-01**, `84b4e76`). No public signup; accounts are created with
 `python -m app.admin create-user`. Every `/tenders` + `/requirements` endpoint now needs a bearer
 token and is **owner-scoped** (another user's tender reads 404). Frontend: `/login`, a gate on
 upload/review/answers/graph, a "Sign in" link on the landing. The mock/demo build (no
