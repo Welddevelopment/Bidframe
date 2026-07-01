@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `c104d20` · 2026-07-01T20:36:09+01:00
+> Map of commit `2db1104` · 2026-07-01T20:42:44+01:00
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,7 +12,7 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 115 | 42,313 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **frontend** | 115 | 42,551 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
 | **backend** | 19 | 2,570 | Backend — FastAPI (PDF ingest, extraction, REST API) |
 | **engine** | 55 | 3,184 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 678 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
@@ -112,13 +112,17 @@ graph LR
   n4[DocumentHeader.tsx] --> n39[triage.ts]
   n31[EvidenceLibrary.tsx] --> n7[RequirementsContext.tsx]
   n32[GapInterview.tsx] --> n28[AnswerStateBadge.tsx]
+  n32[GapInterview.tsx] --> n34[CategoryTag.tsx]
   n32[GapInterview.tsx] --> n47[OpenQuestions.tsx]
   n32[GapInterview.tsx] --> n7[RequirementsContext.tsx]
   n40[GatingHero.tsx] --> n7[RequirementsContext.tsx]
   n40[GatingHero.tsx] --> n38[dedupe.ts]
+  n40[GatingHero.tsx] --> n8[requirement.ts]
+  n41[GraphView.tsx] --> n34[CategoryTag.tsx]
   n41[GraphView.tsx] --> n37[ConfidenceIndicator.tsx]
   n41[GraphView.tsx] --> n7[RequirementsContext.tsx]
   n41[GraphView.tsx] --> n15[api.ts]
+  n41[GraphView.tsx] --> n35[categoryStyle.ts]
   n41[GraphView.tsx] --> n8[requirement.ts]
   n48[MarksView.tsx] --> n33[NoTenderLoaded.tsx]
   n48[MarksView.tsx] --> n7[RequirementsContext.tsx]
@@ -168,8 +172,11 @@ graph LR
   n25[UploadDropzone.tsx] --> n15[api.ts]
   n43[DemoScrolly.tsx] --> n56[ScrollyStage.tsx]
   n43[DemoScrolly.tsx] --> n57[steps.ts]
+  n43[DemoScrolly.tsx] --> n44[BookDemoButton.tsx]
   n56[ScrollyStage.tsx] --> n49[ApprovalStamp.tsx]
+  n56[ScrollyStage.tsx] --> n34[CategoryTag.tsx]
   n56[ScrollyStage.tsx] --> n37[ConfidenceIndicator.tsx]
+  n56[ScrollyStage.tsx] --> n40[GatingHero.tsx]
   n56[ScrollyStage.tsx] --> n58[sample.ts]
   n56[ScrollyStage.tsx] --> n57[steps.ts]
   n58[sample.ts] --> n8[requirement.ts]
@@ -302,7 +309,7 @@ graph LR
 - `frontend/src/components/BrandLogo.tsx` — The Bidframe lockup (brand kit lives in frontend/public/brand). The owl mark
 - `frontend/src/components/CapabilityUpload.tsx` — exports `CapabilityUpload`
 - `frontend/src/components/CategoryTag.tsx` — exports `CategoryDot`
-- `frontend/src/components/ComplianceMatrix.tsx` — exports `ComplianceMatrix`
+- `frontend/src/components/ComplianceMatrix.tsx` — exports `Density`
 - `frontend/src/components/ConfidenceIndicator.tsx` — The confidence indicator (DESIGN-SYSTEM section 4, axis 1). Four tiers, worst
 - `frontend/src/components/DemoView.tsx` — exports `DemoView`
 - `frontend/src/components/DocumentHeader.tsx` — exports `DocumentHeader`
