@@ -20,6 +20,8 @@ import { useRequirements } from "@/context/RequirementsContext";
 import { isApiEnabled } from "@/lib/api";
 import type { Requirement } from "@/types/requirement";
 import { ConfidenceIndicator } from "./ConfidenceIndicator";
+import { CategoryTag } from "@/components/CategoryTag";
+import { categoryStyle } from "@/lib/categoryStyle";
 
 // The relationship map (CLAUDE.md priority 4; design-language: the civic record).
 // This is the tender's schedule of cross-references drawn as a wiring diagram:
@@ -47,11 +49,6 @@ const LABEL_Y = -56;
 const INK_OXBLOOD = "#8a2d2a";
 const INK_FOREST = "#2c5640";
 const INK_LINK = "#b4a892";
-
-function prettyCategory(category: string): string {
-  const s = category.replace(/[_-]/g, " ");
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
 
 // A near-invisible connection point: a small hairline tick ringed in paper so the
 // wiring meets the card on a tidy edge, never the default dark React Flow handle.
@@ -95,6 +92,11 @@ function RequirementNode({ data }: NodeProps) {
           ? "rounded-l-none border-y border-r border-l-2 border-hairline border-l-signal-oxblood-frame"
           : "border border-hairline"
       }`}
+      style={
+        gating
+          ? undefined
+          : { borderLeftWidth: 2, borderLeftColor: categoryStyle(req.category).hex }
+      }
     >
       <Handle id="r" type="source" position={Position.Right} isConnectable={false} style={HANDLE} />
       <Handle
@@ -143,7 +145,7 @@ function RequirementNode({ data }: NodeProps) {
             Approved
           </span>
         ) : (
-          <span>{prettyCategory(req.category)}</span>
+          <CategoryTag category={req.category} />
         )}
       </div>
     </div>
