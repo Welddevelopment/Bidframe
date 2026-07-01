@@ -5,6 +5,14 @@
 ---
 
 ### [J-047] @frontend · REQUEST · OPEN · 2026-07-01
+**In plain English (for Joel):** two builds for Jawad. **(1) Better source-checking** — right now, to verify
+one of the tool's claims you click "Open the page" and it dumps you in a new browser tab with the whole PDF,
+and you have to find the sentence yourself. The new version splits the screen: the claim on one side, the
+actual tender document on the other, scrolled to the exact spot with the sentence highlighted — so you can
+trust it in one glance. **(2) The `/demo` scroll-story** — rebuild the demo page into the scrollytelling
+version you planned (the design brief is already written). He can start both today without waiting on backend.
+
+**For @frontend — technical detail:**
 Refining the J-043 split: **J is taking the graph rework** (building it now), so your two flagged builds are:
 1. **Claim / source verification** — the split-screen (a claim ↔ the tender/capability doc, scrolled to +
    the **exact line highlighted**), a hover-peek, and an honest *"exact vs approximate match"* signal. Start
@@ -17,6 +25,15 @@ Full options/plan for verification: **`graph-and-verification-deep-plan.md`** (P
 call or the scrolly technique needs a decision.
 
 ### [J-048] @generalist · REQUEST · OPEN · 2026-07-01
+**In plain English (for Joel):** Bobby is the only one with the live AI key, so he's the only one who can run
+the *real* product. We've merged a lot this week (accounts/login, multi-file uploads, polish, bug fixes) but
+**nobody has clicked through the whole thing together in a browser yet** — that's the risk before the demo.
+So I've asked him to be the tester: log in, upload a single tender and a multi-file pack, check the AI's
+answers are actually correct and cite real sources, confirm approvals save and users can't see each other's
+data, etc. — and report anything that breaks. Two kinds of testing: **workflow** (does every screen/button
+work) and **accuracy** (does it catch the disqualifiers and never make up a citation). Checklist below.
+
+**For @generalist — technical detail:**
 You've got the live OpenAI key — can you run the **full end-to-end smoke test** of the now-consolidated
 `main` (auth + multi-file #4 + QOL + UX fixes, all merged) in a **real browser**, testing both **accuracy**
 and **workflow**, and post pass/fail to your board? Nothing's been clicked through together live yet — this
@@ -41,6 +58,15 @@ is the integration gate. Setup: backend `uvicorn app.main:app --port 8000` with 
 Post anything that breaks to board-generalist so we fix it before the demo.
 
 ### [J-049] @backend · REQUEST · OPEN · 2026-07-01
+**In plain English (for Joel):** what Pranav can usefully do — mostly things that make the two frontend
+features better and shore up the newest code. **(1)** Have the extractor record *exactly where on the page*
+each requirement/answer came from (coordinates), so Jawad's highlight can be pixel-perfect instead of a
+best-guess text search. **(2)** Pull out the award-criteria weightings (e.g. "Quality 40% / Price 60%") so the
+new graph can size by real marks, not just counts. **(3)** Stress-test the multi-file upload (it's the newest,
+least-tested piece). **(4)** Get accounts + keys working on the live Render server so the *hosted* product runs
+properly. None of this blocks the frontend from starting — it's the higher-quality tier they graft on later.
+
+**For @backend — technical detail:**
 Useful backend work that unblocks the two frontend builds + hardens the new multi-file path:
 1. **HIGH — highlight coordinates for source verification (P3).** At extract time, store the excerpt's
    bounding box(es) per requirement (+ per answer `evidence_ref`) — PyMuPDF `page.search_for(excerpt)` → rects
