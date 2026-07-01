@@ -9,6 +9,13 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+
+# This integration test bridges into the FastAPI backend (backend.app.main → .auth → PyJWT, plus
+# fastapi). In a pure-engine checkout without the backend deps installed, skip rather than abort
+# collection, so `pytest engine/tests/` stays green on the engine alone. No-op when backend is present.
+pytest.importorskip("fastapi")
+pytest.importorskip("jwt")  # PyJWT, pulled in by backend.app.main via .auth (J-042 auth)
+
 from fastapi.testclient import TestClient
 
 from backend.app import main as api

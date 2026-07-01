@@ -6,7 +6,12 @@ backend/app/pipeline.py (the explicitly-delegated `_reconcile` + `_route_confide
 import json
 from pathlib import Path
 
-from backend.app import pipeline
+import pytest
+
+# Bridges into the FastAPI backend package (backend.app.pipeline → schema/pydantic). Skip in a
+# pure-engine checkout without the backend deps installed so `pytest engine/tests/` stays green on
+# the engine alone; runs normally when the backend is present.
+pipeline = pytest.importorskip("backend.app.pipeline")
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MOCK_RAW = REPO_ROOT / "engine" / "tests" / "fixtures" / "mock_raw_extraction.json"
