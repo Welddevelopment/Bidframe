@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { STEPS, type Step } from "./steps";
 import { BeatVisual, ScrollyStage } from "./ScrollyStage";
+import { BookDemoButton } from "@/components/landing/BookDemoButton";
 
 // The cinematic scroll for /demo: a pinned "stage" that transforms through the
 // pipeline while the narrative steps scroll past. Technique is the repo's own
@@ -36,6 +37,21 @@ function StepCopy({ step, active }: { step: Step; active: boolean }) {
         {step.heading}
       </h2>
       <p className="mt-4 text-lg leading-relaxed text-ink-muted">{step.body}</p>
+    </div>
+  );
+}
+
+// The one primary action closing the scroll story: after the pipeline plays out,
+// invite the reader to see it on a tender they already know. One forest button,
+// kept as the single call to action in this stretch of the page.
+function ClosingCta() {
+  return (
+    <div className="mt-20 flex flex-col items-center gap-5 border-t border-hairline pt-12 text-center">
+      <p className="max-w-[42ch] text-lg leading-relaxed text-ink-muted">
+        That is the whole pipeline. The next step is to watch it read a tender you
+        have already bid.
+      </p>
+      <BookDemoButton location="demo-scrolly-closing" />
     </div>
   );
 }
@@ -97,12 +113,13 @@ export function DemoScrolly() {
           {STEPS.map((step, i) => (
             <li key={step.id}>
               <StepCopy step={step} active />
-              <div className="mt-6 flex justify-center">
+              <div className="mt-6 flex justify-center" aria-hidden inert>
                 <BeatVisual step={i} />
               </div>
             </li>
           ))}
         </ol>
+        <ClosingCta />
       </div>
     );
   }
@@ -130,6 +147,7 @@ export function DemoScrolly() {
           </div>
         </div>
       </div>
+      <ClosingCta />
     </div>
   );
 }

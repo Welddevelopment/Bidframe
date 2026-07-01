@@ -3,9 +3,13 @@ import type { Requirement } from "@/types/requirement";
 // Curated, scripted data for the /demo cinematic scroll (the pinned "stage").
 // The scrollytelling story is choreographed, not live, so it runs on a small,
 // hand-picked set rather than the frozen SPSO tender the hands-on section uses.
-// Five requirements chosen so each beat lands cleanly:
-//   - TWO gating deal-breakers (SAMPLE_GATING) compose the oxblood card (beat 3),
-//   - one low-confidence needs_review row reads amber in the honesty beat (beat 4),
+// Five requirements chosen so each beat lands cleanly, and carrying VARIED
+// categories (certification, compliance, experience, service) and all four
+// confidence tiers so the redesigned category tags and segmented confidence
+// meter are all exercised:
+//   - TWO gating deal-breakers (SAMPLE_GATING) compose the real GatingHero (beat 3),
+//   - the flagged, needs_review row drops to the oxblood "can't answer this" alarm
+//     in the honesty beat (beat 4), with amber, yellow and confident rows around it,
 //   - one requirement carries a grounded answer + evidence receipt (beats 5-6).
 // Shaped to the real Requirement type so the visuals reuse the real components.
 
@@ -52,7 +56,7 @@ export const SAMPLE: Requirement[] = [
       "6.1.3 Cyber Security. Bidder must be Cyber Essentials Plus certified at the date of submission. This is a pass/fail requirement.",
     type: "mandatory",
     is_gating: true,
-    category: "certification",
+    category: "compliance",
     confidence: 0.94,
     status: "pending",
     needs_review: false,
@@ -86,7 +90,7 @@ export const SAMPLE: Requirement[] = [
     type: "mandatory",
     is_gating: false,
     category: "experience",
-    confidence: 0.82,
+    confidence: 0.72,
     status: "pending",
     needs_review: false,
     decision: null,
@@ -105,8 +109,8 @@ export const SAMPLE: Requirement[] = [
       "9.5 Service Levels. Priority-one incidents shall be acknowledged within 30 minutes, at any hour, for the duration of the contract.",
     type: "mandatory",
     is_gating: false,
-    category: "service-levels",
-    confidence: 0.58,
+    category: "service",
+    confidence: 0.34,
     status: "pending",
     needs_review: true,
     decision: null,
@@ -139,7 +143,7 @@ export const SAMPLE: Requirement[] = [
     type: "mandatory",
     is_gating: false,
     category: "service",
-    confidence: 0.71,
+    confidence: 0.55,
     status: "pending",
     needs_review: false,
     decision: null,

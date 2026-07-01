@@ -1,5 +1,7 @@
 import { ConfidenceIndicator } from "@/components/ConfidenceIndicator";
 import { ApprovalStamp } from "@/components/ApprovalStamp";
+import { GatingHero } from "@/components/GatingHero";
+import { CategoryTag } from "@/components/CategoryTag";
 import { SAMPLE, SAMPLE_GATING, SAMPLE_ANSWERED } from "./sample";
 import { STEPS } from "./steps";
 
@@ -58,12 +60,15 @@ function WallVisual() {
   );
 }
 
-// A single quiet requirement row (the scanning matrix): clause ref, text, and an
-// optional confidence bead. No grain, no lift — depth is reserved for the card.
+// A single quiet requirement row (the scanning matrix): its category tab, the
+// requirement text with clause ref, and an optional confidence meter (the real
+// redesigned segmented ConfidenceIndicator). No grain, no lift — depth is
+// reserved for the deal-breaker card.
 function Row({
   text,
   page,
   clause,
+  category,
   confidence,
   needsReview,
   withBead,
@@ -71,26 +76,24 @@ function Row({
   text: string;
   page: number;
   clause: string | null;
+  category: string;
   confidence: number;
   needsReview: boolean;
   withBead: boolean;
 }) {
   return (
-    <li
-      className={`grid items-start gap-x-3 border-b border-hairline py-2.5 last:border-0 ${
-        withBead ? "grid-cols-[auto_1fr]" : "grid-cols-[1fr]"
-      }`}
-    >
-      {withBead && (
-        <span className="mt-0.5">
+    <li className="flex flex-col gap-1.5 border-b border-hairline py-2.5 last:border-0">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+        <CategoryTag category={category} />
+        {withBead && (
           <ConfidenceIndicator
             confidence={confidence}
             needsReview={needsReview}
-            variant="dot"
+            variant="word"
             size="sm"
           />
-        </span>
-      )}
+        )}
+      </div>
       <p className="text-sm leading-snug text-ink">
         {text}
         <span className="ml-2 font-mono text-[11px] text-ink-muted">
@@ -102,7 +105,8 @@ function Row({
 }
 
 // Beats 2 & 4 — the triaged requirement list. Beat 2 shows quiet rows; beat 4
-// lets the confidence beads arrive (the low-confidence, flagged row reads amber).
+// lets the confidence meters arrive (the flagged, low-confidence row reads as
+// the oxblood "can't answer this" alarm).
 function RowsVisual({ withBeads }: { withBeads: boolean }) {
   return (
     <div className="w-full max-w-[32rem] rounded-lg border border-hairline bg-paper-raised p-5 shadow-[var(--depth-row)]">
@@ -116,6 +120,7 @@ function RowsVisual({ withBeads }: { withBeads: boolean }) {
             text={r.text}
             page={r.source_page}
             clause={r.source_clause}
+            category={r.category}
             confidence={r.confidence}
             needsReview={r.needs_review}
             withBead={withBeads}
@@ -126,40 +131,15 @@ function RowsVisual({ withBeads }: { withBeads: boolean }) {
   );
 }
 
-// Beat 3 — the deal-breaker card. The one element that lifts: a grainy raised
-// sheet with a deep oxblood-frame reading edge and bright oxblood alarm dots.
-// Matches the real GatingHero exactly (same classes), driven by the sample gates.
+// Beat 3 — the deal-breaker dossier. The one element that lifts, now the REAL
+// <GatingHero>: the oxblood header bar, the "would be rejected" stamp, and the
+// numbered ledger of disqualifiers. Driven by the scripted gating requirements
+// (passed as a prop so it never reads the frozen demo tender behind it).
 function DealBreakerVisual() {
-  const n = SAMPLE_GATING.length;
   return (
-    <section className="surface-grain w-full max-w-[32rem] rounded-r-lg border-y border-r border-hairline border-l-[3px] border-l-signal-oxblood-frame bg-paper-raised p-5 shadow-[var(--depth-sheet)]">
-      <p className="font-mono text-xs font-medium uppercase tracking-wide text-signal-oxblood">
-        Deal-breaker{n !== 1 ? "s" : ""}
-      </p>
-      <h2 className="mt-2 font-serif text-lg font-semibold leading-snug text-ink">
-        {n} requirement{n !== 1 ? "s" : ""} that would disqualify the bid if
-        missed
-      </h2>
-      <ul className="mt-4 flex flex-col gap-2.5">
-        {SAMPLE_GATING.map((req) => (
-          <li
-            key={req.id}
-            className="grid grid-cols-[auto_1fr] items-start gap-x-2.5 text-sm text-ink"
-          >
-            <span
-              className="mt-[5px] h-[11px] w-[11px] shrink-0 rounded-full bg-signal-oxblood shadow-[0_0_0_1px_rgba(33,29,23,0.5),inset_0_1px_1px_rgba(255,255,255,0.3),0_1px_2px_rgba(33,29,23,0.3)]"
-              aria-hidden
-            />
-            <span className="leading-snug">
-              {req.text}
-              <span className="ml-2 font-mono text-xs text-ink-muted">
-                {clauseRef(req.source_page, req.source_clause)}
-              </span>
-            </span>
-          </li>
-        ))}
-      </ul>
-    </section>
+    <div className="w-full max-w-[32rem]">
+      <GatingHero requirements={SAMPLE_GATING} />
+    </div>
   );
 }
 
@@ -362,6 +342,7 @@ export function ScrollyStage({ step }: { step: number }) {
     <div
       className="relative flex h-[26rem] w-full items-center justify-center"
       aria-hidden
+      inert
     >
       {STEPS.map((s, i) => {
         const active = i === step;
