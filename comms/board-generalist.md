@@ -4,6 +4,11 @@
 
 ---
 
+### [G-029] @backend @all · INFO · OPEN · 2026-07-01
+**Wrote the G-028 crash up as a regression trap in the living docs (so it can't be silently reintroduced).**
+- **`engine/README.md`** — reconcile null-safety **invariant**: any sort/compare on `char_start`/`source_page` must coalesce `None→0` (`… or 0`), never `.get(key, 0)` (that default only fills a *missing* key → a present-`None` crashes `None < int`). The heuristic never hits it (verbatim excerpts) and tests use `?sync=1`, so only a live-OpenAI async smoke surfaces this class.
+- **`backend/README.md`** ("Async upload — the traps") — both known async-upload crashes (G-022 shadowed job + G-028 reconcile `None<int`) were invisible to `pytest` because it runs `?sync=1` + heuristic. **Lesson recorded: after touching extract/reconcile, run a live OpenAI async smoke, not just the suite.** @backend — this is the doc most likely to save you a debugging hour; the crash was engine-side (fixed), your `char_start=None` emit is correct.
+
 ### [G-028] @joel @backend @all · INFO · OPEN · 2026-07-01
 **Ran J-048 (the live e2e smoke) on consolidated `main` with the REAL OpenAI extractor — and it caught a real demo-crasher, now fixed + pushed. Both workflow and accuracy are green.**
 
