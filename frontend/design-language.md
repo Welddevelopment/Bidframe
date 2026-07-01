@@ -181,6 +181,36 @@ bright `oxblood` carries the dots and the bead — a fill/frame two-tone. `Secti
 `globals.css` `@theme`. Where this document and the build disagree, treat it as intent to grow into, and
 raise anything expensive on the frontend comms board.
 
+## The linked workspace (the /graph surface — a named departure)
+
+**Technical.** The `/graph` surface is one workspace, not two hidden tabs. The ledger
+(`MarksView`, "where the marks live") and the relationship map (`GraphView`) are the same
+requirements-by-criterion data seen two ways, shown side by side and wired to one shared
+selection in `StructureView`: `selectedId`, `hoveredId`, `selectedCrit`, plus a filter
+predicate both panes read. Hovering or picking a requirement in either pane traces its path
+(itself → its criterion → its dependency neighbours) and dims the rest in both; picking a
+criterion pins its swimlane. A prominent segmented control (Split · Ledger · Map, in the mono
+record voice) replaces the old whisper-quiet text toggle, and one filter bar (search,
+deal-breakers, to-check, category) narrows both panes at once. Opening a requirement no longer
+ejects to `/review`: its full detail arrives as the shipped `RequirementDrawer` — the same
+lifted sheet the matrix uses (`--depth-sheet`) — over the workspace, so the map/ledger context
+is never lost. The map gains criterion **swimlanes** (faint dashed bands, the grouping made
+visible) and a **minimap** for large tenders; the deep-link-to-matrix behaviour is kept only
+for the standalone, read-only `/demo` showcase.
+
+**Plain.** The graph page shows the list and the wiring diagram together, as one thing. Point at
+a requirement in either and it lights up in both; open one and its full sheet slides in over the
+top instead of throwing you to another page. A clear switch lets you widen either side, and one
+search box filters both. This is a deliberate swing away from the flat two-tab version, made
+because "easier to move between the list and the map" was the whole point of the surface.
+
+**Why it's allowed.** The holding rule says structure leads by default, but a surface with a
+reason to let expression lead can take it. Here the reason is nameable: the two-tab version was
+the sixth failure mode — flat and safe, the switch so quiet nobody found it. The workspace keeps
+every civic-record device (the register cards, the oxblood reading edge on deal-breakers, the
+mono record voice, the shared confidence bead, the drawer as lifted sheet); it reorganises how
+they sit together, it does not decorate over them.
+
 ## What motion will animate (named here, specced later)
 
 Two hero moments belong to the motion pass, but the design language names them so they are not invented

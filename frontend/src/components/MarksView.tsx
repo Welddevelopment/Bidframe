@@ -1,23 +1,36 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRequirements } from "@/context/RequirementsContext";
-import { isApiEnabled } from "@/lib/api";
 import type { Requirement } from "@/types/requirement";
-import { NoTenderLoaded } from "./NoTenderLoaded";
+import {
+  UNASSIGNED,
+  critKey,
+  criterionLabel,
+  orderedCritKeys,
+} from "@/lib/structure";
 
-// "Where the marks live" — the graph reframed from a node soup into the questions a
-// bid manager actually has: where does the work concentrate (requirements per award
-// criterion), where is the risk (the deal-breakers), and what must be answered before
-// what (the dependency chains). A ruled ledger in the civic-record voice, not a wiring
-// diagram — it stays legible at 20 requirements and at 500. (See
-// graph-and-verification-deep-plan.md Part A: options #5 marks-ladder + #6 rails.)
+// "Where the marks live" — the graph reframed from a node soup into the questions
+// a bid manager actually has: where does the work concentrate (requirements per
+// award criterion), where is the risk (the deal-breakers), and what must be
+// answered before what (the dependency chains). A ruled ledger in the
+// civic-record voice, legible at 20 requirements and at 500.
+//
+// It is now the left pane of the linked workspace: controlled by StructureView.
+// Selecting a requirement here opens it in the drawer and lights it in the map;
+// selecting a criterion pins its lane in the map. Hover traces a lighter path.
+// (See graph-and-verification-deep-plan.md Part A: options #5 + #6.)
 
-function criterionLabel(ref: string | null): string {
-  if (!ref) return "Unassigned";
-  const n = ref.replace(/\D+/g, "");
-  return n ? `Award criterion ${n}` : ref;
+interface MarksViewProps {
+  filter?: (r: Requirement) => boolean;
+  selectedId?: string | null;
+  hoveredId?: string | null;
+  selectedCrit?: string | null;
+  onSelectRequirement?: (id: string) => void;
+  onHoverRequirement?: (id: string | null) => void;
+  onSelectCrit?: (key: string | null) => void;
+  // Tightens the type scale for the narrow split column.
+  compact?: boolean;
 }
 
 interface CriterionGroup {
@@ -28,33 +41,46 @@ interface CriterionGroup {
   review: number;
 }
 
-export function MarksView() {
-  const { requirements, tenderId } = useRequirements();
-  const [openKey, setOpenKey] = useState<string | null>(null);
+export function MarksView({
+  filter,
+  selectedId = null,
+  hoveredId = null,
+  selectedCrit = null,
+  onSelectRequirement,
+  onHoverRequirement,
+  onSelectCrit,
+  compact = false,
+}: MarksViewProps) {
+  const { requirements: all } = useRequirements();
+  const requirements = useMemo(
+    () => (filter ? all.filter(filter) : all),
+    [all, filter]
+  );
+
+  // Which groups are expanded. Multiple can be open; the group holding the
+  // current selection is force-opened below so the drawer's item is always in view.
+  const [openKeys, setOpenKeys] = useState<Set<string>>(() => new Set());
+  const rowRefs = useRef<Map<string, HTMLElement>>(new Map());
 
   const { groups, maxCount, deps } = useMemo(() => {
-    const byRef = new Map<string | null, Requirement[]>();
+    const keys = orderedCritKeys(requirements);
+    const byKey = new Map<string, Requirement[]>();
     for (const r of requirements) {
-      const arr = byRef.get(r.criteria_ref ?? null) ?? [];
-      arr.push(r);
-      byRef.set(r.criteria_ref ?? null, arr);
+      const k = critKey(r.criteria_ref);
+      (byKey.get(k) ?? byKey.set(k, []).get(k)!).push(r);
     }
-    const groups: CriterionGroup[] = Array.from(byRef.entries())
-      .map(([ref, items]) => ({
-        key: ref ?? "__none__",
-        label: criterionLabel(ref),
+    const groups: CriterionGroup[] = keys.map((k) => {
+      const items = byKey.get(k) ?? [];
+      return {
+        key: k,
+        label: criterionLabel(k === UNASSIGNED ? null : k),
         items,
         gating: items.filter((r) => r.is_gating).length,
         review: items.filter((r) => r.needs_review).length,
-      }))
-      .sort((a, b) => {
-        if (a.key === "__none__") return 1; // Unassigned always last.
-        if (b.key === "__none__") return -1;
-        return b.items.length - a.items.length || a.label.localeCompare(b.label);
-      });
+      };
+    });
     const maxCount = Math.max(1, ...groups.map((g) => g.items.length));
 
-    // "Answer in order": the requirements that depend on others (most don't).
     const byId = new Map(requirements.map((r) => [r.id, r]));
     const deps = requirements
       .map((r) => ({
@@ -68,39 +94,70 @@ export function MarksView() {
     return { groups, maxCount, deps };
   }, [requirements]);
 
-  if (isApiEnabled() && !tenderId) {
-    return (
-      <NoTenderLoaded
-        heading="Nothing to map yet"
-        body="Upload a tender and Bidframe shows where the marks concentrate, where the deal-breakers sit, and what has to be answered in order."
-      />
-    );
+  // The group holding the current selection is always shown open, derived rather
+  // than forced through state, so a selection from the map never collapses.
+  const selectedKey = selectedId
+    ? critKey(requirements.find((r) => r.id === selectedId)?.criteria_ref)
+    : null;
+  const isGroupOpen = (key: string) =>
+    openKeys.has(key) || key === selectedKey;
+
+  // Scroll the selected row into view once its group is open (pure DOM effect).
+  useEffect(() => {
+    if (!selectedId) return;
+    const id = requestAnimationFrame(() => {
+      rowRefs.current.get(selectedId)?.scrollIntoView({ block: "nearest" });
+    });
+    return () => cancelAnimationFrame(id);
+  }, [selectedId]);
+
+  function toggleGroup(key: string) {
+    const willOpen = !isGroupOpen(key);
+    setOpenKeys((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+    // Pin/unpin the lane in the map. Outside the state updater so we never update
+    // the parent mid-render.
+    onSelectCrit?.(willOpen ? key : null);
   }
 
   const totalGating = requirements.filter((r) => r.is_gating).length;
+  const headingSize = compact
+    ? "text-xl"
+    : "text-2xl sm:text-3xl";
 
   return (
-    <div className="flex flex-col gap-14">
+    <div className={compact ? "flex flex-col gap-10" : "flex flex-col gap-14"}>
       {/* Where the marks live — a ledger of award criteria by requirement count. */}
       <section>
-        <h2 className="font-serif text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+        <h2
+          className={`font-serif font-semibold tracking-tight text-ink ${headingSize}`}
+        >
           Where the marks live
         </h2>
-        <p className="mt-2 max-w-[64ch] text-[15px] leading-relaxed text-ink-muted">
-          Every requirement grouped by the award criterion it is scored against, so you
-          see where the work concentrates and where the deal-breakers sit.{" "}
+        <p className="mt-2 max-w-[64ch] text-[14.5px] leading-relaxed text-ink-muted">
+          Every requirement grouped by the award criterion it is scored against.{" "}
           {totalGating > 0 && (
             <span className="text-ink">
               {totalGating} deal-breaker{totalGating === 1 ? "" : "s"}
             </span>
           )}{" "}
-          across {groups.length} criteri{groups.length === 1 ? "on" : "a"}. Open a row
-          to read its requirements.
+          across {groups.length} criteri{groups.length === 1 ? "on" : "a"}. Open a
+          row to read its requirements.
         </p>
 
-        <div className="mt-7">
+        <div className="mt-6">
+          {groups.length === 0 && (
+            <p className="text-sm text-ink-muted">
+              Nothing matches the current filter.
+            </p>
+          )}
           {groups.map((g) => {
-            const isOpen = openKey === g.key;
+            const isOpen = isGroupOpen(g.key);
+            const isPinned = selectedCrit === g.key;
             const width = Math.round((g.items.length / maxCount) * 100);
             const gatingPct = g.items.length
               ? (g.gating / g.items.length) * 100
@@ -108,17 +165,23 @@ export function MarksView() {
             return (
               <div
                 key={g.key}
-                className="border-t border-hairline py-3.5 first:border-t-0"
+                className={`border-t border-hairline py-3.5 first:border-t-0 ${
+                  isPinned ? "bg-accent-soft/40" : ""
+                }`}
               >
                 <button
                   type="button"
-                  onClick={() => setOpenKey(isOpen ? null : g.key)}
+                  onClick={() => toggleGroup(g.key)}
                   aria-expanded={isOpen}
-                  className="grid w-full grid-cols-[1fr_auto] items-center gap-6 text-left"
+                  className="grid w-full grid-cols-[1fr_auto] items-center gap-4 rounded-sm text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
                 >
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
-                      <span className="font-mono text-[13px] font-medium text-ink">
+                      <span
+                        className={`font-mono text-[13px] font-medium ${
+                          isPinned ? "text-accent" : "text-ink"
+                        }`}
+                      >
                         {g.label}
                       </span>
                       {g.gating > 0 && (
@@ -155,29 +218,54 @@ export function MarksView() {
                 </button>
 
                 {isOpen && (
-                  <ul className="mt-3 flex flex-col gap-1.5 border-l border-hairline pl-4">
-                    {g.items.map((r) => (
-                      <li
-                        key={r.id}
-                        className="grid grid-cols-[auto_1fr_auto] items-baseline gap-2.5 text-sm"
-                      >
-                        <span
-                          className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${
-                            r.is_gating ? "bg-signal-oxblood" : "bg-ink/20"
-                          }`}
-                          aria-hidden
-                        />
-                        <Link
-                          href={`/review?req=${r.id}`}
-                          className="leading-snug text-ink transition-colors hover:text-forest hover:underline"
+                  <ul className="mt-3 flex flex-col gap-0.5 border-l border-hairline pl-2">
+                    {g.items.map((r) => {
+                      const isSel = selectedId === r.id;
+                      const isHov = hoveredId === r.id;
+                      return (
+                        <li
+                          key={r.id}
+                          ref={(el) => {
+                            if (el) rowRefs.current.set(r.id, el);
+                            else rowRefs.current.delete(r.id);
+                          }}
                         >
-                          {r.text}
-                        </Link>
-                        <span className="shrink-0 font-mono text-[11px] text-ink-muted">
-                          p.{r.source_page}
-                        </span>
-                      </li>
-                    ))}
+                          <button
+                            type="button"
+                            onClick={() => onSelectRequirement?.(r.id)}
+                            onMouseEnter={() => onHoverRequirement?.(r.id)}
+                            onMouseLeave={() => onHoverRequirement?.(null)}
+                            aria-current={isSel}
+                            className={`grid w-full grid-cols-[auto_1fr_auto] items-baseline gap-2.5 rounded-sm px-2 py-1.5 text-left text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-forest ${
+                              isSel
+                                ? "bg-paper-raised shadow-[var(--depth-row)]"
+                                : isHov
+                                  ? "bg-paper-raised/60"
+                                  : "hover:bg-paper-raised/60"
+                            }`}
+                          >
+                            <span
+                              className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${
+                                r.is_gating ? "bg-signal-oxblood" : "bg-ink/20"
+                              }`}
+                              aria-hidden
+                            />
+                            <span
+                              className={`line-clamp-2 leading-snug ${
+                                isSel
+                                  ? "font-medium text-ink"
+                                  : "text-ink group-hover:text-forest"
+                              }`}
+                            >
+                              {r.text}
+                            </span>
+                            <span className="shrink-0 font-mono text-[11px] text-ink-muted">
+                              p.{r.source_page}
+                            </span>
+                          </button>
+                        </li>
+                      );
+                    })}
                   </ul>
                 )}
               </div>
@@ -188,27 +276,41 @@ export function MarksView() {
 
       {/* Answer in order — the dependency chains, as ordered rails. */}
       <section>
-        <h2 className="font-serif text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+        <h2
+          className={`font-serif font-semibold tracking-tight text-ink ${headingSize}`}
+        >
           Answer in order
         </h2>
-        <p className="mt-2 max-w-[64ch] text-[15px] leading-relaxed text-ink-muted">
+        <p className="mt-2 max-w-[64ch] text-[14.5px] leading-relaxed text-ink-muted">
           Some requirements depend on others. Answer the ones on the left first.
         </p>
         {deps.length === 0 ? (
-          <p className="mt-6 text-sm text-ink-muted">
-            No dependencies found — each requirement stands on its own.
+          <p className="mt-5 text-sm text-ink-muted">
+            No dependencies in view — each requirement stands on its own.
           </p>
         ) : (
-          <ul className="mt-6 flex flex-col gap-3">
+          <ul className="mt-5 flex flex-col gap-3">
             {deps.map(({ req, before }) => (
               <li key={req.id} className="flex flex-wrap items-center gap-2">
                 {before.map((b) => (
-                  <DepChip key={b.id} req={b} />
+                  <DepChip
+                    key={b.id}
+                    req={b}
+                    selected={selectedId === b.id}
+                    onSelect={onSelectRequirement}
+                    onHover={onHoverRequirement}
+                  />
                 ))}
                 <span aria-hidden className="font-mono text-sm text-ink-muted">
                   →
                 </span>
-                <DepChip req={req} emphasis />
+                <DepChip
+                  req={req}
+                  emphasis
+                  selected={selectedId === req.id}
+                  onSelect={onSelectRequirement}
+                  onHover={onHoverRequirement}
+                />
               </li>
             ))}
           </ul>
@@ -218,26 +320,38 @@ export function MarksView() {
   );
 }
 
-// A requirement as a small chip in a dependency rail. Deal-breakers take the oxblood
-// reading edge; the dependent (the "then" item) is emphasised in full ink.
+// A requirement as a small chip in a dependency rail. Deal-breakers take the
+// oxblood reading edge; the dependent (the "then" item) is emphasised in full
+// ink; the selected one carries the row lift.
 function DepChip({
   req,
   emphasis = false,
+  selected = false,
+  onSelect,
+  onHover,
 }: {
   req: Requirement;
   emphasis?: boolean;
+  selected?: boolean;
+  onSelect?: (id: string) => void;
+  onHover?: (id: string | null) => void;
 }) {
   return (
-    <Link
-      href={`/review?req=${req.id}`}
+    <button
+      type="button"
       title={req.text}
-      className={`inline-flex max-w-[36ch] items-center rounded-md border bg-paper-raised px-2.5 py-1 text-xs transition-colors hover:border-forest ${
+      onClick={() => onSelect?.(req.id)}
+      onMouseEnter={() => onHover?.(req.id)}
+      onMouseLeave={() => onHover?.(null)}
+      className={`inline-flex max-w-[36ch] items-center rounded-md border bg-paper-raised px-2.5 py-1 text-xs transition-colors hover:border-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest ${
         req.is_gating
           ? "border-l-2 border-hairline border-l-signal-oxblood"
           : "border-hairline"
-      } ${emphasis ? "font-medium text-ink" : "text-ink-muted"}`}
+      } ${emphasis ? "font-medium text-ink" : "text-ink-muted"} ${
+        selected ? "shadow-[var(--depth-row)] ring-1 ring-forest" : ""
+      }`}
     >
       <span className="truncate">{req.text}</span>
-    </Link>
+    </button>
   );
 }

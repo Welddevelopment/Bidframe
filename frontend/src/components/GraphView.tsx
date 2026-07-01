@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ReactFlow,
   Background,
   BackgroundVariant,
+  MiniMap,
   Panel,
   Handle,
   Position,
@@ -22,36 +23,44 @@ import type { Requirement } from "@/types/requirement";
 import { ConfidenceIndicator } from "./ConfidenceIndicator";
 import { CategoryTag } from "@/components/CategoryTag";
 import { categoryStyle } from "@/lib/categoryStyle";
+import {
+  UNASSIGNED,
+  critKey,
+  criterionLabel,
+  critNodeId,
+  traceSet,
+  critTraceSet,
+} from "@/lib/structure";
 
 // The relationship map (CLAUDE.md priority 4; design-language: the civic record).
-// This is the tender's schedule of cross-references drawn as a wiring diagram:
-// every requirement wired to the award criterion it is scored against, and to the
-// requirements it depends on. It is NOT a generic node graph. The status system
-// carries the stakes exactly as it does in the matrix: register cards on warmed
-// paper, the oxblood reading edge and oxblood wiring on the deal-breakers, the
-// shared confidence bead, the mono clause refs. The award criteria are the fixed
-// structure of the document, so they read as tabs pressed into the page while the
-// requirements are loose sheets raised on it. Default React Flow chrome (its
-// nodes, controls, dotted background) is replaced wholesale.
+// The tender's schedule of cross-references drawn as a wiring diagram: every
+// requirement wired to the award criterion it is scored against, and to the
+// requirements it depends on. It is NOT a generic node graph. Requirements are
+// banded into criterion swimlanes; hovering or selecting one traces its path and
+// dims the rest; a minimap keeps a big tender navigable.
+//
+// As the right pane of the linked workspace it is controlled by StructureView:
+// it emits selection/hover and reads them back, so it and the ledger light in
+// lockstep, and clicking a requirement opens the drawer instead of ejecting to
+// the matrix. Used standalone (the /demo showcase, interactive=false) it keeps
+// its own header and the deep-link-to-matrix behaviour.
 
 // Layout geometry. Requirements stack in the left column in criterion order, so
-// each criterion's feeders sit together; the criterion is then placed at the
-// vertical centroid of its group, which turns crossing spaghetti into clean
-// roll-ups.
+// each criterion's feeders sit together; the criterion is placed at the vertical
+// centroid of its group, which turns crossing spaghetti into clean roll-ups.
 const REQ_X = 0;
 const CRIT_X = 560;
 const ROW_GAP = 104;
 const LABEL_Y = -56;
+const CARD_H = 100;
+const LANE_X = -28;
+const LANE_W = 312;
 
-// Edge inks (the signal palette lives on status carriers only). Non-gating links
-// are a quiet pencil line; a deal-breaker's link is lit in oxblood; a dependency
-// is the earned forest, dashed, so the chains read as a distinct relationship.
+// Edge inks (the signal palette lives on status carriers only).
 const INK_OXBLOOD = "#8a2d2a";
 const INK_FOREST = "#2c5640";
 const INK_LINK = "#b4a892";
 
-// A near-invisible connection point: a small hairline tick ringed in paper so the
-// wiring meets the card on a tidy edge, never the default dark React Flow handle.
 const HANDLE: React.CSSProperties = {
   width: 7,
   height: 7,
@@ -75,11 +84,31 @@ function CheckMark() {
   );
 }
 
-// A requirement, as a register card: clause ref and confidence bead on top, the
-// requirement text, then the page ref and either its deal-breaker mark, its
-// approval, or its category. Gating items take the 2px oxblood reading edge.
+// A faint horizontal band grouping one criterion's requirements — the swimlane
+// that makes the grouping visible instead of merely implied by vertical order.
+// Sits behind the cards (negative z), never interactive.
+function LaneNode({ data }: NodeProps) {
+  const { label, tint } = data as unknown as { label: string; tint: boolean };
+  return (
+    <div
+      className="relative h-full w-full rounded-lg border border-dashed border-hairline"
+      style={{ background: tint ? "rgba(33,29,23,0.022)" : "transparent" }}
+    >
+      <span className="absolute left-3 top-2 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-muted/80">
+        {label}
+      </span>
+    </div>
+  );
+}
+
+// A requirement, as a register card. Gating items take the 2px oxblood reading
+// edge. Dimmed when another item's trace is active; ringed when selected.
 function RequirementNode({ data }: NodeProps) {
-  const { req } = data as unknown as { req: Requirement };
+  const { req, dim, selected } = data as unknown as {
+    req: Requirement;
+    dim?: boolean;
+    selected?: boolean;
+  };
   const gating = req.is_gating;
   const unanswerable = gating && req.status === "pending";
   const ref =
@@ -87,10 +116,12 @@ function RequirementNode({ data }: NodeProps) {
 
   return (
     <div
-      className={`surface-grain w-[256px] rounded-md bg-paper-raised px-3 py-2.5 shadow-[var(--depth-row)] transition-shadow hover:shadow-[var(--depth-sheet)] ${
+      className={`surface-grain w-[256px] rounded-md bg-paper-raised px-3 py-2.5 shadow-[var(--depth-row)] transition-all hover:shadow-[var(--depth-sheet)] ${
         gating
           ? "rounded-l-none border-y border-r border-l-2 border-hairline border-l-signal-oxblood-frame"
           : "border border-hairline"
+      } ${dim ? "opacity-35" : "opacity-100"} ${
+        selected ? "ring-2 ring-forest ring-offset-1 ring-offset-paper" : ""
       }`}
       style={
         gating
@@ -152,19 +183,23 @@ function RequirementNode({ data }: NodeProps) {
   );
 }
 
-// An award criterion: the fixed structure of the tender, so it reads as a tab
-// pressed into the page (recessed, mono record voice), the counterweight to the
-// raised requirement sheets. Carries the count of requirements scored under it,
-// and an oxblood mark when any of them is a deal-breaker.
+// An award criterion: the fixed structure of the tender, a tab pressed into the
+// page. Pinned (from the ledger) takes an accent ring; dimmed off-trace.
 function CriterionNode({ data }: NodeProps) {
-  const { num, count, hasGating } = data as unknown as {
+  const { num, count, hasGating, dim, pinned } = data as unknown as {
     num: string;
     count: number;
     hasGating: boolean;
+    dim?: boolean;
+    pinned?: boolean;
   };
 
   return (
-    <div className="w-[184px] rounded-md border border-hairline bg-paper-recessed px-3 py-2.5 shadow-[var(--depth-pressed)]">
+    <div
+      className={`w-[184px] rounded-md border border-hairline bg-paper-recessed px-3 py-2.5 shadow-[var(--depth-pressed)] transition-all ${
+        dim ? "opacity-35" : "opacity-100"
+      } ${pinned ? "ring-2 ring-accent ring-offset-1 ring-offset-paper" : ""}`}
+    >
       <Handle id="c" type="target" position={Position.Left} isConnectable={false} style={HANDLE} />
       <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink-muted">
         Award criterion
@@ -188,8 +223,6 @@ function CriterionNode({ data }: NodeProps) {
   );
 }
 
-// A quiet mono column header that pans with the diagram (the editorial form:
-// columns with headers), never a floating chrome label.
 function ColumnLabelNode({ data }: NodeProps) {
   const { label, count } = data as unknown as { label: string; count: number };
   return (
@@ -202,15 +235,14 @@ function ColumnLabelNode({ data }: NodeProps) {
   );
 }
 
-// Stable across renders (React Flow requires it).
 const nodeTypes = {
   requirement: RequirementNode,
   criterion: CriterionNode,
   columnLabel: ColumnLabelNode,
+  lane: LaneNode,
 };
 
-// Bespoke zoom controls, replacing the default white React Flow buttons: a small
-// mono group on warmed paper, fixed to the canvas corner.
+// Bespoke zoom controls on warmed paper, replacing the default white buttons.
 function GraphControls() {
   const { zoomIn, zoomOut, fitView } = useReactFlow();
   const btn =
@@ -238,8 +270,7 @@ function GraphControls() {
   );
 }
 
-// The legend, as the key box on an official drawing: anchored in the corner,
-// grained paper, listing exactly the marks on the canvas.
+// The legend, the key box on an official drawing.
 function GraphKey() {
   return (
     <Panel position="top-right">
@@ -288,39 +319,86 @@ function GraphKey() {
   );
 }
 
-export function GraphView({ interactive = true }: { interactive?: boolean }) {
+interface GraphViewProps {
+  interactive?: boolean;
+  // Linked-workspace controls (StructureView). When onSelectRequirement is set
+  // the map is controlled: it emits selection instead of routing to the matrix.
+  filter?: (r: Requirement) => boolean;
+  selectedId?: string | null;
+  hoveredId?: string | null;
+  selectedCrit?: string | null;
+  onSelectRequirement?: (id: string) => void;
+  onHoverRequirement?: (id: string | null) => void;
+  onSelectCrit?: (key: string | null) => void;
+  // Drop the standalone header/description; fill the parent pane's height.
+  embedded?: boolean;
+}
+
+export function GraphView({
+  interactive = true,
+  filter,
+  selectedId = null,
+  hoveredId = null,
+  selectedCrit = null,
+  onSelectRequirement,
+  onHoverRequirement,
+  onSelectCrit,
+  embedded = false,
+}: GraphViewProps) {
   const { requirements: allRequirements, tenderId } = useRequirements();
   const router = useRouter();
+  const controlled = Boolean(onSelectRequirement);
+
+  // Uncontrolled (standalone) keeps its own deal-breakers lens; controlled takes
+  // the workspace filter instead.
   const [gatingOnly, setGatingOnly] = useState(false);
-
-  // #26: a "deal-breakers only" lens for large tenders. Filter before the layout
-  // memo so nodes, edges and counts all reflect it; only offered when there is
-  // something to filter to.
   const gatingCount = allRequirements.filter((r) => r.is_gating).length;
-  const requirements = gatingOnly
-    ? allRequirements.filter((r) => r.is_gating)
-    : allRequirements;
 
-  // Clicking a requirement node opens it in the matrix (deep link via ?req=).
-  // Disabled on the read-only demo (interactive=false).
+  const requirements = useMemo(() => {
+    let rs = filter ? allRequirements.filter(filter) : allRequirements;
+    if (!filter && gatingOnly) rs = rs.filter((r) => r.is_gating);
+    return rs;
+  }, [allRequirements, filter, gatingOnly]);
+
+  // Node click: open in the drawer (controlled) or deep-link to the matrix
+  // (standalone). Clicking a criterion pins/unpins its lane.
   const onNodeClick = useCallback(
     (_event: React.MouseEvent, node: Node) => {
-      if (node.type === "requirement") router.push(`/review?req=${node.id}`);
+      if (node.type === "requirement") {
+        if (onSelectRequirement) onSelectRequirement(node.id);
+        else if (interactive) router.push(`/review?req=${node.id}`);
+        return;
+      }
+      if (node.type === "criterion" && onSelectCrit) {
+        const key = node.id.replace(/^crit:/, "");
+        onSelectCrit(selectedCrit === key ? null : key);
+      }
     },
-    [router]
+    [onSelectRequirement, onSelectCrit, selectedCrit, interactive, router]
   );
 
-  const { nodes, edges, counts } = useMemo(() => {
+  const onNodeEnter = useCallback(
+    (_e: React.MouseEvent, node: Node) => {
+      if (node.type === "requirement") onHoverRequirement?.(node.id);
+    },
+    [onHoverRequirement]
+  );
+  const onNodeLeave = useCallback(() => onHoverRequirement?.(null), [
+    onHoverRequirement,
+  ]);
+
+  // Base layout: lanes, columns, criteria, requirements, and the edges. Rebuilt
+  // only when the visible requirement slice changes.
+  const { baseNodes, baseEdges, counts } = useMemo(() => {
     const reqIds = new Set(requirements.map((r) => r.id));
 
-    // Distinct criteria in numeric order; requirements grouped under them.
     const critRefs = Array.from(
       new Set(
         requirements
           .map((r) => r.criteria_ref)
           .filter((ref): ref is string => ref !== null)
       )
-    ).sort();
+    ).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 
     const grouped: Requirement[] = [
       ...critRefs.flatMap((ref) =>
@@ -330,18 +408,42 @@ export function GraphView({ interactive = true }: { interactive?: boolean }) {
     ];
     const indexOf = new Map(grouped.map((r, i) => [r.id, i] as const));
 
-    // initialWidth/initialHeight give React Flow measured dimensions up front, so
-    // nodes render visible and edges route on the first paint instead of waiting
-    // for the per-node ResizeObserver (which, under Next dev's StrictMode, can
-    // double-mount and never deliver the first measurement). A real browser still
-    // refines these from the live DOM.
+    // Swimlanes: one faint band per contiguous criterion segment (grouped order
+    // makes each criterion's members contiguous), plus one for the unassigned tail.
+    const laneNodes: Node[] = [];
+    let segStart = 0;
+    for (let i = 1; i <= grouped.length; i++) {
+      const prevKey = critKey(grouped[i - 1]?.criteria_ref);
+      const curKey = i < grouped.length ? critKey(grouped[i].criteria_ref) : null;
+      if (curKey !== prevKey) {
+        const count = i - segStart;
+        laneNodes.push({
+          id: `lane:${prevKey}:${segStart}`,
+          type: "lane",
+          position: { x: LANE_X, y: segStart * ROW_GAP - 18 },
+          data: {
+            label: criterionLabel(prevKey === UNASSIGNED ? null : prevKey),
+            tint: laneNodes.length % 2 === 0,
+          },
+          draggable: false,
+          selectable: false,
+          zIndex: -1,
+          style: {
+            width: LANE_W,
+            height: (count - 1) * ROW_GAP + CARD_H + 36,
+          },
+        });
+        segStart = i;
+      }
+    }
+
     const reqNodes: Node[] = grouped.map((req, i) => ({
       id: req.id,
       type: "requirement",
       position: { x: REQ_X, y: i * ROW_GAP },
       data: { req },
       initialWidth: 256,
-      initialHeight: 100,
+      initialHeight: CARD_H,
     }));
 
     const critNodes: Node[] = critRefs.map((ref) => {
@@ -352,7 +454,7 @@ export function GraphView({ interactive = true }: { interactive?: boolean }) {
       const num = ref.replace(/\D+/g, "") || ref;
       const hasGating = members.some((m) => m.is_gating);
       return {
-        id: `crit:${ref}`,
+        id: critNodeId(ref),
         type: "criterion",
         position: { x: CRIT_X, y: avgIdx * ROW_GAP },
         data: { num, count: members.length, hasGating },
@@ -388,13 +490,12 @@ export function GraphView({ interactive = true }: { interactive?: boolean }) {
     let depCount = 0;
 
     for (const req of requirements) {
-      // Requirement -> the award criterion it is scored against.
       if (req.criteria_ref) {
         graphEdges.push({
           id: `${req.id}->crit`,
           source: req.id,
           sourceHandle: "r",
-          target: `crit:${req.criteria_ref}`,
+          target: critNodeId(req.criteria_ref),
           targetHandle: "c",
           style: {
             stroke: req.is_gating ? INK_OXBLOOD : INK_LINK,
@@ -409,7 +510,6 @@ export function GraphView({ interactive = true }: { interactive?: boolean }) {
         });
       }
 
-      // Requirement -> the requirement it depends on (the dependency chain).
       for (const depId of req.depends_on) {
         if (!reqIds.has(depId)) continue;
         depCount += 1;
@@ -432,8 +532,8 @@ export function GraphView({ interactive = true }: { interactive?: boolean }) {
     }
 
     return {
-      nodes: [...labelNodes, ...critNodes, ...reqNodes],
-      edges: graphEdges,
+      baseNodes: [...laneNodes, ...labelNodes, ...critNodes, ...reqNodes],
+      baseEdges: graphEdges,
       counts: {
         reqs: requirements.length,
         crits: critRefs.length,
@@ -442,15 +542,139 @@ export function GraphView({ interactive = true }: { interactive?: boolean }) {
     };
   }, [requirements]);
 
-  // No tender loaded on the live product (or genuinely empty) → the same honest
-  // empty state, not the sample graph. The mock showcase keeps its sample.
+  // The active trace: a hovered/selected requirement lights itself, its criterion
+  // and its dependency neighbours; a pinned criterion lights its whole lane.
+  // Everything else dims. Recomputed without rebuilding the layout.
+  const activeId = hoveredId ?? selectedId ?? null;
+  const activeSet = useMemo<Set<string> | null>(() => {
+    if (activeId) return traceSet(activeId, requirements);
+    if (selectedCrit) return critTraceSet(selectedCrit, requirements);
+    return null;
+  }, [activeId, selectedCrit, requirements]);
+
+  const nodes = useMemo(
+    () =>
+      baseNodes.map((n) => {
+        if (n.type === "lane" || n.type === "columnLabel") return n;
+        const inSet = activeSet ? activeSet.has(n.id) : true;
+        const dim = activeSet ? !inSet : false;
+        if (n.type === "criterion") {
+          const pinned = n.id === (selectedCrit ? critNodeId(selectedCrit) : "");
+          return { ...n, data: { ...n.data, dim, pinned } };
+        }
+        return {
+          ...n,
+          data: { ...n.data, dim, selected: n.id === selectedId },
+        };
+      }),
+    [baseNodes, activeSet, selectedCrit, selectedId]
+  );
+
+  const edges = useMemo(
+    () =>
+      baseEdges.map((e) => {
+        if (!activeSet) return e;
+        const on = activeSet.has(e.source) && activeSet.has(e.target);
+        return { ...e, style: { ...e.style, opacity: on ? 1 : 0.12 } };
+      }),
+    [baseEdges, activeSet]
+  );
+
+  // React Flow (and its minimap) render nondeterministic SVG attributes, so we
+  // defer the canvas to the client to avoid a hydration mismatch. The container
+  // keeps its size, so layout does not shift when it mounts.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    // One-shot client mount flag; deps are empty so it runs exactly once.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
+
   if (allRequirements.length === 0 || (isApiEnabled() && !tenderId)) {
     return (
-      <p className="text-sm text-ink-muted">
+      <p className="p-4 text-sm text-ink-muted">
         No requirements yet. Upload a tender to see how its requirements connect.
       </p>
     );
   }
+
+  const canvas = (
+    <div
+      className={
+        embedded
+          ? "relative h-full w-full overflow-hidden bg-paper"
+          : "relative w-full overflow-hidden rounded-lg border border-hairline bg-paper shadow-[var(--depth-pressed)]"
+      }
+      style={embedded ? undefined : { height: "72vh", minHeight: 480 }}
+    >
+      {!mounted ? null : requirements.length === 0 ? (
+        <p className="absolute inset-0 flex items-center justify-center p-6 text-center text-sm text-ink-muted">
+          Nothing matches the current filter.
+        </p>
+      ) : (
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          nodeTypes={nodeTypes}
+          defaultViewport={{ x: 72, y: 96, zoom: 0.78 }}
+          minZoom={0.3}
+          maxZoom={1.6}
+          proOptions={{ hideAttribution: true }}
+          nodesConnectable={false}
+          onNodeClick={interactive ? onNodeClick : undefined}
+          onNodeMouseEnter={controlled ? onNodeEnter : undefined}
+          onNodeMouseLeave={controlled ? onNodeLeave : undefined}
+          className="graph-canvas bg-paper"
+        >
+          <Background
+            id="fine"
+            variant={BackgroundVariant.Lines}
+            gap={32}
+            size={1}
+            color="rgba(33,29,23,0.04)"
+          />
+          <Background
+            id="coarse"
+            variant={BackgroundVariant.Lines}
+            gap={128}
+            size={1}
+            color="rgba(33,29,23,0.06)"
+          />
+          <GraphControls />
+          <GraphKey />
+          <MiniMap
+            pannable
+            zoomable
+            ariaLabel="Map overview"
+            nodeStrokeWidth={2}
+            maskColor="rgba(33,29,23,0.06)"
+            style={{
+              background: "var(--color-paper-raised)",
+              border: "1px solid var(--color-hairline)",
+              borderRadius: 8,
+              height: 96,
+              width: 148,
+            }}
+            nodeColor={(n) => {
+              if (n.type === "lane") return "transparent";
+              if (n.type === "criterion") return "#cfc3ab";
+              const r = (n.data as { req?: Requirement })?.req;
+              return r?.is_gating ? INK_OXBLOOD : "#d8cdb6";
+            }}
+          />
+          {embedded && (
+            <Panel position="top-left">
+              <p className="rounded-md border border-hairline bg-paper-raised/90 px-2.5 py-1 font-mono text-[11px] text-ink-muted shadow-[var(--depth-row)]">
+                {counts.reqs} req · {counts.crits} criteria · {counts.deps} deps
+              </p>
+            </Panel>
+          )}
+        </ReactFlow>
+      )}
+    </div>
+  );
+
+  if (embedded) return canvas;
 
   return (
     <div>
@@ -486,49 +710,7 @@ export function GraphView({ interactive = true }: { interactive?: boolean }) {
           </button>
         )}
       </div>
-
-      {/* Inline height, not a Tailwind class: React Flow measures its container on
-          mount, and in dev the utility-class CSS can land a frame late, leaving it
-          0-tall so handle measurement, edge routing, and the one-shot fitView all
-          fail and never recover. An inline height is present at first paint. */}
-      <div
-        className="relative w-full overflow-hidden rounded-lg border border-hairline bg-paper shadow-[var(--depth-pressed)]"
-        style={{ height: "72vh", minHeight: 480 }}
-      >
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          nodeTypes={nodeTypes}
-          // Open at a readable zoom anchored to the top of the diagram, rather than
-          // fitView — which, on a large tender (hundreds of requirements), shrinks
-          // the whole column to an unreadable speck. "Fit" (bottom-left) still frames
-          // the whole graph on demand.
-          defaultViewport={{ x: 48, y: 96, zoom: 0.8 }}
-          minZoom={0.3}
-          maxZoom={1.6}
-          proOptions={{ hideAttribution: true }}
-          nodesConnectable={false}
-          onNodeClick={interactive ? onNodeClick : undefined}
-          className="graph-canvas bg-paper"
-        >
-          <Background
-            id="fine"
-            variant={BackgroundVariant.Lines}
-            gap={32}
-            size={1}
-            color="rgba(33,29,23,0.04)"
-          />
-          <Background
-            id="coarse"
-            variant={BackgroundVariant.Lines}
-            gap={128}
-            size={1}
-            color="rgba(33,29,23,0.06)"
-          />
-          <GraphControls />
-          <GraphKey />
-        </ReactFlow>
-      </div>
+      {canvas}
     </div>
   );
 }
