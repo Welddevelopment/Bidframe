@@ -4,6 +4,57 @@
 
 ---
 
+### [J-047] @frontend · REQUEST · OPEN · 2026-07-01
+Refining the J-043 split: **J is taking the graph rework** (building it now), so your two flagged builds are:
+1. **Claim / source verification** — the split-screen (a claim ↔ the tender/capability doc, scrolled to +
+   the **exact line highlighted**), a hover-peek, and an honest *"exact vs approximate match"* signal. Start
+   client-side: **P2 = PDF.js text-layer search highlight, no backend change.** (@backend is adding P3
+   highlight coordinates in parallel for the robust tier — J-049 — but don't wait on it.)
+2. **`/demo` scrollytelling rework** — rebuild `/demo` (`DemoView`) as a scroll-driven narrative (sticky
+   stage + stepping beats, reusing the real components). Ready-to-paste design brief with real tokens, fonts,
+   component looks, sample data, technique constraints + the story beats: **`demo-scrolly-design-pack.md`**.
+Full options/plan for verification: **`graph-and-verification-deep-plan.md`** (Part B). Ping if the P2/P3
+call or the scrolly technique needs a decision.
+
+### [J-048] @generalist · REQUEST · OPEN · 2026-07-01
+You've got the live OpenAI key — can you run the **full end-to-end smoke test** of the now-consolidated
+`main` (auth + multi-file #4 + QOL + UX fixes, all merged) in a **real browser**, testing both **accuracy**
+and **workflow**, and post pass/fail to your board? Nothing's been clicked through together live yet — this
+is the integration gate. Setup: backend `uvicorn app.main:app --port 8000` with `OPENAI_API_KEY` +
+`AUTH_SECRET` set + an account (`python -m app.admin create-user you@x.co`); frontend `npm run dev` with
+`NEXT_PUBLIC_API_BASE_URL=http://localhost:8000`.
+
+**Workflow:**
+- [ ] Auth gate: logged-out visit to /review /upload /answers /graph → bounced to /login; wrong password → clean error; login → app; refresh stays in; sign out → gated again.
+- [ ] Single-file upload → live progress → matrix; deal-breakers first; confidence beads render.
+- [ ] **Multi-file pack (#4 — least tested):** upload 2–3 PDFs at once → one tender; source refs show the right filename; "Open the page" opens the correct doc (`?doc=d2`) at the right page.
+- [ ] Answers: "Draft my answers" (your key) → grounded answers + evidence citations; gaps listed; no-tender empty state shows before load.
+- [ ] Decisions: approve/edit/flag persist across refresh; reopen; keyboard nav (j/k/a).
+- [ ] Per-user isolation: 2nd account can't see the first's tenders.
+- [ ] /tenders list; /graph renders; /demo works logged-out.
+
+**Accuracy (your eval strength):**
+- [ ] Both SPSO disqualifiers caught + shown as deal-breakers; 0 dangerous misses.
+- [ ] 0 bluffs — every drafted citation is real + verifiable against the doc.
+- [ ] Multi-file provenance: a requirement from doc B keeps the right page + filename, not merged across docs.
+- [ ] Confidence / needs-review calibration looks sane on a fresh tender.
+Post anything that breaks to board-generalist so we fix it before the demo.
+
+### [J-049] @backend · REQUEST · OPEN · 2026-07-01
+Useful backend work that unblocks the two frontend builds + hardens the new multi-file path:
+1. **HIGH — highlight coordinates for source verification (P3).** At extract time, store the excerpt's
+   bounding box(es) per requirement (+ per answer `evidence_ref`) — PyMuPDF `page.search_for(excerpt)` → rects
+   — as an additive/nullable field (e.g. `source_rect`). Unblocks pixel-accurate highlighting in Jawad's
+   verification build (J-047); he starts on client-side text-search meanwhile. Detail: `graph-and-verification-deep-plan.md` §B.3.
+2. **HIGH — award-criteria detail (names + weights).** If the tender states criterion weightings (e.g.
+   "Quality 40% / Price 60%"), extract them so the graph can size by real marks, not just requirement count —
+   that's the spine of the graph rework I'm building now. Additive to the tender response.
+3. **MED — harden the multi-file (#4) path** on real 2–3 doc packs (new + least-tested: provenance +
+   per-doc PDF serving under `?doc=`).
+4. **MED — deployed accounts + keys:** an easy way to seed accounts on Render + confirm `AUTH_SECRET` /
+   `OPENAI_API_KEY` there, so the *hosted* product runs gated + live (the prebake covers the demo).
+Also — your STATUS row is stale; refresh it when you get a sec.
+
 ### [J-046] @all - INFO - OPEN - 2026-07-01
 Lead gen target reached: CRM now runs through **L-0400**. Final push added **L-0356-L-0400** with verified public
 emails and free-pilot drafts in `crm/drafts/`; quality mix was **36 High / 9 Medium**. No guessed contacts.
