@@ -20,6 +20,17 @@ const TIER_WORD: Record<ConfidenceTier, string> = {
   "light-green": "Confident",
 };
 
+// A plain one-line gloss per tier, so a first-time reader trusts the signal
+// without a number. Additive only: it feeds the hover title and the aria-label
+// (a little beyond the single tier word), never the visible lexicon or shapes.
+const TIER_DESCRIPTION: Record<ConfidenceTier, string> = {
+  oxblood:
+    "Can't answer this. We found no source we can stand behind, check it yourself.",
+  amber: "Low confidence. Worth a closer look.",
+  yellow: "Fairly sure. A quick check is wise.",
+  "light-green": "Confident. Matched to the tender.",
+};
+
 // The hue for the lit segments (and the alarm mark).
 const TIER_HEX: Record<ConfidenceTier, string> = {
   oxblood: "#b42d24",
@@ -137,6 +148,7 @@ export function ConfidenceIndicator({
   const tier = confidenceTier(confidence, { needsReview, unanswerable });
 
   const word = TIER_WORD[tier];
+  const description = TIER_DESCRIPTION[tier];
   const hex = TIER_HEX[tier];
 
   const glyph =
@@ -150,8 +162,8 @@ export function ConfidenceIndicator({
     return (
       <span
         className="inline-flex items-center"
-        title={word}
-        aria-label={word}
+        title={description}
+        aria-label={description}
         role="img"
       >
         {glyph}
@@ -160,7 +172,10 @@ export function ConfidenceIndicator({
   }
 
   return (
-    <span className="inline-flex items-center gap-2.5 text-sm text-ink-muted">
+    <span
+      className="inline-flex items-center gap-2.5 text-sm text-ink-muted"
+      title={description}
+    >
       {glyph}
       <span>{word}</span>
     </span>

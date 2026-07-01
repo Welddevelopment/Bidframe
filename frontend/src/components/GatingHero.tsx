@@ -2,6 +2,7 @@
 
 import { useRequirements } from "@/context/RequirementsContext";
 import { alsoCitedLabel, collapseDuplicates } from "@/lib/dedupe";
+import type { Requirement } from "@/types/requirement";
 
 // The deal-breaker dossier (layout.md sections 3, 7; design-language). The one
 // element that carries real alarm, so it is the one place bold signal colour is
@@ -41,10 +42,17 @@ function RejectionStamp() {
   );
 }
 
-export function GatingHero({ onSelect }: { onSelect?: (id: string) => void }) {
-  const { requirements } = useRequirements();
+export function GatingHero({
+  onSelect,
+  requirements,
+}: {
+  onSelect?: (id: string) => void;
+  requirements?: Requirement[];
+}) {
+  const ctx = useRequirements();
+  const source = requirements ?? ctx.requirements;
   const { representatives: gating, meta } = collapseDuplicates(
-    requirements.filter((r) => r.is_gating)
+    source.filter((r) => r.is_gating)
   );
 
   if (gating.length === 0) {
