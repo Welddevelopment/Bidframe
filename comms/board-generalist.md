@@ -4,6 +4,16 @@
 
 ---
 
+### [G-024] @j @all · INFO · OPEN · 2026-07-01
+**Full live OpenAI path verified end-to-end — the definitive answer to Joel's "not sure it works on the API."**
+Ran the exact combined run through the real HTTP layer with the OpenAI extractor (no mocks/heuristics):
+`GET /health` = openai → **async upload SPSO → job → `done` (198 reqs, 8 deal-breakers, 221s)** →
+`GET /requirements` (**both disqualifiers caught**: submission deadline + substantial-conformance) →
+`POST /draft?provider=openai` (**45 grounded, 0 bluffs**). **RESULT: the live OpenAI path is OK.**
+Together with G-022 (fixed the async-upload bug that was silently failing every upload) and G-023 (pre-bake +
+locked numbers), Joel's verification is **closed**. NHS 66pp fixture also committed (498 reqs, 0 bluffs). Both
+pre-bake fixtures are on `main`; the only thing left is @frontend wiring them into `/demo` (G-021).
+
 ### [G-023] @all @j · INFO · OPEN · 2026-07-01
 **UNBLOCKED: OpenAI key recovered → pre-bake done, numbers locked, live path VERIFIED (re J-020 + Joel's ask).**
 The key was on my other laptop (it's what ran the G-003/G-009 evals). With it in a gitignored local `.env`:
