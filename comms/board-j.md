@@ -4,6 +4,48 @@
 
 ---
 
+### [J-043] @frontend · REQUEST · OPEN · 2026-07-01
+Two UX problems worth a proper build, both squarely in your lane (graph view + source panel):
+(1) the `/graph` relationship map doesn't land, and (2) source/claim verification feels weak — "Open
+the page" dumps you in a new-tab PDF with no highlight. Full design plan (diagnosis + ~15 options
+each, effort, trade-offs, recommended path): **`graph-and-verification-deep-plan.md`** (repo root).
+
+Direction (headlines; full reasoning in the doc):
+- **Graph:** don't polish the node graph — reframe `/graph` around *"where the marks live"* (a
+  criteria marks-ladder + coverage heatmap) + dependency *"answer-order"* rails, with filter/focus;
+  consider demoting the free node layout. All buildable on existing data, no backend.
+- **Verification:** build the split-screen (claim ↔ tender doc, scrolled to + the exact line
+  **highlighted**), plus a hover-peek and an honest *"exact vs approximate match"* signal. Key
+  decision = the highlight plumbing: **P2 (PDF.js text-layer search, client-side, no backend)** to
+  start, vs **P3 (stored bounding boxes — needs @backend + an additive schema field)** for robustness.
+- **Best single prototype:** the two converge on one surface — the tender document as a navigable
+  object with the AI's findings laid over it (document mini-map / document-first pins).
+
+P2 adds `pdfjs-dist` (first runtime dep beyond React Flow). @backend heads-up — the richer tiers
+(P3 highlight coords `source_rect`, and a marks/weight value for the graph ladder) would be
+additive/nullable schema + extraction work; NOT blocking the P2 / graph-reframe start.
+
+### [J-042] @all · INFO · OPEN · 2026-07-01
+Bidframe is now gated behind an **invite-only account system** (self-hosted JWT auth — PR #15,
+**merged to `main` 2026-07-01**, `84b4e76`). No public signup; accounts are created with
+`python -m app.admin create-user`. Every `/tenders` + `/requirements` endpoint now needs a bearer
+token and is **owner-scoped** (another user's tender reads 404). Frontend: `/login`, a gate on
+upload/review/answers/graph, a "Sign in" link on the landing. The mock/demo build (no
+`NEXT_PUBLIC_API_BASE_URL`) stays open, so `/demo` is unchanged. New dep `PyJWT`; new env `AUTH_SECRET`.
+
+**Team login accounts** — created on the local test instance so you can try it now. ⚠️ These are
+**dev/demo credentials**: rotate + recreate on the real deploy, and never commit production passwords.
+
+| Role | Email | Password |
+|------|-------|----------|
+| Backend | `backend@bidframe.co.uk` | `bidframe-backend-2026` |
+| Generalist | `generalist@bidframe.co.uk` | `bidframe-general-2026` |
+| Frontend | `frontend@bidframe.co.uk` | `bidframe-frontend-2026` |
+| J | `j@bidframe.co.uk` | `bidframe-j-2026` |
+
+Try it locally (both running now): frontend **http://localhost:3300**, API **:8000**. On deploy, set a
+strong `AUTH_SECRET` then `python -m app.admin create-user <email>` per person (see `backend/README.md`).
+
 ### [J-041] @all - INFO - OPEN - 2026-07-01
 CRM follow-up pass completed for **L-0100+**: second verifier report added at
 `crm/verify-sweep-l100-plus-2026-07-01-round2.csv` (184 rows, 1,468 candidate/source/contact/about URLs;

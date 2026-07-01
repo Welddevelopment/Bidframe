@@ -4,6 +4,7 @@ import { useRequirements } from "@/context/RequirementsContext";
 import { isApiEnabled } from "@/lib/api";
 import { AutofillButton } from "./AutofillButton";
 import { CapabilityUpload } from "./CapabilityUpload";
+import { EvidenceLibrary } from "./EvidenceLibrary";
 import { GapInterview } from "./GapInterview";
 import { NoTenderLoaded } from "./NoTenderLoaded";
 
@@ -35,6 +36,7 @@ export function AnswersBody() {
       <div className="mt-6 flex flex-col gap-4">
         <AutofillButton />
         <CapabilityUpload />
+        <EvidenceLibrary />
       </div>
 
       <div className="mt-8">
