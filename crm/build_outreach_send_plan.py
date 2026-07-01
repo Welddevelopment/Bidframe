@@ -69,6 +69,11 @@ def has_email(row: dict) -> bool:
     return "@" in (row.get("email") or "") and row.get("email") != "not_found"
 
 
+def needs_human_review(row: dict) -> bool:
+    status = (row.get("verification_status") or "").lower()
+    return status.startswith("unverified") or status.startswith("human_review") or "no_send" in status
+
+
 def clean(value: str) -> str:
     return " ".join((value or "").replace("\n", " ").split())
 
@@ -85,7 +90,7 @@ def score(row: dict) -> int:
     if not has_email(row):
         return -100
     status = (row.get("verification_status") or "").lower()
-    if status.startswith("unverified"):
+    if needs_human_review(row):
         return -60
 
     conversion = row.get("conversion_estimate", "")
@@ -152,15 +157,19 @@ def paid_rate(score_value: int, row: dict) -> float:
 def pilot_area(row: dict) -> str:
     sub = clean(row.get("sub_sector", "public-sector"))
     if sub:
-        return f"a {sub} tender"
-    return "a public-sector tender"
+        return f"{sub} tender"
+    return "public-sector tender"
 
 
 def evidence_area(row: dict) -> str:
     text = clean(row.get("sub_sector", "")).lower()
+    if "roof" in text or "waterproof" in text or "construction" in text or "minor works" in text or "retrofit" in text:
+        return "programme, H&S, accreditations, insurances, site logistics, quality and social value"
     if "asbestos" in text:
         return "licences, method statements, notifications, waste transfer, RAMS and reporting"
-    if "water" in text or "legionella" in text:
+    if "fire" in text:
+        return "inspection records, accreditations, product evidence, RAMS, reporting and remedial actions"
+    if "water hygiene" in text or "legionella" in text:
         return "ACoP L8 evidence, monitoring schedules, competence, sample results and reporting"
     if "lift" in text:
         return "LOLER evidence, maintenance schedules, callout SLAs, RAMS and engineer competence"
@@ -170,10 +179,10 @@ def evidence_area(row: dict) -> str:
         return "clinical governance, referrals, data protection, SLAs, reporting and mobilisation"
     if "training" in text or "apprentice" in text:
         return "curriculum, learner support, safeguarding, outcomes, quality assurance and reporting"
-    if "roof" in text or "construction" in text or "minor works" in text or "retrofit" in text:
-        return "programme, H&S, accreditations, insurances, site logistics, quality and social value"
     if "alternative" in text or "send" in text or "slt" in text or "therapy" in text:
         return "safeguarding, learner support, staff competence, outcomes, referrals and reporting"
+    if "translation" in text or "interpreting" in text:
+        return "interpreter vetting, security checks, response times, quality assurance, data protection and reporting"
     if "bid" in text or "procurement" in text or "consult" in text:
         return "mandatory criteria, evidence gaps, source clauses, answer drafts and client review points"
     return "mandatory criteria, evidence, delivery method, insurances, deadlines and reporting"
@@ -192,9 +201,66 @@ def hook(row: dict) -> str:
 
 def subject(row: dict, mode: str) -> str:
     sub = clean(row.get("sub_sector", "tenders")).split("/")[0].strip()
+    lead_number = id_num(row["id"])
     if mode == "free_pilot":
-        return f"Could I run one {sub} tender for {row['firm']}?"
-    return f"Bidframe for {sub} tenders at {row['firm']}"
+        options = [
+            f"Run one {sub} tender through Bidframe?",
+            f"Free check on one {sub} tender?",
+            f"Could I map one {sub} tender?",
+        ]
+    else:
+        options = [
+            f"Bidframe for {sub} tender reviews",
+            f"Faster first read on {sub} tenders",
+            f"Requirement checks for {sub} bids",
+        ]
+    return options[lead_number % len(options)]
+
+
+def sector_opening(row: dict) -> str:
+    name = row["firm"]
+    sub = clean(row.get("sub_sector", "public-sector"))
+    segment = clean(row.get("segment", "")).lower()
+    sub_text = sub.lower()
+    text = " ".join(
+        clean(row.get(field, "")).lower()
+        for field in ("segment", "sub_sector", "public_tender", "conversion_rationale", "size_signal")
+    )
+    lead_hook = hook(row)
+    if segment == "consultancy" or any(term in sub_text for term in ("bid", "tender", "procurement", "consult")):
+        return (
+            f"I am writing because {name} is already close to the bit Bidframe is trying to make less painful: "
+            "the first pass through a tender pack before anyone starts writing."
+        )
+    if any(term in sub_text for term in ("translation", "interpreting")):
+        return (
+            f"{name}'s public-sector language-services work around {lead_hook} looks like the kind of contract where small missed details become "
+            "expensive compliance problems."
+        )
+    if any(term in text for term in ("fire", "water hygiene", "legionella", "asbestos", "lift", "hygiene", "compliance", "occupational health")):
+        return (
+            f"The {sub} work you show around {lead_hook} is the kind of contract where the admin burden can be "
+            "as risky as the job itself."
+        )
+    if any(term in text for term in ("care", "send", "alternative provision", "slt", "therapy", "training", "apprentice")):
+        return (
+            f"Your work around {lead_hook} is exactly where tender packs turn into long safeguarding, evidence "
+            "and delivery checklists."
+        )
+    if any(term in text for term in ("roof", "construction", "minor works", "retrofit", "m&e", "hvac", "grounds", "tree")):
+        return (
+            f"{name}'s {sub} work around {lead_hook} looks like the kind of pack that hides pass-fail requirements in schedules, "
+            "appendices and method-statement instructions."
+        )
+    return (
+        f"I am writing because {lead_hook} looks like the kind of public-sector work where the tender review "
+        "has to be careful before it can be fast."
+    )
+
+
+def dm_opening(row: dict) -> str:
+    opening = sector_opening(row)
+    return opening.replace("I am writing because ", "").rstrip(".")
 
 
 def draft(row: dict, mode: str, plan_row: dict) -> str:
@@ -204,7 +270,6 @@ def draft(row: dict, mode: str, plan_row: dict) -> str:
     lead_hook = hook(row)
     sub = clean(row.get("sub_sector", "public-sector work"))
     pain = evidence_area(row)
-    free_or_paid = "free pilot" if mode == "free_pilot" else "paid pilot"
     ask_block = (
         f"I am trying to get 2-3 real pilots before I charge for this properly, so I would like to run one {pilot_area(row)} for free. "
         "In return, I would ask for blunt feedback. If it genuinely saves time, I would also ask whether we could use a one-sentence testimonial."
@@ -222,6 +287,8 @@ def draft(row: dict, mode: str, plan_row: dict) -> str:
         if mode == "free_pilot"
         else "I am opening a few paid pilot slots for teams that want a faster first read without trusting a black-box bid writer."
     )
+    opener = sector_opening(row)
+    dm_opener = dm_opening(row)
     return f"""# {name} ({lead_id})
 
 > Email: {row['email']} | {row['conversion_estimate']} | status: {row['status']}
@@ -231,7 +298,7 @@ def draft(row: dict, mode: str, plan_row: dict) -> str:
 
 ## LinkedIn cold DM
 
-Hi - I came across {name} while looking at teams that deal with public-sector tender packs. What made this feel relevant was: {lead_hook}. Those tenders usually hide the awkward work in the details: {pain}.
+Hi - {dm_opener}. Those tenders usually hide the awkward work in the details: {pain}.
 
 Bidframe turns the tender into a source-linked requirements checklist, pulls pass-fail criteria to the top, and drafts answers only where there is evidence to cite. {dm_ask} Worth a quick look?
 
@@ -241,11 +308,11 @@ Subject: {subject(row, mode)}
 
 {greeting}
 
-I came across {name} while looking at teams that deal with public-sector tender packs. What made this feel relevant was: {lead_hook}.
+{opener}
 
 I am building Bidframe for the first read of a tender. It turns the document into a source-linked requirements checklist, pulls the pass-fail criteria to the top, and drafts answer text only where there is evidence to cite. The useful part is not magic prose; it is making sure nothing mandatory gets missed before the team starts writing.
 
-For {sub} work, I would expect the painful bits to be things like {pain}. Those are exactly the details Bidframe is meant to pull into one reviewable matrix.
+For this kind of {sub}, the painful bits are usually {pain}. Those are exactly the details Bidframe is meant to pull into one reviewable matrix.
 
 {ask_block}
 
@@ -259,11 +326,28 @@ Bidframe
 """
 
 
+def hold_draft(row: dict, plan_row: dict) -> str:
+    return f"""# {row['firm']} ({row['id']})
+
+DO NOT SEND YET.
+
+> Email: {row['email']} | {row['conversion_estimate']} | status: {row['status']}
+> Outreach mode: {plan_row['outreach_mode']}
+> Verification status: {row['verification_status']}
+> Source: {row['source']}
+
+This lead was held by the verifier sweep. The company may still be useful, but the email, named
+contact or trading route needs one more manual check before any outreach goes out.
+
+Current note: {row['notes']}
+"""
+
+
 def build_plan(rows: list[dict]) -> list[dict]:
     scored = []
     for row in rows:
         s = score(row)
-        eligible = has_email(row) and not (row.get("verification_status") or "").lower().startswith("unverified")
+        eligible = has_email(row) and not needs_human_review(row)
         scored.append((s, row, eligible))
 
     free_candidates = [
@@ -277,7 +361,7 @@ def build_plan(rows: list[dict]) -> list[dict]:
     for s, row, eligible in sorted(scored, key=lambda item: (-item[0], id_num(item[1]["id"]))):
         if not has_email(row):
             mode = "no_email_do_not_send"
-        elif (row.get("verification_status") or "").lower().startswith("unverified"):
+        elif needs_human_review(row):
             mode = "verify_before_sending"
         elif row["id"] in free_ids:
             mode = "free_pilot"
@@ -322,10 +406,11 @@ def main() -> None:
         if not has_email(row):
             continue
         mode = item["outreach_mode"]
-        if mode not in {"free_pilot", "paid_later"}:
-            continue
         path = DRAFTS_DIR / f"{row['id']}.md"
-        path.write_text(draft(row, mode, item), encoding="utf-8", newline="\n")
+        if mode in {"free_pilot", "paid_later"}:
+            path.write_text(draft(row, mode, item), encoding="utf-8", newline="\n")
+        elif mode == "verify_before_sending":
+            path.write_text(hold_draft(row, item), encoding="utf-8", newline="\n")
 
     free_items = [item for item in plan if item["outreach_mode"] == "free_pilot"]
     paid_items = [item for item in plan if item["outreach_mode"] == "paid_later"]

@@ -4,6 +4,17 @@
 
 ---
 
+### [J-050] @all - INFO - OPEN - 2026-07-01
+CRM verifier sweep and send-order pass is complete in `crm/`. The send plan now has **150 free-pilot asks**
+first, with a harsh lower-end expectation of **2.54 accepted free pilots**; paid asks are parked as
+`paid_later` until we have feedback/testimonial proof from the free pilots. The verifier pass applied concrete
+contact corrections in `crm/leads.csv`, added a safety report at `crm/verifier-pass-2026-07-01.md`, and
+regenerated the draft emails from a less templated generator.
+
+Safety notes: `human_review` / `human_review_no_send` rows are excluded from send batches and their draft files
+now say **DO NOT SEND YET**. Current held rows are Cooper Weston, Advantage Catering Equipment Repair, Award
+Refrigeration & Air Conditioning, and Skyguard Flat Roofing. Do not send those without one more manual check.
+
 ### [J-047] @frontend · REQUEST · OPEN · 2026-07-01
 **In plain English (for Joel):** two builds for Jawad. **(1) Better source-checking** — right now, to verify
 one of the tool's claims you click "Open the page" and it dumps you in a new browser tab with the whole PDF,
