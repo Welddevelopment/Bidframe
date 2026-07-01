@@ -15,6 +15,7 @@ from __future__ import annotations
 
 from difflib import SequenceMatcher
 from pathlib import Path
+from typing import Callable, Optional
 
 from .chunk import chunk_doc
 from .extract import get_extractor
@@ -135,20 +136,65 @@ def _autofill(requirements: list[Requirement], capability_folder=None, answerer=
         return requirements, []
 
 
-def run_pipeline(pdf_path: str, tender_id: str, title: str) -> TenderResponse:
-    """Full extraction pipeline for one tender PDF → TenderResponse (locked schema)."""
+def run_pipeline(
+    pdf_path: str,
+    tender_id: str,
+    title: str,
+    on_progress: "Optional[Callable[..., None]]" = None,
+) -> TenderResponse:
+    """Full extraction pipeline for one tender PDF → TenderResponse (locked schema).
+
+    on_progress(stage, message, progress, **counts) is called at each stage so the
+    upload UI can show live progress (the "watch it read your tender" experience).
+    It is best-effort: a failing callback never breaks extraction."""
+
+    def emit(stage: str, message: str, progress: float, **extra) -> None:
+        if on_progress is None:
+            return
+        try:
+            on_progress(stage=stage, message=message, progress=progress, **extra)
+        except Exception:  # progress is cosmetic — never let it break the pipeline
+            pass
+
+    emit("reading", "Reading the document", 0.05)
     doc = ingest_pdf(pdf_path)
+    emit("reading", "Reading the document", 0.10, page_count=doc.page_count)
+
     chunks = chunk_doc(doc)
+    emit(
+        "chunking",
+        "Splitting into sections for careful reading",
+        0.15,
+        page_count=doc.page_count,
+        section_count=len(chunks),
+    )
     extractor = get_extractor()
 
     raws: list[dict] = []
-    for ch in chunks:
+    total = len(chunks) or 1
+    for idx, ch in enumerate(chunks, start=1):
         try:
             raws.extend(extractor.extract_chunk(ch))
         except Exception as exc:
             print(f"[pipeline] chunk {ch.id} (pp.{ch.page_start}-{ch.page_end}) failed ({exc}); skipping")
+        # Bar is driven by real chunk completion; raw_count is the honest running
+        # tally of candidates found (it settles lower after the merge step below).
+        emit(
+            "extract",
+            "Extracting requirements",
+            0.15 + 0.60 * (idx / total),
+            done=idx,
+            total=total,
+            raw_count=len(raws),
+        )
 
     reconciled = _reconcile(raws)
+    emit(
+        "reconcile",
+        "Merging duplicates across sections",
+        0.82,
+        requirement_count=len(reconciled),
+    )
     full_text = "\n".join(p.text for p in doc.pages)
 
     requirements: list[Requirement] = []
@@ -177,9 +223,24 @@ def run_pipeline(pdf_path: str, tender_id: str, title: str) -> TenderResponse:
 
     # Graph edges: criteria_ref + depends_on (is_gating already set). Conservative.
     build_graph(requirements, full_text)
+    deal_breakers = sum(1 for r in requirements if r.is_gating)
+    emit(
+        "graph",
+        "Mapping award criteria and flagging deal-breakers",
+        0.90,
+        requirement_count=len(requirements),
+        deal_breaker_count=deal_breakers,
+    )
 
     # Auditable autofill: grounded answer-draft per requirement (mock answerer = free + instant).
     requirements, capability_docs = _autofill(requirements)
+    emit(
+        "autofill",
+        "Drafting first answers from your evidence",
+        0.97,
+        requirement_count=len(requirements),
+        deal_breaker_count=deal_breakers,
+    )
 
     return TenderResponse(
         tender_id=tender_id, title=title, requirements=requirements,

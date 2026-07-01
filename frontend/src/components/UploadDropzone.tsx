@@ -1,16 +1,32 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { ApiError, isApiEnabled, uploadTender } from "@/lib/api";
+import { useRef, useState } from "react";
+import {
+  ApiError,
+  getJob,
+  isApiEnabled,
+  uploadTender,
+  type JobStatus,
+} from "@/lib/api";
 import { useRequirements } from "@/context/RequirementsContext";
+import { ProcessingView } from "./ProcessingView";
 
 type UploadStage = "idle" | "extracting" | "done" | "error";
 
-function formatElapsed(seconds: number): string {
-  const minutes = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${minutes}:${secs.toString().padStart(2, "0")}`;
+// Poll a background extraction job until it finishes, pushing each update to the
+// UI so the ProcessingView can show live progress. Resolves on done or error;
+// throws only on a network/HTTP failure (surfaced by the caller).
+async function pollJob(
+  jobId: string,
+  onUpdate: (job: JobStatus) => void
+): Promise<JobStatus> {
+  for (;;) {
+    const job = await getJob(jobId);
+    onUpdate(job);
+    if (job.status === "done" || job.status === "error") return job;
+    await new Promise((resolve) => setTimeout(resolve, 700));
+  }
 }
 
 export function UploadDropzone() {
@@ -19,19 +35,8 @@ export function UploadDropzone() {
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [elapsed, setElapsed] = useState(0);
+  const [job, setJob] = useState<JobStatus | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  // While a live extraction runs, tick an elapsed counter so a long wait on a
-  // large tender reads as working, not frozen.
-  useEffect(() => {
-    if (stage !== "extracting" || !isApiEnabled()) return;
-    const start = Date.now();
-    const id = window.setInterval(() => {
-      setElapsed(Math.round((Date.now() - start) / 1000));
-    }, 1000);
-    return () => window.clearInterval(id);
-  }, [stage]);
 
   async function handleFiles(files: FileList | null) {
     if (stage === "extracting") return;
@@ -65,7 +70,7 @@ export function UploadDropzone() {
     }
 
     setFileName(file.name);
-    setElapsed(0);
+    setJob(null);
     setStage("extracting");
 
     // No API configured → wireframe path (fake extraction, mock stays in place).
@@ -74,9 +79,15 @@ export function UploadDropzone() {
       return;
     }
 
-    // Live path: upload the PDF, then load the extracted tender into the matrix.
+    // Live path: upload → background job → poll for live progress → load the tender.
     try {
-      const tenderId = await uploadTender(file, file.name);
+      const { jobId, tenderId } = await uploadTender(file, file.name);
+      const finalJob = await pollJob(jobId, setJob);
+      if (finalJob.status === "error") {
+        setErrorMessage(finalJob.detail || "We could not process this PDF.");
+        setStage("error");
+        return;
+      }
       await loadTender(tenderId);
       setStage("done");
     } catch (error) {
@@ -115,29 +126,46 @@ export function UploadDropzone() {
     setStage("idle");
     setFileName(null);
     setErrorMessage(null);
+    setJob(null);
     if (inputRef.current) inputRef.current.value = "";
   }
 
   if (stage === "done") {
+    const found = job?.requirementCount;
+    const dealBreakers = job?.dealBreakerCount;
     return (
       <div className="w-full max-w-xl">
         <h2 className="text-base font-semibold text-ink">
-          Requirements extracted
+          {isApiEnabled() ? "Requirements extracted" : "Sample matrix ready"}
         </h2>
         <p className="mt-1 text-sm text-ink-muted">
           {!isApiEnabled() ? (
             <>
-              Sample matrix ready. We did not parse{" "}
-              <span className="font-medium text-ink">{fileName}</span> because
-              no live API is configured on this deployment.
+              We did not parse{" "}
+              <span className="font-medium text-ink">{fileName}</span> because no
+              live API is configured on this deployment.
             </>
-          ) : fileName ? (
+          ) : found != null ? (
             <>
-              Parsed <span className="font-medium text-ink">{fileName}</span>{" "}
-              and built the compliance matrix.
+              Found <span className="font-medium text-ink">{found}</span>{" "}
+              requirement{found === 1 ? "" : "s"} in{" "}
+              <span className="font-medium text-ink">{fileName}</span>
+              {dealBreakers != null && dealBreakers > 0 ? (
+                <>
+                  {", "}
+                  <span className="font-medium text-signal-oxblood">
+                    {dealBreakers}
+                  </span>{" "}
+                  flagged as deal-breaker{dealBreakers === 1 ? "" : "s"}
+                </>
+              ) : null}
+              .
             </>
           ) : (
-            "Built the compliance matrix from your tender."
+            <>
+              Built the compliance matrix from{" "}
+              <span className="font-medium text-ink">{fileName}</span>.
+            </>
           )}
         </p>
         <div className="mt-5 flex items-center gap-4">
@@ -187,34 +215,28 @@ export function UploadDropzone() {
   }
 
   if (stage === "extracting") {
-    const liveWait = isApiEnabled();
+    // Live: the staged "watch it read your tender" view, driven by the polled job.
+    if (isApiEnabled()) {
+      return <ProcessingView job={job} fileName={fileName} />;
+    }
+    // Mock: a brief sample-open moment (no live extraction to show).
     return (
-      <div className="w-full max-w-xl">
-        <div className="flex items-center gap-3">
-          <span
-            className="inline-block h-5 w-5 shrink-0 animate-spin rounded-full border-[3px] border-hairline border-t-forest"
-            aria-hidden
-          />
-          <div className="min-w-0">
-            <h2 className="text-base font-semibold text-ink">
-              {liveWait
-                ? "Extracting requirements…"
-                : "Opening the sample matrix…"}
-            </h2>
-            <p
-              className="truncate text-sm text-ink-muted"
-              title={fileName ?? undefined}
-            >
-              {fileName}
-            </p>
-          </div>
-        </div>
-        {liveWait && (
-          <p className="mt-3 text-sm text-ink-muted">
-            Large tenders can take a minute or two. {formatElapsed(elapsed)}{" "}
-            elapsed.
+      <div className="flex w-full max-w-xl items-center gap-3">
+        <span
+          className="inline-block h-5 w-5 shrink-0 animate-spin rounded-full border-[3px] border-hairline border-t-forest"
+          aria-hidden
+        />
+        <div className="min-w-0">
+          <h2 className="text-base font-semibold text-ink">
+            Opening the sample matrix…
+          </h2>
+          <p
+            className="truncate text-sm text-ink-muted"
+            title={fileName ?? undefined}
+          >
+            {fileName}
           </p>
-        )}
+        </div>
       </div>
     );
   }

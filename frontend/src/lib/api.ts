@@ -17,9 +17,27 @@ export function tenderPdfPageUrl(tenderId: string, page: number): string {
   return `${BASE}/tenders/${tenderId}/pdf#page=${page}`;
 }
 
-interface UploadResult {
+interface UploadJobResult {
+  job_id: string;
   tender_id: string;
-  requirement_count?: number;
+}
+
+// Live progress of a background extraction job (poll GET /tenders/jobs/{id}).
+// Fields beyond status/stage/progress are filled in as the pipeline reaches them.
+export interface JobStatus {
+  status: "processing" | "done" | "error";
+  stage: string;
+  message?: string;
+  progress: number; // 0..1
+  tenderId?: string;
+  requirementCount?: number;
+  dealBreakerCount?: number;
+  rawCount?: number;
+  chunkDone?: number;
+  chunkTotal?: number;
+  pageCount?: number;
+  sectionCount?: number;
+  detail?: string; // on error
 }
 
 export class ApiError extends Error {
@@ -52,8 +70,13 @@ async function apiError(res: Response, fallback: string): Promise<ApiError> {
   return new ApiError(message, res.status);
 }
 
-// POST /tenders/upload — multipart form with the PDF; returns the new tender id.
-export async function uploadTender(file: File, title?: string): Promise<string> {
+// POST /tenders/upload — multipart form with the PDF. Extraction runs on a
+// background job; this returns { jobId, tenderId } immediately. Poll getJob(jobId)
+// for live progress, then load the tender once the job is done.
+export async function uploadTender(
+  file: File,
+  title?: string
+): Promise<{ jobId: string; tenderId: string }> {
   const form = new FormData();
   form.append("file", file);
   if (title) form.append("title", title);
@@ -64,8 +87,31 @@ export async function uploadTender(file: File, title?: string): Promise<string> 
   });
   if (!res.ok) throw await apiError(res, `Upload failed (${res.status})`);
 
-  const data = (await res.json()) as UploadResult;
-  return data.tender_id;
+  const data = (await res.json()) as UploadJobResult;
+  return { jobId: data.job_id, tenderId: data.tender_id };
+}
+
+// GET /tenders/jobs/{id} — live extraction progress for an upload job. Maps the
+// backend's snake_case fields onto JobStatus.
+export async function getJob(jobId: string): Promise<JobStatus> {
+  const res = await fetch(`${BASE}/tenders/jobs/${jobId}`);
+  if (!res.ok) throw await apiError(res, `Couldn't get progress (${res.status})`);
+  const j = (await res.json()) as Record<string, unknown>;
+  return {
+    status: (j.status as JobStatus["status"]) ?? "processing",
+    stage: (j.stage as string) ?? "",
+    message: j.message as string | undefined,
+    progress: (j.progress as number) ?? 0,
+    tenderId: j.tender_id as string | undefined,
+    requirementCount: j.requirement_count as number | undefined,
+    dealBreakerCount: j.deal_breaker_count as number | undefined,
+    rawCount: j.raw_count as number | undefined,
+    chunkDone: j.done as number | undefined,
+    chunkTotal: j.total as number | undefined,
+    pageCount: j.page_count as number | undefined,
+    sectionCount: j.section_count as number | undefined,
+    detail: j.detail as string | undefined,
+  };
 }
 
 // GET /tenders/{id}/requirements — returns the full tender in the locked schema.
