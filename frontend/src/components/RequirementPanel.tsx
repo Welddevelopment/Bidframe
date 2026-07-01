@@ -6,6 +6,7 @@ import type { Requirement, RequirementStatus } from "@/types/requirement";
 import { AnswerPanel } from "./AnswerPanel";
 import { ApprovalStamp } from "./ApprovalStamp";
 import { ConfidenceIndicator } from "./ConfidenceIndicator";
+import { CategoryTag } from "./CategoryTag";
 import { useRequirements } from "@/context/RequirementsContext";
 import { sourceDocUrl, tenderPdfPageUrl } from "@/lib/api";
 import { SourceVerifyOverlay } from "./SourceVerifyOverlay";
@@ -186,6 +187,7 @@ function RequirementZone({ requirement }: { requirement: Requirement }) {
           ) : (
             <p className="font-mono text-xs text-ink-muted">Optional.</p>
           )}
+          <CategoryTag category={requirement.category} className="w-fit" />
           <SourceRef
             page={requirement.source_page}
             clause={requirement.source_clause}

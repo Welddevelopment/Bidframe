@@ -7,7 +7,25 @@ import {
   type TriageGroup,
 } from "@/lib/triage";
 import { alsoCitedLabel, collapseDuplicates } from "@/lib/dedupe";
-import { ConfidenceIndicator } from "./ConfidenceIndicator";
+import {
+  ConfidenceIndicator,
+  confidenceTier,
+  type ConfidenceTier,
+} from "./ConfidenceIndicator";
+import { CategoryDot } from "./CategoryTag";
+
+// The resting row wash, keyed to the confidence tier so the worklist carries a
+// calm colour gradient: the riskier the row, the warmer the tint; confident (and
+// decided) rows rest clean. Full literal classes so Tailwind sees every one.
+const TIER_WASH: Record<ConfidenceTier, string> = {
+  oxblood:
+    "bg-[color-mix(in_oklab,var(--color-signal-oxblood)_5%,transparent)] hover:bg-[color-mix(in_oklab,var(--color-signal-oxblood)_9%,transparent)]",
+  amber:
+    "bg-[color-mix(in_oklab,var(--color-signal-amber)_4%,transparent)] hover:bg-[color-mix(in_oklab,var(--color-signal-amber)_8%,transparent)]",
+  yellow:
+    "bg-[color-mix(in_oklab,var(--color-signal-yellow)_4%,transparent)] hover:bg-[color-mix(in_oklab,var(--color-signal-yellow)_7%,transparent)]",
+  "light-green": "hover:bg-paper-raised",
+};
 
 // The resting matrix: a contents page, not a table (layout.md sections 3, 4, 7).
 // Each requirement is one line on a shared grid [ref | dot | text | status],
@@ -96,21 +114,25 @@ function MatrixRow({
 
   // A gating item with no resolved decision is the unanswerable oxblood case.
   const unanswerable = req.is_gating && req.status === "pending";
+  const tier = confidenceTier(req.confidence, {
+    needsReview: req.needs_review,
+    unanswerable,
+  });
 
   // The register: each row carries its real clause ref down a quiet mono margin
   // (design-language). Fall back to the page when there is no clause.
   const ref =
     req.source_clause?.replace(/^section\s+/i, "") ?? `p.${req.source_page}`;
 
-  // Gating rows read as a flagged zone, not a pinstripe: a faint oxblood wash
-  // that deepens on hover, plus a pennant in the mono margin and the alarm meter.
-  // No naked coloured border. Depth lifts only the open row.
+  // Rows read as a flagged zone, not a pinstripe: a faint tier-keyed wash that
+  // deepens on hover (oxblood gating carries a pennant + alarm meter too). No
+  // naked coloured border. Decided rows rest clean; depth lifts only the open row.
   const shape = "rounded-md";
+  const rest =
+    req.status === "accepted" ? "hover:bg-paper-raised" : TIER_WASH[tier];
   const state = isSelected
     ? "bg-paper-raised shadow-[var(--depth-row)] ring-1 ring-inset ring-ink/30"
-    : req.is_gating
-      ? "bg-[color-mix(in_oklab,var(--color-signal-oxblood)_5%,transparent)] hover:bg-[color-mix(in_oklab,var(--color-signal-oxblood)_9%,transparent)]"
-      : "hover:bg-paper-raised";
+    : rest;
 
   return (
     <div
@@ -159,13 +181,16 @@ function MatrixRow({
       {/* One line of requirement text. The drafted-answer preview and the
           low-confidence note are revealed only on hover or keyboard focus. */}
       <div className="min-w-0 pt-0.5">
-        <p
-          className={`truncate leading-snug ${
-            req.is_gating ? "font-medium text-ink" : "text-ink"
-          }`}
-        >
-          {req.text}
-        </p>
+        <div className="flex min-w-0 items-center gap-2">
+          <CategoryDot category={req.category} />
+          <p
+            className={`min-w-0 truncate leading-snug ${
+              req.is_gating ? "font-medium text-ink" : "text-ink"
+            }`}
+          >
+            {req.text}
+          </p>
+        </div>
 
         {alsoOn && (
           <p className="mt-0.5 font-mono text-[11px] text-ink-muted/75">

@@ -11,7 +11,7 @@
 // the spine, the panel, and the hero (which renders the real matrix). The word
 // beside it uses the fixed four-tier lexicon (copywriting.md).
 
-type ConfidenceTier = "oxblood" | "amber" | "yellow" | "light-green";
+export type ConfidenceTier = "oxblood" | "amber" | "yellow" | "light-green";
 
 const TIER_WORD: Record<ConfidenceTier, string> = {
   oxblood: "Can't answer this",
@@ -37,13 +37,28 @@ const TIER_SEGMENTS: Record<Exclude<ConfidenceTier, "oxblood">, number> = {
   "light-green": 4,
 };
 
-// confidence -> tier. An explicit unanswerable case (a gating item with no good
-// answer) forces oxblood regardless of the raw number.
-function tierOf(confidence: number, unanswerable: boolean): ConfidenceTier {
-  if (unanswerable || confidence < 0.4) return "oxblood";
-  if (confidence < 0.6) return "amber";
-  if (confidence < 0.8) return "yellow";
-  return "light-green";
+// confidence -> tier, the single source both the meter and the row wash read
+// from. An explicit unanswerable case (a gating item with no good answer) forces
+// oxblood regardless of the raw number. needs_review never reads better than
+// amber: a flagged-for-review item is at most a rough draft.
+export function confidenceTier(
+  confidence: number,
+  {
+    needsReview = false,
+    unanswerable = false,
+  }: { needsReview?: boolean; unanswerable?: boolean } = {}
+): ConfidenceTier {
+  const raw: ConfidenceTier =
+    unanswerable || confidence < 0.4
+      ? "oxblood"
+      : confidence < 0.6
+        ? "amber"
+        : confidence < 0.8
+          ? "yellow"
+          : "light-green";
+  return needsReview && (raw === "yellow" || raw === "light-green")
+    ? "amber"
+    : raw;
 }
 
 // The lit/unlit level meter: four rounded bars, the first `filled` in the tier
@@ -119,13 +134,7 @@ export function ConfidenceIndicator({
   variant?: "dot" | "word";
   size?: "sm" | "md";
 }) {
-  // needs_review never reads better than amber: a flagged-for-review item is at
-  // most a rough draft.
-  const rawTier = tierOf(confidence, unanswerable);
-  const tier: ConfidenceTier =
-    needsReview && (rawTier === "yellow" || rawTier === "light-green")
-      ? "amber"
-      : rawTier;
+  const tier = confidenceTier(confidence, { needsReview, unanswerable });
 
   const word = TIER_WORD[tier];
   const hex = TIER_HEX[tier];
