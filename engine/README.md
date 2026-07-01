@@ -31,6 +31,14 @@ The engine is imported by `backend/app/pipeline.py` + `main.py` behind an **impo
 
 A **backend-rooted deploy** can't import `engine/`, so it silently falls back to placeholders + skips autofill. To make the engine live on Render, the deploy must root at the repo (`render.yaml rootDir: .`) — see `comms/board-generalist.md` **G-009**.
 
+## Demo fixtures + re-baking
+
+`frontend/src/data/spso-prebake.json` (SPSO hero) + `nhs-prebake.json` (NHS 66pp messy-proof) are `GET /requirements`-shaped snapshots of a **real gpt-4o run**, so the demo serves real, source-traced, autofilled data with **no live API call on stage** (G-020/G-023). Regenerate by running the pipeline against a demo tender with `OPENAI_API_KEY` set.
+
+- **Autofill grounding is retrieval-gated:** token-overlap retrieval over `fixtures/capability/` decides answer vs `needs_input`, so the **mock and OpenAI answerers ground the *same* set** (only the prose differs). To make autofill ground **more**, add capability docs — don't touch the answerer.
+- **Re-baking gotcha:** the demo key is on a low **30k tokens/min** tier, and `pipeline._autofill` is **all-or-nothing** (one unhandled 429 abandons the whole batch), so bulk OpenAI drafting of 100+ reqs rate-limits. Throttle hard (concurrency 1–2 + SDK `max_retries`) or use the **`MockAnswerer`** (grounds the same set, instant, free, cited). The committed fixtures use the mock/upload-time grounding; polished OpenAI prose is the live "Autofill with AI" button.
+- **`pytest engine/tests/`** = **116** with the backend deps installed, **~110** without — the `test_*_wiring.py` FastAPI tests `importorskip` `fastapi`/`PyJWT`/`pydantic` and need an authed user (J-042).
+
 ## Output contract
 
 `reconcile` emits the **15-field `Requirement`** + `{tender_id, title, requirements}` envelope from `frontend/src/types/requirement.ts`. The additive autofill fields (`answer`, `open_questions`, `capability_docs`) are populated by the answer-draft step and now flow through the live API (the frontend type + matrix already carry them). Merge provenance lives in the reconcile **report**, never in a requirement object.

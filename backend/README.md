@@ -41,6 +41,10 @@ Check it's alive: `curl http://localhost:8000/health` → `{"status":"ok","extra
 - **`OPENAI_API_KEY` set →** `OpenAIExtractor` (our provider) — function-calling structured output, gating recall 1.0 on SPSO.
 - **`ANTHROPIC_API_KEY` →** `ClaudeExtractor` (alternative). Force any with `LLM_PROVIDER=openai|anthropic|heuristic`.
 
+### Async upload — the one trap
+
+`POST /tenders/upload` runs extraction on a **background thread** (`_run_extract_job`) and returns `{job_id, tender_id}`; the UI polls `GET /tenders/jobs/{id}` until `done`. `?sync=1` blocks instead and returns the result directly (the tests + eval harness use this path). ⚠️ **The job passes a `docs` list and must call `run_pipeline_multi` — do NOT add a second `_run_extract_job` that takes a `pdf_path`. A duplicate definition once shadowed the real one, so the job did `Path(<list>)` and crashed *every* async upload; because the tests use `?sync=1`, nothing caught it (fixed 2026-07-01, G-022).**
+
 ## Authentication (invite-only)
 
 Bidframe is a paid product, so every tender endpoint is gated: it requires a bearer
