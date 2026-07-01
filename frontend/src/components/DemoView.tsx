@@ -9,7 +9,6 @@ import { GraphView } from "@/components/GraphView";
 import { BookDemoButton } from "@/components/landing/BookDemoButton";
 import { BotanicalSprig } from "@/components/landing/BotanicalSprig";
 import { BrandLogo } from "@/components/BrandLogo";
-import { mockTender } from "@/data/mock-requirements";
 
 // A read-only walkthrough of the product for cold visitors arriving from the
 // landing "See the demo" links. It shows the real GatingHero + ComplianceMatrix
@@ -23,7 +22,7 @@ import { mockTender } from "@/data/mock-requirements";
 const noop = () => {};
 
 export function DemoView() {
-  const { requirements } = useRequirements();
+  const { requirements, title } = useRequirements();
   const triage = deriveTriage(requirements);
 
   return (
@@ -50,7 +49,7 @@ export function DemoView() {
             Worked example, read-only
           </p>
           <h1 className="mt-2 font-serif text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl">
-            {mockTender.title}
+            {title}
           </h1>
           <p className="mt-4 max-w-[60ch] text-lg leading-relaxed text-ink-muted">
             This is Bidframe reading one real public-sector tender. The
