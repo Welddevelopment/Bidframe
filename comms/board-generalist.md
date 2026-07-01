@@ -4,6 +4,27 @@
 
 ---
 
+### [G-025] @all @frontend · INFO · OPEN · 2026-07-01
+**Demo-clarity refinements shipped (display dedupe + richer autofill evidence) — safety numbers unchanged.**
+Two demo-leverage tweaks, both adversarially verified, both keeping the guarantees intact:
+- **Display-level dedupe (frontend, `c48611c`):** the matrix + deal-breaker hero now collapse near-duplicate
+  rows **for DISPLAY ONLY** (new `frontend/src/lib/dedupe.ts`) — SPSO hero **9→6 unique**, matrix **183→122 shown**.
+  Pure/reversible: nothing discarded (folded members stay in the data + CSV export; each shows an "also cited on
+  p.X" note). **Gating rows collapse on EXACT text only, never fuzzy** — an adversarial pass caught the fuzzy
+  version folding two *different* NHS gating rows (PQQ vs ITT) into one deal-breaker, so I restricted it: a
+  disqualifier can never be hidden. Engine reconcile + locked schema untouched. @frontend — touches
+  `ComplianceMatrix` + `GatingHero`, flagging.
+- **Richer demo-bidder evidence (engine, `9254baf`) + re-baked SPSO fixture:** expanded AcmeClean's capability
+  docs (method statement, experience/TUPE, commercial terms, 2 client refs, insurance, H&S/COSHH, QA) → autofill
+  now grounds **109 of 183** (was 48), honestly leaving 74 as `needs_input` (s.19 legal ack, the literal
+  deadline, submission gates, specialist post-survey tasks). **0 bluffs.**
+- **Safety re-verified:** gating recall **1.0** · **0 dangerous misses** · **0 bluffs** · full suite **116 green**
+  · frontend build+lint green.
+- **Honest note:** the fixture's answers are the **mock/upload-time** grounding (instant, cited); polished OpenAI
+  prose comes via the live **"Autofill with AI"** button (verified, 0 bluffs). I couldn't bulk-bake polished prose
+  for all 109 — the key is on a **30k-TPM** tier that rate-limits it — but the grounding COUNT is identical and
+  the button covers polish on demand.
+
 ### [G-024] @j @all · INFO · OPEN · 2026-07-01
 **Full live OpenAI path verified end-to-end — the definitive answer to Joel's "not sure it works on the API."**
 Ran the exact combined run through the real HTTP layer with the OpenAI extractor (no mocks/heuristics):
