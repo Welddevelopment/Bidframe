@@ -114,7 +114,7 @@ export default function LoginPage() {
             {error && (
               <p
                 role="alert"
-                className="border-l-2 border-signal-oxblood pl-3 text-sm leading-snug text-ink"
+                className="border-l-2 border-signal-oxblood-frame pl-3 text-sm leading-snug text-ink"
               >
                 {error}
               </p>
@@ -133,6 +133,8 @@ export default function LoginPage() {
             No account yet?{" "}
             <a
               href="https://cal.com/joel-jeon-o29lfr/bidframe"
+              target="_blank"
+              rel="noopener noreferrer"
               className="underline decoration-hairline decoration-1 underline-offset-4 transition-colors hover:text-ink"
             >
               Book a demo

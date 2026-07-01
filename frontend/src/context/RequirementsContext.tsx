@@ -6,6 +6,7 @@ import type {
   Requirement,
   RequirementDecision,
   RequirementStatus,
+  Tender,
 } from "@/types/requirement";
 import { mockTender } from "@/data/mock-requirements";
 import {
@@ -21,6 +22,7 @@ const SAVE_FAILED =
 interface RequirementsContextValue {
   requirements: Requirement[];
   capabilityDocs: CapabilityDoc[];
+  title: string;
   tenderId: string | null;
   drafting: boolean;
   notice: string | null;
@@ -44,16 +46,23 @@ const RequirementsContext = createContext<RequirementsContextValue | null>(null)
 
 export function RequirementsProvider({
   children,
+  initialTender,
 }: {
   children: React.ReactNode;
+  // Freeze the provider on a specific tender instead of the mock. The read-only
+  // /demo showcase passes the pre-baked SPSO run here so it shows a real tender
+  // with no backend or API key, independent of the app's live/mock state.
+  initialTender?: Tender;
 }) {
-  // Seeded from the mock so the app works with no backend (demo-safe default).
+  // Seeded from the mock so the app works with no backend (demo-safe default),
+  // or from initialTender when a caller freezes it on a specific tender.
   // loadTender() swaps in a real tender when the API is wired up.
+  const seed = initialTender ?? mockTender;
   const [requirements, setRequirements] = useState<Requirement[]>(
-    () => mockTender.requirements
+    () => seed.requirements
   );
   const [capabilityDocs, setCapabilityDocs] = useState<CapabilityDoc[]>(
-    () => mockTender.capability_docs ?? []
+    () => seed.capability_docs ?? []
   );
   // The live tender currently loaded (null on the mock default). Needed so the
   // autofill action knows which tender to draft against.
@@ -85,6 +94,9 @@ export function RequirementsProvider({
   // since the backend persists them. sessionStorage keeps it tab-scoped (cleared
   // when the tab closes). The mock/demo (no API) is unaffected.
   useEffect(() => {
+    // A seeded demo is frozen — never override it with a live/restored tender,
+    // even when NEXT_PUBLIC_API_BASE_URL is set on the hosted build.
+    if (initialTender) return;
     if (!isApiEnabled()) return;
     let saved: string | null = null;
     try {
@@ -104,7 +116,7 @@ export function RequirementsProvider({
         }
       });
     }
-  }, []);
+  }, [initialTender]);
 
   // Auditable autofill: ask the API to (re)draft grounded answers for the loaded
   // tender, optionally against freshly-uploaded capability docs, then swap the enriched
@@ -215,6 +227,7 @@ export function RequirementsProvider({
       value={{
         requirements,
         capabilityDocs,
+        title: seed.title,
         tenderId,
         drafting,
         updateRequirement,
@@ -249,7 +262,7 @@ function SaveNotice({
 }) {
   return (
     <div className="fixed inset-x-0 bottom-4 z-[70] flex justify-center px-4">
-      <div className="surface-grain flex max-w-md items-start gap-3 rounded-lg border border-l-2 border-hairline border-l-signal-oxblood bg-paper-raised p-3 shadow-[var(--depth-sheet)]">
+      <div className="surface-grain flex max-w-md items-start gap-3 rounded-lg border border-l-2 border-hairline border-l-signal-oxblood-frame bg-paper-raised p-3 shadow-[var(--depth-sheet)]">
         <p className="text-sm leading-snug text-ink">{message}</p>
         <button
           type="button"

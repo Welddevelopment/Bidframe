@@ -28,8 +28,12 @@
   --color-hairline: #e4ddce;
 
   /* Signal palette — status carriers only (confidence dot, thin answer
-     edge, status cell). Never on a button, background, heading, or nav. */
-  --color-signal-oxblood: #8a2d2a;
+     edge, status cell). Never on a button, background, heading, or nav.
+     Two-tone alarm: the bright oxblood is the FILL/mark (bead, dot, status
+     word); the deep oxblood-frame is EDGES/borders only, so a deal-breaker
+     reads as a bright alarm held inside a heavier frame. */
+  --color-signal-oxblood: #b42d24;
+  --color-signal-oxblood-frame: #8a2d2a;
   --color-signal-amber: #bc6b2e;
   --color-signal-yellow: #d2a435;
   --color-signal-light-green: #6f9a57;
@@ -154,6 +158,34 @@ body {
     opacity: 1;
     transform: rotate(-3deg) scale(1);
   }
+}
+
+/* Scroll reveal (components/landing/Reveal.tsx). Used only on the proof ledger
+   and the before/after table, the two surfaces where a sequential fill-in reads
+   as the record being written (NOT fade-up-on-everything, which SLOP-CHECK bans).
+   Motion-safe: under reduced motion the hidden start state never applies, so the
+   content is simply already in place. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal] {
+    transition:
+      opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+  }
+  [data-reveal="hidden"] {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* Card liveness: a raised illustrative sheet warms its shadow on hover. Depth
+   means focus (design-language), so the proof cards feel like material without
+   implying they are clickable, no lift or translate, that stays reserved for the
+   one thing you can actually open (the hero sheet). */
+.card-live {
+  transition: box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.card-live:hover {
+  box-shadow: 0 12px 30px -14px rgba(33, 29, 23, 0.32);
 }
 
 /* A faint ledger grid across the page, for texture (a graph-paper nod to the

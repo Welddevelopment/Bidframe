@@ -92,7 +92,7 @@ function RequirementNode({ data }: NodeProps) {
     <div
       className={`surface-grain w-[256px] rounded-md bg-paper-raised px-3 py-2.5 shadow-[var(--depth-row)] transition-shadow hover:shadow-[var(--depth-sheet)] ${
         gating
-          ? "rounded-l-none border-y border-r border-l-2 border-hairline border-l-signal-oxblood"
+          ? "rounded-l-none border-y border-r border-l-2 border-hairline border-l-signal-oxblood-frame"
           : "border border-hairline"
       }`}
     >
@@ -247,7 +247,7 @@ function GraphKey() {
         </p>
         <ul className="flex flex-col gap-2 text-[11.5px] text-ink">
           <li className="flex items-center gap-2.5">
-            <span className="h-3.5 w-5 shrink-0 rounded-sm rounded-l-none border-y border-r border-l-2 border-hairline border-l-signal-oxblood bg-paper-raised" />
+            <span className="h-3.5 w-5 shrink-0 rounded-sm rounded-l-none border-y border-r border-l-2 border-hairline border-l-signal-oxblood-frame bg-paper-raised" />
             Deal-breaker
           </li>
           <li className="flex items-center gap-2.5">

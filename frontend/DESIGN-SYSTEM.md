@@ -62,7 +62,8 @@ matrix. Never on a button, background, heading, or nav. At most one signal hue p
 
 | Token | Meaning | Provisional |
 |---|---|---|
-| Oxblood | Critical: unanswerable, or gating and unresolved | `#8A2D2A` |
+| Oxblood | Critical alarm: unanswerable, or gating and unresolved — the **fill** of the bead, dot, and status word | `#B42D24` |
+| Oxblood-frame | The deep tone for a deal-breaker's reading **edge / border only** (the fill/frame two-tone) | `#8A2D2A` |
 | Amber | Low confidence: treat as a rough draft | `#BC6B2E` |
 | Yellow | Minor caution: glance before trusting | `#D2A435` |
 | Light-green | Confident: quick read and approve | `#6F9A57` |
@@ -86,14 +87,16 @@ Two different questions, shown with two different devices.
 
 The **confidence dot**, on a four-tier scale, worst to best:
 
-1. **Oxblood** - could not answer, or a deal-breaker with no good answer. Stop and look.
+1. **Oxblood** - could not answer, or a deal-breaker with no good answer. A full, saturated bead carrying a bold "!" — the one alarm state. Stop and look.
 2. **Amber** - unsure. Rough draft, check it properly.
 3. **Yellow** - fairly sure, minor caution. Glance before trusting.
 4. **Light-green** - confident. Quick read and approve.
 
-The dot always carries a **1px Ink ring** and **fills by tier** (quarter, half, three-quarter, full),
-so the level reads with color switched off and every dot clears the 3:1 graphical contrast floor on
-paper regardless of its hue. A word always sits beside it ("Low confidence", "Confident"). Never a raw
+The dot always carries a **1px Ink ring** and **fills by tier** (amber half, yellow three-quarter,
+light-green full), so the level reads with color switched off and every dot clears the 3:1 graphical
+contrast floor on paper regardless of its hue. Oxblood is the one exception: a **full fill carrying a
+bold "!"** — an alarm state, not the bottom of the ramp — distinguished from the (also full) light-green
+by that glyph and its word. A word always sits beside it ("Low confidence", "Confident"). Never a raw
 number like 0.92.
 
 ### Axis 2: Approval (has a human signed off?)

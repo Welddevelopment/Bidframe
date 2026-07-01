@@ -4,6 +4,15 @@
 
 ---
 
+### [G-027] @frontend @j @jawad · INFO · OPEN · 2026-07-01
+**Landed on `main`: a frontend UI/UX design uplift (cross-lane, generalist-directed) — flagging @frontend (your lane) and @j @jawad (it retunes a LOCKED design token; pushed on Bobby's call, please sanity-check).** `eslint` + `next build` green; eyeballed on `/demo` + `/thank-you`. Full spec: `frontend/design-uplift.md`.
+**Guiding idea — design "dynamic range": the deal-breaker is the one place the calm palette breaks into an alarm; completion is the one place it celebrates.**
+- **A · deal-breaker alarm** — `signal-oxblood` retuned **#8A2D2A → #B42D24** (a truer alarm red on the warm paper) + a NEW sibling token **`--color-signal-oxblood-frame: #8A2D2A`** scoped to edges/borders only (a fill/frame two-tone). The "Can't answer this" bead is now **full-fill + a bold `!`** (was a 30%-fill "low battery"); GatingHero dots 10→11px, spine 2→3px in the frame tone. Runtime token + its swatch docs (`globals.css` + `design/colours.html` + `DESIGN-SYSTEM.md` + `design-language.md`) kept in sync. Two-palette rule held — red only ever on status carriers, never a button/nav/heading/bg.
+- **B · win moment** — the completion summary is now a Civic-Record "record filed" sheet: the forest **ApprovalStamp** (only when nothing's flagged — stays honest) + a mono decision tally, doubling as the CSV export surface. Closes frontend-ux-audit **#8** (HIGH).
+- **C · booking return** — every "Book a demo" CTA now opens Cal.com in a **new tab**, plus a branded **`/thank-you`** route. **@joel: one external step** — set the Cal.com `bidframe` event's "Redirect on booking" to `https://<prod-domain>/thank-you`.
+- **D · status column** — killed the "Needs your eye" wall; pending rows now differentiate (blank / **Deal-breaker to clear** / Needs your answer / Worth a second look). Presentational only, no schema touch.
+Merged cleanly over your display-dedupe (G-025) — `ComplianceMatrix` + `GatingHero` carry both. Logo direction picked (register-seal + wordmark lockup), NOT built. **@j @jawad — ack the oxblood token when you can; ping me to revert if you object.**
+
 ### [G-026] @all · INFO · OPEN · 2026-07-01
 **Docs synced to reality** (like G-013) — brought the markdown in line with the Day-4 work; nothing functional changed:
 - **STATUS.md** — Generalist row + a Recently-shipped entry (live path verified e2e, the async-upload bug fix, pre-bake fixtures, display-dedupe, richer capability docs, SPSO gold sign-off).
@@ -32,7 +41,6 @@ Two demo-leverage tweaks, both adversarially verified, both keeping the guarante
   prose comes via the live **"Autofill with AI"** button (verified, 0 bluffs). I couldn't bulk-bake polished prose
   for all 109 — the key is on a **30k-TPM** tier that rate-limits it — but the grounding COUNT is identical and
   the button covers polish on demand.
-
 ### [G-024] @j @all · INFO · OPEN · 2026-07-01
 **Full live OpenAI path verified end-to-end — the definitive answer to Joel's "not sure it works on the API."**
 Ran the exact combined run through the real HTTP layer with the OpenAI extractor (no mocks/heuristics):

@@ -55,6 +55,24 @@ export function isConfidentNonGating(req: Requirement): boolean {
   );
 }
 
+// The status word for a still-pending item at rest (copywriting.md status
+// lexicon). It names what THIS item needs, so the column stops repeating one
+// flat "Needs your eye" on every row. First match wins. A gating item always
+// names itself a deal-breaker — the word matches the row's oxblood alarm edge +
+// bead, so it must lead even over a pending question (this is a deliberate
+// divergence from groupOf, whose job is grouping, not the per-row headline).
+// Returns null for a confident non-gating item: it rests silent and the hover
+// Approve owns its cell.
+export function pendingStatusWord(req: Requirement): string | null {
+  if (isConfidentNonGating(req)) return null;
+  if (req.is_gating) return "Deal-breaker to clear";
+  const needsInput =
+    req.answer?.state === "needs_input" ||
+    (req.open_questions?.some((q) => !q.answer) ?? false);
+  if (needsInput) return "Needs your answer";
+  return "Worth a second look";
+}
+
 export interface TriageGroup {
   key: GroupKey;
   label: string;
