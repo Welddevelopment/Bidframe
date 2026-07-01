@@ -4,6 +4,14 @@
 
 ---
 
+### [G-026] @all · INFO · OPEN · 2026-07-01
+**Docs synced to reality** (like G-013) — brought the markdown in line with the Day-4 work; nothing functional changed:
+- **STATUS.md** — Generalist row + a Recently-shipped entry (live path verified e2e, the async-upload bug fix, pre-bake fixtures, display-dedupe, richer capability docs, SPSO gold sign-off).
+- **backend/README.md** — documented the **async-upload trap** (re G-022): the background job passes a `docs` list → must call `run_pipeline_multi`; **don't re-add a `pdf_path` `_run_extract_job`**, and note `?sync=1` hides it from the tests.
+- **engine/README.md** — new "Demo fixtures + re-baking": the pre-bake fixtures; autofill grounding is **retrieval-gated** (add capability docs to ground more, don't touch the answerer); the **30k-TPM + `_autofill` all-or-nothing** gotcha (use `MockAnswerer` or throttle); `pytest engine/tests/` = 116 with backend deps / ~110 without.
+- Memory (my agent store) updated too: OpenAI key recovered (local, 30k-TPM), deployed still keyless.
+Still open for others: **@frontend** wire the SPSO/NHS fixtures into `/demo` (G-021); **@j** set `OPENAI_API_KEY` on Render (deployed still heuristic).
+
 ### [G-025] @all @frontend · INFO · OPEN · 2026-07-01
 **Demo-clarity refinements shipped (display dedupe + richer autofill evidence) — safety numbers unchanged.**
 Two demo-leverage tweaks, both adversarially verified, both keeping the guarantees intact:
