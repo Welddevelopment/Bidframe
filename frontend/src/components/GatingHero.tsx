@@ -1,16 +1,25 @@
 "use client";
 
 import { useRequirements } from "@/context/RequirementsContext";
+import { alsoCitedLabel, collapseDuplicates } from "@/lib/dedupe";
 
 // The deal-breaker callout (layout.md sections 3, 7; design-language). A lifted,
 // grainy sheet with a 2px oxblood reading edge and glossy oxblood dots: the
 // stakes are carried entirely by the status system (the oxblood edge and dots),
 // never by a coloured slab on chrome. Depth means focus, so this is the one
 // element that lifts above the matrix. Conditional on gating items existing.
+//
+// The recall-first extractor emits the same disqualifier several times (the SPSO
+// 06/11/2013 deadline alone appears on multiple rows). We collapse near-duplicates
+// for display via collapseDuplicates so the hero shows the TRUE unique
+// deal-breakers and an honest count — nothing is dropped, each surviving row notes
+// the other pages the same requirement was cited on. See lib/dedupe.ts.
 
 export function GatingHero({ onSelect }: { onSelect?: (id: string) => void }) {
   const { requirements } = useRequirements();
-  const gating = requirements.filter((r) => r.is_gating);
+  const { representatives: gating, meta } = collapseDuplicates(
+    requirements.filter((r) => r.is_gating)
+  );
 
   if (gating.length === 0) {
     return null;
@@ -27,32 +36,36 @@ export function GatingHero({ onSelect }: { onSelect?: (id: string) => void }) {
       </h2>
 
       <ul className="mt-4 flex flex-col gap-2.5">
-        {gating.map((req) => (
-          <li
-            key={req.id}
-            className="grid grid-cols-[auto_1fr] items-start gap-x-2.5 text-sm text-ink"
-          >
-            <span
-              className="mt-[5px] h-2.5 w-2.5 shrink-0 rounded-full bg-signal-oxblood shadow-[0_0_0_1px_rgba(33,29,23,0.35),inset_0_1px_1px_rgba(255,255,255,0.3),0_1px_2px_rgba(33,29,23,0.3)]"
-              aria-hidden
-            />
-            <button
-              type="button"
-              onClick={() => onSelect?.(req.id)}
-              className={`text-left leading-snug ${
-                onSelect
-                  ? "transition-colors hover:text-forest hover:underline"
-                  : ""
-              }`}
+        {gating.map((req) => {
+          const alsoOn = alsoCitedLabel(meta.get(req.id)?.alsoCitedOn ?? []);
+          return (
+            <li
+              key={req.id}
+              className="grid grid-cols-[auto_1fr] items-start gap-x-2.5 text-sm text-ink"
             >
-              {req.text}
-              <span className="ml-2 font-mono text-xs text-ink-muted">
-                p.{req.source_page}
-                {req.source_clause ? ` · ${req.source_clause}` : ""}
-              </span>
-            </button>
-          </li>
-        ))}
+              <span
+                className="mt-[5px] h-2.5 w-2.5 shrink-0 rounded-full bg-signal-oxblood shadow-[0_0_0_1px_rgba(33,29,23,0.35),inset_0_1px_1px_rgba(255,255,255,0.3),0_1px_2px_rgba(33,29,23,0.3)]"
+                aria-hidden
+              />
+              <button
+                type="button"
+                onClick={() => onSelect?.(req.id)}
+                className={`text-left leading-snug ${
+                  onSelect
+                    ? "transition-colors hover:text-forest hover:underline"
+                    : ""
+                }`}
+              >
+                {req.text}
+                <span className="ml-2 font-mono text-xs text-ink-muted">
+                  p.{req.source_page}
+                  {req.source_clause ? ` · ${req.source_clause}` : ""}
+                  {alsoOn ? ` · ${alsoOn}` : ""}
+                </span>
+              </button>
+            </li>
+          );
+        })}
       </ul>
     </section>
   );

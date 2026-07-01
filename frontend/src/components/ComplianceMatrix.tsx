@@ -5,6 +5,7 @@ import {
   type GroupKey,
   type TriageGroup,
 } from "@/lib/triage";
+import { alsoCitedLabel, collapseDuplicates } from "@/lib/dedupe";
 import { ConfidenceIndicator } from "./ConfidenceIndicator";
 
 // The resting matrix: a contents page, not a table (layout.md sections 3, 4, 7).
@@ -62,16 +63,20 @@ function StatusWord({ status }: { status: RequirementStatus }) {
 function MatrixRow({
   req,
   isSelected,
+  alsoCitedOn,
   onSelect,
   onApprove,
 }: {
   req: Requirement;
   isSelected: boolean;
+  // Pages the same requirement was also cited on (display-dedupe annotation).
+  alsoCitedOn: number[];
   onSelect: (id: string) => void;
   onApprove: (id: string) => void;
 }) {
   const canApproveInline = isConfidentNonGating(req);
   const preview = req.answer?.text ?? req.draft_answer ?? null;
+  const alsoOn = alsoCitedLabel(alsoCitedOn);
 
   // A gating item with no resolved decision is the unanswerable oxblood case.
   const unanswerable = req.is_gating && req.status === "pending";
@@ -129,6 +134,12 @@ function MatrixRow({
           {req.text}
         </p>
 
+        {alsoOn && (
+          <p className="mt-0.5 font-mono text-[11px] text-ink-muted/75">
+            {alsoOn}
+          </p>
+        )}
+
         {req.needs_review && (
           <p className="mt-0.5 hidden text-sm text-ink-muted group-hover:block group-focus-visible:block">
             Low confidence. Check this one yourself.
@@ -182,7 +193,12 @@ function MatrixGroup({
   onApprove: (id: string) => void;
   onApproveAll: (ids: string[]) => void;
 }) {
-  const approvable = group.items.filter(isConfidentNonGating);
+  // Collapse near-duplicate rows within this group (display only — nothing is
+  // dropped; each representative carries the pages its duplicates were cited on).
+  // Approve-all still targets every confident representative, so the count and the
+  // action stay consistent with what is on screen. See lib/dedupe.ts.
+  const { representatives, meta } = collapseDuplicates(group.items);
+  const approvable = representatives.filter(isConfidentNonGating);
 
   return (
     <section>
@@ -201,11 +217,12 @@ function MatrixGroup({
         )}
       </div>
       <div className="mt-2 flex flex-col gap-0.5">
-        {group.items.map((req) => (
+        {representatives.map((req) => (
           <MatrixRow
             key={req.id}
             req={req}
             isSelected={req.id === selectedId}
+            alsoCitedOn={meta.get(req.id)?.alsoCitedOn ?? []}
             onSelect={onSelect}
             onApprove={onApprove}
           />
@@ -271,7 +288,12 @@ export function ComplianceMatrix({
           />
         </label>
         <span className="font-mono text-xs text-ink-muted">
-          {visible.reduce((sum, group) => sum + group.items.length, 0)} shown
+          {visible.reduce(
+            (sum, group) =>
+              sum + collapseDuplicates(group.items).representatives.length,
+            0
+          )}{" "}
+          shown
         </span>
       </div>
 
