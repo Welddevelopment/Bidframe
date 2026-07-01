@@ -1,16 +1,16 @@
 import { AppMain } from "@/components/AppMain";
 import { AuthGate } from "@/components/AuthGate";
 import { DocumentHeader } from "@/components/DocumentHeader";
-import { GraphView } from "@/components/GraphView";
+import { StructureView } from "@/components/StructureView";
 
-export const metadata = { title: "Graph · Bidframe" };
+export const metadata = { title: "Structure · Bidframe" };
 
 export default function GraphPage() {
   return (
     <AuthGate>
-      <DocumentHeader title="Requirement relationships" />
+      <DocumentHeader title="Marks & structure" />
       <AppMain>
-        <GraphView />
+        <StructureView />
       </AppMain>
     </AuthGate>
   );
