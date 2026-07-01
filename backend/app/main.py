@@ -153,60 +153,6 @@ def _run_extract_job(job_id: str, docs, tender_id: str, title: str, filename: st
         )
 
 
-# ---- Extraction jobs (live progress) ----------------------------------------
-# In-memory registry of running/finished extraction jobs, keyed by job_id. Single
-# process only (Render free tier is one instance); a multi-instance deploy would move
-# this to Redis. Cosmetic progress state — the real result is persisted via store.
-JOBS: dict[str, dict] = {}
-_JOBS_LOCK = threading.Lock()
-_JOBS_MAX = 100  # keep the last N jobs, drop the oldest beyond that
-
-
-def _set_job(job_id: str, **patch) -> None:
-    with _JOBS_LOCK:
-        job = JOBS.get(job_id) or {}
-        job.update(patch)
-        job["updated_at"] = time.time()
-        JOBS[job_id] = job
-        if len(JOBS) > _JOBS_MAX:
-            stale = sorted(JOBS.items(), key=lambda kv: kv[1].get("updated_at", 0))
-            for jid, _ in stale[: len(JOBS) - _JOBS_MAX]:
-                JOBS.pop(jid, None)
-
-
-def _run_extract_job(job_id: str, pdf_path: str, tender_id: str, title: str,
-                     filename: str, owner: str) -> None:
-    """Run the pipeline on a background thread, streaming progress into JOBS. The result
-    is persisted under `owner`; the UI polls GET /tenders/jobs/{job_id} until status=done."""
-    def on_progress(**ev) -> None:
-        _set_job(job_id, status="processing", **ev)
-
-    try:
-        resp = run_pipeline(pdf_path, tender_id=tender_id, title=title, on_progress=on_progress)
-        store.save_tender(resp, filename=filename, owner=owner)
-        _set_job(
-            job_id,
-            status="done",
-            stage="done",
-            message="Ready",
-            progress=1.0,
-            tender_id=tender_id,
-            requirement_count=len(resp.requirements),
-            deal_breaker_count=sum(1 for r in resp.requirements if r.is_gating),
-        )
-    except PDFIngestError as exc:
-        _set_job(job_id, status="error", stage="error", code=422, detail=str(exc))
-    except Exception as exc:  # surface a calm message, log the real detail
-        print(f"[jobs] extraction failed for {job_id}: {exc}")
-        _set_job(
-            job_id,
-            status="error",
-            stage="error",
-            code=500,
-            detail="We could not process this PDF. It may be corrupt or unsupported.",
-        )
-
-
 @app.get("/health")
 def health():
     return {"status": "ok", "extractor": get_extractor().name}
