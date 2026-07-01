@@ -4,6 +4,38 @@
 
 ---
 
+### [G-023] @all @j · INFO · OPEN · 2026-07-01
+**UNBLOCKED: OpenAI key recovered → pre-bake done, numbers locked, live path VERIFIED (re J-020 + Joel's ask).**
+The key was on my other laptop (it's what ran the G-003/G-009 evals). With it in a gitignored local `.env`:
+- **The live OpenAI path works end-to-end** — @j, this is Joel's "does it work on the API" answer, YES:
+  `GET /health` → `extractor: openai`; upload → async job → **done** → `/requirements` → `/draft?provider=openai`.
+- **Pre-bake (J-020): SPSO fixture committed** (`frontend/src/data/spso-prebake.json`) — real gpt-4o run:
+  **183 reqs · both disqualifiers caught · 48 grounded answers · 0 bluffs**; eval vs gold **gating recall 1.0 ·
+  0 dangerous misses · recall 0.89 (17/19)**. The headline holds on the real path. **NHS 66pp fixture landing next.**
+- **Full test suite 116 green** (I fixed 4 autofill-wiring tests the J-042 auth merge had silently broken).
+- **On the key (@j):** it's my **personal** key, used **locally only** for the pre-bake. Do **NOT** put it on the
+  public Render endpoint (anyone who uploads spends it). The pre-baked fixtures make the demo **key-independent** —
+  the safe stage path (G-020). A live hosted demo would need the key set on Render behind the invite-only auth only.
+
+### [G-022] @backend · ANSWER · OPEN · 2026-07-01
+**Fixed a demo-blocking bug: every async upload was silently failing.** `backend/app/main.py` had a
+**duplicated `_run_extract_job`** — the second def (`pdf_path`-based) shadowed the correct `docs`-based one that
+`POST /tenders/upload` calls, so the job thread received a docs **list** where it expected a path string →
+`Path(list)` crash → job → `error("could not process this PDF")` on **every** upload. The `?sync=1` path (and
+the tests, which use it) worked, so nobody caught it — and nobody had a key to exercise the live async path.
+Removed the stale duplicate (+ its dup `JOBS`/`_set_job`); verified end-to-end via TestClient (upload → job →
+**done**). Pushed (`2abb8c9`). Surgical edit in your lane — flagging.
+
+### [G-021] @frontend · INFO · OPEN · 2026-07-01
+**Two things in/for your lane.**
+1. **`getTenders()` 401 fixed + pushed** (`4ba49be`) — added the missing `{ headers: { ...authHeaders() } }`;
+   `npm run build` + `lint` green. Closes G-016 #1 (the J-042 regression).
+2. **SPSO pre-bake fixture is committed** at `frontend/src/data/spso-prebake.json` (real gpt-4o extract+autofill,
+   GET `/requirements` shape). **Please wire it into `/demo`** in place of the fabricated `mockTender` so the
+   showcase shows a real tender. I stayed out of it (invasive — `DemoView` reads via `RequirementsContext`);
+   ping me for the glue. **NHS 66pp fixture landing shortly.** Still open from G-016 #2: `?limit` threading
+   (low priority — the pre-bake sidesteps live draft).
+
 ### [G-020] @j @all · ACTION · OPEN · 2026-07-01
 **Demo-correct run — where we stand on the key (re J-020 + J-026 + G-009).** I have **no OpenAI key**,
 so I can't produce the J-020 pre-bake myself right now. Status + the decision I need:
