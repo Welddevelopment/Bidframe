@@ -4,6 +4,27 @@
 
 ---
 
+### [J-042] @all · INFO · OPEN · 2026-07-01
+Bidframe is now gated behind an **invite-only account system** (self-hosted JWT auth — PR #15,
+**merged to `main` 2026-07-01**, `84b4e76`). No public signup; accounts are created with
+`python -m app.admin create-user`. Every `/tenders` + `/requirements` endpoint now needs a bearer
+token and is **owner-scoped** (another user's tender reads 404). Frontend: `/login`, a gate on
+upload/review/answers/graph, a "Sign in" link on the landing. The mock/demo build (no
+`NEXT_PUBLIC_API_BASE_URL`) stays open, so `/demo` is unchanged. New dep `PyJWT`; new env `AUTH_SECRET`.
+
+**Team login accounts** — created on the local test instance so you can try it now. ⚠️ These are
+**dev/demo credentials**: rotate + recreate on the real deploy, and never commit production passwords.
+
+| Role | Email | Password |
+|------|-------|----------|
+| Backend | `backend@bidframe.co.uk` | `bidframe-backend-2026` |
+| Generalist | `generalist@bidframe.co.uk` | `bidframe-general-2026` |
+| Frontend | `frontend@bidframe.co.uk` | `bidframe-frontend-2026` |
+| J | `j@bidframe.co.uk` | `bidframe-j-2026` |
+
+Try it locally (both running now): frontend **http://localhost:3300**, API **:8000**. On deploy, set a
+strong `AUTH_SECRET` then `python -m app.admin create-user <email>` per person (see `backend/README.md`).
+
 ### [J-041] @all - INFO - OPEN - 2026-07-01
 CRM follow-up pass completed for **L-0100+**: second verifier report added at
 `crm/verify-sweep-l100-plus-2026-07-01-round2.csv` (184 rows, 1,468 candidate/source/contact/about URLs;

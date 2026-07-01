@@ -80,17 +80,24 @@ export function logout(): void {
   clearToken();
 }
 
-// Absolute URL to the original tender PDF opened at a given page — browser PDF
-// viewers honour the #page fragment. Empty string when no live API is configured
-// (the mock/demo has no stored PDF), so callers can hide the link. The session token
-// rides as a query param because a plain <iframe>/link navigation can't set headers.
-export function tenderPdfPageUrl(tenderId: string, page: number): string {
+// Absolute URL to a source PDF in the tender pack, opened at a given page — browser
+// PDF viewers honour the #page fragment. Empty string when no live API is configured
+// (the mock/demo has no stored PDF), so callers can hide the link. `docId` selects the
+// document in the pack; the session token rides as a query param because a plain
+// <iframe>/link navigation can't set an Authorization header.
+export function tenderPdfPageUrl(
+  tenderId: string,
+  page: number,
+  docId?: string | null
+): string {
   if (!BASE) return "";
+  const params = new URLSearchParams();
+  if (docId) params.set("doc", docId);
   const token = getToken();
-  const auth = token ? `?token=${encodeURIComponent(token)}` : "";
-  return `${BASE}/tenders/${tenderId}/pdf${auth}#page=${page}`;
+  if (token) params.set("token", token);
+  const qs = params.toString();
+  return `${BASE}/tenders/${tenderId}/pdf${qs ? `?${qs}` : ""}#page=${page}`;
 }
-
 interface UploadJobResult {
   job_id: string;
   tender_id: string;
@@ -148,11 +155,11 @@ async function apiError(res: Response, fallback: string): Promise<ApiError> {
 // background job; this returns { jobId, tenderId } immediately. Poll getJob(jobId)
 // for live progress, then load the tender once the job is done.
 export async function uploadTender(
-  file: File,
+  files: File[],
   title?: string
 ): Promise<{ jobId: string; tenderId: string }> {
   const form = new FormData();
-  form.append("file", file);
+  for (const file of files) form.append("files", file);
   if (title) form.append("title", title);
 
   const res = await fetch(`${BASE}/tenders/upload`, {
@@ -198,6 +205,28 @@ export async function getTender(tenderId: string): Promise<Tender> {
   });
   if (!res.ok) throw await apiError(res, `Fetch failed (${res.status})`);
   return (await res.json()) as Tender;
+}
+
+export interface TenderSummary {
+  tenderId: string;
+  title: string;
+  requirementCount: number;
+}
+
+// GET /tenders — a summary of every uploaded tender (id, title, requirement count).
+export async function getTenders(): Promise<TenderSummary[]> {
+  const res = await fetch(`${BASE}/tenders`);
+  if (!res.ok) throw await apiError(res, `Couldn't load your tenders (${res.status})`);
+  const rows = (await res.json()) as Array<{
+    tender_id: string;
+    title: string;
+    requirement_count: number;
+  }>;
+  return rows.map((r) => ({
+    tenderId: r.tender_id,
+    title: r.title,
+    requirementCount: r.requirement_count,
+  }));
 }
 
 // POST /tenders/{id}/draft — auditable autofill: draft a grounded answer per

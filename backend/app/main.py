@@ -25,7 +25,7 @@ from fastapi.responses import FileResponse
 from .auth import current_user
 from .extract import get_extractor
 from .ingest import ingest_pdf, PDFIngestError
-from .pipeline import run_pipeline
+from .pipeline import run_pipeline, run_pipeline_multi
 from .schema import DecisionUpdate, Requirement, TenderResponse
 from . import auth, pipeline, store
 
@@ -94,7 +94,63 @@ def _startup() -> None:
     UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 
-MAX_UPLOAD_MB = 50
+MAX_UPLOAD_MB = 50    # per file
+MAX_PACK_MB = 150     # per tender pack (all files together)
+
+
+# ---- Extraction jobs (live progress) ----------------------------------------
+# In-memory registry of running/finished extraction jobs, keyed by job_id. Single
+# process only (Render free tier is one instance); a multi-instance deploy would move
+# this to Redis. Cosmetic progress state — the real result is persisted via store.
+JOBS: dict[str, dict] = {}
+_JOBS_LOCK = threading.Lock()
+_JOBS_MAX = 100  # keep the last N jobs, drop the oldest beyond that
+
+
+def _set_job(job_id: str, **patch) -> None:
+    with _JOBS_LOCK:
+        job = JOBS.get(job_id) or {}
+        job.update(patch)
+        job["updated_at"] = time.time()
+        JOBS[job_id] = job
+        if len(JOBS) > _JOBS_MAX:
+            stale = sorted(JOBS.items(), key=lambda kv: kv[1].get("updated_at", 0))
+            for jid, _ in stale[: len(JOBS) - _JOBS_MAX]:
+                JOBS.pop(jid, None)
+
+
+def _run_extract_job(job_id: str, docs, tender_id: str, title: str, filename: str,
+                     owner: str) -> None:
+    """Run the pipeline over a tender pack on a background thread, streaming progress
+    into JOBS. `docs` is a list of (doc_id, path, filename). The result is persisted
+    under `owner`; the UI polls GET /tenders/jobs/{job_id} until status=done."""
+    def on_progress(**ev) -> None:
+        _set_job(job_id, status="processing", **ev)
+
+    try:
+        resp = run_pipeline_multi(docs, tender_id=tender_id, title=title, on_progress=on_progress)
+        store.save_tender(resp, filename=filename, owner=owner)
+        _set_job(
+            job_id,
+            status="done",
+            stage="done",
+            message="Ready",
+            progress=1.0,
+            tender_id=tender_id,
+            requirement_count=len(resp.requirements),
+            deal_breaker_count=sum(1 for r in resp.requirements if r.is_gating),
+        )
+    except PDFIngestError as exc:
+        _set_job(job_id, status="error", stage="error", code=422, detail=str(exc))
+    except Exception as exc:  # surface a calm message, log the real detail
+        print(f"[jobs] extraction failed for {job_id}: {exc}")
+        _set_job(
+            job_id,
+            status="error",
+            stage="error",
+            code=500,
+            detail="We could not process this tender. The files may be corrupt or unsupported.",
+        )
 
 
 # ---- Extraction jobs (live progress) ----------------------------------------
@@ -186,47 +242,72 @@ def list_tenders(user: dict = Depends(current_user)):
 
 @app.post("/tenders/upload")
 async def upload_tender(
-    file: UploadFile = File(...),
+    files: Optional[List[UploadFile]] = File(None),
+    file: Optional[UploadFile] = File(None),   # legacy single-file field (back-compat)
     title: str = Form(None),
     sync: bool = False,   # ?sync=1 → block until done (eval harness / back-compat)
     user: dict = Depends(current_user),
 ):
-    """Save the PDF, then run extraction on a background job so the upload UI can show
-    live progress. Returns { job_id, tender_id } immediately; poll
-    GET /tenders/jobs/{job_id} until status=done, then load the tender. With ?sync=1 it
-    blocks and returns { tender_id, requirement_count } (the original behaviour, used by
-    the eval harness)."""
-    if not file.filename.lower().endswith(".pdf"):
-        raise HTTPException(status_code=400, detail="Please upload a PDF.")
+    """Save the tender pack (one or more PDFs) under data/uploads/{tender_id}/, then run
+    extraction on a background job so the UI can show live progress. Returns
+    { job_id, tender_id } immediately; poll GET /tenders/jobs/{job_id} until status=done,
+    then load the tender. Accepts either a `files` pack or a single legacy `file`. ?sync=1
+    blocks and returns { tender_id, requirement_count } (eval-harness / back-compat).
+    Owner-scoped: the pack is saved under the signed-in user."""
+    all_files = list(files or [])
+    if file is not None:
+        all_files.append(file)
+    all_files = [f for f in all_files if f and f.filename]
+    if not all_files:
+        raise HTTPException(status_code=400, detail="Please upload at least one PDF.")
+    for f in all_files:
+        if not f.filename.lower().endswith(".pdf"):
+            raise HTTPException(
+                status_code=400,
+                detail=f"'{f.filename}' is not a PDF. Please upload PDF documents.",
+            )
 
     tender_id = f"tnd-{uuid.uuid4().hex[:8]}"
-    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    folder = UPLOAD_DIR / tender_id
+    folder.mkdir(parents=True, exist_ok=True)
     store.init_db()
-    dest = UPLOAD_DIR / f"{tender_id}.pdf"
-    with dest.open("wb") as out:
-        shutil.copyfileobj(file.file, out)
 
-    size_mb = dest.stat().st_size / (1024 * 1024)
-    if size_mb > MAX_UPLOAD_MB:
-        dest.unlink(missing_ok=True)
+    docs: list = []   # (doc_id, path, filename)
+    total_mb = 0.0
+    for i, f in enumerate(all_files, start=1):
+        doc_id = f"d{i}"
+        dest = folder / f"{doc_id}.pdf"
+        with dest.open("wb") as out:
+            shutil.copyfileobj(f.file, out)
+        mb = dest.stat().st_size / (1024 * 1024)
+        total_mb += mb
+        if mb > MAX_UPLOAD_MB:
+            shutil.rmtree(folder, ignore_errors=True)
+            raise HTTPException(
+                status_code=413,
+                detail=f"'{f.filename}' is too large ({mb:.1f} MB). Maximum is {MAX_UPLOAD_MB} MB per file.",
+            )
+        docs.append((doc_id, str(dest), f.filename))
+    if total_mb > MAX_PACK_MB:
+        shutil.rmtree(folder, ignore_errors=True)
         raise HTTPException(
             status_code=413,
-            detail=f"File too large ({size_mb:.1f} MB). Maximum is {MAX_UPLOAD_MB} MB.",
+            detail=f"This pack is too large ({total_mb:.1f} MB). Maximum is {MAX_PACK_MB} MB in total.",
         )
 
-    resolved_title = title or file.filename
+    resolved_title = title or all_files[0].filename
 
     if sync:
         try:
-            resp = run_pipeline(str(dest), tender_id=tender_id, title=resolved_title)
+            resp = run_pipeline_multi(docs, tender_id=tender_id, title=resolved_title)
         except PDFIngestError as exc:
             raise HTTPException(status_code=422, detail=str(exc))
         except Exception as exc:
             raise HTTPException(
                 status_code=500,
-                detail=f"Pipeline failed on this PDF: {exc}. The file may be corrupt or unsupported.",
+                detail=f"Pipeline failed: {exc}. The files may be corrupt or unsupported.",
             )
-        store.save_tender(resp, filename=file.filename, owner=user["id"])
+        store.save_tender(resp, filename=all_files[0].filename, owner=user["id"])
         return {"tender_id": tender_id, "requirement_count": len(resp.requirements)}
 
     job_id = f"job-{uuid.uuid4().hex[:8]}"
@@ -236,7 +317,7 @@ async def upload_tender(
     )
     threading.Thread(
         target=_run_extract_job,
-        args=(job_id, str(dest), tender_id, resolved_title, file.filename, user["id"]),
+        args=(job_id, docs, tender_id, resolved_title, all_files[0].filename, user["id"]),
         daemon=True,
     ).start()
     return {"job_id": job_id, "tender_id": tender_id}
@@ -270,13 +351,14 @@ def get_requirements(tender_id: str, user: dict = Depends(current_user)):
 @app.get("/tenders/{tender_id}/pdf")
 def get_tender_pdf(
     tender_id: str,
+    doc: str = "d1",
     token: Optional[str] = None,          # accepted so an <iframe>/link can authenticate
     authorization: str = Header(None),
 ):
-    """Serve the original uploaded PDF so the frontend can open the exact source page
-    (e.g. /tenders/{id}/pdf#page=14 — browser PDF viewers honour the #page fragment).
-    Inline, so the browser renders it in place rather than downloading. The PDF is
-    persisted at upload time (data/uploads/{id}.pdf). Owner-scoped.
+    """Serve a source PDF from the tender pack, inline, so the frontend can open the exact
+    source page (e.g. /tenders/{id}/pdf?doc=d2#page=14 — browser PDF viewers honour the
+    #page fragment). Each document in the pack is persisted at upload time as
+    data/uploads/{id}/{doc}.pdf; `doc` defaults to the first document. Owner-scoped.
 
     A browser opening this in an <iframe> or a new tab can't set an Authorization
     header, so the bearer token is accepted as a `?token=` query param too."""
@@ -288,18 +370,18 @@ def get_tender_pdf(
     user = auth.user_from_token(raw)
     if user is None:
         raise HTTPException(status_code=401, detail="Sign in to view this document.")
-    # Our ids look like "tnd-<hex>"; guard against path traversal just in case.
-    if not tender_id.replace("-", "").isalnum():
-        raise HTTPException(status_code=400, detail="Invalid tender id.")
+    # Ids look like "tnd-<hex>" and doc like "d<n>"; guard against path traversal.
+    if not tender_id.replace("-", "").isalnum() or not doc.isalnum():
+        raise HTTPException(status_code=400, detail="Invalid id.")
     if store.get_tender_owner(tender_id) != user["id"]:
         raise HTTPException(status_code=404, detail="Source PDF not available for this tender.")
-    path = UPLOAD_DIR / f"{tender_id}.pdf"
+    path = UPLOAD_DIR / tender_id / f"{doc}.pdf"
     if not path.is_file():
         raise HTTPException(status_code=404, detail="Source PDF not available for this tender.")
     return FileResponse(
         path,
         media_type="application/pdf",
-        headers={"Content-Disposition": f'inline; filename="{tender_id}.pdf"'},
+        headers={"Content-Disposition": f'inline; filename="{tender_id}-{doc}.pdf"'},
     )
 
 

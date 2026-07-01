@@ -60,9 +60,21 @@ class Requirement(BaseModel):
     draft_answer: Optional[str] = None      # deprecated alias of answer.text
     answer: Optional[Answer] = None
     open_questions: list[OpenQuestion] = Field(default_factory=list)
+    # Multi-file tender packs (#4): which document in the pack this came from.
+    # Nullable — single-file tenders default to the one doc, so nothing breaks.
+    source_doc_id: Optional[str] = None
+    source_filename: Optional[str] = None
 
 
 class CapabilityDoc(BaseModel):
+    doc_id: str
+    filename: str
+    page_count: int = 0
+
+
+class SourceDoc(BaseModel):
+    """One document in the tender pack (#4). doc_id is stable within a tender
+    (d1, d2, …) and maps to the stored PDF served for 'Open the page'."""
     doc_id: str
     filename: str
     page_count: int = 0
@@ -73,6 +85,7 @@ class TenderResponse(BaseModel):
     title: str
     requirements: list[Requirement] = Field(default_factory=list)
     capability_docs: list[CapabilityDoc] = Field(default_factory=list)
+    source_docs: list[SourceDoc] = Field(default_factory=list)
 
 
 class DecisionUpdate(BaseModel):

@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   ApiError,
   getJob,
@@ -37,39 +38,43 @@ export function UploadDropzone() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [job, setJob] = useState<JobStatus | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
-  async function handleFiles(files: FileList | null) {
+  // #2: on a live extraction, flow straight into the matrix after a brief reveal,
+  // so upload resolves into the worklist rather than dead-ending on a button.
+  useEffect(() => {
+    if (stage !== "done" || !isApiEnabled()) return;
+    const timer = window.setTimeout(() => router.push("/review"), 1800);
+    return () => window.clearTimeout(timer);
+  }, [stage, router]);
+
+  async function handleFiles(fileList: FileList | null) {
     if (stage === "extracting") return;
-    const file = files?.[0];
-    if (!file) return;
+    const all = fileList ? Array.from(fileList) : [];
+    if (all.length === 0) return;
     setErrorMessage(null);
 
-    if (files && files.length > 1) {
-      setFileName(`${files.length} files`);
+    const pdfs = all.filter(
+      (f) => f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf")
+    );
+    if (pdfs.length === 0) {
+      setFileName(all[0]?.name ?? null);
+      setErrorMessage("Use PDF tender documents. Other file types are not parsed yet.");
+      setStage("error");
+      return;
+    }
+
+    const oversized = pdfs.find((f) => f.size > 50 * 1024 * 1024);
+    if (oversized) {
+      setFileName(oversized.name);
       setErrorMessage(
-        "Upload one tender PDF at a time for this demo. Tender-pack upload is next."
+        `${oversized.name} is over 50MB. Each document must be under 50MB.`
       );
       setStage("error");
       return;
     }
 
-    if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
-      setFileName(file.name);
-      setErrorMessage("Use a PDF tender document. Other file types are not parsed yet.");
-      setStage("error");
-      return;
-    }
-
-    if (file.size > 50 * 1024 * 1024) {
-      setFileName(file.name);
-      setErrorMessage(
-        "This PDF is over 50MB. The backend rejects oversized tenders before parsing."
-      );
-      setStage("error");
-      return;
-    }
-
-    setFileName(file.name);
+    setFileName(pdfs.length === 1 ? pdfs[0].name : `${pdfs.length} documents`);
     setJob(null);
     setStage("extracting");
 
@@ -79,9 +84,9 @@ export function UploadDropzone() {
       return;
     }
 
-    // Live path: upload → background job → poll for live progress → load the tender.
+    // Live path: upload the pack → background job → poll for live progress → load.
     try {
-      const { jobId, tenderId } = await uploadTender(file, file.name);
+      const { jobId, tenderId } = await uploadTender(pdfs, pdfs[0].name);
       const finalJob = await pollJob(jobId, setJob);
       if (finalJob.status === "error") {
         setErrorMessage(finalJob.detail || "We could not process this PDF.");
@@ -168,6 +173,11 @@ export function UploadDropzone() {
             </>
           )}
         </p>
+        {isApiEnabled() && (
+          <p className="mt-1 font-mono text-xs text-ink-muted">
+            Opening your compliance matrix…
+          </p>
+        )}
         <div className="mt-5 flex items-center gap-4">
           <Link
             href="/review"
@@ -279,11 +289,11 @@ export function UploadDropzone() {
           </svg>
         </span>
         <p className="mt-5 text-base font-medium text-ink">
-          Drop a tender PDF here, or click to browse
+          Drop your tender here, or click to browse
         </p>
         <p className="mt-1 text-sm text-ink-muted">
           {isApiEnabled()
-            ? "We'll extract every requirement into a compliance matrix."
+            ? "One PDF or the whole pack. We'll read them all into a compliance matrix."
             : "No live API is configured here, so upload opens the worked example honestly."}
         </p>
       </div>
@@ -292,6 +302,7 @@ export function UploadDropzone() {
         ref={inputRef}
         type="file"
         accept="application/pdf,.pdf"
+        multiple
         className="hidden"
         onChange={(event) => handleFiles(event.target.files)}
       />

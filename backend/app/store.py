@@ -15,7 +15,7 @@ import sqlite3
 from contextlib import contextmanager
 from pathlib import Path
 
-from .schema import CapabilityDoc, DecisionUpdate, Requirement, TenderResponse
+from .schema import CapabilityDoc, DecisionUpdate, Requirement, SourceDoc, TenderResponse
 
 
 def _db_path() -> Path:
@@ -70,6 +70,9 @@ def init_db() -> None:
         # Existing rows get owner=NULL (unowned, invisible to users) — a clean auth start.
         if "owner" not in cols:
             c.execute("ALTER TABLE tenders ADD COLUMN owner TEXT")
+        # Additive migration: the tender pack's source documents (#4 multi-file).
+        if "source_docs" not in cols:
+            c.execute("ALTER TABLE tenders ADD COLUMN source_docs TEXT")
 
 
 def _caps_json(resp: TenderResponse) -> str:
@@ -80,9 +83,17 @@ def save_tender(resp: TenderResponse, filename: str | None = None,
                 owner: str | None = None) -> None:
     with _conn() as c:
         c.execute(
-            "INSERT OR REPLACE INTO tenders (id, title, filename, capability_docs, owner) "
-            "VALUES (?, ?, ?, ?, ?)",
-            (resp.tender_id, resp.title, filename, _caps_json(resp), owner),
+            "INSERT OR REPLACE INTO tenders "
+            "(id, title, filename, capability_docs, owner, source_docs) "
+            "VALUES (?, ?, ?, ?, ?, ?)",
+            (
+                resp.tender_id,
+                resp.title,
+                filename,
+                _caps_json(resp),
+                owner,
+                json.dumps([sd.model_dump() for sd in resp.source_docs]),
+            ),
         )
         c.execute("DELETE FROM requirements WHERE tender_id = ?", (resp.tender_id,))
         for seq, req in enumerate(resp.requirements):
@@ -113,7 +124,7 @@ def replace_drafts(tender_id: str, requirements: list[Requirement],
 def get_tender(tender_id: str) -> TenderResponse | None:
     with _conn() as c:
         trow = c.execute(
-            "SELECT id, title, capability_docs FROM tenders WHERE id = ?", (tender_id,)
+            "SELECT id, title, capability_docs, source_docs FROM tenders WHERE id = ?", (tender_id,)
         ).fetchone()
         if trow is None:
             return None
@@ -123,9 +134,11 @@ def get_tender(tender_id: str) -> TenderResponse | None:
     requirements = [Requirement(**json.loads(r["data"])) for r in rows]
     caps_raw = trow["capability_docs"]
     capability_docs = [CapabilityDoc(**c) for c in json.loads(caps_raw)] if caps_raw else []
+    src_raw = trow["source_docs"]
+    source_docs = [SourceDoc(**s) for s in json.loads(src_raw)] if src_raw else []
     return TenderResponse(
         tender_id=trow["id"], title=trow["title"], requirements=requirements,
-        capability_docs=capability_docs,
+        capability_docs=capability_docs, source_docs=source_docs,
     )
 
 
