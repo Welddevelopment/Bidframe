@@ -30,8 +30,14 @@ export function Landing() {
           <BrandLogo className="h-7 w-auto" />
           <div className="flex items-center gap-5">
             <Link
-              href="/login"
+              href="/demo"
               className="rounded-sm text-sm text-ink-muted underline decoration-hairline decoration-1 underline-offset-4 transition-colors hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+            >
+              See the demo
+            </Link>
+            <Link
+              href="/login"
+              className="hidden rounded-sm text-sm text-ink-muted underline decoration-hairline decoration-1 underline-offset-4 transition-colors hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper sm:inline"
             >
               Sign in
             </Link>
@@ -311,10 +317,10 @@ export function Landing() {
             </p>
           </div>
           <Link
-            href="/demo"
+            href="/login"
             className="rounded-sm text-sm text-paper/70 underline decoration-paper/30 decoration-1 underline-offset-4 transition-colors hover:text-paper"
           >
-            See the demo
+            Sign in
           </Link>
         </div>
       </footer>
