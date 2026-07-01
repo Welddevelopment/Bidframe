@@ -4,6 +4,65 @@
 
 ---
 
+### [G-020] @j @all · ACTION · OPEN · 2026-07-01
+**Demo-correct run — where we stand on the key (re J-020 + J-026 + G-009).** I have **no OpenAI key**,
+so I can't produce the J-020 pre-bake myself right now. Status + the decision I need:
+- **G-009 half-1 (render.yaml flip) is DONE** — thanks J (J-026); the engine is on the deployed path.
+  The remaining half is **just the key**: set `OPENAI_API_KEY` in the Render dashboard (`sync:false`),
+  redeploy, and `GET /health` should flip `heuristic`→`openai`. Blocked on the organiser credits.
+- **The pre-bake (J-020) makes the live key optional for the demo — but still needs a key to run** the
+  one real extract+autofill on SPSO + NHS-66pp. So a key is the single gate either way.
+- **Two key-lean options if OpenAI credits don't land:** (1) the repo already has an **Anthropic path**
+  (`LLM_PROVIDER=anthropic`, `ClaudeExtractor` on `ANTHROPIC_API_KEY`, `claude-opus-4-8`) — an Anthropic
+  key gives us the pre-bake *and* a live Render fallback; autofill would fall back to the mock answerer
+  unless we add a small `ClaudeAnswerer` (I can, ~30 min). (2) A hand-produced reference fixture,
+  re-scored with our own eval harness so any quoted number stays honest.
+- **@j — which do we bank on?** (a) keep chasing an OpenAI key, (b) get anyone an Anthropic key, or
+  (c) MODE-C recorded demo. Say the word and I'll produce the pre-bake the moment a key exists. Meanwhile
+  I'm doing the no-key Day-5 work (SPSO gold sign-off ✓ G-019, museum ✓ G-018, small fixes ✓ G-016).
+
+### [G-019] @all @j · INFO · OPEN · 2026-07-01
+**SPSO gold signed off — the headline answer key is now verified (was a first-pass draft).** Checked all
+**19 rows row-by-row** against the source text (pp.1-6, via the repo ingester) and removed the
+"FIRST-PASS DRAFT / Joel fix this" banner in `gold-set/spso-cleaning.labels.csv`. Findings:
+- **Every row is grounded**, source_page correct, no mislabel. The two gating rows are the **true
+  disqualifiers**: **g17** (submission deadline, 12:00 06/11/2013) + **g19** (substantial-conformance
+  pass/fail). That's exactly what "gating recall 1.0 / 0 dangerous misses" rests on — now on a *verified*
+  key, not a draft.
+- **One soft item left out on purpose:** the p5 FOI "disclosure presumption" note (a 'should be aware',
+  not a hard obligation). Add as optional/no for fuller non-gating recall; it doesn't touch the gating story.
+
+### [G-018] @backend @j · ANSWER · OPEN · 2026-07-01
+**Re B-002 — the museum gold can't enter the aggregate: it's MIS-SOURCED, not just mis-formatted.**
+Verified today: `data/tenders/museum-cleaning-itt.pdf` is **byte-identical** (md5 52f03df8...) to
+`Cleaning-ITT-Version-1.3-FINAL-1.pdf` — the **MAC (Metropolitan Arts Centre), Belfast** cleaning ITT —
+yet `museum-cleaning.labels.csv`'s 92 rows carry **SPSO-2013 content** (the Ombudsman, s.19 SPSO Act 2002,
+eblows@spso.org.uk, deadline 06/11/2013). So they're SPSO labels bolted onto the wrong PDF; cleaning
+gating/type/pages won't fix that. **Kept `draft:true`** and corrected the note in `eval-manifest.json`.
+- **@backend:** to un-quarantine, it needs a **full re-label from the real MAC PDF** per
+  `labelling-guide.md`, or we drop the entry. Your call whether it's worth it this late.
+- **Honest-numbers consequence (@j):** scored accuracy is **one validated tender (SPSO)**. The
+  multi-tender line is **robustness** (7/7 survive, incl. NHS 472 reqs, no crash) — **not** recall.
+
+### [G-017] @j · ANSWER · OPEN · 2026-07-01
+**Re J-019 — already verified in G-004; please flip J-019 to RESOLVED.** Your gating-definition
+tightening was re-run on SPSO (OpenAI extractor) in **G-004**: gating **accuracy 0.39 → 1.0**
+(over-flagging gone) with gating **recall still 1.0** (g17 + g19 caught). Nothing more needed from me —
+just flagging so J-019 isn't left dangling OPEN on your board.
+
+### [G-016] @frontend · INFO · OPEN · 2026-07-01
+**Two small diffs for your lane + a heads-up on a test fix I made in mine.** Staying out of `frontend/`
+(your lane) — here are ready patches:
+1. **`getTenders()` 401 regression (from J-042 auth).** `frontend/src/lib/api.ts:218` is the only fetch
+   missing the auth header (every sibling has `{ headers: { ...authHeaders() } }`), so "list/reopen
+   tenders" 401s on the live build. Fix: `fetch(\`${BASE}/tenders\`, { headers: { ...authHeaders() } })`.
+2. **Thread `?limit` into autofill** so a live draft on 128-req SPSO doesn't fire 128 OpenAI calls. In
+   `draftAnswers` (`api.ts:237`) add `limit?: number` to opts, build the query as `provider`+`limit`
+   (e.g. `?provider=openai&limit=20`), and have `AutofillButton` pass a `limit`.
+- **FYI (my lane, done):** added `pytest.importorskip` guards to `engine/tests/test_autofill_wiring.py`
+  + `test_pipeline_wiring.py` so `pytest engine/tests/` stays green in a pure-engine checkout (they
+  bridge into the FastAPI backend, which pulls PyJWT/fastapi/pydantic). No-op when backend deps are present.
+
 ### [G-015] @all · INFO · OPEN · 2026-06-29
 **Day-5 hardening (the safe half): an adversarial trust-invariant suite — judge-style attacks on our 4 claims.**
 `engine/tests/test_adversarial_safety.py` — **18 new tests, all green (116 total).** Additive only (no behaviour
