@@ -15,6 +15,7 @@ import {
   isConfidentNonGating,
   nextPriorityId,
   type GroupKey,
+  type SortKey,
 } from "@/lib/triage";
 import { AppMain } from "./AppMain";
 import { ApprovalStamp } from "./ApprovalStamp";
@@ -123,6 +124,29 @@ export function MatrixView({ title }: { title: string }) {
     useRequirements();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<GroupKey | null>(null);
+  // Category filter (empty set = all categories shown) and the row sort order.
+  // Held here so the matrix, the header chips (a following step), and the split
+  // spine all read one source. The visible chip/menu UI is the next step; this
+  // step wires the state and threads it through.
+  const [activeCategories, setActiveCategories] = useState<Set<string>>(
+    () => new Set<string>()
+  );
+  const toggleCategory = useCallback((category: string) => {
+    setActiveCategories((prev) => {
+      const next = new Set(prev);
+      if (next.has(category)) next.delete(category);
+      else next.add(category);
+      return next;
+    });
+  }, []);
+  const [sortBy, setSortBy] = useState<SortKey>("confidence");
+  // Row density for the matrix: comfortable by default, compact for a longer
+  // tender the user wants to see more of at once. Held here so it survives the
+  // matrix unmounting into the split; threaded to ComplianceMatrix as an optional
+  // prop (the frozen surfaces stay comfortable).
+  const [density, setDensity] = useState<"compact" | "comfortable">(
+    "comfortable"
+  );
   // Which groups the user has folded away. The long, low-priority groups start
   // collapsed so a big tender opens short; the actionable ones start open. Held
   // here (not in ComplianceMatrix) so the fold survives the matrix unmounting when
@@ -141,6 +165,12 @@ export function MatrixView({ title }: { title: string }) {
   const isWide = useIsWide();
 
   const triage = deriveTriage(requirements);
+  // The distinct categories present, sorted by label, for the header's category
+  // filter (the chip UI lands in the next step). Cheap to derive each render,
+  // like triage above.
+  const availableCategories = Array.from(
+    new Set(requirements.map((req) => req.category))
+  ).sort((a, b) => a.localeCompare(b));
   const selected = requirements.find((r) => r.id === selectedId) ?? null;
   const priorityId = nextPriorityId(requirements);
   const decidedCount = requirements.filter((req) => req.status !== "pending").length;
@@ -241,6 +271,15 @@ export function MatrixView({ title }: { title: string }) {
           event.preventDefault();
           approve(selectedId);
         }
+      } else if (event.key === "e" || event.key === "f") {
+        // Edit / flag both need a typed note, so they cannot act blind from the
+        // list: open the panel on the current row (or the first item) where the
+        // note field lives, and let the user commit there.
+        const target = selectedId ?? ordered[0]?.id ?? null;
+        if (target) {
+          event.preventDefault();
+          setSelectedId(target);
+        }
       }
     }
     document.addEventListener("keydown", onKey);
@@ -269,6 +308,11 @@ export function MatrixView({ title }: { title: string }) {
           onFilter: setActiveFilter,
           onNext,
           nextLabel: priorityId ? "Next" : "Export response",
+          categories: availableCategories,
+          activeCategories,
+          onToggleCategory: toggleCategory,
+          sortBy,
+          onSortChange: setSortBy,
         }}
       />
 
@@ -312,13 +356,37 @@ export function MatrixView({ title }: { title: string }) {
               />
             )}
             {priorityId !== null && requirements.length > 0 && (
-              <p className="mb-3 font-mono text-xs text-ink-muted">
-                <span className="text-ink">
-                  Bidframe verified {verifiedCount} of {requirements.length}
-                </span>{" "}
-                — {needInput} need your input
-                {decidedCount > 0 ? ` · ${decidedCount} decided` : ""}.
-              </p>
+              <div className="mb-3">
+                <p className="font-mono text-xs text-ink-muted">
+                  <span className="text-ink">
+                    Bidframe verified {verifiedCount} of {requirements.length}
+                  </span>{" "}
+                  — {needInput} need your input
+                  {decidedCount > 0 ? ` · ${decidedCount} decided` : ""}.
+                </p>
+                {/* A slim derived progress track: forest fill on a hairline
+                    rule, showing how much Bidframe has already carried. No new
+                    state, purely the counts above. */}
+                <div
+                  className="mt-1.5 h-1 w-full overflow-hidden rounded-full bg-hairline"
+                  role="progressbar"
+                  aria-valuemin={0}
+                  aria-valuemax={requirements.length}
+                  aria-valuenow={verifiedCount}
+                  aria-label="Requirements verified by Bidframe"
+                >
+                  <div
+                    className="h-full rounded-full bg-forest transition-[width] duration-500"
+                    style={{
+                      width: `${
+                        requirements.length > 0
+                          ? (verifiedCount / requirements.length) * 100
+                          : 0
+                      }%`,
+                    }}
+                  />
+                </div>
+              </div>
             )}
             <ComplianceMatrix
               groups={triage.groups}
@@ -326,8 +394,12 @@ export function MatrixView({ title }: { title: string }) {
               onSelect={setSelectedId}
               onApprove={approve}
               activeFilter={activeFilter}
+              activeCategories={activeCategories}
+              sortBy={sortBy}
               collapsed={collapsedGroups}
               onToggleGroup={toggleGroup}
+              density={density}
+              onDensityChange={setDensity}
             />
             <p className="mt-6 font-mono text-[11px] text-ink-muted/70">
               Keys: j / k to move, a to approve a confident item.

@@ -1,9 +1,11 @@
 import { useState } from "react";
 import type { Requirement } from "@/types/requirement";
 import {
+  compareRequirements,
   isConfidentNonGating,
   pendingStatusWord,
   type GroupKey,
+  type SortKey,
   type TriageGroup,
 } from "@/lib/triage";
 import { alsoCitedLabel, collapseDuplicates } from "@/lib/dedupe";
@@ -13,6 +15,16 @@ import {
   type ConfidenceTier,
 } from "./ConfidenceIndicator";
 import { CategoryTag } from "./CategoryTag";
+
+// Row density: comfortable is the resting register; compact tightens the row
+// gutters so a longer tender shows more at once. Only the vertical padding
+// changes; the grid and the reading rhythm stay put.
+export type Density = "compact" | "comfortable";
+
+const ROW_PADDING: Record<Density, string> = {
+  comfortable: "py-2",
+  compact: "py-1",
+};
 
 // The resting row wash, keyed to the confidence tier so the worklist carries a
 // calm colour gradient: the riskier the row, the warmer the tint; confident (and
@@ -98,6 +110,7 @@ function MatrixRow({
   req,
   isSelected,
   alsoCitedOn,
+  density,
   onSelect,
   onApprove,
 }: {
@@ -105,6 +118,7 @@ function MatrixRow({
   isSelected: boolean;
   // Pages the same requirement was also cited on (display-dedupe annotation).
   alsoCitedOn: number[];
+  density: Density;
   onSelect: (id: string) => void;
   onApprove: (id: string) => void;
 }) {
@@ -146,7 +160,7 @@ function MatrixRow({
           onSelect(req.id);
         }
       }}
-      className={`group grid w-full cursor-pointer grid-cols-[46px_30px_1fr_auto] items-start gap-x-3 px-2.5 py-2 text-left transition-[background-color,box-shadow] focus:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ink/40 ${shape} ${state}`}
+      className={`group grid w-full cursor-pointer grid-cols-[46px_30px_1fr_auto] items-start gap-x-3 px-2.5 ${ROW_PADDING[density]} text-left transition-[background-color,box-shadow] focus:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ink/40 ${shape} ${state}`}
     >
       {/* The register margin: a gating pennant then the clause ref, right-aligned
           in mono. The pennant marks the deal-breaker even on decided rows, where
@@ -267,6 +281,7 @@ function MatrixGroup({
   group,
   expanded,
   collapsible,
+  density,
   onToggle,
   selectedId,
   onSelect,
@@ -278,6 +293,7 @@ function MatrixGroup({
   // surfaces) this is always true and no toggle renders.
   expanded: boolean;
   collapsible: boolean;
+  density: Density;
   onToggle: () => void;
   selectedId: string | null;
   onSelect: (id: string) => void;
@@ -294,7 +310,11 @@ function MatrixGroup({
 
   return (
     <section>
-      <div className="flex items-center justify-between gap-3 border-b border-hairline pb-2">
+      {/* The group header stays with its rows: sticky to the top of the scroll
+          so the label and count remain legible while the section runs long. A
+          paper ground and a hairline keep it reading as a register rule, not a
+          floating bar. */}
+      <div className="sticky top-0 z-10 -mx-1 flex items-center justify-between gap-3 border-b border-hairline bg-paper px-1 pb-2 pt-2">
         {collapsible ? (
           <button
             type="button"
@@ -334,6 +354,7 @@ function MatrixGroup({
               req={req}
               isSelected={req.id === selectedId}
               alsoCitedOn={meta.get(req.id)?.alsoCitedOn ?? []}
+              density={density}
               onSelect={onSelect}
               onApprove={onApprove}
             />
@@ -350,26 +371,44 @@ export function ComplianceMatrix({
   onSelect,
   onApprove,
   activeFilter,
+  activeCategories,
+  sortBy,
   collapsed,
   onToggleGroup,
+  density = "comfortable",
+  onDensityChange,
 }: {
   groups: TriageGroup[];
   selectedId: string | null;
   onSelect: (id: string) => void;
   onApprove: (id: string) => void;
   activeFilter: GroupKey | null;
+  // Category filter (empty / omitted = no category filtering) and the row sort
+  // order. Both optional so the frozen demo/hero surfaces keep their source
+  // order untouched: when sortBy is omitted the rows are left as grouped.
+  activeCategories?: Set<string>;
+  sortBy?: SortKey;
   // Folded groups + the toggle handler. Omitted on the frozen demo/hero surfaces,
   // where every group stays open and no toggle renders.
   collapsed?: Set<GroupKey>;
   onToggleGroup?: (key: GroupKey) => void;
+  // Row density + its setter. Optional and defaulting to comfortable so the
+  // frozen demo/hero surfaces render unchanged; the toggle only shows when a
+  // setter is supplied.
+  density?: Density;
+  onDensityChange?: (density: Density) => void;
 }) {
   const [query, setQuery] = useState("");
   const normalisedQuery = query.trim().toLowerCase();
-  // Skip empty groups; when a filter is active, show only that group.
+  // An empty (or omitted) category set means no category filtering.
+  const categoryFilter =
+    activeCategories && activeCategories.size > 0 ? activeCategories : null;
+  const comparator = sortBy ? compareRequirements(sortBy) : null;
+  // Skip empty groups; when a filter is active, show only that group. Within a
+  // group, keep only the matching search + category rows, then order by sortBy.
   const visible = groups
-    .map((group) => ({
-      ...group,
-      items:
+    .map((group) => {
+      let items =
         normalisedQuery.length === 0
           ? group.items
           : group.items.filter((req) =>
@@ -382,8 +421,15 @@ export function ComplianceMatrix({
                 .join(" ")
                 .toLowerCase()
                 .includes(normalisedQuery)
-            ),
-    }))
+            );
+      if (categoryFilter) {
+        items = items.filter((req) => categoryFilter.has(req.category));
+      }
+      if (comparator) {
+        items = [...items].sort(comparator);
+      }
+      return { ...group, items };
+    })
     .filter(
       (g) =>
         g.items.length > 0 && (activeFilter === null || g.key === activeFilter)
@@ -405,14 +451,19 @@ export function ComplianceMatrix({
             className="w-full rounded-md border border-hairline bg-paper px-3 py-2 text-sm text-ink outline-none transition-colors placeholder:text-ink-muted focus:border-forest focus:ring-1 focus:ring-forest"
           />
         </label>
-        <span className="font-mono text-xs text-ink-muted">
-          {visible.reduce(
-            (sum, group) =>
-              sum + collapseDuplicates(group.items).representatives.length,
-            0
-          )}{" "}
-          shown
-        </span>
+        <div className="flex items-center gap-3">
+          <span className="font-mono text-xs text-ink-muted">
+            {visible.reduce(
+              (sum, group) =>
+                sum + collapseDuplicates(group.items).representatives.length,
+              0
+            )}{" "}
+            shown
+          </span>
+          {onDensityChange && (
+            <DensityToggle density={density} onDensityChange={onDensityChange} />
+          )}
+        </div>
       </div>
 
       {visible.map((group) => {
@@ -432,6 +483,7 @@ export function ComplianceMatrix({
             group={group}
             expanded={expanded}
             collapsible={collapsible}
+            density={density}
             onToggle={() => onToggleGroup?.(group.key)}
             selectedId={selectedId}
             onSelect={onSelect}
@@ -441,9 +493,95 @@ export function ComplianceMatrix({
         );
       })}
       {visible.length === 0 && (
-        <p className="text-sm text-ink-muted">
-          No requirements match this view.
-        </p>
+        <EmptyRegister
+          filtered={
+            normalisedQuery.length > 0 ||
+            activeFilter !== null ||
+            categoryFilter !== null
+          }
+          onClear={() => setQuery("")}
+          hasQuery={normalisedQuery.length > 0}
+        />
+      )}
+    </div>
+  );
+}
+
+// The density toggle: a two-word segmented control in the register register, not
+// a forest button. The chosen word carries an ink ground; the other rests muted.
+// State (greyscale-legible) is weight and fill, never colour alone.
+function DensityToggle({
+  density,
+  onDensityChange,
+}: {
+  density: Density;
+  onDensityChange: (density: Density) => void;
+}) {
+  const options: { key: Density; label: string }[] = [
+    { key: "comfortable", label: "Comfortable" },
+    { key: "compact", label: "Compact" },
+  ];
+  return (
+    <div
+      role="group"
+      aria-label="Row density"
+      className="inline-flex items-center overflow-hidden rounded-md border border-hairline"
+    >
+      {options.map((option) => {
+        const active = density === option.key;
+        return (
+          <button
+            key={option.key}
+            type="button"
+            aria-pressed={active}
+            onClick={() => onDensityChange(option.key)}
+            className={`px-2 py-1 font-mono text-[11px] transition-colors ${
+              active
+                ? "bg-ink/[0.06] font-medium text-ink"
+                : "text-ink-muted hover:text-ink"
+            }`}
+          >
+            {option.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// The empty state as a register leaf, not a bare sentence: a dropped clause mark
+// over a calm line. Two readings. A live filter or search that matched nothing
+// offers a way back; a genuinely empty view (nothing to review) simply says so.
+function EmptyRegister({
+  filtered,
+  hasQuery,
+  onClear,
+}: {
+  filtered: boolean;
+  hasQuery: boolean;
+  onClear: () => void;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-3 rounded-lg border border-dashed border-hairline bg-paper-raised/50 px-6 py-12 text-center">
+      <span
+        aria-hidden
+        className="font-serif text-3xl leading-none text-ink-muted/50"
+      >
+        §
+      </span>
+      <p className="max-w-[42ch] text-sm text-ink-muted">
+        {filtered
+          ? "No requirements match this view."
+          : "No requirements to review yet."}
+      </p>
+      {filtered && hasQuery && (
+        <button
+          type="button"
+          onClick={onClear}
+          className="font-mono text-xs text-ink-muted underline decoration-1 underline-offset-4 transition-colors hover:text-ink"
+        >
+          Clear search
+        </button>
       )}
     </div>
   );
