@@ -97,6 +97,25 @@ body {
 @theme {
   --color-paper-recessed: #efe7d6;
   --color-rule-section: #d9cfbb;
+
+  /* Landing forest family (landing-page-brief §18): the landing's dark bands
+     stand on pine instead of the product's near-black ink, so the page's weight
+     carries the brand hue rather than a generic dark. Pine holds the proof and
+     closing bands (paper on pine clears AAA at 11.1:1), pine-deep grounds the
+     footer, and moss is the third surface tone between paper and pine, with its
+     own hairline. Landing scope only; the product's bg-ink bands are untouched. */
+  --color-pine: #1d3a2b;
+  --color-pine-deep: #16301f;
+  --color-moss: #e8ebdd;
+  --color-moss-line: #cdd5bd;
+  --depth-sheet-pine: 0 18px 44px -18px rgba(22, 48, 31, 0.42);
+}
+
+/* Text selection on the landing reads as the brand's own mark: forest ground,
+   paper text. Scoped to the landing so the product keeps the browser default. */
+.landing-scope ::selection {
+  background: var(--color-forest);
+  color: var(--color-paper);
 }
 
 /* Paper grain, raised surfaces only. One shared fractal-noise overlay at
@@ -186,6 +205,47 @@ body {
   }
 }
 
+/* Draw-on for the landing's engraved botanicals (landing-page-brief §18): each
+   piece of line art carries pathLength={1} on every stroked path, so a single
+   dasharray rule lets the stroke draw itself in and the faint leaf fill wash in
+   after. .art-draw plays once on load for art above the fold; [data-draw] is
+   armed by an IntersectionObserver (DrawOn.tsx) for art below it, with
+   --draw-delay staggering siblings. Motion-safe only: reduced motion, SSR and
+   no-JS all land on the finished engraving, since the hidden state never
+   applies without the media query and the observer. */
+@media (prefers-reduced-motion: no-preference) {
+  .art-draw path,
+  [data-draw] path {
+    stroke-dasharray: 1;
+  }
+  .art-draw path {
+    animation:
+      art-stroke 1.6s cubic-bezier(0.4, 0, 0.2, 1) both,
+      art-fill 0.8s ease 1s both;
+  }
+  [data-draw] path {
+    transition:
+      stroke-dashoffset 1.4s cubic-bezier(0.4, 0, 0.2, 1) var(--draw-delay, 0ms),
+      fill-opacity 0.8s ease calc(var(--draw-delay, 0ms) + 900ms);
+  }
+  [data-draw="hidden"] path {
+    stroke-dashoffset: 1;
+    fill-opacity: 0;
+  }
+}
+
+@keyframes art-stroke {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+
+@keyframes art-fill {
+  from {
+    fill-opacity: 0;
+  }
+}
+
 /* Card liveness: a raised illustrative sheet warms its shadow on hover. Depth
    means focus (design-language), so the proof cards feel like material without
    implying they are clickable, no lift or translate, that stays reserved for the
@@ -205,6 +265,26 @@ body {
     linear-gradient(to right, rgba(33, 29, 23, 0.035) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(33, 29, 23, 0.035) 1px, transparent 1px);
   background-size: 32px 32px;
+}
+
+/* The landing hero's own graph paper: slightly firmer lines than the shared
+   .paper-grid (which login, thank-you and DemoView keep unchanged), drawn on a
+   ::before layer and masked so the grid fades out towards the bottom of the
+   hero. The grid belongs to the drafting moment up top; the page below returns
+   to plain paper rather than carrying texture the whole way down. */
+.paper-grid-hero {
+  position: relative;
+}
+.paper-grid-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(33, 29, 23, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(33, 29, 23, 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
 }
 
 /* The confidence bead: a larger, dimensional status dot (the honesty section).

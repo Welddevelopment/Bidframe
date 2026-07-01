@@ -420,9 +420,49 @@ the copy check.
 8. **Build green.** `npm run build` and `npm run lint` pass; `/` is the landing page and `/review` is the
    matrix; no in-product link points back at `/`.
 
+## 18. Landing departures (forest uplift)
+
+The forest uplift deliberately relaxes five constraints, on this page only. Each is named here so it is a
+documented departure, not drift. The product screens keep the original rules in full; where a rule below
+conflicts with an earlier section of this brief, this section wins for the landing page and nowhere else.
+
+**Forest family as band ground.** The landing's dark bands (the proof band, the closing band, the footer)
+stand on pine (`--color-pine`, `--color-pine-deep`) instead of the product's near-black ink. Reason: the
+page's heaviest surfaces should carry the brand's own hue rather than a generic dark, so the record reads
+unmistakably as Bidframe even in a screenshot. Paper on pine clears AAA (11.1:1); body text on pine stays
+at 70% paper opacity or above, small mono at 60% or above. The product's `bg-ink` bands are untouched.
+
+**A sanctioned engraved-botanical illustration programme.** The page carries one illustration language,
+grown from the existing hero sprig: stroke-based line art in `currentColor`, `aria-hidden`, faint
+`fillOpacity` leaf bodies, round linecaps. Ferns, pine branches, pressed leaves, a treeline and a seal all
+speak this single grammar. Reason: the page needed visual warmth beyond two buttons and four ghost sprigs,
+and one coherent engraving language adds it without importing a marketing skin the product would
+contradict. Anything outside this grammar (photography, 3D, flat colour blobs) stays banned.
+
+**Draw-on stroke animation.** Section 9 allowed one animated moment, the hero resolve. The botanicals are
+now also allowed to draw themselves in: strokes trace on, then the faint fill washes in, once per piece.
+Reason: an engraving that draws itself reads as the record being inked, the same metaphor as the resolve,
+so the added motion deepens the one idea instead of decorating around it. It remains motion-safe: reduced
+motion, no-JS and SSR all render the finished engraving, and nothing loops.
+
+**Poster-scale typography moments.** A small number of sections (the deal-breaker head, the proof figures)
+step up to poster scale, well past the type ramp the product uses. Reason: the page's spine is one catch
+and three counts, and at reading size they carried no more weight than the copy around them. Poster scale
+gives the page's two decisive beats the emphasis they earn. It stays rationed: a handful of moments, never
+a default, and the counts remain plain counts, never animated.
+
+**The moss third surface.** Between paper and pine the page gains moss (`--color-moss`, with
+`--color-moss-line` as its hairline), a pale green-grey surface for the honesty band and the "With
+Bidframe" table column. Reason: the middle of the page was a monotone beige corridor, and a third surface
+tone lets sections alternate ground without reaching for boxes, borders or gradients. Moss is a landing
+surface only; the product keeps its two-surface paper system.
+
 ---
 
 *Changelog*
 - *2026-06-29 — v1, Frontend. Headline and section copy locked, routing change to `/review` specified,
   hero resolve reuses the named design-system transition, proof translated to plain counts. Open items:
   booking link, live-key confirmation, proof-tender naming.*
+- *2026-07-01 — v1.1, Frontend. Added section 18, the landing departures for the forest uplift: pine and
+  moss as landing surfaces, the engraved-botanical illustration programme, draw-on stroke motion,
+  poster-scale moments. Tokens and motion CSS landed in `globals.css`; components follow.*
