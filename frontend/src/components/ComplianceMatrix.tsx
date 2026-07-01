@@ -1,7 +1,8 @@
 import { useState } from "react";
-import type { Requirement, RequirementStatus } from "@/types/requirement";
+import type { Requirement } from "@/types/requirement";
 import {
   isConfidentNonGating,
+  pendingStatusWord,
   type GroupKey,
   type TriageGroup,
 } from "@/lib/triage";
@@ -18,27 +19,42 @@ import { ConfidenceIndicator } from "./ConfidenceIndicator";
 // rows expose a single quiet Approve on hover or focus; everything riskier only
 // opens the panel.
 
-// The status word (copywriting.md decision-status lexicon), quiet and
+// The decided-status word (copywriting.md decision-status lexicon), quiet and
 // right-aligned. Approval also carries a forest tick, so it never relies on
-// colour alone (the greyscale test).
-const STATUS_WORD: Record<RequirementStatus, string> = {
-  pending: "Needs your eye",
+// colour alone (the greyscale test). Pending items get a differentiated word
+// from pendingStatusWord() instead of one flat label.
+const DECIDED_WORD: Record<"accepted" | "edited" | "flagged", string> = {
   accepted: "Approved by you",
-  edited: "Edited",
+  edited: "Edited by you",
   flagged: "Flagged",
 };
 
-function StatusWord({ status }: { status: RequirementStatus }) {
+function StatusWord({ req }: { req: Requirement }) {
+  // Pending: name what this item needs. A confident non-gating item returns
+  // null and rests silent (its cell is owned by the hover Approve). A gating
+  // item carries the one signal-coloured word in the column, matched to its
+  // oxblood row edge and bead (and still legible as a word in greyscale).
+  if (req.status === "pending") {
+    const word = pendingStatusWord(req);
+    if (!word) return null;
+    const tone = req.is_gating ? "text-signal-oxblood" : "text-ink-muted";
+    return (
+      <span className={`inline-flex items-center gap-1 text-xs ${tone}`}>
+        {word}
+      </span>
+    );
+  }
+
   const tone =
-    status === "accepted"
+    req.status === "accepted"
       ? "text-forest"
-      : status === "flagged"
+      : req.status === "flagged"
         ? "text-ink"
         : "text-ink-muted";
 
   return (
     <span className={`inline-flex items-center gap-1 text-xs ${tone}`}>
-      {status === "accepted" && (
+      {req.status === "accepted" && (
         <svg
           width="11"
           height="11"
@@ -55,7 +71,7 @@ function StatusWord({ status }: { status: RequirementStatus }) {
           />
         </svg>
       )}
-      {STATUS_WORD[status]}
+      {DECIDED_WORD[req.status]}
     </span>
   );
 }
@@ -88,7 +104,7 @@ function MatrixRow({
 
   // Gating rows take a 2px oxblood reading edge; depth lifts only the open row.
   const shape = req.is_gating
-    ? "rounded-r-md border-l-2 border-signal-oxblood"
+    ? "rounded-r-md border-l-2 border-signal-oxblood-frame"
     : "rounded-md";
   const state = isSelected
     ? "bg-paper-raised shadow-[var(--depth-row)] ring-1 ring-inset ring-ink/30"
@@ -159,7 +175,7 @@ function MatrixRow({
         {canApproveInline ? (
           <>
             <span className="group-hover:hidden group-focus-within:hidden">
-              <StatusWord status={req.status} />
+              <StatusWord req={req} />
             </span>
             <button
               type="button"
@@ -173,7 +189,7 @@ function MatrixRow({
             </button>
           </>
         ) : (
-          <StatusWord status={req.status} />
+          <StatusWord req={req} />
         )}
       </div>
     </div>

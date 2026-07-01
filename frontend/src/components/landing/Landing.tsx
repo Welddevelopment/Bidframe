@@ -99,7 +99,7 @@ export function Landing() {
               </p>
             </div>
             <div className="surface-grain w-full rounded-lg border border-hairline bg-paper-raised p-5 shadow-[var(--depth-sheet)] lg:w-[400px]">
-              <div className="border-l-2 border-signal-oxblood pl-4">
+              <div className="border-l-2 border-signal-oxblood-frame pl-4">
                 <p className="font-mono text-xs font-medium uppercase tracking-wide text-signal-oxblood">
                   Deal-breaker
                 </p>

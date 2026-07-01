@@ -23,6 +23,14 @@ So for outreach the site is effectively mock-only, which is why the mock path ha
 
 ## Status update — 2026-07-01
 
+> **Design uplift (2026-07-01, generalist, branch `claude/strange-ptolemy-9f573c`):** the deal-breaker "alarm"
+> retune (oxblood `#8A2D2A → #B42D24`, full-fill bead + `!` glyph, 3px frame spine), the **completion
+> win-moment #8 (below) — DONE**, a `/thank-you` return page + new-tab booking CTAs (closes the "return to
+> main after booking" gap), and a differentiated status column (killed the "Needs your eye" wall → blank /
+> Deal-breaker to clear / Needs your answer / Worth a second look). `eslint` + `next build` green, eyeballed
+> on `/demo` + `/thank-you`. Pending @j/@jawad ack on the locked oxblood token, then merge to `main`. Full
+> detail in comms **G-027**.
+
 Most of the frontend audit was implemented on `main` by **Pranav's `c17edb0` "Harden demo day and frontend
 UX flow"** (worked straight from this doc). Verified here: `npm run lint` + `npm run build` green.
 
@@ -122,9 +130,10 @@ touches none of these. The danger is entirely in the live product a curious lead
   *Fix:* client-side export (print-to-PDF / CSV / copy) of requirements + decisions + answers + citations.
   `frontend/src/components/MatrixView.tsx:72-74`, `frontend/src/components/MatrixView.tsx:99`
 
-- [ ] **8. HIGH — No completion moment.** Finish a 3-week job in minutes and nothing marks it: no
-  "12 approved, 2 edited, 1 flagged" summary, no payoff, no home for the export. The emotional beat of the
-  whole pitch is unmarked. *Fix:* a completion summary that doubles as the export surface.
+- [x] **8. HIGH — No completion moment. DONE** (2026-07-01, generalist design uplift, branch
+  `claude/strange-ptolemy-9f573c`). The completion summary is now a Civic-Record "record filed" sheet: the
+  forest `ApprovalStamp` (only when nothing is flagged — honest) + a mono decision tally, doubling as the
+  CSV export surface (`MatrixView.tsx` `CompletionSummary`). See comms G-027.
 
 - [ ] **9. HIGH — No bulk "approve all confident."** `frontend/layout.md` §2/§8 explicitly designs this at the
   head of the Ready group. Unbuilt. On a real tender (the NHS stress test hit 472 reqs) clearing confident items

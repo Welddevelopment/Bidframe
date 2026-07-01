@@ -249,7 +249,7 @@ function SaveNotice({
 }) {
   return (
     <div className="fixed inset-x-0 bottom-4 z-[70] flex justify-center px-4">
-      <div className="surface-grain flex max-w-md items-start gap-3 rounded-lg border border-l-2 border-hairline border-l-signal-oxblood bg-paper-raised p-3 shadow-[var(--depth-sheet)]">
+      <div className="surface-grain flex max-w-md items-start gap-3 rounded-lg border border-l-2 border-hairline border-l-signal-oxblood-frame bg-paper-raised p-3 shadow-[var(--depth-sheet)]">
         <p className="text-sm leading-snug text-ink">{message}</p>
         <button
           type="button"

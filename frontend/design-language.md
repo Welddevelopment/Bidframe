@@ -145,7 +145,7 @@ was missing.
 The flat layout felt like a boring list because every element had equal weight and there was no focal
 point. The device kit attacks exactly that: the masthead gives the eye an anchor, the rule hierarchy gives
 rhythm, the register and ruled margin give the list editorial backbone, the stamp gives a focal payoff,
-and the gating rows (a 2px oxblood edge, more room, the oxblood dot) carry deliberate weight. So the civic
+and the gating rows (a deep oxblood-frame reading edge, more room, the bright oxblood alarm dot) carry deliberate weight. So the civic
 record is not decoration on top of warming, it is the answer to "the composition could be improved".
 
 ## Guardrails (so the docs have no holes and nothing slips into slop)
@@ -168,7 +168,8 @@ This restyles the components the layout pass already shipped, it does not re-arc
 `DocumentHeader` becomes the masthead. The matrix grid (in the matrix and `RequirementSpine`) gains the
 reference column and the rule hierarchy. `RequirementPanel` gains the lifted sheet, the ruled margin, the
 pressed evidence block, and the stamp on approve. The deal-breaker rows and the flattened `GatingHero`
-gain weight and the 2px oxblood edge. `SectionNav` is unchanged. The material tokens above go into
+gain weight; the reading edge is the deep `oxblood-frame` tone (the `GatingHero` spine at 3px) while the
+bright `oxblood` carries the dots and the bead — a fill/frame two-tone. `SectionNav` is unchanged. The material tokens above go into
 `globals.css` `@theme`. Where this document and the build disagree, treat it as intent to grow into, and
 raise anything expensive on the frontend comms board.
 

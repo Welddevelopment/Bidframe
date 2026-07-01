@@ -47,6 +47,8 @@ export function BookDemoButton({
     return (
       <a
         href={BOOKING_URL}
+        target="_blank"
+        rel="noopener noreferrer"
         onClick={() => track("demo_cta_click", { location })}
         className={`rounded-sm text-sm underline decoration-hairline decoration-1 underline-offset-4 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${linkTone} ${className}`}
       >
@@ -63,6 +65,8 @@ export function BookDemoButton({
   return (
     <a
       href={BOOKING_URL}
+      target="_blank"
+      rel="noopener noreferrer"
       onClick={() => track("demo_cta_click", { location })}
       className={`group inline-flex items-center rounded-md font-semibold shadow-[var(--depth-control)] transition-[transform,background-color] active:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${sizeCls} ${btnTone} ${className}`}
     >

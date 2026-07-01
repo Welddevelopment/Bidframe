@@ -17,6 +17,7 @@ import {
   type GroupKey,
 } from "@/lib/triage";
 import { AppMain } from "./AppMain";
+import { ApprovalStamp } from "./ApprovalStamp";
 import { ComplianceMatrix } from "./ComplianceMatrix";
 import { DocumentHeader } from "./DocumentHeader";
 import { GatingHero } from "./GatingHero";
@@ -100,6 +101,21 @@ function exportRequirements(requirements: Requirement[]) {
   link.download = "bidframe-compliance-matrix.csv";
   link.click();
   URL.revokeObjectURL(url);
+}
+
+// The stamp time for the completion summary: the latest decision made this
+// session, formatted HH:MM. Undefined when nothing carries a timestamp, so the
+// stamp falls back to its own default.
+function latestDecisionTimeLabel(requirements: Requirement[]): string | undefined {
+  const stamps = requirements
+    .map((req) => req.decision?.timestamp)
+    .filter((t): t is string => Boolean(t))
+    .sort();
+  const latest = stamps.at(-1);
+  if (!latest) return undefined;
+  const when = new Date(latest);
+  if (Number.isNaN(when.getTime())) return undefined;
+  return when.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
 }
 
 export function MatrixView({ title }: { title: string }) {
@@ -276,6 +292,7 @@ export function MatrixView({ title }: { title: string }) {
                 approved={requirements.filter((req) => req.status === "accepted").length}
                 edited={requirements.filter((req) => req.status === "edited").length}
                 flagged={requirements.filter((req) => req.status === "flagged").length}
+                time={latestDecisionTimeLabel(requirements)}
                 onExport={() => exportRequirements(requirements)}
               />
             )}
@@ -318,37 +335,60 @@ export function MatrixView({ title }: { title: string }) {
   );
 }
 
+// The completion payoff (frontend-ux-audit #8): a Civic Record "record filed"
+// sheet that marks the end of the loop and doubles as the export surface. The
+// stamp is honest — it only lands when nothing is left flagged; an open concern
+// gets a quiet line instead of a false victory. No signal colour, no confetti:
+// the forest approval stamp is the one earned celebration.
 function CompletionSummary({
   total,
   approved,
   edited,
   flagged,
+  time,
   onExport,
 }: {
   total: number;
   approved: number;
   edited: number;
   flagged: number;
+  time?: string;
   onExport: () => void;
 }) {
+  const clean = flagged === 0;
+  const noun = total === 1 ? "requirement" : "requirements";
+
   return (
-    <section className="mb-8 border-y-2 border-ink py-5">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <section className="surface-grain mb-8 rounded-lg border border-hairline bg-paper-raised px-6 py-6 shadow-[var(--depth-sheet)]">
+      <p className="font-mono text-xs font-medium uppercase tracking-wide text-ink-muted">
+        {clean ? "Review complete" : "Ready to file"}
+      </p>
+      <div className="mt-3 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 className="font-serif text-2xl font-semibold text-ink">
-            Matrix ready to export
+          <h2 className="font-serif text-2xl font-semibold leading-tight text-ink">
+            {total} {noun} reviewed
           </h2>
-          <p className="mt-1 text-sm text-ink-muted">
-            {total} requirements reviewed: {approved} approved, {edited} edited,
-            {flagged} flagged.
+          <p className="mt-2 font-mono text-sm text-ink-muted">
+            {approved} approved · {edited} edited
+            {flagged > 0 ? ` · ${flagged} flagged` : ""}
           </p>
+          {clean ? (
+            <div className="mt-4">
+              <ApprovalStamp time={time} />
+            </div>
+          ) : (
+            <p className="mt-3 max-w-[52ch] text-sm leading-relaxed text-ink-muted">
+              {flagged} flagged for follow-up. Resolve or note them, then export
+              the response.
+            </p>
+          )}
         </div>
         <button
           type="button"
           onClick={onExport}
-          className="shrink-0 rounded-md bg-forest px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-forest-hover"
+          className="shrink-0 self-start rounded-md bg-forest px-4 py-2 text-sm font-semibold text-paper shadow-[var(--depth-control)] transition-colors hover:bg-forest-hover sm:self-auto"
         >
-          Export CSV
+          Export response
         </button>
       </div>
     </section>

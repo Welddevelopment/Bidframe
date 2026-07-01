@@ -18,14 +18,19 @@ const TIER_WORD: Record<ConfidenceTier, string> = {
 // The hue (for the leveled gradient fill) and the fill level that keeps each
 // tier legible with colour switched off (the SLOP-CHECK greyscale test).
 const TIER_HEX: Record<ConfidenceTier, string> = {
-  oxblood: "#8a2d2a",
+  oxblood: "#b42d24",
   amber: "#bc6b2e",
   yellow: "#d2a435",
   "light-green": "#6f9a57",
 };
 
+// Fill level keeps each tier legible with colour switched off (the SLOP-CHECK
+// greyscale test). Oxblood is the exception: it is a full-fill ALARM state, not
+// the bottom of a ramp — a low fill read as a "low battery". It is distinguished
+// from the (also full) light-green by its bold "!" glyph and its word, so no
+// tier relies on colour alone.
 const TIER_FILL: Record<ConfidenceTier, number> = {
-  oxblood: 30,
+  oxblood: 100,
   amber: 52,
   yellow: 76,
   "light-green": 100,
@@ -66,16 +71,33 @@ export function ConfidenceIndicator({
   const fill = TIER_FILL[tier];
   const px = size === "sm" ? 14 : 20;
 
+  // Oxblood is the one alarm tier: a full, saturated bead carrying a bold paper
+  // "!" so it reads as STOP-and-look at dot size and in greyscale (the glyph,
+  // not the hue, carries it). Every other tier is a plain leveled bead.
+  const isAlarm = tier === "oxblood";
   const dot = (
     <span
-      className="conf-dot inline-block shrink-0"
+      className="conf-dot inline-flex shrink-0 items-center justify-center"
       aria-hidden
       style={{
         width: px,
         height: px,
         background: `linear-gradient(to top, ${hex} 0%, ${hex} ${fill}%, var(--paper-recessed) ${fill}%, var(--paper-recessed) 100%)`,
       }}
-    />
+    >
+      {isAlarm && (
+        <span
+          style={{
+            color: "var(--paper)",
+            fontWeight: 700,
+            fontSize: Math.round(px * 0.62),
+            lineHeight: 1,
+          }}
+        >
+          !
+        </span>
+      )}
+    </span>
   );
 
   if (variant === "dot") {

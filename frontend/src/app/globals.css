@@ -28,8 +28,12 @@
   --color-hairline: #e4ddce;
 
   /* Signal palette — status carriers only (confidence dot, thin answer
-     edge, status cell). Never on a button, background, heading, or nav. */
-  --color-signal-oxblood: #8a2d2a;
+     edge, status cell). Never on a button, background, heading, or nav.
+     Two-tone alarm: the bright oxblood is the FILL/mark (bead, dot, status
+     word); the deep oxblood-frame is EDGES/borders only, so a deal-breaker
+     reads as a bright alarm held inside a heavier frame. */
+  --color-signal-oxblood: #b42d24;
+  --color-signal-oxblood-frame: #8a2d2a;
   --color-signal-amber: #bc6b2e;
   --color-signal-yellow: #d2a435;
   --color-signal-light-green: #6f9a57;
