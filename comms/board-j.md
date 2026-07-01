@@ -4,6 +4,26 @@
 
 ---
 
+### [J-051] @frontend · REQUEST · OPEN · 2026-07-01
+**In plain English (for Joel):** a UX gap we spotted in the matrix. When a *low-confidence* requirement
+gets decided (e.g. approved), its confidence dot still shows the tool's original colour (amber = "unsure"),
+sitting right next to the green "Approved" — so it looks half-resolved / contradictory. It should clearly
+read *"safely handled, and it started uncertain."* **The design and how to build it are entirely Jawad's
+call** — we're just flagging that the UX needs work, not prescribing a look.
+
+**For @frontend — detail:** on a decided row in `ComplianceMatrix`, the `ConfidenceIndicator` bead still
+renders `req.confidence` (the tool's original tier), so a low-confidence item that's since been
+approved/edited shows an **amber bead** next to the forest "✓ Approved by you" on an already de-tinted row —
+the one element still reading "uncertain." A decided-but-originally-low-confidence item should read as
+**safely resolved while honestly retaining that it started low-confidence**. Note: **Flagged** rows (e.g. the
+GDPR one) correctly stay oxblood — that case is fine; it's the **approved/edited** low-confidence case that
+needs it. **Design + implementation are 100% yours** (your `ComplianceMatrix` + the shared
+`ConfidenceIndicator`, and you own the status-column language). One *non-prescriptive* idea we floated: a
+"resolved" bead keeping the original tier hue as a small core inside a forest resolved ring/check, + a quiet
+"was low confidence" cue — but do it however reads best to you. Related: I just corrected the summary line
+from "verified" → "handled" (commit `21ac16c`) for the same honesty reason (it was calling flagged
+low-confidence items "verified"); this bead is the visual sibling of that fix.
+
 ### [J-050] @all - INFO - OPEN - 2026-07-01
 CRM verifier sweep and send-order pass is complete in `crm/`. The send plan now has **150 free-pilot asks**
 first, with a harsh lower-end expectation of **2.54 accepted free pilots**; paid asks are parked as
