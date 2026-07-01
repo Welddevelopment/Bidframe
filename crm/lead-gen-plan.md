@@ -142,3 +142,17 @@ local-authority route was visible. Next loop should start from these tighter pat
 search: compliance operators with direct public-estate pages; NEUPC/SPA/NHS/SBS/Fusion21-style framework suppliers;
 and school ICT/OH/training suppliers with public email plus framework proof. If the next pass falls below roughly
 half High leads, pause and re-plan before continuing.
+
+## Round 11 - final push to L-0400 (2026-07-01)
+Added 45 verified email-bearing leads and reached **L-0400**. Quality stayed high: 36 High and 9 Medium. The best
+yield came from three tight patterns rather than broad search:
+- **Compliance operators:** lift frameworks, drainage, water hygiene, asbestos, line marking, winter maintenance
+  and gates/barriers with explicit public-sector pages or framework listings.
+- **Framework built-environment SMEs:** NEUPC minor works, WPA/LHC roofing, ProcurePublic retrofit/asbestos,
+  Fusion21 repairs/refurbishment, NHS SBS/Pagabo modular and hard-FM routes.
+- **Education/professional services:** school ICT suppliers on Everything ICT/KCS/CCS/YPO/Pagabo-style routes,
+  Doncaster AP framework providers, regional occupational-health suppliers on RM6296/RM6386, and apprenticeship
+  providers with DfE marketplace proof.
+
+Hit rate is still usable but duplicate pressure is now obvious. If lead gen continues past L-0400, start with a
+fresh detailed plan and mine by specific framework/supplier lists, not generic sector search.
