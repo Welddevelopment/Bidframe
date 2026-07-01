@@ -12,18 +12,18 @@ import {
   confidenceTier,
   type ConfidenceTier,
 } from "./ConfidenceIndicator";
-import { CategoryDot } from "./CategoryTag";
+import { CategoryTag } from "./CategoryTag";
 
 // The resting row wash, keyed to the confidence tier so the worklist carries a
 // calm colour gradient: the riskier the row, the warmer the tint; confident (and
 // decided) rows rest clean. Full literal classes so Tailwind sees every one.
 const TIER_WASH: Record<ConfidenceTier, string> = {
   oxblood:
-    "bg-[color-mix(in_oklab,var(--color-signal-oxblood)_5%,transparent)] hover:bg-[color-mix(in_oklab,var(--color-signal-oxblood)_9%,transparent)]",
+    "bg-[color-mix(in_oklab,var(--color-signal-oxblood)_7%,transparent)] hover:bg-[color-mix(in_oklab,var(--color-signal-oxblood)_12%,transparent)]",
   amber:
-    "bg-[color-mix(in_oklab,var(--color-signal-amber)_4%,transparent)] hover:bg-[color-mix(in_oklab,var(--color-signal-amber)_8%,transparent)]",
+    "bg-[color-mix(in_oklab,var(--color-signal-amber)_6%,transparent)] hover:bg-[color-mix(in_oklab,var(--color-signal-amber)_11%,transparent)]",
   yellow:
-    "bg-[color-mix(in_oklab,var(--color-signal-yellow)_4%,transparent)] hover:bg-[color-mix(in_oklab,var(--color-signal-yellow)_7%,transparent)]",
+    "bg-[color-mix(in_oklab,var(--color-signal-yellow)_6%,transparent)] hover:bg-[color-mix(in_oklab,var(--color-signal-yellow)_10%,transparent)]",
   "light-green": "hover:bg-paper-raised",
 };
 
@@ -182,7 +182,7 @@ function MatrixRow({
           low-confidence note are revealed only on hover or keyboard focus. */}
       <div className="min-w-0 pt-0.5">
         <div className="flex min-w-0 items-center gap-2">
-          <CategoryDot category={req.category} />
+          <CategoryTag category={req.category} className="shrink-0" />
           <p
             className={`min-w-0 truncate leading-snug ${
               req.is_gating ? "font-medium text-ink" : "text-ink"
