@@ -7,7 +7,6 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
-import Link from "next/link";
 import { useRequirements } from "@/context/RequirementsContext";
 import { isApiEnabled } from "@/lib/api";
 import type { Requirement } from "@/types/requirement";
@@ -20,6 +19,7 @@ import { AppMain } from "./AppMain";
 import { ComplianceMatrix } from "./ComplianceMatrix";
 import { DocumentHeader } from "./DocumentHeader";
 import { GatingHero } from "./GatingHero";
+import { NoTenderLoaded } from "./NoTenderLoaded";
 import { RequirementDrawer } from "./RequirementDrawer";
 import { RequirementPanel } from "./RequirementPanel";
 import { RequirementSpine } from "./RequirementSpine";
@@ -270,31 +270,6 @@ export function MatrixView({ title }: { title: string }) {
         />
       )}
     </>
-  );
-}
-
-// Shown on the live product when no tender has been loaded yet — an honest empty
-// state instead of the sample matrix, pointing the user at the upload.
-function NoTenderLoaded() {
-  return (
-    <div className="mx-auto flex max-w-lg flex-col items-center py-20 text-center">
-      <p className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-ink-muted">
-        No tender loaded
-      </p>
-      <h2 className="mt-3 font-serif text-2xl font-semibold text-ink">
-        Nothing to review yet
-      </h2>
-      <p className="mt-2 text-sm leading-relaxed text-ink-muted">
-        Upload a tender and Bidframe pulls out every requirement, flags the
-        deal-breakers, and brings them here for review.
-      </p>
-      <Link
-        href="/upload"
-        className="mt-6 inline-flex items-center rounded-md bg-forest px-5 py-2.5 text-sm font-semibold text-paper shadow-[var(--depth-control)] transition-colors hover:bg-forest-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
-      >
-        Upload a tender
-      </Link>
-    </div>
   );
 }
 
