@@ -15,6 +15,12 @@ import {
   isApiEnabled,
   patchRequirement,
 } from "@/lib/api";
+import {
+  loadAnswerStore,
+  mergeStoreIntoRequirements,
+  projectStore,
+  saveAnswerStore,
+} from "@/lib/answer-store";
 
 const SAVE_FAILED =
   "Couldn't save that change to the server. It shows here, but may not have been kept. Check your connection, then redo it.";
@@ -71,6 +77,13 @@ export function RequirementsProvider({
   // A transient notice (e.g. a failed save) shown as a small toast.
   const [notice, setNotice] = useState<string | null>(null);
 
+  // Where the answers response workspace persists a human's draft edits + gap
+  // answers (localStorage; there's no backend endpoint for answer text yet). Key
+  // by the live tender when one is loaded, else the seed's id so the mock/demo
+  // build keeps edits across a refresh. A frozen /demo showcase (initialTender)
+  // stays read-only: null disables persistence entirely.
+  const persistKey = tenderId ?? (initialTender ? null : seed.tender_id);
+
   function updateRequirement(id: string, patch: Partial<Requirement>) {
     setRequirements((prev) =>
       prev.map((req) => (req.id === id ? { ...req, ...patch } : req))
@@ -80,7 +93,11 @@ export function RequirementsProvider({
   // Replace the in-memory tender with one fetched from the live backend.
   async function loadTender(id: string) {
     const tender = await getTender(id);
-    setRequirements(tender.requirements);
+    // Merge any locally-saved answer edits + gap answers for this tender back
+    // over the fresh server data (evidence and machine fields stay from the API).
+    setRequirements(
+      mergeStoreIntoRequirements(tender.requirements, loadAnswerStore(id))
+    );
     setCapabilityDocs(tender.capability_docs ?? []);
     setTenderId(id);
     try {
@@ -117,6 +134,27 @@ export function RequirementsProvider({
       });
     }
   }, [initialTender]);
+
+  // Restore locally-saved answer edits for the mock/demo default. The live app
+  // restores through loadTender (keyed by the live tender id) instead, and a
+  // frozen /demo showcase stays read-only. Runs once on mount.
+  useEffect(() => {
+    if (initialTender || isApiEnabled()) return;
+    const stored = loadAnswerStore(seed.tender_id);
+    if (Object.keys(stored).length === 0) return;
+    // Synchronous merge over the seed on mount; deps are intentionally empty so
+    // it runs exactly once (mirrors the sessionStorage restore above).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setRequirements((prev) => mergeStoreIntoRequirements(prev, stored));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Persist the human-mutable subset (edited/written answers + gap answers)
+  // whenever requirements change. No-op when persistence is disabled (frozen
+  // demo) or on the server.
+  useEffect(() => {
+    saveAnswerStore(persistKey, projectStore(requirements));
+  }, [requirements, persistKey]);
 
   // Auditable autofill: ask the API to (re)draft grounded answers for the loaded
   // tender, optionally against freshly-uploaded capability docs, then swap the enriched
@@ -183,15 +221,30 @@ export function RequirementsProvider({
   }
 
   // Human revises the drafted answer — record it as human-edited and keep the
-  // deprecated draft_answer alias in sync. (No backend endpoint yet — in-memory.)
+  // deprecated draft_answer alias in sync. When no answer exists yet (a
+  // requirement the autofill left blank), CREATE one from the human's text so
+  // it can be drafted from scratch here. A hand-written answer carries no
+  // evidence refs, so it honestly reads as unbacked until backed. (No backend
+  // endpoint yet — in-memory + localStorage.)
   function editAnswer(id: string, text: string) {
     setRequirements((prev) =>
       prev.map((req) => {
-        if (req.id !== id || !req.answer) return req;
+        if (req.id !== id) return req;
+        const base = req.answer ?? {
+          text: "",
+          state: "empty" as const,
+          evidence_refs: [],
+          confidence: 0.5,
+        };
         return {
           ...req,
           draft_answer: text,
-          answer: { ...req.answer, text, state: "human_edited" },
+          answer: {
+            ...base,
+            text,
+            state: "human_edited",
+            confidence: Math.max(base.confidence, 0.7),
+          },
         };
       })
     );
@@ -261,7 +314,7 @@ function SaveNotice({
   onDismiss: () => void;
 }) {
   return (
-    <div className="fixed inset-x-0 bottom-4 z-[70] flex justify-center px-4">
+    <div className="no-print fixed inset-x-0 bottom-4 z-[70] flex justify-center px-4">
       <div className="surface-grain flex max-w-md items-start gap-3 rounded-lg border border-l-2 border-hairline border-l-signal-oxblood-frame bg-paper-raised p-3 shadow-[var(--depth-sheet)]">
         <p className="text-sm leading-snug text-ink">{message}</p>
         <button

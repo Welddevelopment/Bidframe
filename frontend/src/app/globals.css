@@ -237,3 +237,50 @@ body {
 .graph-canvas .react-flow__edge.animated path {
   animation-duration: 1.6s;
 }
+
+/* === Print: the "Export as PDF" path for the answers response pack. The screen
+   is a working surface; the print is the document. Strip the app chrome and all
+   interactive controls (anything marked .no-print), flatten the warm paper to
+   plain white/black for ink economy and legibility, drop the grain + shadows,
+   let the prose run the full page width, and keep each answer card whole across
+   page breaks. Evidence excerpts are force-shown via `hidden print:block` on the
+   excerpt itself (AnswerPanel), so every citation lands on paper. */
+@media print {
+  /* Chrome + interactive controls never print. */
+  header,
+  nav,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Flatten the register to plain paper. */
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .bg-paper,
+  .bg-paper-raised,
+  .bg-paper-recessed {
+    background: #ffffff !important;
+  }
+
+  /* No material effects on paper: no grain overlay, no shadows, no tilt. */
+  .surface-grain::after {
+    display: none !important;
+  }
+  * {
+    box-shadow: none !important;
+  }
+
+  /* Let the response prose use the full page instead of the 64ch measure. */
+  .max-w-\[64ch\] {
+    max-width: none !important;
+  }
+
+  /* Keep each answer whole across page breaks. */
+  .answer-card {
+    break-inside: avoid;
+    border-top: 1px solid #cccccc !important;
+    padding-top: 1rem !important;
+  }
+}

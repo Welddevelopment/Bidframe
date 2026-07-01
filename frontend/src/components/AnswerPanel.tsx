@@ -27,18 +27,14 @@ export function AnswerPanel({ requirement }: { requirement: Requirement }) {
     <div className="flex flex-col gap-4 sm:flex-row sm:gap-0">
       {/* Prose column: the warm reading measure, left-aligned, capped at 64ch. */}
       <div className="min-w-0 flex-1 sm:pr-8">
-        {!answer ? (
-          <p className="max-w-[64ch] text-sm leading-relaxed text-ink-muted">
-            No draft yet. Run autofill and we&rsquo;ll draft an answer from your
-            documents.
-          </p>
-        ) : editing ? (
+        {editing ? (
           <div className="flex max-w-[64ch] flex-col gap-2.5">
             <textarea
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
               rows={5}
               autoFocus
+              placeholder="Write your answer"
               className="w-full resize-none border border-hairline px-3 py-2 text-sm leading-relaxed text-ink outline-none focus:border-forest focus:ring-1 focus:ring-forest"
             />
             <div className="flex gap-2">
@@ -55,7 +51,7 @@ export function AnswerPanel({ requirement }: { requirement: Requirement }) {
               <button
                 type="button"
                 onClick={() => {
-                  setDraft(answer.text);
+                  setDraft(answer?.text ?? "");
                   setEditing(false);
                 }}
                 className="px-3.5 py-1.5 text-sm text-ink-muted transition-colors hover:text-ink"
@@ -64,7 +60,7 @@ export function AnswerPanel({ requirement }: { requirement: Requirement }) {
               </button>
             </div>
           </div>
-        ) : (
+        ) : answer ? (
           <div className="max-w-[64ch] border-l-2 border-forest/50 pl-3">
             <p className="whitespace-pre-wrap text-sm leading-relaxed text-ink">
               {answer.text}
@@ -78,6 +74,23 @@ export function AnswerPanel({ requirement }: { requirement: Requirement }) {
               className="mt-2 text-xs text-forest transition-colors hover:text-forest-hover hover:underline"
             >
               Edit answer
+            </button>
+          </div>
+        ) : (
+          <div className="max-w-[64ch]">
+            <p className="text-sm leading-relaxed text-ink-muted">
+              No draft yet. Run autofill to draft from your documents, or write
+              this answer yourself.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setDraft("");
+                setEditing(true);
+              }}
+              className="mt-2 text-xs text-forest transition-colors hover:text-forest-hover hover:underline"
+            >
+              Write answer
             </button>
           </div>
         )}
@@ -135,11 +148,15 @@ function EvidenceRefItem({
       >
         Backed by your {doc}, p.{page}
       </button>
-      {open && (
-        <p className="mt-2 rounded bg-paper-recessed p-2.5 leading-relaxed text-accent shadow-[var(--depth-pressed)]">
-          &ldquo;{excerpt}&rdquo;
-        </p>
-      )}
+      {/* Collapsed on screen until opened, but always shown in print so the
+          exported PDF carries the verbatim citation. */}
+      <p
+        className={`mt-2 rounded bg-paper-recessed p-2.5 leading-relaxed text-accent shadow-[var(--depth-pressed)] ${
+          open ? "" : "hidden print:block"
+        }`}
+      >
+        &ldquo;{excerpt}&rdquo;
+      </p>
     </li>
   );
 }
