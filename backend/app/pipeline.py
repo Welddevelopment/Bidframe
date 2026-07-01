@@ -20,8 +20,15 @@ from typing import Callable, Optional
 from .chunk import chunk_doc
 from .extract import get_extractor
 from .graph import build_graph
-from .ingest import ingest_pdf
-from .schema import Answer, CapabilityDoc, OpenQuestion, Requirement, TenderResponse
+from .ingest import ingest_pdf, PDFIngestError
+from .schema import (
+    Answer,
+    CapabilityDoc,
+    OpenQuestion,
+    Requirement,
+    SourceDoc,
+    TenderResponse,
+)
 
 # The generalist's real reconcile/dedupe + confidence routing lives in the top-level
 # `engine/` package (engine.reconcile). Import it when it's on the path — locally and
@@ -136,17 +143,25 @@ def _autofill(requirements: list[Requirement], capability_folder=None, answerer=
         return requirements, []
 
 
-def run_pipeline(
-    pdf_path: str,
+def run_pipeline_multi(
+    docs: "list[tuple[str, str, str]]",
     tender_id: str,
     title: str,
     on_progress: "Optional[Callable[..., None]]" = None,
 ) -> TenderResponse:
-    """Full extraction pipeline for one tender PDF → TenderResponse (locked schema).
+    """Extraction pipeline for a tender PACK (one or more PDFs) → TenderResponse.
 
-    on_progress(stage, message, progress, **counts) is called at each stage so the
-    upload UI can show live progress (the "watch it read your tender" experience).
-    It is best-effort: a failing callback never breaks extraction."""
+    `docs` is a list of (doc_id, pdf_path, filename). Every document is ingested and
+    extracted together, but reconciled INDEPENDENTLY so a requirement that appears in
+    two documents is never wrongly merged across them; each requirement keeps accurate
+    provenance (source_doc_id + source_filename + local source_page). Requirements are
+    then re-numbered across the pack, the graph is built over the combined text, and
+    autofill runs once.
+
+    on_progress(stage, message, progress, **counts) streams live progress; it is
+    best-effort and never breaks extraction. Stages stay monotonic across the pack
+    (reading → chunking → extract → reconcile → graph → autofill) so the UI never
+    appears to run backwards."""
 
     def emit(stage: str, message: str, progress: float, **extra) -> None:
         if on_progress is None:
@@ -156,93 +171,114 @@ def run_pipeline(
         except Exception:  # progress is cosmetic — never let it break the pipeline
             pass
 
-    emit("reading", "Reading the document", 0.05)
-    doc = ingest_pdf(pdf_path)
-    emit("reading", "Reading the document", 0.10, page_count=doc.page_count)
-
-    chunks = chunk_doc(doc)
-    emit(
-        "chunking",
-        "Splitting into sections for careful reading",
-        0.15,
-        page_count=doc.page_count,
-        section_count=len(chunks),
-    )
     extractor = get_extractor()
+    n = max(1, len(docs))
 
-    raws: list[dict] = []
-    total = len(chunks) or 1
-    for idx, ch in enumerate(chunks, start=1):
+    # 1. Reading — ingest every document (skip any that won't parse, keep the rest).
+    ingested: list[tuple[str, object, str]] = []  # (doc_id, IngestedDoc, filename)
+    skipped: list[str] = []
+    for di, (doc_id, path, filename) in enumerate(docs):
+        label = filename if n == 1 else f"{filename} ({di + 1} of {n})"
+        emit("reading", f"Reading {label}", 0.05 + 0.05 * (di / n),
+             doc_index=di + 1, doc_total=n)
         try:
-            raws.extend(extractor.extract_chunk(ch))
-        except Exception as exc:
-            print(f"[pipeline] chunk {ch.id} (pp.{ch.page_start}-{ch.page_end}) failed ({exc}); skipping")
-        # Bar is driven by real chunk completion; raw_count is the honest running
-        # tally of candidates found (it settles lower after the merge step below).
-        emit(
-            "extract",
-            "Extracting requirements",
-            0.15 + 0.60 * (idx / total),
-            done=idx,
-            total=total,
-            raw_count=len(raws),
-        )
+            ingested.append((doc_id, ingest_pdf(path), filename))
+        except PDFIngestError as exc:
+            print(f"[pipeline] skipping {filename}: {exc}")
+            skipped.append(filename)
+    if not ingested:
+        raise PDFIngestError("None of the uploaded documents could be read.")
 
-    reconciled = _reconcile(raws)
-    emit(
-        "reconcile",
-        "Merging duplicates across sections",
-        0.82,
-        requirement_count=len(reconciled),
-    )
-    full_text = "\n".join(p.text for p in doc.pages)
+    total_pages = sum(d.page_count for _, d, _ in ingested)
+    emit("reading", "Reading the documents", 0.12, page_count=total_pages, doc_total=n)
 
+    # 2. Chunking — chunk each document, remembering which document each chunk is from.
+    doc_chunks: list[tuple[str, str, object, list]] = []
+    total_chunks = 0
+    for doc_id, doc, filename in ingested:
+        chunks = chunk_doc(doc)
+        doc_chunks.append((doc_id, filename, doc, chunks))
+        total_chunks += len(chunks)
+    emit("chunking", "Splitting into sections for careful reading", 0.15,
+         page_count=total_pages, section_count=total_chunks)
+
+    # 3. Extract — across all documents, tagging raw candidates by document.
+    raws_by_doc: dict[str, list[dict]] = {}
+    done = 0
+    total = total_chunks or 1
+    for doc_id, filename, doc, chunks in doc_chunks:
+        bucket = raws_by_doc.setdefault(doc_id, [])
+        for ch in chunks:
+            try:
+                bucket.extend(extractor.extract_chunk(ch))
+            except Exception as exc:
+                print(f"[pipeline] chunk {ch.id} (pp.{ch.page_start}-{ch.page_end}) failed ({exc}); skipping")
+            done += 1
+            raw_total = sum(len(v) for v in raws_by_doc.values())
+            emit("extract", "Extracting requirements", 0.15 + 0.60 * (done / total),
+                 done=done, total=total, raw_count=raw_total)
+
+    # 4. Reconcile — per document (never merge a duplicate across documents), then
+    #    concatenate + re-number across the whole pack.
     requirements: list[Requirement] = []
-    for i, r in enumerate(reconciled, start=1):
-        requirements.append(
-            Requirement(
-                # Globally unique (tender-prefixed) so two tenders never collide on
-                # the requirements PK and PATCH /requirements/{id} is unambiguous.
-                id=f"{tender_id}-r{i:04d}",
-                text=r["text"],
-                source_page=r["source_page"],
-                source_clause=r.get("source_clause"),
-                source_excerpt=r["source_excerpt"],
-                type=r["type"],
-                is_gating=r["is_gating"],
-                category=r["category"],
-                confidence=r["confidence"],
-                status="pending",
-                needs_review=_route_confidence(r["type"], r["confidence"]),
-                decision=None,
-                criteria_ref=None,
-                depends_on=[],
-                draft_answer=None,
+    source_docs: list[SourceDoc] = []
+    full_texts: list[str] = []
+    seq = 0
+    for doc_id, filename, doc, _chunks in doc_chunks:
+        for r in _reconcile(raws_by_doc.get(doc_id, [])):
+            seq += 1
+            requirements.append(
+                Requirement(
+                    # Tender-prefixed + globally sequential so the PK is unambiguous.
+                    id=f"{tender_id}-r{seq:04d}",
+                    text=r["text"],
+                    source_page=r["source_page"],
+                    source_clause=r.get("source_clause"),
+                    source_excerpt=r["source_excerpt"],
+                    type=r["type"],
+                    is_gating=r["is_gating"],
+                    category=r["category"],
+                    confidence=r["confidence"],
+                    status="pending",
+                    needs_review=_route_confidence(r["type"], r["confidence"]),
+                    decision=None,
+                    criteria_ref=None,
+                    depends_on=[],
+                    draft_answer=None,
+                    source_doc_id=doc_id,
+                    source_filename=filename,
+                )
             )
-        )
+        source_docs.append(SourceDoc(doc_id=doc_id, filename=filename, page_count=doc.page_count))
+        full_texts.append("\n".join(p.text for p in doc.pages))
+    emit("reconcile", "Merging duplicates", 0.82, requirement_count=len(requirements))
 
-    # Graph edges: criteria_ref + depends_on (is_gating already set). Conservative.
-    build_graph(requirements, full_text)
+    # 5. Graph + autofill over the combined pack.
+    build_graph(requirements, "\n".join(full_texts))
     deal_breakers = sum(1 for r in requirements if r.is_gating)
-    emit(
-        "graph",
-        "Mapping award criteria and flagging deal-breakers",
-        0.90,
-        requirement_count=len(requirements),
-        deal_breaker_count=deal_breakers,
-    )
+    emit("graph", "Mapping award criteria and flagging deal-breakers", 0.90,
+         requirement_count=len(requirements), deal_breaker_count=deal_breakers)
 
-    # Auditable autofill: grounded answer-draft per requirement (mock answerer = free + instant).
     requirements, capability_docs = _autofill(requirements)
-    emit(
-        "autofill",
-        "Drafting first answers from your evidence",
-        0.97,
-        requirement_count=len(requirements),
-        deal_breaker_count=deal_breakers,
-    )
+    emit("autofill", "Drafting first answers from your evidence", 0.97,
+         requirement_count=len(requirements), deal_breaker_count=deal_breakers)
 
     return TenderResponse(
         tender_id=tender_id, title=title, requirements=requirements,
-        capability_docs=capability_docs,
+        capability_docs=capability_docs, source_docs=source_docs,
+    )
+
+
+def run_pipeline(
+    pdf_path: str,
+    tender_id: str,
+    title: str,
+    on_progress: "Optional[Callable[..., None]]" = None,
+) -> TenderResponse:
+    """Single-document convenience wrapper over run_pipeline_multi (the pack of one)."""
+    return run_pipeline_multi(
+        [("d1", pdf_path, Path(pdf_path).name)],
+        tender_id=tender_id,
+        title=title,
+        on_progress=on_progress,
     )

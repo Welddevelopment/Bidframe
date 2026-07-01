@@ -180,6 +180,8 @@ function RequirementZone({ requirement }: { requirement: Requirement }) {
             page={requirement.source_page}
             clause={requirement.source_clause}
             excerpt={requirement.source_excerpt}
+            docId={requirement.source_doc_id ?? null}
+            filename={requirement.source_filename ?? null}
           />
         </div>
       </div>
@@ -193,19 +195,29 @@ function SourceRef({
   page,
   clause,
   excerpt,
+  docId,
+  filename,
 }: {
   page: number;
   clause: string | null;
   excerpt: string;
+  docId?: string | null;
+  filename?: string | null;
 }) {
   const { tenderId } = useRequirements();
   const [open, setOpen] = useState(false);
   const ref = clause ? `p.${page}, ${clause}` : `p.${page}`;
-  // With a live tender loaded, link to the original PDF opened at this page.
-  const pdfUrl = tenderId ? tenderPdfPageUrl(tenderId, page) : "";
+  // With a live tender loaded, link to the original PDF (the right document in the
+  // pack) opened at this page.
+  const pdfUrl = tenderId ? tenderPdfPageUrl(tenderId, page, docId) : "";
 
   return (
     <div className="font-mono text-xs leading-relaxed">
+      {filename && (
+        <p className="truncate text-ink-muted/70" title={filename}>
+          {filename}
+        </p>
+      )}
       <button
         type="button"
         aria-expanded={open}

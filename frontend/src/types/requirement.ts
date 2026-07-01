@@ -55,6 +55,15 @@ export interface Requirement {
   // Optional/additive — the matrix renders without these; the answer + gap-interview UI adopts them incrementally.
   answer?: Answer | null;
   open_questions?: OpenQuestion[];
+  // Multi-file tender packs (#4): which document in the pack this came from.
+  source_doc_id?: string | null;
+  source_filename?: string | null;
+}
+
+export interface SourceDoc {
+  doc_id: string;
+  filename: string;
+  page_count: number;
 }
 
 export interface Tender {
@@ -62,4 +71,5 @@ export interface Tender {
   title: string;
   requirements: Requirement[];
   capability_docs?: CapabilityDoc[]; // bidder's uploaded evidence; empty until any are uploaded
+  source_docs?: SourceDoc[]; // the documents in the tender pack (#4)
 }

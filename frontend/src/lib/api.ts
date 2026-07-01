@@ -12,9 +12,14 @@ export function isApiEnabled(): boolean {
 // Absolute URL to the original tender PDF opened at a given page — browser PDF
 // viewers honour the #page fragment. Empty string when no live API is configured
 // (the mock/demo has no stored PDF), so callers can hide the link.
-export function tenderPdfPageUrl(tenderId: string, page: number): string {
+export function tenderPdfPageUrl(
+  tenderId: string,
+  page: number,
+  docId?: string | null
+): string {
   if (!BASE) return "";
-  return `${BASE}/tenders/${tenderId}/pdf#page=${page}`;
+  const doc = docId ? `?doc=${docId}` : "";
+  return `${BASE}/tenders/${tenderId}/pdf${doc}#page=${page}`;
 }
 
 interface UploadJobResult {
@@ -74,11 +79,11 @@ async function apiError(res: Response, fallback: string): Promise<ApiError> {
 // background job; this returns { jobId, tenderId } immediately. Poll getJob(jobId)
 // for live progress, then load the tender once the job is done.
 export async function uploadTender(
-  file: File,
+  files: File[],
   title?: string
 ): Promise<{ jobId: string; tenderId: string }> {
   const form = new FormData();
-  form.append("file", file);
+  for (const file of files) form.append("files", file);
   if (title) form.append("title", title);
 
   const res = await fetch(`${BASE}/tenders/upload`, {
