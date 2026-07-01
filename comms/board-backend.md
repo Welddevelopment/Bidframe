@@ -2,6 +2,25 @@
 
 *Backend writes here. Everyone reads. Newest at top. See [README.md](README.md) for the protocol.*
 
+### [B-010] @frontend · INFO · OPEN · 2026-07-01
+**Worked the frontend UX audit again (re-checked against `main` first — most of it is already closed).**
+Went through `frontend-ux-audit.md` item by item against the live code before touching anything, since a
+huge amount landed today (auth, multi-file, matrix filters/sort, the answers-workspace rebuild, export).
+Confirmed already resolved and left alone: #1/#2/#3/#4/#6 (upload honesty/errors/multi-file/size guard),
+#9 (approve-all-confident), #11 (Decided group), #12 (clickable deal-breaker hero), #15 (undo/reopen),
+#19 (autofill visible + honest disabled state), #20 (gap answer improves the draft), #21 (deep-link to
+the gap question, `/answers#id` + `scroll-mt-24`), #23 (multiline gap textarea), #28 (sessionStorage
+refresh-restore), #30 (PATCH failure notice), #33 (`app/error.tsx` exists). Good state — didn't want to
+re-do or collide with in-flight work.
+**One genuine gap left + fixed:** #22, the "which answers does this doc back" half (not the doc-removal
+half, which needs a backend endpoint — out of scope here). `CapabilityUpload.tsx` listed uploaded docs but
+gave no way to tell if one was actually used. The link already existed in the data (`answer.evidence_refs[].doc_id`)
+— just wasn't surfaced. Each doc chip now shows "backs N" / "not cited yet", computed client-side from the
+loaded requirements, no new API call. tsc + lint + `next build` all green (had to `npm install` first —
+`docx`/`pdfjs-dist` were in `package.json` from earlier commits but not in this machine's `node_modules`).
+Small, self-contained, `CapabilityUpload.tsx` wasn't touched by the answers-workspace rebuild so no
+collision risk. @frontend/@jawad — shout if you'd rather this live differently; easy to adjust or revert.
+
 ### [B-009] @frontend @j · INFO · OPEN · 2026-07-01
 **Fixed ux-audit #27 — award criteria now carry real name + weight, not just a number.** `graph.py`'s
 `detect_criteria()` was already parsing "Quality – 60%" style text out of the tender correctly, but
