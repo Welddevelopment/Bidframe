@@ -579,6 +579,7 @@ export function ComplianceMatrix({
   selection,
   onApproveMany,
   onAnswerQuestion,
+  onEnterFocus,
 }: {
   groups: TriageGroup[];
   selectedId: string | null;
@@ -619,6 +620,9 @@ export function ComplianceMatrix({
   // Inline gap answering. Omitted on frozen surfaces: the unanswered-question
   // prompt renders as static text with no form.
   onAnswerQuestion?: (reqId: string, questionId: string, text: string) => void;
+  // Entry into focus mode (the full-screen one-at-a-time review). Optional so
+  // the frozen demo/hero surfaces render no affordance at all.
+  onEnterFocus?: () => void;
 }) {
   const [query, setQuery] = useState("");
   const normalisedQuery = query.trim().toLowerCase();
@@ -666,6 +670,16 @@ export function ComplianceMatrix({
           <span className="font-mono text-xs text-ink-muted">
             {shownCount} shown
           </span>
+          {onEnterFocus && (
+            <button
+              type="button"
+              onClick={onEnterFocus}
+              title="Review one at a time (Shift+F)"
+              className="font-mono text-xs text-ink-muted transition-colors hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+            >
+              Focus
+            </button>
+          )}
           {onLensChange && (
             <LensToggle lens={lens} onLensChange={onLensChange} />
           )}

@@ -8,7 +8,8 @@ import { ApprovalStamp } from "./ApprovalStamp";
 import { ConfidenceIndicator } from "./ConfidenceIndicator";
 import { CategoryTag } from "./CategoryTag";
 import { useRequirements } from "@/context/RequirementsContext";
-import { sourceDocUrl, tenderPdfPageUrl } from "@/lib/api";
+import { tenderPdfPageUrl } from "@/lib/api";
+import { requirementPdfUrl } from "@/lib/source-doc";
 import { SourceVerifyOverlay } from "./SourceVerifyOverlay";
 
 // The open-state panel internals (layout.md section 6). One sheet on a
@@ -22,9 +23,33 @@ import { SourceVerifyOverlay } from "./SourceVerifyOverlay";
 // same way by both the split (variant "split") and the drawer fallback
 // (variant "drawer").
 
+// "split" and "drawer" are the everyday registers; "focus" is the full-screen
+// one-at-a-time review (FocusMode) — same zones, a wider measure, larger serif
+// requirement text and more generous padding, plus e/f hotkeys into the note flow.
+export type PanelVariant = "split" | "drawer" | "focus";
+
+// Tailwind 4: every conditional class is a full literal string in a lookup map.
+const BODY_PADDING: Record<PanelVariant, string> = {
+  split: "flex-1 overflow-y-auto px-5 py-4 sm:px-6",
+  drawer: "flex-1 overflow-y-auto px-5 py-4 sm:px-6",
+  focus: "flex-1 overflow-y-auto px-6 py-8 sm:px-10 lg:px-14",
+};
+
+const REQUIREMENT_TEXT: Record<PanelVariant, string> = {
+  split: "max-w-[64ch] text-base leading-relaxed text-ink",
+  drawer: "max-w-[64ch] text-base leading-relaxed text-ink",
+  focus: "max-w-[72ch] font-serif text-xl leading-relaxed text-ink sm:text-2xl",
+};
+
+const DECISION_PADDING: Record<PanelVariant, string> = {
+  split: "border-t border-hairline bg-paper-raised px-5 py-4 sm:px-6",
+  drawer: "border-t border-hairline bg-paper-raised px-5 py-4 sm:px-6",
+  focus: "border-t border-hairline bg-paper-raised px-6 py-5 sm:px-10 lg:px-14",
+};
+
 interface RequirementPanelProps {
   requirement: Requirement;
-  variant: "split" | "drawer";
+  variant: PanelVariant;
   onApprove: (id: string) => void;
   onEdit: (id: string, note: string) => void;
   onFlag: (id: string, note: string) => void;
@@ -75,8 +100,9 @@ export function RequirementPanel({
   onNext,
   onClose,
 }: RequirementPanelProps) {
-  // Esc returns to the resting matrix. The drawer shell owns its own Esc, so the
-  // panel only wires it up in the split where nothing else does.
+  // Esc returns to the resting matrix. The drawer shell and the focus overlay
+  // own their own Esc, so the panel only wires it up in the split where nothing
+  // else does.
   useEffect(() => {
     if (variant !== "split") return;
     function onKeyDown(event: KeyboardEvent) {
@@ -98,8 +124,12 @@ export function RequirementPanel({
       className="surface-grain flex h-full max-h-full flex-col bg-paper-raised"
       style={{ "--grain": "0.14" } as React.CSSProperties}
     >
-      <div className="flex-1 overflow-y-auto px-5 py-4 sm:px-6">
-        <RequirementZone key={`req-${requirement.id}`} requirement={requirement} />
+      <div className={BODY_PADDING[variant]}>
+        <RequirementZone
+          key={`req-${requirement.id}`}
+          requirement={requirement}
+          variant={variant}
+        />
 
         <Zone title="Drafted answer">
           {needsInput ? (
@@ -112,6 +142,7 @@ export function RequirementPanel({
 
       <DecisionZone
         key={`dec-${requirement.id}`}
+        variant={variant}
         requirement={requirement}
         statusWord={STATUS_WORD[requirement.status]}
         audit={auditLine(requirement)}
@@ -148,25 +179,25 @@ function Zone({
 // Zone 1: the requirement itself. The text carries the reading column on the
 // left; the gating/mandatory marker and the source ref (page and clause, with
 // the verbatim excerpt one expand away) run down the mono margin on the right.
-function RequirementZone({ requirement }: { requirement: Requirement }) {
+function RequirementZone({
+  requirement,
+  variant,
+}: {
+  requirement: Requirement;
+  variant: PanelVariant;
+}) {
   const unanswerable = requirement.is_gating && requirement.status === "pending";
   const { tenderId } = useRequirements();
   const [verifyOpen, setVerifyOpen] = useState(false);
   // The source document to verify against: the live tender's PDF, or a static demo
   // copy. Null in the plain mock (no matching document) — the button hides then.
-  const pdfUrl = sourceDocUrl({
-    tenderId,
-    docId: requirement.source_doc_id ?? null,
-    filename: requirement.source_filename ?? null,
-  });
+  const pdfUrl = requirementPdfUrl(tenderId, requirement);
 
   return (
     <Zone title="Requirement">
       <div className="flex flex-col gap-4 sm:flex-row sm:gap-0">
         <div className="min-w-0 flex-1 sm:pr-8">
-          <p className="max-w-[64ch] text-base leading-relaxed text-ink">
-            {requirement.text}
-          </p>
+          <p className={REQUIREMENT_TEXT[variant]}>{requirement.text}</p>
           <div className="mt-3">
             <ConfidenceIndicator
               confidence={requirement.confidence}
@@ -319,6 +350,7 @@ function NeedsInputNotice({ requirement }: { requirement: Requirement }) {
 // audit line sits in the mono footer once a decision is recorded.
 function DecisionZone({
   requirement,
+  variant,
   statusWord,
   audit,
   onApprove,
@@ -328,6 +360,7 @@ function DecisionZone({
   onClose,
 }: {
   requirement: Requirement;
+  variant: PanelVariant;
   statusWord: string;
   audit: string | null;
   onApprove: (id: string) => void;
@@ -341,6 +374,38 @@ function DecisionZone({
   const [note, setNote] = useState("");
   const [confirmingGating, setConfirmingGating] = useState(false);
   const resolved = requirement.status !== "pending";
+
+  // In focus mode, e / f drop straight into the note flow (the textarea then
+  // autofocuses and owns the keyboard). Elsewhere the matrix-level handler
+  // routes e / f by opening the panel, so only "focus" wires these.
+  useEffect(() => {
+    if (variant !== "focus") return;
+    function onKey(event: KeyboardEvent) {
+      const el = event.target as HTMLElement | null;
+      if (
+        el &&
+        (el.tagName === "INPUT" ||
+          el.tagName === "TEXTAREA" ||
+          el.isContentEditable)
+      ) {
+        return;
+      }
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+      if (event.key === "e") {
+        event.preventDefault();
+        setConfirmingGating(false);
+        setNote(requirement.decision?.note ?? "");
+        setMode("edit");
+      } else if (event.key === "f") {
+        event.preventDefault();
+        setConfirmingGating(false);
+        setNote("");
+        setMode("flag");
+      }
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [variant, requirement]);
 
   function submitEdit() {
     onEdit(requirement.id, note.trim());
@@ -364,7 +429,7 @@ function DecisionZone({
   }
 
   return (
-    <div className="border-t border-hairline bg-paper-raised px-5 py-4 sm:px-6">
+    <div className={DECISION_PADDING[variant]}>
       {/* Current decision. Approval stamps the sheet (design-language device 6);
           every other status keeps the quiet word plus its mono audit line. */}
       <div className="mb-3 flex items-baseline justify-between gap-4">

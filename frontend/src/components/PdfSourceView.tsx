@@ -1,7 +1,29 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { PDFDocumentProxy } from "pdfjs-dist";
 import { normalize } from "@/lib/dedupe";
+
+// Loaded documents, cached for the session keyed by URL, so the persistent
+// evidence pane doesn't refetch and reparse the whole tender PDF every time the
+// selected requirement changes. Cached documents are deliberately never
+// destroyed (a handful of tender packs fit comfortably in memory); a failed
+// load evicts itself so a retry can succeed.
+type PdfjsModule = typeof import("pdfjs-dist");
+const documentCache = new Map<string, Promise<PDFDocumentProxy>>();
+
+function getCachedDocument(
+  pdfjs: PdfjsModule,
+  url: string
+): Promise<PDFDocumentProxy> {
+  let entry = documentCache.get(url);
+  if (!entry) {
+    entry = pdfjs.getDocument({ url }).promise;
+    entry.catch(() => documentCache.delete(url));
+    documentCache.set(url, entry);
+  }
+  return entry;
+}
 
 // The P2 verification engine (graph-and-verification-deep-plan.md Part B): render
 // the real tender page with PDF.js and highlight the exact line a claim was lifted
@@ -123,8 +145,6 @@ export function PdfSourceView({
 
   useEffect(() => {
     let cancelled = false;
-    // Keep a handle so we can tear the document down on unmount / re-run.
-    let cleanup: (() => void) | undefined;
 
     async function render() {
       setState("loading");
@@ -134,12 +154,10 @@ export function PdfSourceView({
         // The worker is copied into /public at build time (matched version).
         pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
 
-        const doc = await pdfjs.getDocument({ url: pdfUrl }).promise;
-        if (cancelled) {
-          doc.destroy();
-          return;
-        }
-        cleanup = () => doc.destroy();
+        // Session-cached: the same document instance serves every requirement
+        // that cites it, so switching rows only re-renders the page.
+        const doc = await getCachedDocument(pdfjs, pdfUrl);
+        if (cancelled) return;
 
         // The excerpt was extracted from the cited page, but the extractor's page
         // numbering can drift a page or two from the PDF's own paging. Search the
@@ -254,7 +272,6 @@ export function PdfSourceView({
     render();
     return () => {
       cancelled = true;
-      cleanup?.();
     };
   }, [pdfUrl, page, excerpt, onMatch]);
 

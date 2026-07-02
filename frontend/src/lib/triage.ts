@@ -140,6 +140,17 @@ export function deriveTriage(reqs: Requirement[]): Triage {
   return { counts, groups };
 }
 
+// The review worklist in walking order: every pending item, in triage group
+// order (needs-you, to-verify, ready), falling back to ALL items when nothing
+// is pending so "next" still has somewhere to go. This is the one ordering the
+// panel's Next, the j/k keys, and focus mode all walk — extracted so they can
+// never drift apart.
+export function orderedWorklist(triage: Triage): Requirement[] {
+  const all = triage.groups.flatMap((group) => group.items);
+  const pending = all.filter((req) => req.status === "pending");
+  return pending.length > 0 ? pending : all;
+}
+
 // The item the header's Next action should route to: the highest-priority item
 // still pending (layout.md section 2). Priority: gating unresolved, then
 // needs-you, then low-confidence to verify, then any other pending. null when

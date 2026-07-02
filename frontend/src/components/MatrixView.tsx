@@ -15,17 +15,21 @@ import {
   deriveTriage,
   isConfidentNonGating,
   nextPriorityId,
+  orderedWorklist,
   type GroupKey,
   type SortKey,
 } from "@/lib/triage";
 import { deriveVisibleGroups, type MatrixLens } from "@/lib/matrix-derive";
+import { requirementPdfUrl, sourceRefLabel } from "@/lib/source-doc";
 import { AppMain } from "./AppMain";
 import { ApprovalStamp } from "./ApprovalStamp";
 import { BulkActionBar } from "./BulkActionBar";
 import { ComplianceMatrix } from "./ComplianceMatrix";
 import { DocumentHeader } from "./DocumentHeader";
+import { FocusMode } from "./FocusMode";
 import { GatingHero } from "./GatingHero";
 import { NoTenderLoaded } from "./NoTenderLoaded";
+import { PdfSourceView, type MatchKind } from "./PdfSourceView";
 import { RequirementDrawer } from "./RequirementDrawer";
 import { RequirementPanel } from "./RequirementPanel";
 import { RequirementSpine } from "./RequirementSpine";
@@ -197,6 +201,13 @@ export function MatrixView({ title }: { title: string }) {
     () => new Set<string>()
   );
   const [anchorId, setAnchorId] = useState<string | null>(null);
+  // The persistent evidence pane beside the split panel (wide viewports only):
+  // the tender page with the excerpt highlighted, or an honest placeholder when
+  // no PDF exists. Open by default; a quiet control hides it for more measure.
+  const [evidenceOpen, setEvidenceOpen] = useState(true);
+  // Focus mode: the full-screen one-at-a-time review overlay (Shift+F, or the
+  // quiet Focus affordance in the matrix toolbar). An overlay, not a route.
+  const [focusMode, setFocusMode] = useState(false);
   const isWide = useIsWide();
 
   const triage = deriveTriage(requirements);
@@ -393,17 +404,13 @@ export function MatrixView({ title }: { title: string }) {
   // order). It keeps the worklist flowing: approve, next, approve, next.
   const goNext = useCallback(
     (currentId: string) => {
-      const pending = triage.groups
-        .flatMap((group) => group.items)
-        .filter((req) => req.status === "pending");
-      const ordered =
-        pending.length > 0 ? pending : triage.groups.flatMap((group) => group.items);
+      const ordered = orderedWorklist(triage);
       const index = ordered.findIndex((r) => r.id === currentId);
       if (index === -1 || ordered.length === 0) return;
       const nextItem = ordered[(index + 1) % ordered.length];
       setSelectedId(nextItem.id);
     },
-    [triage.groups]
+    [triage]
   );
 
   // #16: keyboard shortcuts for the worklist. j / ArrowDown and k / ArrowUp move
@@ -413,6 +420,8 @@ export function MatrixView({ title }: { title: string }) {
   // selection change, which is cheap.
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
+      // Focus mode owns the keyboard while it is up (its own j/k/a/Esc).
+      if (focusMode) return;
       const el = event.target as HTMLElement | null;
       if (
         el &&
@@ -425,6 +434,11 @@ export function MatrixView({ title }: { title: string }) {
       if (event.metaKey || event.ctrlKey || event.altKey) return;
       const ordered = triage.groups.flatMap((group) => group.items);
       if (ordered.length === 0) return;
+      if (event.key === "F" && event.shiftKey) {
+        event.preventDefault();
+        setFocusMode(true);
+        return;
+      }
       const idx = selectedId
         ? ordered.findIndex((r) => r.id === selectedId)
         : -1;
@@ -453,7 +467,7 @@ export function MatrixView({ title }: { title: string }) {
     }
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [triage.groups, selectedId, approveWithUndo]);
+  }, [triage.groups, selectedId, approveWithUndo, focusMode]);
 
   // Live product, no tender loaded → the onboarding empty state (after all hooks).
   if (noTenderLoaded) {
@@ -486,10 +500,18 @@ export function MatrixView({ title }: { title: string }) {
       />
 
       <AppMain>
-        {isWide && selected ? (
-          // SPLIT open state: spine index (~300px) + panel, divided by a hairline.
-          // The matrix grid is hidden; the spine is the matrix in miniature.
-          <div className="grid min-h-[70vh] grid-cols-[300px_1fr] gap-0 divide-x divide-hairline">
+        {isWide && selected && !focusMode ? (
+          // SPLIT open state: spine index + panel, divided by hairlines, with the
+          // persistent evidence pane (the tender page itself, excerpt highlighted)
+          // as a third column while it is shown. The matrix grid is hidden; the
+          // spine is the matrix in miniature.
+          <div
+            className={
+              evidenceOpen
+                ? "grid min-h-[70vh] grid-cols-[280px_minmax(0,1fr)_minmax(340px,42%)] gap-0 divide-x divide-hairline"
+                : "grid min-h-[70vh] grid-cols-[300px_1fr] gap-0 divide-x divide-hairline"
+            }
+          >
             <div className="pr-4">
               <RequirementSpine
                 groups={triage.groups}
@@ -497,17 +519,44 @@ export function MatrixView({ title }: { title: string }) {
                 onSelect={selectFromSpine}
               />
             </div>
-            <div className="pl-6">
-              <RequirementPanel
-                requirement={selected}
-                variant="split"
-                onApprove={approveWithUndo}
-                onEdit={editWithUndo}
-                onFlag={flagWithUndo}
-                onNext={() => goNext(selected.id)}
-                onClose={close}
-              />
+            <div className="flex min-w-0 flex-col pl-6">
+              {!evidenceOpen && (
+                <div className="flex justify-end pb-2">
+                  <button
+                    type="button"
+                    onClick={() => setEvidenceOpen(true)}
+                    className="font-mono text-xs text-ink-muted transition-colors hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+                  >
+                    Show source
+                  </button>
+                </div>
+              )}
+              <div className="min-h-0 flex-1">
+                <RequirementPanel
+                  requirement={selected}
+                  variant="split"
+                  onApprove={approveWithUndo}
+                  onEdit={editWithUndo}
+                  onFlag={flagWithUndo}
+                  onNext={() => goNext(selected.id)}
+                  onClose={close}
+                />
+              </div>
             </div>
+            {evidenceOpen && (
+              <aside className="min-w-0 pl-5">
+                {/* Sticky so the page stays alongside while the panel scrolls.
+                    Keyed by requirement so the match signal resets per item. */}
+                <div className="sticky top-6 h-[min(82vh,56rem)]">
+                  <EvidencePane
+                    key={selected.id}
+                    requirement={selected}
+                    pdfUrl={requirementPdfUrl(tenderId, selected)}
+                    onHide={() => setEvidenceOpen(false)}
+                  />
+                </div>
+              </aside>
+            )}
           </div>
         ) : (
           // RESTING, plus the narrow-viewport open state: the matrix stays put and
@@ -574,17 +623,20 @@ export function MatrixView({ title }: { title: string }) {
               awardCriteria={awardCriteria}
               selection={{ ids: selectedIds, onToggle: toggleSelected }}
               onAnswerQuestion={answerOpenQuestion}
+              onEnterFocus={() => setFocusMode(true)}
             />
             <p className="mt-6 font-mono text-[11px] text-ink-muted/70">
-              Keys: j / k to move, a to approve a confident item.
+              Keys: j / k to move, a to approve a confident item, Shift+F to
+              focus.
             </p>
           </>
         )}
       </AppMain>
 
       {/* Narrow-viewport fallback only: the same panel content in a slide-over.
-          On wide screens the split owns the open state, so the drawer is idle. */}
-      {!isWide && (
+          On wide screens the split owns the open state, so the drawer is idle.
+          Focus mode owns the whole screen, so the drawer stands down under it. */}
+      {!isWide && !focusMode && (
         <RequirementDrawer
           requirement={selected}
           onApprove={approveWithUndo}
@@ -592,6 +644,18 @@ export function MatrixView({ title }: { title: string }) {
           onFlag={flagWithUndo}
           onNext={selected ? () => goNext(selected.id) : () => {}}
           onClose={close}
+        />
+      )}
+
+      {/* Focus mode: the full-screen one-at-a-time review. Decisions go through
+          the same undo-wrapped handlers, so every toast still fires. */}
+      {focusMode && (
+        <FocusMode
+          triage={triage}
+          onApprove={approveWithUndo}
+          onEdit={editWithUndo}
+          onFlag={flagWithUndo}
+          onClose={() => setFocusMode(false)}
         />
       )}
 
@@ -666,5 +730,105 @@ function CompletionSummary({
         </button>
       </div>
     </section>
+  );
+}
+
+// The persistent evidence pane (wide split only): the actual tender page,
+// rendered by the same PdfSourceView the verify overlay uses, with the excerpt
+// highlighted. Above it, a mono header names the document and page and carries
+// the honest match signal — a word in a chip, never a score. When no PDF exists
+// (the plain mock), a calm placeholder holds the pane so it is never a broken
+// hole. Keyed by requirement in the owner so the match state resets per item.
+
+// Tailwind 4: full literal class strings in a lookup map, never template-built.
+const MATCH_CHIP: Record<
+  MatchKind,
+  { label: string; className: string }
+> = {
+  exact: {
+    label: "Verified on page",
+    className:
+      "shrink-0 rounded-full border border-forest/40 bg-forest/10 px-2 py-0.5 font-mono text-[11px] text-forest",
+  },
+  approximate: {
+    label: "Close match",
+    className:
+      "shrink-0 rounded-full border border-signal-amber/60 bg-signal-amber/15 px-2 py-0.5 font-mono text-[11px] text-ink",
+  },
+  unlocated: {
+    label: "Could not pin the excerpt",
+    className:
+      "shrink-0 rounded-full border border-hairline px-2 py-0.5 font-mono text-[11px] text-ink-muted",
+  },
+};
+
+function EvidencePane({
+  requirement,
+  pdfUrl,
+  onHide,
+}: {
+  requirement: Requirement;
+  pdfUrl: string | null;
+  onHide: () => void;
+}) {
+  // null while PdfSourceView is still locating the line.
+  const [match, setMatch] = useState<MatchKind | null>(null);
+  const ref = sourceRefLabel(requirement);
+
+  return (
+    <div className="flex h-full flex-col">
+      <div className="flex items-center justify-between gap-3 pb-2">
+        <p
+          className="min-w-0 truncate font-mono text-xs text-ink-muted"
+          title={
+            requirement.source_filename
+              ? `${requirement.source_filename} · ${ref}`
+              : ref
+          }
+        >
+          {requirement.source_filename && (
+            <span className="text-accent/70">
+              {requirement.source_filename} ·{" "}
+            </span>
+          )}
+          <span className="text-accent">{ref}</span>
+        </p>
+        <span className="flex shrink-0 items-center gap-3">
+          {pdfUrl &&
+            (match === null ? (
+              <span className="font-mono text-[11px] text-ink-muted">
+                Finding the line…
+              </span>
+            ) : (
+              <span className={MATCH_CHIP[match].className}>
+                {MATCH_CHIP[match].label}
+              </span>
+            ))}
+          <button
+            type="button"
+            onClick={onHide}
+            className="font-mono text-xs text-ink-muted transition-colors hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+          >
+            Hide source
+          </button>
+        </span>
+      </div>
+      <div className="min-h-0 flex-1 overflow-hidden rounded-md border border-hairline">
+        {pdfUrl ? (
+          <PdfSourceView
+            pdfUrl={pdfUrl}
+            page={requirement.source_page}
+            excerpt={requirement.source_excerpt}
+            onMatch={setMatch}
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center bg-paper-recessed p-6 shadow-[var(--depth-pressed)]">
+            <p className="max-w-[36ch] text-center font-mono text-xs leading-relaxed text-ink-muted">
+              {ref} — source PDF available when a tender is uploaded.
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
