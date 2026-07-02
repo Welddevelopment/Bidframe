@@ -55,8 +55,9 @@ FAMILIES: dict[str, re.Pattern] = {
         r"must\s+(complete|submit|return|be\s+returned|be\s+completed)|"
         r"failure\s+to\s+(complete|submit|return|provide|comply|meet)", re.I),
     "deadline": re.compile(
-        r"(receiv(e|ed)|submit(ted)?|return(ed)?|lodg(e|ed)|upload(ed)?)\b.{0,40}no\s+later\s+than|"
-        r"closing\s+(date|time)|\bdeadline\b|late\s+(tender|bid|submission|response)s?|"
+        r"(receiv(e|ed)|submit(ted)?|return(ed)?|lodg(e|ed)|upload(ed)?|arriv(e|ed|es)|reach(es|ed)?)"
+        r"\b.{0,40}no\s+later\s+than|closing\s+(date|time)|\bdeadline\b|"
+        r"late\s+(tender|bid|submission|response)s?|"
         r"incomplete\s+(tender|bid|submission|response)s?", re.I),
 }
 

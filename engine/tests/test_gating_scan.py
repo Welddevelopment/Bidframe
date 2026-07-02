@@ -34,6 +34,18 @@ def test_taxonomy_catches_canonical_uk_ps_gate_vocabulary():
     assert "no later than" in joined
 
 
+def test_form_layout_deadline_on_its_own_line_is_isolated():
+    """Form/address layouts separate fields by NEWLINES, not punctuation. A submission-deadline
+    gate on its own line ('Arrive no later than 12.00 noon ...') must be surfaced as its own unit,
+    not swallowed into the address block — otherwise its signal dilutes below the match threshold
+    (this was the SPSO g17 deterministic miss). Also pins 'arrive' as a recognised deadline verb."""
+    pages = [(6, "Facilities Administrator\n4 Melville Street\nEDINBURGH\nEH3 7NS\n\n"
+                 "Arrive no later than 12.00 noon 06/11/2013\n\nYour submission must be complete.")]
+    texts = [c["text"] for c in scan_candidates(pages)]
+    assert any("Arrive no later than 12.00 noon 06/11/2013" == t for t in texts), \
+        "the deadline line must be isolated as its own candidate, not merged into the address"
+
+
 def test_uncovered_gating_surfaces_what_extraction_missed():
     # extraction only caught the innocuous line -> the collusion + deadline + pass/fail gates are missed
     extracted = [{"text": "The service runs Monday to Friday."}]
