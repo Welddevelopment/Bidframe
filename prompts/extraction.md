@@ -1,4 +1,4 @@
-# Extraction Prompt — v2
+# Extraction Prompt — v3
 
 > **Owner: J.** Provider-agnostic. The backend calls this **per chunk** and gets back raw requirement
 > objects (see [raw-extraction-format.md](raw-extraction-format.md)). Recall is the priority:
@@ -48,6 +48,8 @@ WHAT IS **NOT** A REQUIREMENT (these are the main source of noise — do not ext
   obligation of their own.
 - Explanatory or illustrative notes ("for example", "for information only", "for the avoidance of
   doubt").
+- In TABLES: header rows, column labels, units, and purely descriptive cells — extract only rows
+  that state an obligation or a minimum/threshold (the recall rule above still holds for those).
 Turning plain descriptive prose into requirement rows is what tanks precision. Recall still wins
 ties — if something is a *borderline requirement*, extract it at low confidence — but descriptive,
 definitional, or buyer-side prose is not a requirement.
@@ -162,6 +164,10 @@ obligation per object, honest confidence, and check tables row by row.
 - [ ] Genuinely non-requirement prose (background, definitions) NOT over-extracted into noise.
 
 ### Changelog
+- **2026-07-02 (J)** — **v3: table precision.** Added a rule to skip table header/label/unit/descriptive
+  cells (extract only obligation/threshold rows) — tables are a known false-positive source. Recall rule
+  for real table requirements unchanged. **Synced into `_LLM_SYSTEM` (`extract.py`) directly this time
+  (@backend sanity-check line ~172).**
 - **2026-07-02 (J)** — **v2: precision pass.** Added an explicit **"what is NOT a requirement"**
   section (background/definitions/buyer-side prose/headings/notes) + **anti-fragmentation &
   within-chunk-dedup** guidance, to cut the over-surfacing that drags precision (~0.4 on SPSO) WITHOUT

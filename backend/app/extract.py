@@ -171,7 +171,9 @@ _LLM_SYSTEM = (
     "buyer's own statements, headings, or explanatory notes as requirements - that "
     "noise tanks precision. One obligation = one object: split only genuinely separate "
     "obligations; never fragment one into overlapping pieces or emit it twice/at two "
-    "granularities; each distinct obligation once per chunk. Report honest "
+    "granularities; each distinct obligation once per chunk. In TABLES, extract only "
+    "rows that state an obligation or a minimum/threshold - skip header rows, column "
+    "labels, units, and purely descriptive cells. Report honest "
     "0-1 confidence. (Full spec: prompts/extraction.md.)"
 )
 
