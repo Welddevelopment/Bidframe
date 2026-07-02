@@ -3,6 +3,11 @@
 # The heuristic extractor needs no key, so the API works immediately on deploy.
 # Add OPENAI_API_KEY in the Render dashboard later to switch to GPT extraction.
 #
+# AUTH IS ON (PR #15): every /tenders + /requirements endpoint is gated. AUTH_SECRET
+# below is auto-generated (stable across deploys), so tokens sign correctly out of the
+# box. There is no public signup — create accounts on the instance with the admin CLI:
+#   python -m app.admin create-user you@firm.co.uk   (run in a Render shell, from backend/)
+#
 # rootDir is the REPO ROOT (not backend/) so engine/ is importable — otherwise the
 # deployed API silently falls back to the placeholder reconcile and catches 0
 # disqualifiers (G-009). Upload dir + SQLite paths are __file__-relative, so they
@@ -17,8 +22,10 @@ services:
     startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:
-      - key: OPENAI_API_KEY      # optional — leave blank to use the heuristic extractor
+      - key: OPENAI_API_KEY      # set in the dashboard to switch heuristic → gpt-4o
         sync: false
+      - key: AUTH_SECRET         # invite-only auth (PR #15): signs the JWT session tokens.
+        generateValue: true      # Render generates a strong value once + keeps it stable.
       - key: LLM_MODEL
         value: gpt-4o
       - key: CORS_ORIGINS        # optional — add a custom frontend domain if not on *.vercel.app
