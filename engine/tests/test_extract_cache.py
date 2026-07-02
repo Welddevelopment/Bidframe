@@ -60,3 +60,26 @@ def test_key_changes_with_extractor_identity(monkeypatch, tmp_path):
         _model = "gpt-4o"
 
     assert extract_cache.load(ch, _Other()) is None
+
+
+# ---- extraction concurrency knob (backend/app/pipeline._extract_concurrency) --
+pipeline = pytest.importorskip("backend.app.pipeline")
+
+
+def test_extract_concurrency_default_is_one(monkeypatch):
+    monkeypatch.delenv("EXTRACT_CONCURRENCY", raising=False)
+    assert pipeline._extract_concurrency() == 1
+
+
+def test_extract_concurrency_reads_env(monkeypatch):
+    monkeypatch.setenv("EXTRACT_CONCURRENCY", "6")
+    assert pipeline._extract_concurrency() == 6
+
+
+def test_extract_concurrency_clamps_and_survives_garbage(monkeypatch):
+    monkeypatch.setenv("EXTRACT_CONCURRENCY", "999")
+    assert pipeline._extract_concurrency() == 16      # clamped high
+    monkeypatch.setenv("EXTRACT_CONCURRENCY", "0")
+    assert pipeline._extract_concurrency() == 1       # clamped low
+    monkeypatch.setenv("EXTRACT_CONCURRENCY", "nonsense")
+    assert pipeline._extract_concurrency() == 1       # garbage -> safe default

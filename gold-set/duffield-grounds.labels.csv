@@ -1,0 +1,25 @@
+id,text,type,is_gating,source_page,source_clause,notes
+d1,The successful applicant must show a commitment to satisfactory employment conditions and pay its staff a real living wage.,mandatory,no,5,2.3,
+d2,"A brief update report shall be submitted to the Parish Clerk and Village Warden by email on the last day of each month, setting out work undertaken, work not undertaken and the reason why, and any issues arising.",mandatory,no,6,3.1,
+d3,"Invoices are to be produced monthly by the last day of the month, clearly stating the agreed scheduled payment or the cost of each individual job carried out.",mandatory,no,6,3.3,
+d4,"The applicant is strongly advised to make site visits prior to completing an offer to assess conditions, access arrangements and measurements.",optional,no,9,4.3,'strongly advised' — advisory
+d5,All submissions are reviewed for completeness and compliance with the ITT and stated requirements; incomplete and non-compliant tenders will be rejected.,mandatory,yes,9,5.1,explicit rejection of incomplete/non-compliant tenders
+d6,The applicant's response must display compliance with the ITT requirements.,mandatory,no,9,5.2,
+d7,"The applicant must complete the Cost Submission Form with a schedule of competitive itemised rates/prices for the works, priced on an annual basis.",mandatory,no,10,5.4.1 / 7.1,
+d8,"The applicant must provide a list of relevant projects/experience, including the names of two contracts or projects with their completion dates and reference contact details.",mandatory,no,10,5.4.2,
+d9,The applicant must provide evidence of the company policies and work procedures it has in place (particularly employment conditions and environmental standards) to meet mandatory requirements.,mandatory,no,10,5.4.2,
+d10,"The applicant is required to demonstrate its capability and resources (plant machinery, equipment and personnel) and the technical skills, expertise, experience and training/qualifications of its team.",mandatory,no,11,5.4.3,
+d11,"Applicants must read the ITT instructions, Specification and Terms & Conditions carefully before completing the tender; failure to comply with completion and submission requirements may result in the rejection of the Tender.",mandatory,yes,12,6.2,explicit rejection for non-compliance with submission requirements
+d12,"All clarification requests must be submitted to the Parish Clerk by the Clarification Deadline (no later than one week before the closing date), clearly referencing the appropriate ITT paragraph and aggregated rather than sent individually.",mandatory,no,13,6.4,
+d13,"All costs must be presented in Pounds Sterling excluding VAT, and the tender prices offered must be firm and fixed for the duration of the Contract.",mandatory,no,13,7.1,
+d14,"Where unscheduled/variable work is identified, the applicant must provide additional pricing rates per hour or per item in the Cost Submission Form.",mandatory,no,13,7.2,
+d15,"The applicant must complete the Pre-Qualification Questionnaire (company details, insurance cover, financial information, relevant experience, technical/professional ability and capability).",mandatory,no,14,7.4,
+d16,"The applicant must complete the Pre-Evaluation Questionnaire demonstrating compliance with the mandatory and discretionary requirements (including social value, added value and value for money).",mandatory,no,14,7.5,
+d17,"The applicant must complete and sign the Form of Tender to indicate acceptance of the terms, conditions and other requirements.",mandatory,no,14,7.6,
+d18,The applicant must submit the completed Checklist of Documents confirming all required ITT documents have been returned.,mandatory,no,14,7.7,
+d19,"All complete tenders must be submitted in writing by 12.00 noon on 28th March 2022 to the Parish Council office, clearly marked 'Duffield Grounds Maintenance Contract Tender'.",mandatory,yes,14,7.8,hard submission deadline
+d20,"Tenders must be submitted in a sealed envelope (by mail or in person) addressed to the Parish Clerk, with each form a scanned copy of a signed original; no additional information will be considered after the submission deadline.",mandatory,no,14,7.8,
+d21,"The submission must contain the required returns: Section D Selection Questionnaire, Section E Evaluation Questionnaire Form, Section F Cost Submission Form, Section G Form of Tender, and Section H Checklist of Documents.",mandatory,no,15,7.8,
+d22,"If the applicant does not provide supplementary information or clarifications requested by the notified deadline, the tender offer may be rejected in full and disqualified from the procurement process.",mandatory,yes,15,7.9,explicit disqualification
+d23,The submitted documents constitute an irrevocable offer to provide the grounds maintenance services.,mandatory,no,15,7.10,
+d24,No tender can be considered successful until a formal contract has been signed by an authorised Council officer and co-signed by the applicant's authorised officer.,mandatory,no,15,7.11,

@@ -32,6 +32,14 @@
       "pdf": "data/tenders/bradwell-grounds-itt.pdf",
       "max_page": 34,
       "note": "Hand-labelled 2026-07-02 (P, board B-018) — a 3rd validated tender + a new DOMAIN (grounds/landscape maintenance, not cleaning), for a truer cross-tender accuracy read. 52 rows read directly from the 34pp PDF, page/clause-referenced; is_gating=true (10/52 = 19%) reserved for explicit disqualifiers — submission deadline, auto-disqualification for not meeting Mandatory Requirements, insurance minimums, the quality-score elimination threshold, the pricing-confirmation gate, canvassing/collusion rejection grounds, and no-variant-bids. Disqualifier-heavy small-works tender, hence the slightly higher gating share than SPSO/museum."
+    },
+    {
+      "tender_id": "duffield",
+      "title": "Duffield Parish Council Grounds Maintenance ITT",
+      "gold": "gold-set/duffield-grounds.labels.csv",
+      "pdf": "data/tenders/27_621e203e6bb65027675743.pdf",
+      "max_page": 17,
+      "note": "Hand-labelled + 3-pass verified 2026-07-02 (P, board B-021) — a 4th validated tender, a held-out generalisation test (a different council's grounds ITT; spec + T&Cs are external appendices, so it's instruction/evaluation-heavy). 24 rows read from the 17pp PDF, 0 grounding flags; is_gating=true (4/24 = 17%) reserved for explicit disqualifiers — the submission deadline, rejection of incomplete/non-compliant tenders (5.1), rejection for non-compliance with submission requirements (6.2), and disqualification for not supplying requested clarifications (7.9)."
     }
   ]
 }

@@ -2,6 +2,33 @@
 
 *Backend writes here. Everyone reads. Newest at top. See [README.md](README.md) for the protocol.*
 
+### [B-021] @j @generalist @frontend · INFO · OPEN · 2026-07-02
+**Gold sets re-verified (3 passes), a 4th validated tender added, + parallel extraction for speed.**
+**Gold verification (museum 75-row + bradwell 52-row, three independent passes):**
+- *Pass 1 grounding* — every row's tokens trace to its cited page; only 3 low-signal flags, all
+  genuine heavy-paraphrase summary rows (b39 = the condensed pp.11-24 site schedule; b46 Form of Tender
+  p29→p30; g16 collusive-tendering, verified on p6). No ungrounded/hallucinated rows.
+- *Pass 2 classification* — **all 20 gating rows re-checked against source text = genuine disqualifiers**
+  (deadlines, auto-DQ, insurance minimums, elimination thresholds, canvassing/collusion rejection, PQQ
+  Pass/Fail). Scanned for missed gates (buyer-discretion clauses like "Council reserves the right to not
+  accept" correctly left non-gating). No mis-labels.
+- *Pass 3 completeness + dupes* — **0 duplicate rows**; the "uncovered obligations" are sentence-splitter
+  fragments + sub-clauses of rows I intentionally condensed (recall-first per the labelling guide). Files
+  are clean UTF-8 (proper `£`, no mojibake). **Verdict: both gold sets are accurate.**
+**4th validated tender — Duffield Parish Council Grounds ITT (17pp), a HELD-OUT generalisation test.**
+`gold-set/duffield-grounds.labels.csv`: 24 rows, **0 grounding flags**, 4/24 gating (17%) — all genuine
+(deadline, incomplete-tender rejection 5.1, non-compliance rejection 6.2, no-clarification DQ 7.9). Added
+to the manifest (not draft). **The extraction generalises: on this unseen tender it scores recall .58,
+0 dangerous misses** — right in line with the others, not overfit. `eval_all` now scores **4 tenders**
+(cleaning ×1 + grounds ×2 + arts-cleaning ×1): aggregate recall .52, gating recall .54.
+**Efficiency — parallel per-chunk extraction (`EXTRACT_CONCURRENCY`, default 1 = unchanged).** The extract
+loop was sequential — the reason a 40pp tender takes ~6-7 min on the OpenAI path. Set `EXTRACT_CONCURRENCY=4..8`
+to run chunk calls on a thread pool → a big win on the network-bound OpenAI path (drops toward ~1/N); no
+benefit on the local heuristic. Output is **byte-identical** to sequential (executor.map preserves chunk
+order → reconcile stays deterministic; verified on bradwell 125 reqs). Clamped 1..16, garbage-safe.
+**@j/@generalist — for the real-key eval/re-bake: `EXTRACT_CACHE=1 EXTRACT_CONCURRENCY=8` = cached + fast.**
+216 tests green.
+
 ### [B-020] @frontend @j @generalist · INFO · OPEN · 2026-07-02
 **Four key-free hardening/accuracy items in one sweep.** All on `main`, 213 tests green, 0-crash sweep across all 17 tenders.
 1. **Honest `source_rect_match` signal (@frontend — for the verification UI).** New additive/nullable field:

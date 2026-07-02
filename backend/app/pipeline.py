@@ -13,6 +13,7 @@ Scaffolded by J as backend cover.
 
 from __future__ import annotations
 
+import os
 import re
 from difflib import SequenceMatcher
 from pathlib import Path
@@ -97,6 +98,15 @@ try:
 except ImportError:  # pragma: no cover - deploy without engine/ on path
     _HAVE_ANSWER = False
     DEFAULT_CAPABILITY_DIR = None
+
+
+def _extract_concurrency() -> int:
+    """Parallel per-chunk extraction workers (EXTRACT_CONCURRENCY, default 1 = sequential).
+    Clamped to a sane 1..16 so a stray value can't spawn a thread storm."""
+    try:
+        return max(1, min(16, int(os.environ.get("EXTRACT_CONCURRENCY", "1"))))
+    except (TypeError, ValueError):
+        return 1
 
 
 def _similar(a: str, b: str) -> float:
@@ -356,15 +366,34 @@ def run_pipeline_multi(
                  done=min(done, total), total=total,
                  raw_count=sum(len(v) for v in raws_by_doc.values()))
             continue
-        for ch in chunks:
+        def _one(ch):
             try:
-                bucket.extend(extract_chunk_multi(extractor, ch))
+                return extract_chunk_multi(extractor, ch)
             except Exception as exc:
                 print(f"[pipeline] chunk {ch.id} (pp.{ch.page_start}-{ch.page_end}) failed ({exc}); skipping")
-            done += 1
-            raw_total = sum(len(v) for v in raws_by_doc.values())
-            emit("extract", "Extracting requirements", 0.15 + 0.60 * (done / total),
-                 done=done, total=total, raw_count=raw_total)
+                return []
+
+        # EXTRACT_CONCURRENCY>1 runs the per-chunk LLM calls on a thread pool — a big win on
+        # the network-bound OpenAI path (a 40pp tender drops from minutes toward ~1/N), with
+        # no benefit on the local heuristic. Default 1 = today's sequential, verified behaviour.
+        # Results are collected in chunk order (executor.map preserves it) so reconcile stays
+        # deterministic. Mind the key's rate limit when raising it (retry/backoff absorbs 429s).
+        conc = _extract_concurrency()
+        if conc > 1 and len(chunks) > 1:
+            from concurrent.futures import ThreadPoolExecutor
+            with ThreadPoolExecutor(max_workers=conc) as pool:
+                for res in pool.map(_one, chunks):
+                    bucket.extend(res)
+            done += len(chunks)
+            emit("extract", "Extracting requirements", 0.15 + 0.60 * (min(done, total) / total),
+                 done=min(done, total), total=total,
+                 raw_count=sum(len(v) for v in raws_by_doc.values()))
+        else:
+            for ch in chunks:
+                bucket.extend(_one(ch))
+                done += 1
+                emit("extract", "Extracting requirements", 0.15 + 0.60 * (done / total),
+                     done=done, total=total, raw_count=sum(len(v) for v in raws_by_doc.values()))
         extract_cache.save(chunks, extractor, bucket)
 
     # 4. Reconcile — per document (never merge a duplicate across documents), then
