@@ -66,20 +66,30 @@ export function Landing() {
       </header>
 
       <main>
-        {/* The hero fold: headline, supporting line and product sheet stand on
-            their own fading graph paper, with the two large engravings cropped
-            by the page edge so the forest walks into the document rather than
-            decorating it. The art layer paints above the grid but beneath the
-            z-10 content, and the clip stops the bleed causing sideways scroll. */}
-        <div className="paper-grid-hero relative overflow-x-clip">
+        {/* The hero fold: an immersive forest record. The real product sheet
+            stays central and legible while the pine/fern engravings, faint seal
+            and low ridge make the first viewport feel discovered inside the
+            forest rather than merely decorated by it. */}
+        <div className="forest-hero relative overflow-hidden">
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-            <FernFrond className="art-draw absolute -right-16 top-24 hidden h-[440px] w-auto rotate-[8deg] text-forest/[0.16] lg:block" />
-            <PineBranch className="art-draw absolute -left-10 bottom-6 hidden h-40 w-auto text-forest/[0.12] lg:block" />
+            <TreelineDivider className="hero-ridge absolute inset-x-0 bottom-0 h-24 w-full text-moss sm:h-32" />
+            <TreelineDivider
+              flip
+              className="hero-canopy absolute -top-10 inset-x-0 hidden h-32 w-full rotate-180 text-forest/[0.08] lg:block"
+            />
+            <FernFrond className="art-draw absolute -right-20 top-14 hidden h-[620px] w-auto rotate-[7deg] text-forest/[0.22] lg:block" />
+            <FernFrond className="art-draw absolute -right-10 top-[360px] hidden h-[360px] w-auto rotate-[18deg] text-pine/[0.08] xl:block" />
+            <PineBranch className="art-draw absolute -left-20 bottom-24 hidden h-64 w-auto -rotate-[5deg] text-forest/[0.18] lg:block" />
+            <PineBranch className="art-draw absolute left-8 top-28 hidden h-36 w-auto rotate-[9deg] text-pine/[0.08] xl:block" />
+            <Seal
+              id="seal-hero"
+              className="absolute left-[7%] top-[44%] hidden h-40 w-40 -translate-y-1/2 -rotate-[8deg] text-forest/[0.06] lg:block"
+            />
           </div>
 
           {/* Hero: a centred two-line headline, a single supporting line, then
               the product sheet. The one symmetric moment, earned. */}
-          <section className={`${CONTAINER} relative z-10 pt-16 pb-10 text-center sm:pt-24 sm:pb-14`}>
+          <section className={`${CONTAINER} relative z-10 pt-16 pb-8 text-center sm:pt-24 sm:pb-12`}>
             <h1 className="hero-enter font-serif font-semibold tracking-tight text-ink">
               <span className="block text-balance text-5xl leading-[1.02] sm:whitespace-nowrap sm:text-6xl md:text-7xl">
                 Never lose a bid
@@ -102,7 +112,7 @@ export function Landing() {
             </p>
           </section>
 
-          <section className={`${CONTAINER} relative z-10 pb-20`}>
+          <section className={`${CONTAINER} relative z-10 pb-28 sm:pb-36`}>
             <HeroResolve />
           </section>
         </div>
@@ -256,27 +266,42 @@ export function Landing() {
           <CredibilityBand />
         </Band>
 
-        {/* The treeline seam: the page drops off the paper onto the pine
-            grounds here, so the proof reads as arriving somewhere rather than
-            the lights simply going out. The -mb-px overlap stops a hairline of
-            paper showing between the ridge and the band below it. */}
-        <TreelineDivider className="-mb-px block h-12 w-full text-pine sm:h-20" />
+        {/* The forest threshold: the paper page descends through moss and two
+            pine ridges before the proof band, so the dark proof ground feels
+            earned rather than abrupt. */}
+        <ForestThreshold />
 
-        {/* Pine band 1: the proof, as giant mono figures reversed out on the
-            brand's own dark. Held back to here so the page builds toward it as
-            the climax before the closing action. */}
-        <section className="bg-pine">
-          <div className={`${CONTAINER} py-24 sm:py-32`}>
-            <div className="max-w-[48ch]">
-              <Head tone="dark" eyebrow="The proof" size="poster">
-                Measured on a real tender
-              </Head>
-              <p className="mt-5 text-lg leading-relaxed text-paper/70">
-                We ran Bidframe on a live public-sector cleaning contract and
-                checked every line against the source.
+        {/* Pine band 1: the proof is the page's ceremonial register. The seal,
+            rules, low treeline and branch previews echo the footer before it
+            arrives, so the close reads as a destination already promised. */}
+        <section className="proof-band relative isolate overflow-hidden bg-pine text-paper">
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+            <Seal
+              id="seal-proof-watermark"
+              className="absolute right-[7%] top-24 hidden h-64 w-64 rotate-[8deg] text-paper/[0.06] lg:block"
+            />
+            <TreelineDivider className="absolute inset-x-0 bottom-0 h-20 w-full text-pine-deep/35 sm:h-28" />
+          </div>
+          <DrawOn className="pointer-events-none absolute -right-10 top-14 hidden lg:block">
+            <PineBranch className="h-56 w-auto rotate-[11deg] text-paper/[0.08]" />
+          </DrawOn>
+          <div className={`${CONTAINER} relative z-10 py-28 sm:py-36`}>
+            <div className="grid gap-10 border-y border-paper/20 py-10 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1fr)] lg:items-end lg:gap-16">
+              <div className="max-w-[48ch]">
+                <Head tone="dark" eyebrow="The proof" size="poster">
+                  Measured on a real tender
+                </Head>
+                <p className="mt-5 text-lg leading-relaxed text-paper/70">
+                  We ran Bidframe on a live public-sector cleaning contract and
+                  checked every line against the source.
+                </p>
+              </div>
+              <p className="max-w-[32ch] font-mono text-xs uppercase leading-relaxed tracking-[0.2em] text-moss/75 lg:justify-self-end lg:text-right">
+                Source-checked register / public-sector cleaning contract /
+                preserved against the tender record.
               </p>
             </div>
-            <Reveal className="mt-12">
+            <Reveal className="mt-12 sm:mt-16">
               <ProofNumbers />
             </Reveal>
           </div>
@@ -289,15 +314,19 @@ export function Landing() {
           beside the card, so the destination belongs to the same forest the
           treeline promised. */}
       <section className="relative overflow-hidden border-t border-paper/10 bg-pine">
+        <TreelineDivider
+          flip
+          className="absolute inset-x-0 top-0 h-16 w-full text-pine-deep/25 sm:h-24"
+        />
         <DrawOn className="pointer-events-none absolute -left-12 -top-8">
-          <PineBranch className="h-44 w-auto text-paper/10" />
+          <PineBranch className="h-44 w-auto text-paper/[0.11]" />
         </DrawOn>
         <div className={`${CONTAINER} relative py-24 sm:py-32`}>
           <Seal
             id="seal-closing"
             className="absolute right-[6%] top-1/2 hidden h-52 w-52 -translate-y-1/2 rotate-[7deg] text-paper/25 lg:block"
           />
-          <div className="surface-grain relative z-10 mx-auto max-w-[600px] rounded-2xl border border-hairline bg-paper-raised p-8 text-center shadow-[var(--depth-sheet)] sm:p-10">
+          <div className="surface-grain relative z-10 mx-auto max-w-[600px] rounded-lg border border-hairline bg-paper-raised p-8 text-center shadow-[var(--depth-sheet)] sm:p-10">
             <h2 className="mx-auto max-w-[20ch] text-balance font-serif text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl">
               See it on a tender you already know
             </h2>
@@ -314,6 +343,32 @@ export function Landing() {
 
       <SiteFooter />
     </div>
+  );
+}
+
+function ForestThreshold() {
+  return (
+    <section className="relative overflow-hidden border-t border-moss-line bg-moss">
+      <div className={`${CONTAINER} relative z-10 py-12 sm:py-16`}>
+        <div className="max-w-[46ch]">
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-forest">
+            Into the record
+          </p>
+          <p className="mt-3 text-lg leading-relaxed text-ink-muted">
+            The proof comes after the reading: hard gates, requirements, and
+            source checks, held together in one record.
+          </p>
+        </div>
+      </div>
+      <DrawOn className="pointer-events-none absolute -right-10 top-2 hidden sm:block">
+        <PineBranch className="h-40 w-auto rotate-[8deg] text-forest/[0.14]" />
+      </DrawOn>
+      <TreelineDivider className="block h-16 w-full text-pine/55 sm:h-24" />
+      <TreelineDivider
+        flip
+        className="-mt-12 -mb-px block h-20 w-full text-pine sm:-mt-16 sm:h-28"
+      />
+    </section>
   );
 }
 

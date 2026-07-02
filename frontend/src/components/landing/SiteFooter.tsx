@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { BrandLogo } from "@/components/BrandLogo";
 import { BookDemoButton } from "@/components/landing/BookDemoButton";
+import { PineBranch } from "@/components/landing/art/PineBranch";
 import { Seal } from "@/components/landing/art/Seal";
 import { TreelineDivider } from "@/components/landing/art/TreelineDivider";
 
@@ -19,15 +20,25 @@ const linkClass =
 
 export function SiteFooter() {
   return (
-    <footer className="text-paper">
+    <footer className="relative overflow-hidden text-paper">
       {/* the divider's own background paints the pine of the closing band
           above, so the pine-deep trees read as a nearer ridge in front of it */}
       <TreelineDivider
         flip
         className="-mb-px block h-14 w-full bg-pine text-pine-deep sm:h-24"
-      />
-      <div className="bg-pine-deep">
-        <div className={`${CONTAINER} py-14 sm:py-16`}>
+        />
+      <div className="relative bg-pine-deep">
+        <PineBranch
+          className="pointer-events-none absolute -right-16 top-8 hidden h-56 w-auto rotate-[16deg] text-paper/[0.07] lg:block"
+        />
+        <Seal
+          id="seal-footer-watermark"
+          className="pointer-events-none absolute left-[7%] bottom-8 hidden h-44 w-44 -rotate-[9deg] text-paper/[0.05] lg:block"
+        />
+        <div className={`${CONTAINER} relative py-14 sm:py-16`}>
+          <p className="mb-7 border-b border-paper/15 pb-4 font-mono text-[11px] uppercase tracking-[0.24em] text-paper/55">
+            Final register
+          </p>
           <div className="flex flex-wrap items-start justify-between gap-x-12 gap-y-10">
             <div>
               <BrandLogo reversed className="h-10 w-auto sm:h-12" />
@@ -49,7 +60,7 @@ export function SiteFooter() {
             </div>
             <Seal
               id="seal-footer"
-              className="relative h-28 w-28 text-paper/70 sm:h-32 sm:w-32"
+              className="relative h-28 w-28 text-paper/75 sm:h-32 sm:w-32"
             />
           </div>
           <p className="mt-12 border-t border-paper/15 pt-6 font-mono text-xs tracking-[0.2em] text-paper/60">

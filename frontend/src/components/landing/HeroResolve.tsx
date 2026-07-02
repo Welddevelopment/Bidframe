@@ -90,12 +90,12 @@ export function HeroResolve() {
       <Link
         href="/demo"
         aria-label="Open the worked example on the demo tender"
-        className="group block [perspective:1600px] rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-paper"
+        className="hero-product-halo group relative block [perspective:1600px] rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-paper"
       >
         <div
           ref={cardRef}
           aria-hidden="true"
-          className="hero-sheet surface-grain mx-auto max-w-[960px] overflow-hidden rounded-xl border border-forest/45 bg-paper-raised p-5 shadow-[var(--depth-sheet-pine)] transition-shadow group-hover:shadow-[0_18px_44px_-18px_rgba(22,48,31,0.38)] sm:p-7"
+          className="hero-sheet surface-grain mx-auto max-w-[1100px] overflow-hidden rounded-xl border border-forest/55 bg-paper-raised p-5 shadow-[var(--depth-hero-sheet)] transition-shadow group-hover:shadow-[0_30px_70px_-30px_rgba(22,48,31,0.54)] sm:p-7 lg:p-8"
         >
           {/* The deal-breaker callout sits on top but settles last (longer delay). */}
           <div className="hr-settle" style={{ animationDelay: "560ms" }}>
@@ -119,7 +119,7 @@ export function HeroResolve() {
           </div>
         </div>
         <span className="mt-5 flex justify-center">
-          <span className="inline-flex items-center gap-1.5 rounded-md border border-hairline bg-paper px-3.5 py-1.5 text-xs font-medium text-ink shadow-[var(--depth-control)] transition-transform group-hover:-translate-y-0.5">
+          <span className="inline-flex items-center gap-1.5 rounded-md border border-forest/15 bg-paper/75 px-3.5 py-1.5 text-xs font-medium text-ink-muted shadow-[0_1px_2px_rgba(33,29,23,0.08)] backdrop-blur-sm transition-colors group-hover:border-forest/35 group-hover:text-forest">
             Open the worked example
             <svg
               width="13"
