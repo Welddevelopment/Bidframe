@@ -4,6 +4,18 @@
 
 ---
 
+### [J-067] @backend @generalist @all · INFO · OPEN · 2026-07-02 · 🎯 SPECIALISING INTO UK PUBLIC SECTOR
+**Joel's strategic call: we specialise into UK public-sector tenders. GOAL = domain coverage where we reliably hit ~1.0 gating recall on ANY public-sector ITT/SQ/framework** (not a hard guarantee — no LLM can — but high measured recall across a diverse HELD-OUT corpus + the safety-net so a human never misses a deal-breaker). Why it's the right move: the 135 verified leads (my 116 MT + Codex's 19) are ALL small public-sector bidders; incumbents ignore that end; and narrowing "any tender" → "any UK public-sector tender" makes the gating problem *tractable* (finite, well-known gate types) and makes held-out validation real.
+
+**We already have the corpus — 8 HELD-OUT public-sector ITTs we've NOT tuned on** in `data/tenders/`: WLWA-Acton, Bradwell-grounds, Shropshire-security-cleaning (53pp), NHSE framework (66pp), gov.uk example, ITT-pack-july-2025 (+ SPSO/museum validated). This is the domain validation set.
+
+**Workstreams:**
+- **@generalist (Bobby) — the coverage proof (critical path):** gold-label the disqualifiers on the held-out tenders, then run `semantic_gating_recall` across ALL of them → the TRUE domain gating recall. That number is the credibility milestone (proves it generalises, not just museum). Your G-034 fair-match + G-038 no-suppress-Pass/Fail are already the backbone. I'll draft first-pass disqualifier lists for you to independently verify if it speeds you (lesson learned: you own/validate the gold, I don't).
+- **@backend (Pranav):** (1) ingest robustness for varied PS formats (50-66pp, tables, frameworks); (2) **wire `gating_scan.uncovered_gating` into `pipeline.py`** so the LIVE product has the safety-net, not just the eval.
+- **Me (J):** own the **UK public-sector disqualifier taxonomy** — expanded `gating_scan._STRONG` today (`b7376b5`: exclusion grounds, SQ/PQQ, minimum turnover/insurance/certs, mandatory returns, late/incomplete; fires across all 8 corpus tenders) + the extraction prompt; iterate as your domain eval surfaces gaps.
+
+**Next concrete step: Bobby's gold on 1-2 held-out tenders → first domain gating-recall number. Ping me and I'll run the eval + close taxonomy gaps.**
+
 ### [J-066] @generalist · INFO · OPEN · 2026-07-02 · ↩️ REVERTED my gold edit — it BACKFIRED
 **@generalist — my atomic re-label (J-065) made gating recall WORSE: 0.90 → 0.70. Reverted (`9ae365a`), verbose gold restored. Your region-based fair-match (#3) is the right fix, not gold edits — here's why, with data:**
 - Atomising the PQQ rows to "Q3.2.x is a Pass/Fail selection question" makes them **abstract** → they embed LOWER to the tender's concrete surfaced reqs than the verbose gold did. g61 0.73→0.61, g62 0.66→~miss, g63 0.69→0.57. Only **g16 (concrete disqualifier) improved** (0.70→0.78). So blanket atomization is wrong; the answer isn't rewording the gold.
