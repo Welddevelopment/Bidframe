@@ -1,5 +1,5 @@
 """gating_scan safety net: surfaces disqualifier lines extraction missed, stays quiet when covered."""
-from engine.gating_scan import scan_candidates, uncovered_gating
+from engine.gating_scan import _STRONG, scan_candidates, uncovered_gating
 
 PAGES = [
     (1, "The contract is for cleaning two sites. Any tenderer engaged in collusive tendering "
@@ -15,6 +15,44 @@ def test_scan_finds_strong_disqualifier_signals():
     assert "collusive" in texts and "disqualified" in texts
     assert "no later than" in texts or "not be considered" in texts
     assert "pass/fail" in texts.replace(" ", "") or "pass/fail" in texts
+
+
+CANONICAL_GATES = [
+    # exclusion / rejection
+    "Bids that do not comply with the mandatory requirements will be rejected.",
+    "The authority reserves the right to exclude any supplier that fails to meet the selection criteria.",
+    "A supplier subject to a mandatory ground for exclusion under Regulation 57 will be excluded.",
+    "Any tender that is incomplete will be deemed non-compliant and eliminated.",
+    "Suppliers who are ineligible under the exclusion grounds cannot be awarded the contract.",
+    "Failure to sign the form of tender will render the bid invalid.",
+    # pass/fail selection
+    "Question 3.1 is assessed on a pass/fail basis; a fail eliminates the bid.",
+    "The Selection Questionnaire (SQ) is evaluated pass or fail.",
+    "Bidders must pass all sections of the PQQ to proceed to evaluation.",
+    # integrity
+    "Any bidder found to have engaged in collusive tendering will be disqualified.",
+    "Canvassing of members or officers will result in disqualification.",
+    # minimum standing
+    "Bidders must have a minimum annual turnover of GBP 500,000.",
+    "Suppliers must hold employer's liability insurance of at least GBP 5 million.",
+    "You must be registered with the relevant regulatory body.",
+    "A minimum credit rating is required to pass the financial assessment.",
+    # mandatory returns
+    "Failure to submit the required documents will result in exclusion.",
+    "You must return the completed Standard Selection Questionnaire.",
+    # deadline / late
+    "Tenders must arrive no later than 12:00 noon on the closing date.",
+    "Late tenders will not be accepted.",
+    "Bids must be uploaded no later than the stated time.",
+]
+
+
+def test_net_catches_canonical_uk_ps_gate_phrasings():
+    """Generalisation guard: the deterministic net must recognise standard UK public-sector
+    deal-breaker phrasings beyond the 2 tenders we have gold for, or a real unseen tender costs
+    us recall. Each line is a canonical gate statement; the net must flag every one."""
+    misses = [g for g in CANONICAL_GATES if not _STRONG.search(g)]
+    assert not misses, f"net missed canonical gate phrasings: {misses}"
 
 
 def test_taxonomy_catches_canonical_uk_ps_gate_vocabulary():

@@ -48,9 +48,11 @@ FAMILIES: dict[str, re.Pattern] = {
     "integrity": re.compile(
         r"canvass|collusi|non[-\s]?complian|conflict\s+of\s+interest|anti[-\s]?competitive", re.I),
     "minimums": re.compile(
-        r"minimum\s+(annual\s+)?(turnover|standard|requirement|level|threshold|score|rating)|"
-        r"must\s+hold|must\s+(possess|have|maintain)\s+.{0,40}(certificat|accreditat|insurance|"
-        r"licen[cs]e|registration)|(employer'?s|public)\s+liability|professional\s+indemnity", re.I),
+        r"minimum\s+(?:[\w'-]+\s+){0,3}(turnover|standard|requirement|level|threshold|score|rating|"
+        r"credit)|must\s+hold|must\s+be\s+(registered|certified|accredited|licen[cs]ed)|"
+        r"registration\s+(is\s+)?(required|mandatory)|must\s+(possess|have|maintain)\s+.{0,40}"
+        r"(certificat|accreditat|insurance|licen[cs]e|registration)|(employer'?s|public)\s+liability|"
+        r"professional\s+indemnity", re.I),
     "returns": re.compile(
         r"must\s+(complete|submit|return|be\s+returned|be\s+completed)|"
         r"failure\s+to\s+(complete|submit|return|provide|comply|meet)", re.I),

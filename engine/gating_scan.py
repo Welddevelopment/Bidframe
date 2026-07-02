@@ -36,8 +36,10 @@ _STRONG = re.compile(
     # 3. integrity gates
     r"canvass|collusi|non[-\s]?complian|conflict\s+of\s+interest|anti[-\s]?competitive|"
     # 4. mandatory minimums / thresholds / required holdings (certs, insurance, turnover)
-    r"minimum\s+(annual\s+)?(turnover|standard|requirement|level|threshold|score|rating)|"
-    r"must\s+hold|must\s+(possess|have|maintain)\s+.{0,40}(certificat|accreditat|insurance|licen[cs]e|registration)|"
+    r"minimum\s+(?:[\w'-]+\s+){0,3}(turnover|standard|requirement|level|threshold|score|rating|credit)|"
+    r"must\s+hold|must\s+be\s+(registered|certified|accredited|licen[cs]ed)|registration\s+(is\s+)?"
+    r"(required|mandatory)|must\s+(possess|have|maintain)\s+.{0,40}(certificat|accreditat|insurance|"
+    r"licen[cs]e|registration)|"
     r"(employer'?s|public)\s+liability|professional\s+indemnity|"
     # 5. mandatory returns / completeness
     r"must\s+(complete|submit|return|be\s+returned|be\s+completed)|"
