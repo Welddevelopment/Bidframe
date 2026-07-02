@@ -219,6 +219,10 @@ def _to_raw(items: list[dict], chunk: Chunk, raw_id_prefix: str = "raw") -> list
     out: list[dict] = []
     for seq, it in enumerate(items):
         excerpt = it.get("source_excerpt", "")
+        if not isinstance(excerpt, str):
+            # Models occasionally emit a non-str source_excerpt (e.g. an int); str.find(int)
+            # raises and — via the retry wrapper — drops the ENTIRE chunk's requirements.
+            excerpt = str(excerpt or "")
         start = chunk.text.find(excerpt) if excerpt else -1
         # If we can locate the excerpt, trust the page_map over the model's guess.
         page = chunk.page_at(start) if start >= 0 else it.get("source_page", chunk.page_start)
