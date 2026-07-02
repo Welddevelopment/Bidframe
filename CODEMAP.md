@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `6449763` · 2026-07-02T19:05:01Z
+> Map of commit `c620cbb` · 2026-07-02T20:12:37+01:00
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -13,7 +13,7 @@
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
 | **frontend** | 138 | 49,667 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
-| **backend** | 19 | 2,736 | Backend — FastAPI (PDF ingest, extraction, REST API) |
+| **backend** | 19 | 2,773 | Backend — FastAPI (PDF ingest, extraction, REST API) |
 | **engine** | 64 | 4,556 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 713 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
 | **gold** | 4 | 204 | Eval gold-set — hand-labelled requirements for accuracy measurement |
@@ -300,49 +300,50 @@ graph LR
   n9[pipeline.py] --> n7[schema.py]
   n9[pipeline.py] --> n10[answer.py]
   n9[pipeline.py] --> n11[embeddings.py]
-  n9[pipeline.py] --> n12[reconcile.py]
-  n13[store.py] --> n7[schema.py]
-  n10[answer.py] --> n14[similarity.py]
+  n9[pipeline.py] --> n12[gating_scan.py]
+  n9[pipeline.py] --> n13[reconcile.py]
+  n14[store.py] --> n7[schema.py]
+  n10[answer.py] --> n15[similarity.py]
   n10[answer.py] --> n5[usage_log.py]
-  n11[embeddings.py] --> n14[similarity.py]
+  n11[embeddings.py] --> n15[similarity.py]
   n11[embeddings.py] --> n5[usage_log.py]
-  n15[eval.py] --> n16[_io.py]
-  n15[eval.py] --> n14[similarity.py]
-  n17[eval_answers.py] --> n16[_io.py]
-  n17[eval_answers.py] --> n10[answer.py]
-  n17[eval_answers.py] --> n14[similarity.py]
-  n18[gating_scan.py] --> n14[similarity.py]
-  n12[reconcile.py] --> n16[_io.py]
-  n12[reconcile.py] --> n11[embeddings.py]
-  n12[reconcile.py] --> n14[similarity.py]
-  n19[calibrate.py] --> n16[_io.py]
-  n19[calibrate.py] --> n15[eval.py]
-  n20[draft_answers.py] --> n16[_io.py]
+  n16[eval.py] --> n17[_io.py]
+  n16[eval.py] --> n15[similarity.py]
+  n18[eval_answers.py] --> n17[_io.py]
+  n18[eval_answers.py] --> n10[answer.py]
+  n18[eval_answers.py] --> n15[similarity.py]
+  n12[gating_scan.py] --> n15[similarity.py]
+  n13[reconcile.py] --> n17[_io.py]
+  n13[reconcile.py] --> n11[embeddings.py]
+  n13[reconcile.py] --> n15[similarity.py]
+  n19[calibrate.py] --> n17[_io.py]
+  n19[calibrate.py] --> n16[eval.py]
+  n20[draft_answers.py] --> n17[_io.py]
   n20[draft_answers.py] --> n10[answer.py]
-  n20[draft_answers.py] --> n15[eval.py]
-  n21[eval_all.py] --> n16[_io.py]
+  n20[draft_answers.py] --> n16[eval.py]
+  n21[eval_all.py] --> n17[_io.py]
   n21[eval_all.py] --> n11[embeddings.py]
-  n21[eval_all.py] --> n15[eval.py]
-  n21[eval_all.py] --> n12[reconcile.py]
+  n21[eval_all.py] --> n16[eval.py]
+  n21[eval_all.py] --> n13[reconcile.py]
   n21[eval_all.py] --> n22[run_tender.py]
-  n23[gating_recall.py] --> n16[_io.py]
+  n23[gating_recall.py] --> n17[_io.py]
   n23[gating_recall.py] --> n11[embeddings.py]
-  n23[gating_recall.py] --> n15[eval.py]
-  n23[gating_recall.py] --> n18[gating_scan.py]
-  n23[gating_recall.py] --> n12[reconcile.py]
+  n23[gating_recall.py] --> n16[eval.py]
+  n23[gating_recall.py] --> n12[gating_scan.py]
+  n23[gating_recall.py] --> n13[reconcile.py]
   n23[gating_recall.py] --> n22[run_tender.py]
-  n24[precision_report.py] --> n16[_io.py]
-  n24[precision_report.py] --> n15[eval.py]
-  n24[precision_report.py] --> n12[reconcile.py]
+  n24[precision_report.py] --> n17[_io.py]
+  n24[precision_report.py] --> n16[eval.py]
+  n24[precision_report.py] --> n13[reconcile.py]
   n24[precision_report.py] --> n22[run_tender.py]
-  n24[precision_report.py] --> n14[similarity.py]
+  n24[precision_report.py] --> n15[similarity.py]
   n22[run_tender.py] --> n2[chunk.py]
   n22[run_tender.py] --> n4[extract.py]
   n22[run_tender.py] --> n3[ingest.py]
-  n22[run_tender.py] --> n16[_io.py]
+  n22[run_tender.py] --> n17[_io.py]
   n22[run_tender.py] --> n11[embeddings.py]
-  n22[run_tender.py] --> n15[eval.py]
-  n22[run_tender.py] --> n12[reconcile.py]
+  n22[run_tender.py] --> n16[eval.py]
+  n22[run_tender.py] --> n13[reconcile.py]
   n25[parse_check.py]
   n26[stress_test.py]
 ```
