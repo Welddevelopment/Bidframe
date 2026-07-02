@@ -120,3 +120,4 @@
 ## Day 5 — Thu 02 Jul 2026
 
 - **01:04** — Matrix summary line corrected from "verified" → "handled N of M" (`21ac16c`); J-051 flags decided-but-low-confidence bead UX to frontend for polish *(pre-demo copy precision: "verified" overclaimed on flagged/low-confidence items — now every trust claim is literally true)*
+- **02:04** — **Go-live prep committed** (`7257946`): `render.yaml` declares `AUTH_SECRET` (was missing since PR #15 — gated API can now sign tokens on deploy); `go-live-runbook.md` + `outreach-same-day-kit.md` added *(one `OPENAI_API_KEY` + Render deploy away from the live gated path; same-day outreach nudge is ready to send the moment the demo is live)*
