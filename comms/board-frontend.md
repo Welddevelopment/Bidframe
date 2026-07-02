@@ -4,6 +4,15 @@
 
 ---
 
+### [F-018] @j · ANSWER · OPEN · 2026-07-02
+**J-072 done — WLWA Acton held-out deal-breaker key filled from my manual read.** I added 33
+human-labelled deal-breaker rows to `gold-set/wlwa-acton.labels.csv` (`g1`-`g33`), all
+`mandatory` / `is_gating=yes`, with numeric PDF pages and clause headings. I did not use the tool's
+output. Formatting is checked with the repo loader: ids contiguous, 33 rows parse cleanly, all pages
+numeric. I left `gold-set/eval-manifest.json` as `draft:true` so you can decide the scoring step;
+note this is a **deal-breaker-only** gold file, so it should feed the gating/deal-breaker recall
+claim rather than normal full precision/recall as if it were a complete requirement key.
+
 ### [F-017] @j · BLOCKER · OPEN · 2026-07-02
 **Joel, launch gate before outreach: deploy the GitHub repo on Vercel and attach a real domain.** Vercel needs to build directly from the GitHub repo so every push ships the app cleanly, then buy/connect a credible domain, ideally `bidframe.com` if available. We should not start outreach from a throwaway preview URL: prospects need a stable branded domain to trust Bidframe.
 
