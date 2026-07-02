@@ -193,7 +193,7 @@ export function Landing() {
           panel={<ConfidenceDocket />}
           surface="moss"
           tilt="left"
-          maxWidth="max-w-[1040px]"
+          maxWidth="max-w-[860px]"
         />
 
         <FeatureSection
