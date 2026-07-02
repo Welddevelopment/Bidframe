@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `1790e32` · 2026-07-02T20:14:04+01:00
+> Map of commit `a5625fe` · 2026-07-02T20:21:16+01:00
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,7 +12,7 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 138 | 49,667 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **frontend** | 138 | 49,981 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
 | **backend** | 19 | 2,773 | Backend — FastAPI (PDF ingest, extraction, REST API) |
 | **engine** | 64 | 4,556 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 713 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
@@ -443,7 +443,7 @@ graph LR
 - `frontend/src/components/landing/HeroResolve.tsx` — exports `HeroResolve`
 - `frontend/src/components/landing/HowItWorks.tsx` — exports `HowItWorks`
 - `frontend/src/components/landing/Landing.tsx` — exports `Landing`
-- `frontend/src/components/landing/ProductShots.tsx` — Three product shots for the landing page, each a differentiated, generously
+- `frontend/src/components/landing/ProductShots.tsx` — Three product shots for the landing page. They use static demo content, but
 - `frontend/src/components/landing/ProofNumbers.tsx` — The proof ledger on the pine band: three poster-scale mono figures, each
 - `frontend/src/components/landing/Reveal.tsx` — exports `Reveal`
 - `frontend/src/components/landing/SiteFooter.tsx` — exports `SiteFooter`
