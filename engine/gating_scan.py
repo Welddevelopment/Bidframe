@@ -34,7 +34,7 @@ _STRONG = re.compile(
     r"(tender|bid|submission|proposal|response|offer)s?\b.{0,25}\b(void|invalid)\b|"
     r"(is|are|deemed|considered)\s+(void|invalid)\b|"
     # 2. pass/fail selection stage (SQ / PQQ / SPD)
-    r"pass\s*/?\s*fail|pass\s+or\s+fail|\bpqq\b|\bsq\b|selection\s+questionnaire|"
+    r"pass\s*[-/]?\s*fail|pass\s+or\s+fail|\bpqq\b|\bsq\b|selection\s+questionnaire|"
     r"deemed\s+.{0,25}fail|fail(ure|ed|s)?\s+.{0,40}(reject|exclu|disqualif|eliminat|not\s+be\s+considered)|"
     # 3. integrity gates
     r"canvass|collusi|non[-\s]?complian|conflicts?\s+of\s+interest|anti[-\s]?competitive|"
@@ -71,7 +71,23 @@ _STRONG = re.compile(
 
 _MIN_LEN = 16
 _COVER_CONTAINMENT = 0.6   # covered if an extracted req overlaps >=60% of the smaller token set
-_PASSFAIL = re.compile(r"pass\s*/?\s*fail|pass\s+or\s+fail", re.IGNORECASE)
+_PASSFAIL = re.compile(r"pass\s*[-/]?\s*fail|pass\s+or\s+fail", re.IGNORECASE)
+
+# Typographic characters real PDFs emit that would silently break the ASCII patterns above:
+# curly quotes ("employer's" -> employer'?s misses), ligatures ("disqualiﬁed"), en/em dashes
+# ("pass–fail"). Normalise them to ASCII before scanning so the gate keyword still matches.
+_NORMALISE = {
+    "’": "'", "‘": "'", "“": '"', "”": '"',      # curly quotes
+    "–": "-", "—": "-", "−": "-",                       # en / em / minus dashes
+    "ﬁ": "fi", "ﬂ": "fl", "ﬀ": "ff", "ﬃ": "ffi", "ﬄ": "ffl",  # ligatures
+}
+
+
+def _normalise(text: str) -> str:
+    for k, v in _NORMALISE.items():
+        if k in text:
+            text = text.replace(k, v)
+    return text
 
 
 def _units(text: str):
@@ -83,9 +99,10 @@ def _units(text: str):
     otherwise be swallowed into one giant punctuation-free run and its signal diluted below the
     match threshold. Isolating each line keeps that disqualifier recognisable as its own unit."""
     seen: set[str] = set()
-    # Rejoin soft-hyphenated words split across a line break ("exclu-\nsion" -> "exclusion") so the
-    # gate keyword survives; matches only letter-hyphen-newline-letter, leaving real hyphens intact.
-    text = re.sub(r"(\w)-[ \t]*\n[ \t]*(\w)", r"\1\2", text or "")
+    # Normalise typographic chars (curly quotes / ligatures / en-dashes) to ASCII so gate keywords
+    # match, then rejoin soft-hyphenated words split across a line break ("exclu-\nsion" -> "exclusion")
+    # so the keyword survives; the rejoin matches only letter-hyphen-newline-letter (real hyphens intact).
+    text = re.sub(r"(\w)-[ \t]*\n[ \t]*(\w)", r"\1\2", _normalise(text or ""))
     # 1. per line: isolate form/address fields AND table cells. A table ROW flattens to one line
     #    with big column gaps ("Turnover £500k    Insurance £5m    Deadline 5pm"); split on those
     #    gaps + cell delimiters so each distinct gate is its own unit — the one-to-one eval can then

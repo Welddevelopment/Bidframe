@@ -44,7 +44,7 @@ FAMILIES: dict[str, re.Pattern] = {
         r"\s+(void|invalid)\b|set\s+aside|pass(ed)?\s+over|ruled?\s+out|(will\s+)?not\s+"
         r"(proceed|progress)\b|non[-\s]?conform\w*", re.I),
     "passfail": re.compile(
-        r"pass\s*/?\s*fail|pass\s+or\s+fail|\bpqq\b|\bsq\b|selection\s+questionnaire|"
+        r"pass\s*[-/]?\s*fail|pass\s+or\s+fail|\bpqq\b|\bsq\b|selection\s+questionnaire|"
         r"deemed\s+.{0,25}fail|fail(ure|ed|s)?\s+.{0,40}(reject|exclu|disqualif|eliminat|"
         r"not\s+be\s+considered)|pass\s+mark|(quality|score|scoring)\s+threshold", re.I),
     "integrity": re.compile(

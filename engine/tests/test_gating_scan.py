@@ -106,6 +106,20 @@ def test_net_catches_sector_and_longdistance_gates():
     assert not misses, f"net missed sector/long-distance gates: {misses}"
 
 
+def test_typographic_characters_do_not_break_matching():
+    """Real PDFs emit curly quotes, ligatures and en-dashes that would break ASCII patterns —
+    "employer's liability" (curly '), "pass-fail" (en-dash), "disqualified" (fi ligature). The
+    scan normalises them so the gate keyword still matches."""
+    pages = [
+        (1, "Cover for employer’s liability of five million pounds is a requirement."),
+        (2, "This selection question is assessed on a pass–fail basis."),
+        (3, "A tenderer who acts improperly may be disqualiﬁed."),
+    ]
+    for p in pages:
+        assert any(_STRONG.search(c["text"]) for c in scan_candidates([p])), \
+            f"typographic characters broke matching on: {p[1]}"
+
+
 def test_hyphenated_gate_word_split_across_a_line_break_is_rejoined():
     """PDFs hyphenate at line breaks ('exclu-\\nsion'); the gate keyword must survive so the
     disqualifier is still flagged."""
