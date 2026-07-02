@@ -1413,5 +1413,210 @@ These are perfect-shape tiny firms with NAMED council/HA clients but **no email 
 >
 > Joel, Bidframe
 
+### Wave 5b — family kitchen/bathroom fitters & DFG adaptations (council / HA)
+*7 verified · all kept (3 PERFECT, 4 GOOD) · 0 duplicates. Seam note: the tiny+named-client sweet spot is the DFG/wet-room adaptations niche.*
+
+---
+
+#### MT-87 · ISCA Heating & Plumbing Ltd · to: lewis@iscaheating-plumbing.co.uk · PERFECT
+*Family firm since 1992, Pinhoe/Exeter. Own site: "We currently work for Teignbridge Council, East Devon District Council and Mid-Devon District Council" (DFG wet rooms, 25+ yrs). Source: iscaheating-plumbing.co.uk/wetrooms/disability-wetrooms*
+**Subject:** Your Teignbridge / East Devon DFG bids — deal-breakers caught first
+> Hi Lewis,
+>
+> You fit DFG wet rooms for Teignbridge, East Devon and Mid-Devon councils — so you're bidding council adaptation work where one missed pass/fail requirement (an OT-spec detail, an insurance level, a DBS clause) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> I'm running free 15-minute live reads today and tomorrow — send me a council adaptations tender you're bidding and I'll show you, on the call, exactly what would disqualify it. A couple of slots left; after this week it's a paid pilot.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-88 · MIserve (C.G.Y. (MISERVE) Ltd) · to: office@miserve.co.uk · PERFECT
+*Small Devon adaptations specialist (single Exeter unit, 15+ yrs). Own site names 6 councils: Exeter City, Plymouth City, West Devon Borough, South Hams DC, East Devon DC, Torridge DC. Source: miserve.co.uk/business-clients*
+**Subject:** Six Devon councils trust you — your next adaptations bid, caught first
+> Hi there,
+>
+> Six Devon councils already trust your kitchen/bathroom adaptation work — so you're bidding council frameworks where one missed pass/fail requirement voids the whole submission however strong your delivery.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council adaptations tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-89 · A T Plumbing Services · to: atplumbing@btinternet.com · PERFECT
+*Family firm (20 yrs, 800+ installs), Pembrokeshire (owners Anna Gardner & Tristan Thomas). Own site: "working on contracts for both Pembrokeshire County Council and Ateb" (Pembrokeshire HA). Source: atplumbing.wales*
+**Subject:** Your Pembrokeshire CC / Ateb bids — deal-breakers caught first
+> Hi Anna and Tristan,
+>
+> You hold contracts with Pembrokeshire County Council and Ateb — so you're bidding council/HA planned-works and adaptations where one missed pass/fail requirement voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a Pembrokeshire CC or Ateb tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-90 · Downs Brothers · to: info@downsbrothers.co.uk · GOOD
+*Family-run since 1966 (FSB member), Bristol; kitchens/bathrooms + disability adaptations. Self-declared "council-approved provider" for adaptations (none named). Source: downsbrothers.co.uk/mobility-adaptations*
+**Subject:** Council adaptation tenders — deal-breakers caught first
+> Hi there,
+>
+> As a council-approved Bristol adaptations fitter, the council kitchen/bathroom adaptation tenders you bid have pass/fail requirements where one missed line voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council adaptations tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-91 · Neti Construction Ltd · to: info@neticontracts.co.uk · GOOD
+*Family-run (30+ yrs, two generations; founder "Eddie"), Hornchurch, Essex. Self-declared kitchen/bathroom/void works for HAs, LAs & tier-1s across London/Essex/Kent (none named). Source: neticontracts.com*
+**Subject:** Your social-housing void & K&B bids — the pass/fail gates
+> Hi Eddie,
+>
+> You fit kitchens/bathrooms and voids for housing associations and councils — so you're bidding social-housing work where one missed pass/fail requirement voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a social-housing K&B or void tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-92 · W King Building Services Ltd · to: info@w-king.co.uk · GOOD
+*Builder since 1983 (started as sole trader; founder "W King"), Hatfield Heath + small Islington office; renovations & adaptations. Self-declared DFG / Local Authority Works (none named). Source: w-king.co.uk/aids-and-adaptations.html*
+**Subject:** Your DFG & local-authority adaptation bids — the pass/fail gates
+> Hi there,
+>
+> You already do DFG and local-authority adaptation works — so you're bidding council tenders where one missed pass/fail requirement (an OT-spec detail, an accreditation, an insurance level) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a DFG or council adaptations tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-93 · Affect Ability Limited · to: info@affectability.co.uk · GOOD
+*Small owner-led adaptations firm ("Ross Edwards and team"), Llanelli, South Wales; wet rooms, walk-in showers, bath lifts. Named public project: NHS Wales wet-room project (NHS-only; no council/HA named). Source: affectability.co.uk*
+**Subject:** Welsh council & HA adaptation tenders — deal-breakers caught first
+> Hi Ross,
+>
+> You've delivered wet rooms for NHS Wales — so as you bid Welsh council and HA adaptation work, one missed pass/fail requirement voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a Welsh council/HA adaptations tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+### Wave 5c — family retrofit / insulation / EWI (social-housing decarbonisation: ECO4 / Warm Homes / SHDF)
+*6 verified · all kept (1 PERFECT, 5 GOOD; 1 council-scheme-listed) · 0 duplicates. Seam note: named-client tiny firms are rare (most SHDF goes to mid-size); RenderRight is the standout.*
+
+---
+
+#### MT-94 · RenderRight (Render Right Ltd) · to: info@rrfl.co.uk · PERFECT
+*Husband-and-wife firm (~6 core staff; directors Johnny & Jenna Carlin). Case studies name: LB Barking & Dagenham, Rugby BC, South Kesteven DC, Ashford BC, Leicester City, Chisel HA, Soha HA; delivers ECO/Warm Homes/HUG/SHDF. Source: renderright.co.uk*
+**Subject:** Your council/HA retrofit bids — deal-breakers caught first
+> Hi Johnny and Jenna,
+>
+> You already win council and HA retrofit work (Barking & Dagenham, Ashford, Leicester) — so you're bidding SHDF/Warm Homes frameworks where one missed pass/fail requirement (a PAS 2035 role, a TrustMark scope, an insurance level) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, so a husband-and-wife team never loses a bid on a missed mandatory.
+>
+> I'm running free 15-minute live reads today and tomorrow — send me a retrofit framework you're bidding and I'll show you, on the call, exactly what would disqualify it. A couple of slots left; after this week it's a paid pilot.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-95 · Heatpac (Middlesbrough Insulation Company Ltd) · to: info@heatpac.co.uk · GOOD
+*Family business since 1976 (founders Ray & Linda Ingledew; MD Callum Green; ~23 staff), Middlesbrough. Self-declared ECO4 loft/cavity scheme work (none named). Source: heatpac.co.uk*
+**Subject:** Your ECO4 / retrofit bids — the pass/fail gates
+> Hi Callum,
+>
+> As a family firm doing ECO4 loft and cavity work across the North East, you're bidding funded-scheme frameworks where one missed pass/fail requirement (a PAS 2035 role, a TrustMark scope) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a retrofit/ECO4 framework you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-96 · Pioneer Insulation (Pioneer Wall Cladding & Building Insulation Ltd) · to: enquiries@pioneerinsulation.co.uk · GOOD
+*Family-run firm (founder-MD Andrei Tartza), Hersham, Surrey; EWI/home insulation. Self-declared ECO4 EWI grant work (none named). Source: pioneerinsulation.co.uk/eco*
+**Subject:** Your ECO4 EWI grant bids — deal-breakers caught first
+> Hi Andrei,
+>
+> You handle ECO4 external-wall-insulation grants yourself in Surrey/SW London — so as you bid funded frameworks, one missed pass/fail requirement voids the whole submission and the founder is the bottleneck.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a retrofit/EWI framework you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-97 · Karnheath Ltd · to: info@karnheathltd.com · GOOD
+*Family insulation firm (40+ yrs), Newcastle upon Tyne. Self-declared social-housing work + grant funding (none named). Source: karnheathltd.com*
+**Subject:** Your social-housing insulation bids — the pass/fail gates
+> Hi there,
+>
+> You chase social-housing and grant-funded insulation work across the North East — tenders where one missed pass/fail requirement voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a social-housing insulation tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-98 · Indianu Insulation (Indianu Render Wall Insulation Ltd) · to: info@indianuinsulation.co.uk · GOOD
+*Small local EWI/render specialist, Wrentham, Suffolk (East Anglia only). Listed as an approved EWI contractor on East Suffolk Council's Warm Homes Suffolk contractor directory + ECO4. Source: warmhomessuffolk.org/contractors*
+**Subject:** On East Suffolk's Warm Homes list — but out-gunned on the tender?
+> Hi there,
+>
+> You're on East Suffolk's Warm Homes contractor list as a small EWI outfit — so the retrofit tenders you bid have pass/fail requirements where one missed line voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, so you compete without a bid team.
+>
+> Free 15-minute live reads today and tomorrow — send me a Warm Homes / retrofit tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-99 · South Wales Energy Solutions · to: support@southwalesenergysolutions.com · GOOD
+*Owner-operator retrofit firm ("you deal directly with the owner"), Swansea; qualified retrofit installers/surveyors. Self-declared eco-grant insulation/retrofit (none named). Source: southwalesenergysolutions.com*
+**Subject:** Your eco-grant retrofit bids — the pass/fail gates
+> Hi there,
+>
+> As a one-owner Swansea retrofit outfit doing eco-grant insulation, unpaid bid paperwork is time you can't spare — and one missed pass/fail requirement voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a retrofit/eco-grant tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
 <!-- next waves appended below -->
 
