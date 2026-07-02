@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `0b2b2a0` · 2026-07-02T10:31:13+01:00
+> Map of commit `57f83c1` · 2026-07-02T19:00:13+01:00
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,17 +12,17 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 136 | 48,915 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
-| **backend** | 19 | 2,592 | Backend — FastAPI (PDF ingest, extraction, REST API) |
-| **engine** | 55 | 3,184 | Engine — reconcile / eval / answer-draft pipeline + tests |
-| **prompts** | 6 | 678 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
-| **gold** | 4 | 222 | Eval gold-set — hand-labelled requirements for accuracy measurement |
+| **frontend** | 137 | 49,048 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **backend** | 19 | 2,736 | Backend — FastAPI (PDF ingest, extraction, REST API) |
+| **engine** | 63 | 4,291 | Engine — reconcile / eval / answer-draft pipeline + tests |
+| **prompts** | 6 | 713 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
+| **gold** | 4 | 204 | Eval gold-set — hand-labelled requirements for accuracy measurement |
 | **data** | 17 | 0 | Data — tender source PDFs (not parsed here) |
-| **comms** | 5 | 1,293 | Comms — async agent message boards |
+| **comms** | 5 | 1,580 | Comms — async agent message boards |
 | **docs** | 3 | 1,663 | Docs — plans & specs |
 | **ci** | 1 | 62 | CI — GitHub Actions |
 | **tooling** | 1 | 516 | Tooling — repo scripts (incl. this map generator) |
-| **root** | 384 | 17,735 | Root — docs, config, role briefs |
+| **root** | 407 | 21,342 | Root — docs, config, role briefs |
 
 ## System shape
 
@@ -123,21 +123,22 @@ graph LR
   n6[DemoView.tsx] --> n15[api.ts]
   n6[DemoView.tsx] --> n45[triage.ts]
   n4[DocumentHeader.tsx] --> n26[AccountMenu.tsx]
+  n4[DocumentHeader.tsx] --> n54[AnimatedNumber.tsx]
   n4[DocumentHeader.tsx] --> n14[BrandLogo.tsx]
-  n4[DocumentHeader.tsx] --> n54[SectionNav.tsx]
+  n4[DocumentHeader.tsx] --> n55[SectionNav.tsx]
   n4[DocumentHeader.tsx] --> n7[RequirementsContext.tsx]
   n4[DocumentHeader.tsx] --> n41[categoryStyle.ts]
   n4[DocumentHeader.tsx] --> n45[triage.ts]
-  n55[EvidenceLibrary.tsx] --> n7[RequirementsContext.tsx]
-  n35[ExportMenu.tsx] --> n56[export-response.ts]
+  n56[EvidenceLibrary.tsx] --> n7[RequirementsContext.tsx]
+  n35[ExportMenu.tsx] --> n57[export-response.ts]
   n35[ExportMenu.tsx] --> n8[requirement.ts]
-  n57[FocusMode.tsx] --> n58[RequirementPanel.tsx]
-  n57[FocusMode.tsx] --> n45[triage.ts]
-  n57[FocusMode.tsx] --> n8[requirement.ts]
-  n59[GapInterview.tsx] --> n29[AnswerStateBadge.tsx]
-  n59[GapInterview.tsx] --> n30[CategoryTag.tsx]
-  n59[GapInterview.tsx] --> n32[OpenQuestions.tsx]
-  n59[GapInterview.tsx] --> n7[RequirementsContext.tsx]
+  n58[FocusMode.tsx] --> n59[RequirementPanel.tsx]
+  n58[FocusMode.tsx] --> n45[triage.ts]
+  n58[FocusMode.tsx] --> n8[requirement.ts]
+  n60[GapInterview.tsx] --> n29[AnswerStateBadge.tsx]
+  n60[GapInterview.tsx] --> n30[CategoryTag.tsx]
+  n60[GapInterview.tsx] --> n32[OpenQuestions.tsx]
+  n60[GapInterview.tsx] --> n7[RequirementsContext.tsx]
   n48[GatingHero.tsx] --> n7[RequirementsContext.tsx]
   n48[GatingHero.tsx] --> n47[dedupe.ts]
   n48[GatingHero.tsx] --> n8[requirement.ts]
@@ -146,126 +147,127 @@ graph LR
   n49[GraphView.tsx] --> n7[RequirementsContext.tsx]
   n49[GraphView.tsx] --> n15[api.ts]
   n49[GraphView.tsx] --> n41[categoryStyle.ts]
-  n49[GraphView.tsx] --> n60[structure.ts]
+  n49[GraphView.tsx] --> n61[structure.ts]
   n49[GraphView.tsx] --> n8[requirement.ts]
-  n61[MarksView.tsx] --> n7[RequirementsContext.tsx]
-  n61[MarksView.tsx] --> n60[structure.ts]
-  n61[MarksView.tsx] --> n8[requirement.ts]
+  n62[MarksView.tsx] --> n7[RequirementsContext.tsx]
+  n62[MarksView.tsx] --> n61[structure.ts]
+  n62[MarksView.tsx] --> n8[requirement.ts]
+  n19[MatrixView.tsx] --> n54[AnimatedNumber.tsx]
   n19[MatrixView.tsx] --> n2[AppMain.tsx]
-  n19[MatrixView.tsx] --> n62[ApprovalStamp.tsx]
-  n19[MatrixView.tsx] --> n63[BulkActionBar.tsx]
+  n19[MatrixView.tsx] --> n63[ApprovalStamp.tsx]
+  n19[MatrixView.tsx] --> n64[BulkActionBar.tsx]
   n19[MatrixView.tsx] --> n42[CommandPalette.tsx]
   n19[MatrixView.tsx] --> n46[ComplianceMatrix.tsx]
   n19[MatrixView.tsx] --> n4[DocumentHeader.tsx]
-  n19[MatrixView.tsx] --> n57[FocusMode.tsx]
+  n19[MatrixView.tsx] --> n58[FocusMode.tsx]
   n19[MatrixView.tsx] --> n48[GatingHero.tsx]
   n19[MatrixView.tsx] --> n39[NoTenderLoaded.tsx]
-  n19[MatrixView.tsx] --> n64[PdfSourceView.tsx]
-  n19[MatrixView.tsx] --> n65[RequirementDrawer.tsx]
-  n19[MatrixView.tsx] --> n58[RequirementPanel.tsx]
-  n19[MatrixView.tsx] --> n66[RequirementSpine.tsx]
+  n19[MatrixView.tsx] --> n65[PdfSourceView.tsx]
+  n19[MatrixView.tsx] --> n66[RequirementDrawer.tsx]
+  n19[MatrixView.tsx] --> n59[RequirementPanel.tsx]
+  n19[MatrixView.tsx] --> n67[RequirementSpine.tsx]
   n19[MatrixView.tsx] --> n7[RequirementsContext.tsx]
   n19[MatrixView.tsx] --> n15[api.ts]
-  n19[MatrixView.tsx] --> n67[export-matrix-xlsx.ts]
+  n19[MatrixView.tsx] --> n68[export-matrix-xlsx.ts]
   n19[MatrixView.tsx] --> n43[matrix-derive.ts]
   n19[MatrixView.tsx] --> n44[source-doc.ts]
   n19[MatrixView.tsx] --> n45[triage.ts]
   n19[MatrixView.tsx] --> n8[requirement.ts]
   n32[OpenQuestions.tsx] --> n7[RequirementsContext.tsx]
   n32[OpenQuestions.tsx] --> n8[requirement.ts]
-  n64[PdfSourceView.tsx] --> n47[dedupe.ts]
-  n68[ProcessingView.tsx] --> n15[api.ts]
+  n65[PdfSourceView.tsx] --> n47[dedupe.ts]
+  n69[ProcessingView.tsx] --> n15[api.ts]
   n40[ReadinessLedger.tsx] --> n33[answers.ts]
-  n65[RequirementDrawer.tsx] --> n58[RequirementPanel.tsx]
-  n65[RequirementDrawer.tsx] --> n8[requirement.ts]
-  n58[RequirementPanel.tsx] --> n28[AnswerPanel.tsx]
-  n58[RequirementPanel.tsx] --> n62[ApprovalStamp.tsx]
-  n58[RequirementPanel.tsx] --> n30[CategoryTag.tsx]
-  n58[RequirementPanel.tsx] --> n31[ConfidenceIndicator.tsx]
-  n58[RequirementPanel.tsx] --> n50[SourceVerifyOverlay.tsx]
-  n58[RequirementPanel.tsx] --> n7[RequirementsContext.tsx]
-  n58[RequirementPanel.tsx] --> n15[api.ts]
-  n58[RequirementPanel.tsx] --> n44[source-doc.ts]
-  n58[RequirementPanel.tsx] --> n8[requirement.ts]
-  n66[RequirementSpine.tsx] --> n31[ConfidenceIndicator.tsx]
-  n66[RequirementSpine.tsx] --> n45[triage.ts]
-  n50[SourceVerifyOverlay.tsx] --> n64[PdfSourceView.tsx]
+  n66[RequirementDrawer.tsx] --> n59[RequirementPanel.tsx]
+  n66[RequirementDrawer.tsx] --> n8[requirement.ts]
+  n59[RequirementPanel.tsx] --> n28[AnswerPanel.tsx]
+  n59[RequirementPanel.tsx] --> n63[ApprovalStamp.tsx]
+  n59[RequirementPanel.tsx] --> n30[CategoryTag.tsx]
+  n59[RequirementPanel.tsx] --> n31[ConfidenceIndicator.tsx]
+  n59[RequirementPanel.tsx] --> n50[SourceVerifyOverlay.tsx]
+  n59[RequirementPanel.tsx] --> n7[RequirementsContext.tsx]
+  n59[RequirementPanel.tsx] --> n15[api.ts]
+  n59[RequirementPanel.tsx] --> n44[source-doc.ts]
+  n59[RequirementPanel.tsx] --> n8[requirement.ts]
+  n67[RequirementSpine.tsx] --> n31[ConfidenceIndicator.tsx]
+  n67[RequirementSpine.tsx] --> n45[triage.ts]
+  n50[SourceVerifyOverlay.tsx] --> n65[PdfSourceView.tsx]
   n50[SourceVerifyOverlay.tsx] --> n8[requirement.ts]
   n10[StructureView.tsx] --> n49[GraphView.tsx]
-  n10[StructureView.tsx] --> n61[MarksView.tsx]
+  n10[StructureView.tsx] --> n62[MarksView.tsx]
   n10[StructureView.tsx] --> n39[NoTenderLoaded.tsx]
-  n10[StructureView.tsx] --> n65[RequirementDrawer.tsx]
+  n10[StructureView.tsx] --> n66[RequirementDrawer.tsx]
   n10[StructureView.tsx] --> n7[RequirementsContext.tsx]
   n10[StructureView.tsx] --> n15[api.ts]
-  n10[StructureView.tsx] --> n60[structure.ts]
+  n10[StructureView.tsx] --> n61[structure.ts]
   n10[StructureView.tsx] --> n8[requirement.ts]
   n22[TendersList.tsx] --> n7[RequirementsContext.tsx]
   n22[TendersList.tsx] --> n15[api.ts]
-  n25[UploadDropzone.tsx] --> n68[ProcessingView.tsx]
-  n25[UploadDropzone.tsx] --> n69[RegisterPreview.tsx]
+  n25[UploadDropzone.tsx] --> n69[ProcessingView.tsx]
+  n25[UploadDropzone.tsx] --> n70[RegisterPreview.tsx]
   n25[UploadDropzone.tsx] --> n7[RequirementsContext.tsx]
   n25[UploadDropzone.tsx] --> n15[api.ts]
-  n51[DemoScrolly.tsx] --> n70[ScrollyStage.tsx]
-  n51[DemoScrolly.tsx] --> n71[steps.ts]
+  n51[DemoScrolly.tsx] --> n71[ScrollyStage.tsx]
+  n51[DemoScrolly.tsx] --> n72[steps.ts]
   n51[DemoScrolly.tsx] --> n52[BookDemoButton.tsx]
-  n70[ScrollyStage.tsx] --> n62[ApprovalStamp.tsx]
-  n70[ScrollyStage.tsx] --> n30[CategoryTag.tsx]
-  n70[ScrollyStage.tsx] --> n31[ConfidenceIndicator.tsx]
-  n70[ScrollyStage.tsx] --> n48[GatingHero.tsx]
-  n70[ScrollyStage.tsx] --> n72[sample.ts]
-  n70[ScrollyStage.tsx] --> n71[steps.ts]
-  n72[sample.ts] --> n8[requirement.ts]
-  n73[HeroResolve.tsx] --> n46[ComplianceMatrix.tsx]
-  n73[HeroResolve.tsx] --> n48[GatingHero.tsx]
-  n73[HeroResolve.tsx] --> n7[RequirementsContext.tsx]
-  n73[HeroResolve.tsx] --> n45[triage.ts]
+  n71[ScrollyStage.tsx] --> n63[ApprovalStamp.tsx]
+  n71[ScrollyStage.tsx] --> n30[CategoryTag.tsx]
+  n71[ScrollyStage.tsx] --> n31[ConfidenceIndicator.tsx]
+  n71[ScrollyStage.tsx] --> n48[GatingHero.tsx]
+  n71[ScrollyStage.tsx] --> n73[sample.ts]
+  n71[ScrollyStage.tsx] --> n72[steps.ts]
+  n73[sample.ts] --> n8[requirement.ts]
+  n74[HeroResolve.tsx] --> n46[ComplianceMatrix.tsx]
+  n74[HeroResolve.tsx] --> n48[GatingHero.tsx]
+  n74[HeroResolve.tsx] --> n7[RequirementsContext.tsx]
+  n74[HeroResolve.tsx] --> n45[triage.ts]
   n17[Landing.tsx] --> n14[BrandLogo.tsx]
   n17[Landing.tsx] --> n31[ConfidenceIndicator.tsx]
   n17[Landing.tsx] --> n52[BookDemoButton.tsx]
-  n17[Landing.tsx] --> n74[CredibilityBand.tsx]
-  n17[Landing.tsx] --> n75[DrawOn.tsx]
-  n17[Landing.tsx] --> n73[HeroResolve.tsx]
-  n17[Landing.tsx] --> n76[HowItWorks.tsx]
-  n17[Landing.tsx] --> n77[ProductShots.tsx]
-  n17[Landing.tsx] --> n78[ProofNumbers.tsx]
-  n17[Landing.tsx] --> n79[Reveal.tsx]
-  n17[Landing.tsx] --> n80[SiteFooter.tsx]
-  n17[Landing.tsx] --> n81[FernFrond.tsx]
-  n17[Landing.tsx] --> n82[PineBranch.tsx]
-  n17[Landing.tsx] --> n83[Seal.tsx]
-  n17[Landing.tsx] --> n84[TreelineDivider.tsx]
-  n77[ProductShots.tsx] --> n62[ApprovalStamp.tsx]
-  n80[SiteFooter.tsx] --> n14[BrandLogo.tsx]
-  n80[SiteFooter.tsx] --> n52[BookDemoButton.tsx]
-  n80[SiteFooter.tsx] --> n83[Seal.tsx]
-  n80[SiteFooter.tsx] --> n84[TreelineDivider.tsx]
-  n83[Seal.tsx] --> n53[BotanicalSprig.tsx]
+  n17[Landing.tsx] --> n75[CredibilityBand.tsx]
+  n17[Landing.tsx] --> n76[DrawOn.tsx]
+  n17[Landing.tsx] --> n74[HeroResolve.tsx]
+  n17[Landing.tsx] --> n77[HowItWorks.tsx]
+  n17[Landing.tsx] --> n78[ProductShots.tsx]
+  n17[Landing.tsx] --> n79[ProofNumbers.tsx]
+  n17[Landing.tsx] --> n80[Reveal.tsx]
+  n17[Landing.tsx] --> n81[SiteFooter.tsx]
+  n17[Landing.tsx] --> n82[FernFrond.tsx]
+  n17[Landing.tsx] --> n83[PineBranch.tsx]
+  n17[Landing.tsx] --> n84[Seal.tsx]
+  n17[Landing.tsx] --> n85[TreelineDivider.tsx]
+  n78[ProductShots.tsx] --> n63[ApprovalStamp.tsx]
+  n81[SiteFooter.tsx] --> n14[BrandLogo.tsx]
+  n81[SiteFooter.tsx] --> n52[BookDemoButton.tsx]
+  n81[SiteFooter.tsx] --> n84[Seal.tsx]
+  n81[SiteFooter.tsx] --> n85[TreelineDivider.tsx]
+  n84[Seal.tsx] --> n53[BotanicalSprig.tsx]
   n12[AuthContext.tsx] --> n15[api.ts]
   n7[RequirementsContext.tsx] --> n20[mock-requirements.ts]
-  n7[RequirementsContext.tsx] --> n85[answer-store.ts]
+  n7[RequirementsContext.tsx] --> n86[answer-store.ts]
   n7[RequirementsContext.tsx] --> n15[api.ts]
   n7[RequirementsContext.tsx] --> n8[requirement.ts]
   n20[mock-requirements.ts] --> n8[requirement.ts]
-  n85[answer-store.ts] --> n8[requirement.ts]
+  n86[answer-store.ts] --> n8[requirement.ts]
   n33[answers.ts] --> n45[triage.ts]
   n33[answers.ts] --> n8[requirement.ts]
   n15[api.ts] --> n8[requirement.ts]
   n47[dedupe.ts] --> n8[requirement.ts]
-  n67[export-matrix-xlsx.ts] --> n31[ConfidenceIndicator.tsx]
-  n67[export-matrix-xlsx.ts] --> n56[export-response.ts]
-  n67[export-matrix-xlsx.ts] --> n44[source-doc.ts]
-  n67[export-matrix-xlsx.ts] --> n8[requirement.ts]
-  n56[export-response.ts] --> n8[requirement.ts]
+  n68[export-matrix-xlsx.ts] --> n31[ConfidenceIndicator.tsx]
+  n68[export-matrix-xlsx.ts] --> n57[export-response.ts]
+  n68[export-matrix-xlsx.ts] --> n44[source-doc.ts]
+  n68[export-matrix-xlsx.ts] --> n8[requirement.ts]
+  n57[export-response.ts] --> n8[requirement.ts]
   n43[matrix-derive.ts] --> n47[dedupe.ts]
-  n43[matrix-derive.ts] --> n60[structure.ts]
+  n43[matrix-derive.ts] --> n61[structure.ts]
   n43[matrix-derive.ts] --> n45[triage.ts]
   n43[matrix-derive.ts] --> n8[requirement.ts]
   n44[source-doc.ts] --> n15[api.ts]
   n44[source-doc.ts] --> n8[requirement.ts]
-  n60[structure.ts] --> n8[requirement.ts]
+  n61[structure.ts] --> n8[requirement.ts]
   n45[triage.ts] --> n8[requirement.ts]
-  n86[error.tsx]
-  n87[PressedLeaf.tsx]
+  n87[error.tsx]
+  n88[PressedLeaf.tsx]
 ```
 
 ## Backend + Engine module graph (Python, tests excluded)
@@ -275,46 +277,67 @@ graph LR
   n0[admin.py] --> n1[auth.py]
   n2[chunk.py] --> n3[ingest.py]
   n4[extract.py] --> n2[chunk.py]
-  n5[graph.py] --> n6[schema.py]
-  n7[main.py] --> n1[auth.py]
-  n7[main.py] --> n4[extract.py]
-  n7[main.py] --> n3[ingest.py]
-  n7[main.py] --> n8[pipeline.py]
-  n7[main.py] --> n6[schema.py]
-  n7[main.py] --> n9[answer.py]
-  n8[pipeline.py] --> n2[chunk.py]
-  n8[pipeline.py] --> n4[extract.py]
-  n8[pipeline.py] --> n5[graph.py]
-  n8[pipeline.py] --> n3[ingest.py]
-  n8[pipeline.py] --> n6[schema.py]
-  n8[pipeline.py] --> n9[answer.py]
-  n8[pipeline.py] --> n10[reconcile.py]
-  n11[store.py] --> n6[schema.py]
-  n9[answer.py] --> n12[similarity.py]
-  n13[eval.py] --> n14[_io.py]
-  n13[eval.py] --> n12[similarity.py]
-  n15[eval_answers.py] --> n14[_io.py]
-  n15[eval_answers.py] --> n9[answer.py]
-  n15[eval_answers.py] --> n12[similarity.py]
-  n10[reconcile.py] --> n14[_io.py]
-  n10[reconcile.py] --> n12[similarity.py]
-  n16[calibrate.py] --> n14[_io.py]
-  n16[calibrate.py] --> n13[eval.py]
-  n17[draft_answers.py] --> n14[_io.py]
-  n17[draft_answers.py] --> n9[answer.py]
-  n17[draft_answers.py] --> n13[eval.py]
-  n18[eval_all.py] --> n14[_io.py]
-  n18[eval_all.py] --> n13[eval.py]
-  n18[eval_all.py] --> n10[reconcile.py]
-  n18[eval_all.py] --> n19[run_tender.py]
-  n19[run_tender.py] --> n2[chunk.py]
-  n19[run_tender.py] --> n4[extract.py]
-  n19[run_tender.py] --> n3[ingest.py]
-  n19[run_tender.py] --> n14[_io.py]
-  n19[run_tender.py] --> n13[eval.py]
-  n19[run_tender.py] --> n10[reconcile.py]
-  n20[parse_check.py]
-  n21[stress_test.py]
+  n4[extract.py] --> n5[usage_log.py]
+  n6[graph.py] --> n7[schema.py]
+  n3[ingest.py] --> n5[usage_log.py]
+  n8[main.py] --> n1[auth.py]
+  n8[main.py] --> n4[extract.py]
+  n8[main.py] --> n3[ingest.py]
+  n8[main.py] --> n9[pipeline.py]
+  n8[main.py] --> n7[schema.py]
+  n8[main.py] --> n10[answer.py]
+  n9[pipeline.py] --> n2[chunk.py]
+  n9[pipeline.py] --> n4[extract.py]
+  n9[pipeline.py] --> n6[graph.py]
+  n9[pipeline.py] --> n3[ingest.py]
+  n9[pipeline.py] --> n7[schema.py]
+  n9[pipeline.py] --> n10[answer.py]
+  n9[pipeline.py] --> n11[embeddings.py]
+  n9[pipeline.py] --> n12[reconcile.py]
+  n13[store.py] --> n7[schema.py]
+  n10[answer.py] --> n14[similarity.py]
+  n10[answer.py] --> n5[usage_log.py]
+  n11[embeddings.py] --> n14[similarity.py]
+  n11[embeddings.py] --> n5[usage_log.py]
+  n15[eval.py] --> n16[_io.py]
+  n15[eval.py] --> n14[similarity.py]
+  n17[eval_answers.py] --> n16[_io.py]
+  n17[eval_answers.py] --> n10[answer.py]
+  n17[eval_answers.py] --> n14[similarity.py]
+  n18[gating_scan.py] --> n14[similarity.py]
+  n12[reconcile.py] --> n16[_io.py]
+  n12[reconcile.py] --> n11[embeddings.py]
+  n12[reconcile.py] --> n14[similarity.py]
+  n19[calibrate.py] --> n16[_io.py]
+  n19[calibrate.py] --> n15[eval.py]
+  n20[draft_answers.py] --> n16[_io.py]
+  n20[draft_answers.py] --> n10[answer.py]
+  n20[draft_answers.py] --> n15[eval.py]
+  n21[eval_all.py] --> n16[_io.py]
+  n21[eval_all.py] --> n11[embeddings.py]
+  n21[eval_all.py] --> n15[eval.py]
+  n21[eval_all.py] --> n12[reconcile.py]
+  n21[eval_all.py] --> n22[run_tender.py]
+  n23[gating_recall.py] --> n16[_io.py]
+  n23[gating_recall.py] --> n11[embeddings.py]
+  n23[gating_recall.py] --> n15[eval.py]
+  n23[gating_recall.py] --> n18[gating_scan.py]
+  n23[gating_recall.py] --> n12[reconcile.py]
+  n23[gating_recall.py] --> n22[run_tender.py]
+  n24[precision_report.py] --> n16[_io.py]
+  n24[precision_report.py] --> n15[eval.py]
+  n24[precision_report.py] --> n12[reconcile.py]
+  n24[precision_report.py] --> n22[run_tender.py]
+  n24[precision_report.py] --> n14[similarity.py]
+  n22[run_tender.py] --> n2[chunk.py]
+  n22[run_tender.py] --> n4[extract.py]
+  n22[run_tender.py] --> n3[ingest.py]
+  n22[run_tender.py] --> n16[_io.py]
+  n22[run_tender.py] --> n11[embeddings.py]
+  n22[run_tender.py] --> n15[eval.py]
+  n22[run_tender.py] --> n12[reconcile.py]
+  n25[parse_check.py]
+  n26[stress_test.py]
 ```
 
 ## Files by area
@@ -358,6 +381,7 @@ graph LR
 - `frontend/src/app/thank-you/page.tsx` — exports `metadata`
 - `frontend/src/app/upload/page.tsx` — exports `metadata`
 - `frontend/src/components/AccountMenu.tsx` — exports `AccountMenu`
+- `frontend/src/components/AnimatedNumber.tsx` — exports `AnimatedNumber`
 - `frontend/src/components/AnswerCard.tsx` — exports `AnswerCard`
 - `frontend/src/components/AnswerFilterBar.tsx` — exports `AnswerFilterBar`
 - `frontend/src/components/AnswerPanel.tsx` — exports `AnswerPanel`
@@ -469,6 +493,7 @@ graph LR
 - `engine/__init__.py` — Bidframe engine package (Generalist lane): reconcile/dedupe + eval harness.
 - `engine/_io.py` — UTF-8-safe JSON I/O. This box defaults to cp1252 (J-008 crash); never rely on it.
 - `engine/answer.py` — auditable autofill: grounded answer-draft + gap interview (Generalist lane).
+- `engine/embeddings.py` — optional semantic dedup for reconcile (J-056, Generalist).
 - `engine/eval.py` — Eval harness: score tool output against a hand-labelled gold set.
 - `engine/eval_answers.py` — groundedness eval for auditable autofill (Generalist lane).
 - `engine/fixtures/capability/cap-001-company-profile.txt`
@@ -481,6 +506,7 @@ graph LR
 - `engine/fixtures/capability/cap-008-insurance.txt`
 - `engine/fixtures/capability/cap-009-health-safety-coshh.txt`
 - `engine/fixtures/capability/cap-010-quality-assurance.txt`
+- `engine/gating_scan.py` — deterministic disqualifier SAFETY NET (never miss a deal-breaker).
 - `engine/gold/mock.gold.json`
 - `engine/reconcile.py` — Reconcile/dedupe — pipeline step 5 (Generalist lane).
 - `engine/requirements.txt`
@@ -488,6 +514,8 @@ graph LR
 - `engine/scripts/calibrate.py` — data-driven calibration of the needs_review threshold.
 - `engine/scripts/draft_answers.py` — the auditable-autofill demo run.
 - `engine/scripts/eval_all.py` — aggregate accuracy across every labelled tender.
+- `engine/scripts/gating_recall.py` — the TRUE gating-recall number (semantic + auditable).
+- `engine/scripts/precision_report.py` — categorise extraction false-positives vs a gold set.
 - `engine/scripts/run_tender.py` — the real closed loop on a real tender.
 - `engine/similarity.py` — Swappable similarity seam. difflib char-ratio + content-token Jaccard. No embeddings.
 - `engine/tests/__init__.py`
@@ -502,6 +530,7 @@ graph LR
 - `engine/tests/test_autofill_wiring.py` — Integration: auditable autofill is wired into the live API (generalist lane).
 - `engine/tests/test_calibrate.py`
 - `engine/tests/test_draft_concurrency.py` — draft_all parallelism: drafting concurrently must be byte-identical to sequential.
+- `engine/tests/test_embedding_dedup.py` — Embedding semantic dedup (J-056, Generalist).
 - `engine/tests/test_end_to_end.py`
 - `engine/tests/test_eval_all.py`
 - `engine/tests/test_eval_answers.py` — Groundedness eval — turns "the autofill never bluffs" into an auditable number.
@@ -511,14 +540,17 @@ graph LR
 - `engine/tests/test_eval_metrics.py`
 - `engine/tests/test_eval_report.py`
 - `engine/tests/test_gap_questions.py` — Sharper gap questions: the OpenAI answerer phrases the gap interview via J's
+- `engine/tests/test_gating_scan.py` — gating_scan safety net: surfaces disqualifier lines extraction missed, stays quiet when covered.
 - `engine/tests/test_grouping.py`
 - `engine/tests/test_io.py`
+- `engine/tests/test_match_score.py` — Eval matcher: paraphrase/granularity tolerance without embeddings.
 - `engine/tests/test_merge.py`
 - `engine/tests/test_pipeline_wiring.py` — Integration: the backend pipeline now uses the generalist engine for reconcile + routing.
 - `engine/tests/test_real_data_robustness.py` — Robustness against real extractor output (regression for the SPSO run).
 - `engine/tests/test_report.py`
 - `engine/tests/test_similarity.py`
 - `engine/tests/test_to_final.py`
+- `engine/usage_log.py` — cheap OpenAI spend visibility (J-055) + persistent ledger (J-058).
 
 ### prompts — Prompts — LLM prompt specs (extraction, classification, answers, gaps)
 
@@ -578,11 +610,14 @@ graph LR
 - `archive/waitlist/WaitlistForm.tsx` — exports `WaitlistForm`
 - `archive/waitlist/route.ts` — exports `POST`
 - `autofill-scope-decision.md`
+- `codex-leadgen-handoff.md`
+- `codex-leadgen-instructions.md`
 - `crm/.gitignore`
 - `crm/README.md`
 - `crm/_build-crm.workflow.js` — exports `meta`
 - `crm/_merge-rows.js` — Append NEW per-lead rows (crm/rows/<id>.json) into crm/leads.csv without disturbing existing lines.
 - `crm/_rows-to-csv.js` — Assemble crm/leads.csv from the per-lead JSON the build workflow wrote to crm/rows/.
+- `crm/add_leads_l0401_l0412.py`
 - `crm/apply_verifier_corrections_2026_07_01.py`
 - `crm/build_outreach_send_plan.py`
 - `crm/drafts/L-0001.md`
@@ -908,11 +943,26 @@ graph LR
 - `crm/drafts/L-0398.md`
 - `crm/drafts/L-0399.md`
 - `crm/drafts/L-0400.md`
+- `crm/drafts/L-0401.md`
+- `crm/drafts/L-0402.md`
+- `crm/drafts/L-0403.md`
+- `crm/drafts/L-0404.md`
+- `crm/drafts/L-0405.md`
+- `crm/drafts/L-0406.md`
+- `crm/drafts/L-0407.md`
+- `crm/drafts/L-0408.md`
+- `crm/drafts/L-0409.md`
+- `crm/drafts/L-0410.md`
+- `crm/drafts/L-0411.md`
+- `crm/drafts/L-0412.md`
 - `crm/lead-gen-plan.md`
+- `crm/leadgen-run-2026-07-02.md`
 - `crm/leads.csv`
+- `crm/mt-migration-staging-2026-07-02.csv`
 - `crm/outreach-quality-pass-2026-07-01.md`
 - `crm/outreach-send-plan-2026-07-01.csv`
 - `crm/outreach-send-plan-2026-07-01.md`
+- `crm/sendable-list-2026-07-02.csv`
 - `crm/verifier-pass-2026-07-01.md`
 - `crm/verify-log.md`
 - `crm/verify-sweep-l100-plus-2026-07-01-round2.csv`
@@ -931,8 +981,13 @@ graph LR
 - `fetch-agent-scope.md`
 - `frontend-integration.md`
 - `frontend-ux-audit.md`
+- `go-live-runbook.md`
 - `graph-and-verification-deep-plan.md`
 - `handoff-backend.md`
+- `live-read-call-script.md`
+- `outreach-batch-personalised.md`
+- `outreach-micro-targets.md`
+- `outreach-same-day-kit.md`
 - `positioning-and-traction.md`
 - `prior-art.md`
 - `progress.md`
@@ -951,4 +1006,4 @@ graph LR
 
 ---
 
-*631 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
+*663 tracked files mapped. Generated by `scripts/gen_codemap.py`.*

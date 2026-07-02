@@ -1,5 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import type { AwardCriterion, Requirement } from "@/types/requirement";
 import {
@@ -61,6 +67,32 @@ const REVEAL_ROW_COUNT = 12;
 // same tender must not replay the entrance — only a new tender identity does.
 // Only mutated from an effect, so it stays empty during SSR.
 const seenRevealKeys = new Set<string>();
+
+// Hydration-safe prefers-reduced-motion. The server snapshot is false, so SSR
+// and the hydration render agree on the reveal/motion markup; a reduced-motion
+// client then re-renders static immediately after mount (useSyncExternalStore
+// patches a snapshot that differs from the server's before paint). motion's own
+// useReducedMotion returns the live value on the first client render, which
+// mismatches the SSR HTML — this hook exists so the matrix never does that.
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+function subscribeReducedMotion(onChange: () => void): () => void {
+  const media = window.matchMedia(REDUCED_MOTION_QUERY);
+  media.addEventListener("change", onChange);
+  return () => media.removeEventListener("change", onChange);
+}
+
+function getReducedMotionSnapshot(): boolean {
+  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
+}
+
+function useReducedMotionHydrationSafe(): boolean {
+  return useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotionSnapshot,
+    () => false
+  );
+}
 
 // The multi-select contract. The matrix only reports "this row was toggled,
 // shift held or not" — the owner keeps the anchor and resolves shift into a
@@ -594,19 +626,8 @@ function MatrixGroup({
     (req) => req.status !== "pending"
   ).length;
 
-  return (
-    // Staged reveal only: initial={false} outside the one-time entrance, so a
-    // decision re-render, a filter change, or a frozen surface never animates
-    // the group in (no fade-up-on-everything).
-    <motion.section
-      initial={reveal ? { opacity: 0, y: 10 } : false}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{
-        duration: 0.3,
-        delay: groupIndex * 0.06,
-        ease: [0.22, 1, 0.36, 1],
-      }}
-    >
+  const content = (
+    <>
       {/* The group header stays with its rows: sticky to the top of the scroll
           so the label and count remain legible while the section runs long. A
           paper ground and a hairline keep it reading as a register rule, not a
@@ -761,6 +782,29 @@ function MatrixGroup({
             </AnimatePresence>
           </div>
         ))}
+    </>
+  );
+
+  // Reduced motion renders a plain section — a distinct element on purpose, so
+  // a reduced-motion client's post-hydration re-render (see
+  // useReducedMotionHydrationSafe) REMOUNTS away from the motion.section and
+  // any in-flight entrance styles, landing on clean static DOM.
+  if (reduced) return <section>{content}</section>;
+
+  return (
+    // Staged reveal only: initial={false} outside the one-time entrance, so a
+    // decision re-render, a filter change, or a frozen surface never animates
+    // the group in (no fade-up-on-everything).
+    <motion.section
+      initial={reveal ? { opacity: 0, y: 10 } : false}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: 0.3,
+        delay: groupIndex * 0.06,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+    >
+      {content}
     </motion.section>
   );
 }
@@ -843,7 +887,7 @@ export function ComplianceMatrix({
   // Reduced motion (motion/react's media-query hook, no render-time
   // window reads of our own): when set, every animated path in the matrix
   // renders static.
-  const reduced = useReducedMotion() ?? false;
+  const reduced = useReducedMotionHydrationSafe();
   // The staged reveal plays only while the key is unseen; the effect below
   // retires it after the first paint, so decision re-renders and filter
   // changes render with reveal=false. The seen set lives at module scope (not

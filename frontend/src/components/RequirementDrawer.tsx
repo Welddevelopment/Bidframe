@@ -37,7 +37,9 @@ export function RequirementDrawer({
     panelRef.current?.focus();
 
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
+      // defaultPrevented: a layer above the drawer (the command palette's
+      // Radix dialog) already consumed this Escape — top layer closes first.
+      if (event.key === "Escape" && !event.defaultPrevented) {
         onClose();
       }
     }

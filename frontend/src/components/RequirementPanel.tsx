@@ -106,7 +106,10 @@ export function RequirementPanel({
   useEffect(() => {
     if (variant !== "split") return;
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") onClose();
+      // defaultPrevented: a layered surface above the split (the command
+      // palette's Radix dialog) already consumed this Escape — one Esc, one
+      // close, top layer first.
+      if (event.key === "Escape" && !event.defaultPrevented) onClose();
     }
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);

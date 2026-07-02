@@ -733,7 +733,7 @@ export function MatrixView({ title }: { title: string }) {
             />
             <p className="mt-6 font-mono text-[11px] text-ink-muted/70">
               Keys: j / k to move, a to approve a confident item, Shift+F to
-              focus.
+              focus, ⌘K for commands.
             </p>
           </motion.div>
         )}
