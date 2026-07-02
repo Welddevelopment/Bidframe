@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
 import { useRequirements } from "@/context/RequirementsContext";
-import { deriveTriage } from "@/lib/triage";
+import { GROUP_ORDER, deriveTriage } from "@/lib/triage";
 import { sourceDocUrl } from "@/lib/api";
 import { ComplianceMatrix } from "@/components/ComplianceMatrix";
 import { GatingHero } from "@/components/GatingHero";
@@ -38,6 +38,17 @@ const noop = () => {};
 export function DemoView() {
   const { requirements, title } = useRequirements();
   const triage = deriveTriage(requirements);
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(
+    () => new Set<string>(GROUP_ORDER)
+  );
+  const toggleGroup = useCallback((key: string) => {
+    setCollapsedGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }, []);
   // One scripted proof moment: the frozen worklist can't be clicked, so a deal-breaker
   // gets its own "see it in the document" button that opens the real SPSO page,
   // scrolled to and highlighting the exact line. The demo's trust payoff.
@@ -134,6 +145,8 @@ export function DemoView() {
                 onSelect={noop}
                 onApprove={noop}
                 activeFilter={null}
+                collapsed={collapsedGroups}
+                onToggleGroup={toggleGroup}
               />
             </div>
             {dealBreaker && demoPdfUrl && (

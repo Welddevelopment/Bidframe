@@ -583,6 +583,7 @@ function MatrixGroup({
   onSelect,
   onApprove,
   onApproveAll,
+  canApproveAll,
   showCoverage,
   selection,
   onAnswerQuestion,
@@ -604,6 +605,7 @@ function MatrixGroup({
   onSelect: (id: string) => void;
   onApprove: (id: string) => void;
   onApproveAll: (ids: string[]) => void;
+  canApproveAll: boolean;
   // Criteria-lens coverage: a slim decided/total track under the group header.
   showCoverage?: boolean;
   selection?: MatrixSelection;
@@ -642,7 +644,7 @@ function MatrixGroup({
             onClick={onToggle}
             aria-expanded={expanded}
             aria-controls={rowsId}
-            className="group/head flex min-w-0 items-center gap-2 rounded-sm text-left focus:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ink/40"
+            className="group/head pointer-events-auto flex min-w-0 items-center gap-2 rounded-sm text-left focus:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ink/40"
           >
             <Chevron expanded={expanded} />
             <h3 className="text-[12.5px] font-medium uppercase tracking-wide text-ink-muted transition-colors group-hover/head:text-ink">
@@ -657,7 +659,10 @@ function MatrixGroup({
             {group.label}
           </h3>
         )}
-        {expanded && group.key === "ready" && approvable.length > 1 && (
+        {canApproveAll &&
+          expanded &&
+          group.key === "ready" &&
+          approvable.length > 1 && (
           <button
             type="button"
             onClick={() => onApproveAll(approvable.map((req) => req.id))}
@@ -993,6 +998,7 @@ export function ComplianceMatrix({
             onSelect={onSelect}
             onApprove={onApprove}
             onApproveAll={approveAll}
+            canApproveAll={onApproveMany !== undefined}
             showCoverage={lens === "criteria"}
             selection={selection}
             onAnswerQuestion={onAnswerQuestion}
