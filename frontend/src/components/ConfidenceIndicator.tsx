@@ -74,64 +74,48 @@ function EvidenceStamp({
   hex: string;
   size: "sm" | "md";
 }) {
-  const s = size === "sm" ? 19 : 23;
+  const s = size === "sm" ? 18 : 22;
   const lines =
     tier === "oxblood" ? 0 : TIER_PROOF_LINES[tier as Exclude<ConfidenceTier, "oxblood">];
-  const fill = `color-mix(in oklab, ${hex} 10%, var(--color-paper-raised))`;
+  const fill = `color-mix(in oklab, ${hex} 8%, var(--color-paper-raised))`;
 
   return (
     <svg
       width={s}
       height={s}
-      viewBox="0 0 24 24"
+      viewBox="0 0 22 22"
       fill="none"
       aria-hidden
-      style={{ filter: "drop-shadow(0 0.5px 0 rgba(33,29,23,0.12))" }}
+      shapeRendering="geometricPrecision"
     >
       <rect
-        x="5.1"
-        y="5.4"
-        width="15"
-        height="15"
-        rx="3.1"
-        fill="var(--color-paper-recessed)"
-        opacity="0.5"
-      />
-      <rect
-        x="3.25"
-        y="3.25"
-        width="16.5"
-        height="16.5"
-        rx="3.25"
+        x="3"
+        y="3"
+        width="16"
+        height="16"
+        rx="3"
         fill={fill}
         stroke={hex}
-        strokeWidth="1.7"
-      />
-      <rect
-        x="6.1"
-        y="6.1"
-        width="10.8"
-        height="10.8"
-        rx="2"
-        stroke={hex}
-        strokeWidth="1"
-        opacity="0.34"
+        strokeWidth="2"
+        vectorEffect="non-scaling-stroke"
       />
       {tier === "oxblood" ? (
         <path
-          d="M8.2 15.8 15.8 8.2"
+          d="M7 15 15 7"
           stroke={hex}
-          strokeWidth="2.2"
+          strokeWidth="2.25"
           strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
         />
       ) : (
         Array.from({ length: lines }).map((_, i) => (
           <path
             key={i}
-            d={`M8 ${9.1 + i * 3.05}h7.9`}
+            d={`M7 ${8.5 + i * 3}h8`}
             stroke={hex}
-            strokeWidth={i === lines - 1 ? 2.1 : 1.45}
-            strokeLinecap="round"
+            strokeWidth={i === lines - 1 ? 2 : 1.5}
+            strokeLinecap="butt"
+            vectorEffect="non-scaling-stroke"
           />
         ))
       )}
