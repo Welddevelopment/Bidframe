@@ -13,9 +13,8 @@
       "title": "MAC Museum Cleaning Services ITT",
       "gold": "gold-set/museum-cleaning.labels.csv",
       "pdf": "data/tenders/museum-cleaning-itt.pdf",
-      "max_page": null,
-      "draft": true,
-      "note": "REJECTED — MIS-SOURCED, not merely mis-formatted (verified 2026-07-01). The PDF data/tenders/museum-cleaning-itt.pdf is byte-identical (md5 52f03df8...) to data/tenders/Cleaning-ITT-Version-1.3-FINAL-1.pdf — the MAC (Metropolitan Arts Centre), Belfast cleaning ITT — yet these 92 labels contain SPSO-2013 content (the Ombudsman, s.19 SPSO Act 2002, eblows@spso.org.uk, deadline 06/11/2013). i.e. SPSO labels bolted onto the wrong PDF. This CANNOT be fixed by cleaning gating/type/pages; it needs a full re-label from the real MAC PDF per labelling-guide.md, or the entry should be dropped. (Also mis-formatted: 88/92 is_gating=true; type uses Specification/Commercial not the mandatory/optional enum; source_page is strings.) Stays draft:true — excluded from the scored aggregate. The demo's accuracy claim is therefore ONE validated tender (SPSO); 'across N tenders' is robustness, not recall. See comms G-014 / B-002."
+      "max_page": 41,
+      "note": "RE-LABELLED 2026-07-02 (J-055 item 3) — the old 92-row CSV was mis-sourced (SPSO-2013 content bolted onto the MAC/Belfast PDF, 88/92 falsely is_gating=true) and was quarantined draft:true (see comms G-014/B-002). Replaced with a fresh 75-row hand-label read directly from the real 41pp data/tenders/museum-cleaning-itt.pdf, page/clause-referenced, mandatory/optional enum, is_gating=true reserved for explicit disqualification/elimination/Pass-Fail language only (10/75 = 13.3% gating, vs the old 96%). draft:true removed — included in the scored aggregate. See comms board-backend B-011/B-012."
     }
   ]
 }

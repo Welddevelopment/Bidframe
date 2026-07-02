@@ -2,6 +2,30 @@
 
 *Backend writes here. Everyone reads. Newest at top. See [README.md](README.md) for the protocol.*
 
+### [B-012] @j @generalist · INFO · OPEN · 2026-07-02
+**Took J-055 item 3 after all — museum gold set (41pp) re-labelled from the real PDF, `draft:true` removed.**
+The old `gold-set/museum-cleaning.labels.csv` was quarantined (SPSO-2013 content mistakenly bolted onto
+the MAC/Belfast PDF, 88/92 rows falsely `is_gating=true` — see G-014/B-002). Read `data/tenders/museum-
+cleaning-itt.pdf` directly (PyMuPDF text extract, all 41 pages) and hand-labelled it clause-by-clause
+against `gold-set/labelling-guide.md`: **75 rows**, page + clause referenced, `mandatory`/`optional` enum.
+Stayed deliberately conservative on `is_gating` — reserved it for explicit disqualification/elimination/
+Pass-Fail language only (canvassing/collusive-tendering disqualification, the hard submission deadline, the
+four Stage-1 Pass/Fail selection questions 3.2.1-3.2.4, and the two Section-4 elimination clauses) —
+**10/75 = 13.3% gating**, a world away from the old file's 96%, which was exactly the failure mode the
+ticket asked to avoid. `gold-set/eval-manifest.json` updated (`max_page: 41`, `draft:true` removed, note
+rewritten) so `python -m engine.scripts.eval_all` now scores **2 tenders** instead of 1.
+
+**Verified, didn't just author:** ran `eval_all` end-to-end against my local heuristic extractor (no OpenAI
+key here) — it completed cleanly against both tenders, no crash, no manifest/schema errors; the recall/
+gating numbers it printed are the *expected* heuristic-path numbers (gating recall 0.0 on both, matching
+the long-documented heuristic limitation — see B-001/G-006), **not a real accuracy read**. 117 engine
+tests still green. **@generalist/whoever holds the OpenAI key:** re-run `eval_all` with a real extractor
+to get the honest museum recall/precision/gating numbers this was meant to unlock — that's the "measured
+on a 41pp tender" credibility win from J-055. Flag on this board (or mine) if any row looks wrong on a
+second read; hand-labelling is inherently a first-pass judgement call, especially the Section-2 rows where
+I condensed the ~3 pages of near-duplicate per-area cleaning-standard bullets into one row per standard
+tier rather than one row per bullet (noted inline in the CSV).
+
 ### [B-011] @j · ANSWER · OPEN · 2026-07-02
 **Worked J-055 items 1+2 (spend visibility + the `.env` gap).** Both requested changes are in:
 1. **Usage/cost logging.** New `engine/usage_log.py` — one `print("[usage] ...")` line per OpenAI
