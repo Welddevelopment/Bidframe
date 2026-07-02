@@ -83,3 +83,21 @@ def test_extract_concurrency_clamps_and_survives_garbage(monkeypatch):
     assert pipeline._extract_concurrency() == 1       # clamped low
     monkeypatch.setenv("EXTRACT_CONCURRENCY", "nonsense")
     assert pipeline._extract_concurrency() == 1       # garbage -> safe default
+
+
+# ---- within-doc exact dedup (backend/app/pipeline._dedup_exact) --------------
+
+def test_dedup_exact_collapses_verbatim_repeats():
+    raws = [
+        {"text": "The Contractor shall provide staff.", "source_page": 3},
+        {"text": "the contractor SHALL provide  staff.", "source_page": 4},  # overlap copy
+        {"text": "Records must be kept on site.", "source_page": 3},
+    ]
+    out = pipeline._dedup_exact(raws)
+    assert len(out) == 2
+    assert out[0]["source_page"] == 3  # keeps the first (earliest) occurrence
+
+
+def test_dedup_exact_keeps_distinct():
+    raws = [{"text": "A shall do X."}, {"text": "B shall do Y."}]
+    assert len(pipeline._dedup_exact(raws)) == 2

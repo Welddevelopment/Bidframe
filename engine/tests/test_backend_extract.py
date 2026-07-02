@@ -153,6 +153,30 @@ def test_inheritance_does_not_run_without_a_stem():
     assert reqs == []
 
 
+# ---- precision: advisory/aspirational + buyer-org filtering -----------------
+
+def test_aspirational_optional_is_dropped():
+    # soft guidance with no hard modal — over-surfaces, drop it
+    assert extract._looks_like_requirement(
+        "Applicants should be aware that late submissions may not be accepted.") is False
+    assert extract._looks_like_requirement(
+        "Where possible, opportunities to enhance biodiversity should be identified.") is False
+
+
+def test_aspirational_with_hard_modal_is_kept():
+    # a real mandatory signal overrides the aspirational marker
+    assert extract._looks_like_requirement(
+        "The Contractor must, where appropriate, provide evidence of training.") is True
+
+
+def test_buyer_org_subject_is_dropped():
+    # the buyer describing itself, wrongly caught by the 'responsible for' signal
+    assert extract._looks_like_requirement(
+        "The SPSO is responsible for considering complaints about public services.") is False
+    assert extract._looks_like_requirement(
+        "The Council may send these clarifications to all parties.") is False
+
+
 # ---- determinism knobs are present ------------------------------------------
 
 def test_extract_seed_is_fixed():

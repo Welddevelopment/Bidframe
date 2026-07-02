@@ -113,6 +113,25 @@ def _similar(a: str, b: str) -> float:
     return SequenceMatcher(None, a.lower(), b.lower()).ratio()
 
 
+def _dedup_exact(raws: list[dict]) -> list[dict]:
+    """Drop verbatim-duplicate raw candidates within one document before reconcile.
+
+    Chunk overlap (OVERLAP_CHARS) deliberately re-reads boundary text, so a requirement that
+    straddles a chunk boundary is extracted twice with identical text. Reconcile's engine only
+    merges same-page + same-clause, so an overlap copy that lands on the far page survives as a
+    duplicate and dents precision. This collapses candidates whose normalised text is identical,
+    keeping the first (earliest page) — zero recall cost (the requirement is still there once)."""
+    seen: set[str] = set()
+    out: list[dict] = []
+    for r in raws:
+        key = " ".join((r.get("text") or "").lower().split())
+        if key and key in seen:
+            continue
+        seen.add(key)
+        out.append(r)
+    return out
+
+
 def _reconcile(raws: list[dict]) -> list[dict]:
     """Reconcile/dedupe raw extraction candidates into clean requirement dicts.
 
@@ -403,7 +422,7 @@ def run_pipeline_multi(
     full_texts: list[str] = []
     seq = 0
     for doc_id, filename, doc, _chunks in doc_chunks:
-        reconciled = _reconcile(raws_by_doc.get(doc_id, []))
+        reconciled = _reconcile(_dedup_exact(raws_by_doc.get(doc_id, [])))
         # Safety-net: surface any disqualifier the extraction missed before we build the
         # final requirements (per-doc so provenance stays correct). Additive + guarded.
         reconciled = _with_safety_net(reconciled, doc.pages)

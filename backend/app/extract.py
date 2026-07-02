@@ -93,10 +93,24 @@ _SOFT_WRAP = re.compile(r"(?<=[a-z,])[ \t]*\n[ \t]*(?=[a-z(])")
 _BUYER_SIDE_OPENERS = (
     "the mac will", "the mac reserves", "the mac shall not", "the mac is",
     "the authority will", "the authority reserves", "the authority is", "the authority may",
-    "the council will", "the council reserves", "the client will", "the client reserves",
+    "the council will", "the council reserves", "the council is", "the council may",
+    "the council does not", "the council shall", "the client will", "the client reserves",
     "the client shall not", "the successful bidder may be", "the successful tenderer will be",
+    "the spso", "the ombudsman", "the parish council", "the board", "the committee",
+    "the contracting authority", "the buyer", "the procuring", "the evaluation",
     "we reserve", "for the avoidance", "for information", "please note", "note that",
     "this itt", "this tender document", "this section", "the following",
+)
+# Advisory / aspirational phrasing — guidance, not a hard obligation. When a sentence's ONLY
+# signal is optional ("should"/"may"), one of these markers means it's soft guidance ("should
+# be aware", "where possible", "viewed favourably") that over-surfaces and tanks precision, so
+# we drop it. A sentence with a real mandatory/gating signal is kept regardless.
+_ASPIRATIONAL = (
+    "where possible", "wherever possible", "where practicable", "where appropriate",
+    "if possible", "should be aware", "should note", "should consider", "should demonstrate",
+    "should also", "viewed favourably", "will be viewed favourably", "is advantageous",
+    "will be advantageous", "is desirable", "are advised", "is advised", "strongly advised",
+    "is advisable", "as appropriate", "if appropriate", "encouraged to", "may wish to",
 )
 # Dangling trailing words = a cut-off fragment, not a whole obligation.
 _FRAGMENT_TAIL = (
@@ -164,11 +178,14 @@ def _looks_like_requirement(sentence: str) -> bool:
     last = low.rstrip(".;:").split()[-1] if low.rstrip(".;:").split() else ""
     if last in _FRAGMENT_TAIL:
         return False
-    return (
-        any(s in low for s in MANDATORY_SIGNALS)
-        or any(s in low for s in OPTIONAL_SIGNALS)
-        or any(s in low for s in GATING_SIGNALS)
-    )
+    has_mand = any(s in low for s in MANDATORY_SIGNALS)
+    has_gate = any(s in low for s in GATING_SIGNALS)
+    has_opt = any(s in low for s in OPTIONAL_SIGNALS)
+    # Advisory/aspirational guidance with no hard modal — soft "should be aware / where
+    # possible" prose that over-surfaces. Drop it; keep anything with a mandatory/gating signal.
+    if not has_mand and not has_gate and any(a in low for a in _ASPIRATIONAL):
+        return False
+    return has_mand or has_opt or has_gate
 
 
 def _is_list_stem(sentence: str) -> bool:
