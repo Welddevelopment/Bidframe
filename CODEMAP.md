@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `b0fe995` · 2026-07-02T14:48:27+01:00
+> Map of commit `badaf01` · 2026-07-02T14:50:33+01:00
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -13,9 +13,9 @@
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
 | **frontend** | 124 | 44,601 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
-| **backend** | 19 | 2,733 | Backend — FastAPI (PDF ingest, extraction, REST API) |
+| **backend** | 19 | 2,735 | Backend — FastAPI (PDF ingest, extraction, REST API) |
 | **engine** | 60 | 3,960 | Engine — reconcile / eval / answer-draft pipeline + tests |
-| **prompts** | 6 | 703 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
+| **prompts** | 6 | 709 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
 | **gold** | 4 | 204 | Eval gold-set — hand-labelled requirements for accuracy measurement |
 | **data** | 17 | 0 | Data — tender source PDFs (not parsed here) |
 | **comms** | 5 | 1,497 | Comms — async agent message boards |
