@@ -212,8 +212,10 @@ def _user_prompt(chunk: Chunk) -> str:
     )
 
 
-def _to_raw(items: list[dict], chunk: Chunk) -> list[dict]:
-    """Wrap the model's requirement items into raw-extraction-format dicts."""
+def _to_raw(items: list[dict], chunk: Chunk, raw_id_prefix: str = "raw") -> list[dict]:
+    """Wrap the model's requirement items into raw-extraction-format dicts.
+    `raw_id_prefix` disambiguates multiple extraction passes over the same chunk
+    (see extract_chunk_multi) so their raw_ids never collide."""
     out: list[dict] = []
     for seq, it in enumerate(items):
         excerpt = it.get("source_excerpt", "")
@@ -222,7 +224,7 @@ def _to_raw(items: list[dict], chunk: Chunk) -> list[dict]:
         page = chunk.page_at(start) if start >= 0 else it.get("source_page", chunk.page_start)
         out.append(
             {
-                "raw_id": f"raw-{chunk.id}-{seq:04d}",
+                "raw_id": f"{raw_id_prefix}-{chunk.id}-{seq:04d}",
                 "chunk_id": chunk.id,
                 "text": it.get("text", ""),
                 "source_page": page,
@@ -254,13 +256,20 @@ class OpenAIExtractor:
         self._client = OpenAI()
         self._model = os.environ.get("LLM_MODEL", "gpt-4o")
 
-    def extract_chunk(self, chunk: Chunk) -> list[dict]:
+    def extract_chunk(self, chunk: Chunk, pass_no: int = 0) -> list[dict]:
+        """`pass_no` selects the sampling for extract_chunk_multi's union passes:
+        pass 0 is the deterministic baseline (temp=0, fixed seed); pass_no > 0 trades
+        determinism for diversity (temp=0.7, a different seed per pass) so a second
+        read can catch requirements the first missed. Single-pass callers never see this."""
+        temperature = 0 if pass_no == 0 else 0.7
+        seed = EXTRACT_SEED if pass_no == 0 else EXTRACT_SEED + pass_no
+        raw_id_prefix = "raw" if pass_no == 0 else f"raw-p{pass_no}"
         for attempt in range(MAX_RETRIES):
             try:
                 resp = self._client.chat.completions.create(
                     model=self._model,
-                    temperature=0,
-                    seed=EXTRACT_SEED,
+                    temperature=temperature,
+                    seed=seed,
                     messages=[
                         {"role": "system", "content": _LLM_SYSTEM},
                         {"role": "user", "content": _user_prompt(chunk)},
@@ -275,12 +284,12 @@ class OpenAIExtractor:
                     }],
                     tool_choice={"type": "function", "function": {"name": "emit_requirements"}},
                 )
-                _log_usage(resp, self._model, f"extract chunk={chunk.id}")
+                _log_usage(resp, self._model, f"extract chunk={chunk.id} pass={pass_no}")
                 calls = resp.choices[0].message.tool_calls or []
                 items: list[dict] = []
                 if calls:
                     items = json.loads(calls[0].function.arguments).get("requirements", [])
-                return _to_raw(items, chunk)
+                return _to_raw(items, chunk, raw_id_prefix=raw_id_prefix)
             except Exception as exc:
                 if attempt < MAX_RETRIES - 1:
                     wait = RETRY_BACKOFF[attempt]
@@ -357,3 +366,26 @@ def get_extractor():
         except Exception as exc:
             print(f"[extract] Claude unavailable ({exc}); falling back.")
     return HeuristicExtractor()
+
+
+MAX_EXTRACT_PASSES = 3  # hard cap regardless of EXTRACT_PASSES — bounds cost/latency
+
+
+def extract_chunk_multi(extractor, chunk: Chunk) -> list[dict]:
+    """Optional multi-pass union (J-056): set EXTRACT_PASSES>1 to re-read each chunk
+    N times and hand reconcile the UNION of raw candidates (max-recall set; reconcile's
+    dedup collapses the overlap, keeping a requirement gating/mandatory if any pass
+    flagged it). Pass 0 stays the deterministic temp=0 baseline; extra passes trade
+    determinism for diversity (temp=0.7) to catch what pass 0 missed. Opt-in and
+    OpenAI-only (extra Claude/heuristic passes would just repeat identical output) —
+    single-pass (default) behaves exactly as extract_chunk did before this existed."""
+    raws = extractor.extract_chunk(chunk)
+    passes = min(max(int(os.environ.get("EXTRACT_PASSES", "1") or 1), 1), MAX_EXTRACT_PASSES)
+    if passes <= 1 or getattr(extractor, "name", None) != "openai":
+        return raws
+    for pass_no in range(1, passes):
+        try:
+            raws = raws + extractor.extract_chunk(chunk, pass_no=pass_no)
+        except TypeError:
+            break  # extractor doesn't accept pass_no — no-op beyond pass 0
+    return raws

@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Callable, Optional
 
 from .chunk import chunk_doc
-from .extract import get_extractor
+from .extract import extract_chunk_multi, get_extractor
 from .graph import build_graph
 from .ingest import ingest_pdf, PDFIngestError
 from .schema import (
@@ -211,7 +211,7 @@ def run_pipeline_multi(
         bucket = raws_by_doc.setdefault(doc_id, [])
         for ch in chunks:
             try:
-                bucket.extend(extractor.extract_chunk(ch))
+                bucket.extend(extract_chunk_multi(extractor, ch))
             except Exception as exc:
                 print(f"[pipeline] chunk {ch.id} (pp.{ch.page_start}-{ch.page_end}) failed ({exc}); skipping")
             done += 1
