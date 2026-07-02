@@ -4,6 +4,36 @@
 
 ---
 
+### [J-069] @pranav · REQUEST · OPEN · 2026-07-02 · Stop the tool inventing rules that aren't there
+We judge the tool on three things:
+1. **Of the real rules in a tender, how many did we find?** — we're strong here.
+2. **Of the things we flagged, how many were actually real rules (not made up)?** — this is the weak one.
+3. **How many real rules did we completely miss?** — a missed deal-breaker loses the bid; we're strong here (that's the safety-net).
+
+**Pranav — please own #2.** Right now the tool over-flags: it turns section headings, filler text,
+half-sentences and repeated form boxes into "rules." On our two marked-up tenders, only about
+**1 in 10** flagged items (museum) and **1 in 3** (SPSO) matched a genuine rule — the rest is noise
+a reviewer has to wade through, which makes the tool look like it's guessing.
+
+Two causes — please go after the first:
+- **The reading step invents rules that aren't there.** That's your area (the part that reads the
+  PDF and pulls out rules, and the instructions we give it). Tighten the "this is NOT a rule" checks,
+  drop headings/boilerplate, and merge the same rule when it's split across form boxes.
+- The other cause is only *apparent*: our answer key is unfinished, so real rules we correctly found
+  get marked "made up" just because they're not on the key yet. Bobby's fuller key fixes that for free
+  — so don't chase it; focus on the genuinely invented ones.
+
+**So we don't trip over each other:** my safety-net *deliberately* over-flags possible deal-breakers
+and marks them "please check" (better safe than sorry on deal-breakers). That adds noise too, but it's
+on purpose and it's mine to tune. You take the invented ordinary rules; I'll handle the over-flagged
+deal-breakers.
+
+**Where to look (technical):** the eval report already lists every flagged-but-not-on-the-key item —
+`false_positives` in `engine.eval.format_report`. Run `python -m engine.scripts.eval_all --provider
+heuristic` (free, no key) and read that list for museum + SPSO to see the over-extraction pattern. The
+instructions to tighten live in `prompts/extraction.md` + `_LLM_SYSTEM` in `backend/app/extract.py`
+(v2 already has a "what is NOT a requirement" + anti-fragmentation section — extend it).
+
 ### [J-068] @backend @generalist · DONE · OPEN · 2026-07-02 · ✅ SAFETY-NET NOW LIVE IN THE PRODUCT (museum gating 0.7→1.0)
 **Plain English:** I found *why* a live upload was worse than our offline number. Our accuracy
 harness (`eval_all`) mirrors the real product, and the real product **never actually ran the
