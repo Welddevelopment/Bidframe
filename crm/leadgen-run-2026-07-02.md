@@ -27,3 +27,33 @@ Outcome:
 - Mix: 4 transport, 3 school ICT, 3 occupational health, 2 interpreting/translation.
 - Conversion split: 8 High, 4 Medium; 11 verified, 1 partial (`L-0409`, public source was official but website had template noise).
 - Stopped after the first clean batch rather than stretching into lower-confidence seams.
+
+## Batch B re-plan after low hit rate
+
+Broad searches for school catering, surveying/architecture and extra interpreting started returning too many large suppliers, no-email firms, or firms already covered in `crm/leads.csv`. Per guardrail, stop the broad sweep and restart with source-led searches.
+
+Restart plan:
+
+1. **Use procurement evidence first, then company website.**
+   - Search terms should include award/framework/client evidence such as `site:bidstats.uk`, `site:find-tender.service.gov.uk`, council approved lists, `framework supplier`, `school contract`, `NHS contract`, `housing association`, and `academy trust`.
+   - Only after a candidate has public-sector evidence, open the firm's own website to verify email and fit.
+
+2. **Primary seam: micro surveying and building-survey practices.**
+   - Look for condition surveys, measured building surveys, access audits, stock-condition surveys, asbestos-adjacent surveying, party-wall/building consultancy, clerk-of-works and small RICS practices.
+   - Public-sector evidence targets: schools condition surveys, council estate surveys, housing stock surveys, NHS/community estate work, academy trusts.
+   - Exclude large multidisciplinary consultancies and anything that looks like a procurement/bid advisory firm.
+
+3. **Secondary seam: small specialist education suppliers with tenders.**
+   - AP/SEND support, alternative provision transport-adjacent services, school AV/ICT micro-suppliers not already in CRM, school furniture/equipment specialists.
+   - Only keep if a direct email plus school/council/framework evidence is visible.
+
+4. **Tertiary seam: interpreting/access only where micro and evidenced.**
+   - Focus on BSL/deaf-access co-ops, local community-language providers, local council/NHS contract evidence.
+   - Skip broad national language providers even when emailable.
+
+5. **Batch size and abort rule.**
+   - Aim for 6-10 leads only.
+   - If fewer than 2 keepers appear in the first 20 checked candidates, stop and re-plan again instead of forcing volume.
+   - Use at most 2 subagents on restart: one surveying/building-survey seam, one SEND/education supplier seam. Main agent verifies and writes.
+
+Batch B restart also follows `codex-leadgen-handoff.md`: retry transient failures, switch seams when one goes dry, skip any action needing Joel's approval while he is asleep, and keep the overnight loop to find -> verify -> dedupe -> personalise -> commit.

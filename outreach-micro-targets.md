@@ -114,5 +114,85 @@ Dropped: **Yates Jetting Ltd** — duplicate of existing **L-0360** (same domain
 >
 > Joel, Bidframe
 
+### Wave 1b — small family-run care providers (council/NHS)
+*5 found · all 5 kept (3 PERFECT, 2 GOOD) · 0 duplicates.*
+
+---
+
+#### MT-07 · Hallifax Care · to: info@hallifaxcare.co.uk · PERFECT
+*Two-generation family homecare, Brighton & Hove (founded 1996 by Anne Hallifax, now run by daughter Johanne Stanley). Approved contractor for Brighton & Hove City Council. Source: hallifaxcare.co.uk*
+**Subject:** Your Brighton & Hove council homecare bid — what would disqualify it?
+> Hi Johanne,
+>
+> You're a Brighton & Hove City Council approved contractor — so you're bidding council homecare frameworks where one missed pass/fail requirement (a policy, a CQC rating threshold, a staffing ratio) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own policies and evidence — a citation on every claim, nothing invented.
+>
+> I'm running free 15-minute live reads today and tomorrow — send me a council tender you're bidding and I'll show you, on the call, exactly what would disqualify it. A couple of slots left; after this week it's a paid pilot.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-08 · Devon & Cornwall Care Services (DACCS) · to: info@daccservices.com · PERFECT
+*Mother-daughter family firm (Pauline & Samantha Hilton), 30+ yrs, Tavistock/Okehampton rural Devon. Trusted provider for Devon County Council; CQC Good. Source: daccservices.com/about*
+**Subject:** Your Devon County Council care bid — deal-breakers caught first
+> Hi Pauline and Samantha,
+>
+> As a Devon County Council provider running the business yourselves, reading every domiciliary tender by hand for the pass/fail traps is the slow, high-stakes part — and one missed line voids the bid.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own policies and CQC evidence — every claim cited, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a Devon care tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-09 · Home Care Wales · to: info@homecarewales.com · PERFECT
+*Small community-based homecare, Anglesey. Approved provider on the North Wales framework, delivering for Anglesey Council. Source: homecarewales.com*
+**Subject:** The North Wales framework re-tender — what would disqualify you?
+> Hi there,
+>
+> You're an approved provider on the North Wales framework delivering for Anglesey Council — so at each re-tender one missed pass/fail requirement can void the whole bid however strong your care record.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own policies and evidence — a citation on every claim.
+>
+> Free 15-minute live reads today and tomorrow — send me the framework tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-10 · Celtic Care Services · to: samwhite@celticcare.co.uk · GOOD
+*Family-run Wiltshire homecare (est. 2001), Chippenham & Swindon. Listed on Wiltshire Council's provider directory; CQC Good. (Owner name not stated on site — greeting kept generic.) Source: adults.wiltshire.gov.uk*
+**Subject:** Wiltshire Council homecare bids — the pass/fail gates
+> Hi there,
+>
+> As a family-run Wiltshire provider you're bidding council homecare work where one buried pass/fail requirement voids the whole submission however strong the rest is.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own policies and CQC evidence — every claim cited.
+>
+> Free 15-minute live reads today and tomorrow — send me a Wiltshire care tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-11 · Home Care Service Provider · to: admin@homecareserviceprovider.co.uk · GOOD
+*Family-owned homecare agency, SW London (Merton, Wandsworth, Sutton, Croydon, Kingston). Self-described NHS provider (claim on own site; not a named framework — weaker evidence). Source: homecareserviceprovider.co.uk*
+**Subject:** Your next borough/NHS home-care bid — caught first
+> Hi there,
+>
+> As a family-run SW London agency already supplying the NHS, you're bidding borough and NHS home-care work — where one missed pass/fail requirement voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own policies and evidence — a citation on every claim.
+>
+> Free 15-minute live reads today and tomorrow — send me a tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
 <!-- next waves appended below -->
 
