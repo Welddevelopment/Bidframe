@@ -86,6 +86,34 @@ def test_net_catches_canonical_uk_ps_gate_phrasings():
     assert not misses, f"net missed gate phrasings: {misses}"
 
 
+SECTOR_AND_STRUCTURE_GATES = [
+    # long-distance phrasing (many words between the verb and the deadline trigger)
+    "Tenders must be submitted, in accordance with the instructions in section 6, no later than 12:00.",
+    # sector-specific mandatory registrations / clearances (real UK public-sector gates)
+    "The provider must be registered with the Care Quality Commission (CQC).",
+    "All gas work must be carried out by a Gas Safe registered engineer.",
+    "The contractor must be CHAS accredited before commencing work.",
+    "An enhanced DBS check is mandatory for all staff working with children.",
+    "Staff must have DBS clearance before deployment.",
+    "Contractors must be Constructionline registered.",
+]
+
+
+def test_net_catches_sector_and_longdistance_gates():
+    """Sector compliance schemes (CQC/Gas Safe/CHAS/DBS/Constructionline) and gates with many
+    words between the verb and the trigger — both real on UK public-sector tenders."""
+    misses = [g for g in SECTOR_AND_STRUCTURE_GATES if not _STRONG.search(g)]
+    assert not misses, f"net missed sector/long-distance gates: {misses}"
+
+
+def test_hyphenated_gate_word_split_across_a_line_break_is_rejoined():
+    """PDFs hyphenate at line breaks ('exclu-\\nsion'); the gate keyword must survive so the
+    disqualifier is still flagged."""
+    pages = [(4, "A supplier subject to a ground for exclu-\nsion cannot be awarded the contract.")]
+    texts = " ".join(c["text"].lower() for c in scan_candidates(pages))
+    assert "exclusion" in texts
+
+
 def test_taxonomy_catches_canonical_uk_ps_gate_vocabulary():
     """Canonical UK public-sector gate phrasings the 8-tender corpus may not all use verbatim,
     but real tenders will — the net must recognise them so recall generalises beyond the corpus."""

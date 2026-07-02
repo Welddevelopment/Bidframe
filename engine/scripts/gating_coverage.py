@@ -56,17 +56,20 @@ FAMILIES: dict[str, re.Pattern] = {
         r"credit)|must\s+hold|(required\s+to|shall)\s+hold|must\s+be\s+(a\s+)?(registered|certified|"
         r"accredited|licen[cs]ed|member)|registration\s+(is\s+)?(required|mandatory)|"
         r"must\s+(possess|have|maintain)\s+.{0,40}(certificat|accreditat|insurance|licen[cs]e|"
-        r"registration)|(employer'?s|public)\s+liability|professional\s+indemnity|financial\s+"
-        r"standing|member\s+of\s+.{0,25}(scheme|register|body|association)|turnover\s+of\s+"
+        r"registration|clearance|check)|(employer'?s|public)\s+liability|professional\s+indemnity|"
+        r"financial\s+standing|member\s+of\s+.{0,25}(scheme|register|body|association)|turnover\s+of\s+"
         r"(at\s+least|no\s+less\s+than|not\s+less\s+than|£|gbp|\d)|(no\s+less\s+than|not\s+less\s+than|"
-        r"at\s+least)\s+.{0,30}(turnover|insurance|experience|year)", re.I),
+        r"at\s+least)\s+.{0,30}(turnover|insurance|experience|year)|gas\s+safe|\bchas\b|constructionline|"
+        r"safe\s?contractor|\bcscs\b|\bsia\b\s+(licen|approved|registered)|\bcqc\b|care\s+quality\s+"
+        r"commission|\bdbs\b|disclosure\s+and\s+barring|enhanced\s+(disclosure|check)|"
+        r"(security|dbs)\s+clearance|food\s+hygiene\s+rating", re.I),
     "returns": re.compile(
-        r"must\s+(complete|submit|return|be\s+returned|be\s+completed)|"
+        r"must\s+(complete|submit|return|be\s+(returned|completed|submitted|received))|"
         r"failure\s+to\s+(complete|submit|return|provide|comply|meet)|"
         r"mandatory\s+.{0,20}(site\s+visit|attendance|briefing)|condition\s+of\s+(bidding|tender)", re.I),
     "deadline": re.compile(
         r"(receiv(e|ed)|submit(ted)?|return(ed)?|lodg(e|ed)|upload(ed)?|arriv(e|ed|es)|reach(es|ed)?)"
-        r"\b.{0,40}no\s+later\s+than|closing\s+(date|time)|\bdeadline\b|"
+        r"\b.{0,70}no\s+later\s+than|closing\s+(date|time)|\bdeadline\b|"
         r"late\s+(tender|bid|submission|response)s?|"
         r"incomplete\s+(tender|bid|submission|response)s?", re.I),
 }

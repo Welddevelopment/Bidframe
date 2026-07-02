@@ -42,16 +42,20 @@ _STRONG = re.compile(
     r"influenc\w*\s+.{0,20}(evaluation|award|panel|process)|"
     # 4. mandatory minimums / thresholds / required holdings (certs, insurance, turnover)
     r"minimum\s+(?:[\w'-]+\s+){0,3}(turnover|standard|requirement|level|threshold|score|rating|credit)|"
-    r"must\s+hold|must\s+be\s+(registered|certified|accredited|licen[cs]ed)|registration\s+(is\s+)?"
-    r"(required|mandatory)|must\s+(possess|have|maintain)\s+.{0,40}(certificat|accreditat|insurance|"
-    r"licen[cs]e|registration)|"
+    r"must\s+hold|must\s+be\s+.{0,30}(registered|certified|accredited|licen[cs]ed)|"
+    r"registration\s+(is\s+)?(required|mandatory)|must\s+(possess|have|maintain)\s+.{0,40}"
+    r"(certificat|accreditat|insurance|licen[cs]e|registration|clearance|check)|"
     r"(employer'?s|public)\s+liability|professional\s+indemnity|"
+    # sector compliance schemes — appearing as a requirement is effectively a mandatory-registration gate
+    r"gas\s+safe|\bchas\b|constructionline|safe\s?contractor|\bcscs\b|\bsia\b\s+(licen|approved|registered)|"
+    r"\bcqc\b|care\s+quality\s+commission|\bdbs\b|disclosure\s+and\s+barring|enhanced\s+(disclosure|check)|"
+    r"(security|dbs)\s+clearance|food\s+hygiene\s+rating|"
     # 5. mandatory returns / completeness
-    r"must\s+(complete|submit|return|be\s+returned|be\s+completed)|"
+    r"must\s+(complete|submit|return|be\s+(returned|completed|submitted|received))|"
     r"failure\s+to\s+(complete|submit|return|provide|comply|meet)|"
     # 6. submission deadline / late / incomplete
     r"(receiv(e|ed)|submit(ted)?|return(ed)?|lodg(e|ed)|upload(ed)?|arriv(e|ed|es)|reach(es|ed)?)"
-    r"\b.{0,40}no\s+later\s+than|closing\s+(date|time)|\bdeadline\b|"
+    r"\b.{0,70}no\s+later\s+than|closing\s+(date|time)|\bdeadline\b|"
     r"late\s+(tender|bid|submission|response)s?|incomplete\s+(tender|bid|submission|response)s?|"
     # 7. varied phrasings — real tenders paraphrase the finite gate set (synonyms for reject /
     #    exclude / hold / threshold). Widened after an adversarial paraphrase bank exposed 16/32.
@@ -79,6 +83,9 @@ def _units(text: str):
     otherwise be swallowed into one giant punctuation-free run and its signal diluted below the
     match threshold. Isolating each line keeps that disqualifier recognisable as its own unit."""
     seen: set[str] = set()
+    # Rejoin soft-hyphenated words split across a line break ("exclu-\nsion" -> "exclusion") so the
+    # gate keyword survives; matches only letter-hyphen-newline-letter, leaving real hyphens intact.
+    text = re.sub(r"(\w)-[ \t]*\n[ \t]*(\w)", r"\1\2", text or "")
     # 1. per line: isolate form/address fields AND table cells. A table ROW flattens to one line
     #    with big column gaps ("Turnover £500k    Insurance £5m    Deadline 5pm"); split on those
     #    gaps + cell delimiters so each distinct gate is its own unit — the one-to-one eval can then
