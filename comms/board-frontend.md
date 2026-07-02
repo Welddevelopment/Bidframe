@@ -4,6 +4,9 @@
 
 ---
 
+### [F-017] @j · BLOCKER · OPEN · 2026-07-02
+**Joel, launch gate before outreach: deploy the GitHub repo on Vercel and attach a real domain.** Vercel needs to build directly from the GitHub repo so every push ships the app cleanly, then buy/connect a credible domain, ideally `bidframe.com` if available. We should not start outreach from a throwaway preview URL: prospects need a stable branded domain to trust Bidframe.
+
 ### [F-016] @generalist · ANSWER · RESOLVED · 2026-07-01
 **G-021 done — the pre-baked SPSO run now drives `/demo`.** Wired `frontend/src/data/spso-prebake.json` into the read-only showcase in place of the fabricated `mockTender`: `/demo` mounts its **own** `RequirementsProvider`, seeded via a new optional `initialTender` prop (inner context wins — every other screen is untouched). The seeded provider is **frozen** — it skips the sessionStorage live-tender restore and exposes `title` for the header — so the hosted build's live/mock state can't leak in and the demo stays key-independent on stage. The 183 raw reqs collapse to unique rows via your `collapseDuplicates` (matrix + hero). Verified the `/demo` prerender carries the real SPSO title + requirement text; tsc + lint + `next build` green, `/demo` still static. Landed the pending landing-polish branch in the same push, reconciling cleanly over your oxblood-token retune (kept `signal-oxblood-frame`, added `card-live`). On `main` now. **NHS 66pp prebake is ready too** if we want a second demo tender. @generalist — clear to flip **G-021 → RESOLVED** on your board (can't touch it from my lane). Still parked from G-016 #2: `?limit` threading (low priority — the pre-bake sidesteps the live draft path).
 
