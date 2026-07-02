@@ -912,5 +912,104 @@ These are perfect-shape tiny firms with NAMED council/HA clients but **no email 
 >
 > Joel, Bidframe
 
+### Wave 3c — family roofing / scaffolding (council / HA repairs & voids)
+*6 verified · all kept (2 PERFECT, 4 GOOD) · 0 duplicates.*
+
+---
+
+#### MT-57 · Hall Aspects of Roofing · to: info@hallaspects.com · PERFECT
+*Small family roofer, Ormesby/Middlesbrough (Teesside). Own site: "local authority-approved contractors... ongoing partnerships with Middlesbrough Council, Coast and Country Housing, and Thirteen Group Housing." Source: hallaspects.com/about*
+**Subject:** Your Middlesbrough Council / Thirteen Group roofing bids — caught first
+> Hi there,
+>
+> You already hold Middlesbrough Council and Thirteen Group roofing work — so you're bidding council/HA repairs where one missed pass/fail requirement (a CHAS scope, an insurance level, a RAMS clause) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> I'm running free 15-minute live reads today and tomorrow — send me a council/HA roofing tender you're bidding and I'll show you, on the call, exactly what would disqualify it. A couple of slots left; after this week it's a paid pilot.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-58 · Rooftec (Scotland) Ltd · to: info@rooftecscotland.co.uk · PERFECT
+*Family-run roofer (est. 2008; lead contact Mark Cattanach), Falkirk. Won Kingdom Housing Association re-roofing via a Public Contracts Scotland procurement (case study). Source: rooftecscotland.co.uk*
+**Subject:** Your next Public Contracts Scotland bid — deal-breakers caught first
+> Hi Mark,
+>
+> You won the Kingdom HA re-roofing through Public Contracts Scotland — so you know the next PCS tender hinges on pass/fail requirements where one missed line voids the whole bid.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a PCS roofing tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-59 · AAA Roofing Ltd · to: info.aaaroofing@gmail.com · GOOD
+*Family firm since 1976 (owner "Ben", brother Mark on the team), Marske-by-the-Sea/Redcar. Self-declared "contracts with local councils" (none named). Source: aaaroofing.co.uk*
+**Subject:** Council roofing contracts — the tender read done for you
+> Hi Ben,
+>
+> As a family crew juggling council roofing contracts and the tools, the tender paperwork is the slow part — and one missed pass/fail requirement voids the whole bid.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council roofing tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-60 · DL Jones Roofing Services · to: info@dljonescps.co.uk · GOOD
+*Family-run roofer since 1987, London & South East. Self-declared "trusted by councils, NHS Trusts, and housing associations" (dedicated LA/HA page; none named). Source: dljonescps.co.uk/about*
+**Subject:** Your council & HA roofing bids — the pass/fail gates
+> Hi there,
+>
+> You pitch to councils, NHS Trusts and housing associations — so you're bidding public-sector roofing where one missed pass/fail requirement voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council or HA roofing tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-61 · Bellsmith Scaffolding · to: work@bellsmithscaffolding.co.uk · GOOD
+*Family-run scaffolder (25+ yrs), Wakefield/Knottingley. Self-declared social new-build housing + schools/colleges/universities scaffolding (none named). Source: bellsmithscaffolding.co.uk/new-build*
+**Subject:** Social-housing & school scaffolding bids — one RAMS clause away from void
+> Hi there,
+>
+> Social-housing and school scaffolding tenders hinge on access and RAMS requirements — miss one pass/fail clause and the whole bid is void.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method statements — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a social-housing or school scaffolding tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-62 · AM Scaffolding Yorkshire · to: contact@amscaffoldingyorkshire.com · GOOD
+*Small owner-run scaffolder, Barnsley/South Yorkshire. Self-declared social-housing + "government building" scaffolding for HAs/local authorities (none named). Source: amscaffoldingyorkshire.com/.../social-housing-scaffolding*
+**Subject:** Council-estate & HA scaffolding bids — only bid what you can win
+> Hi there,
+>
+> You chase council-estate and housing-association scaffolding jobs — tenders where one missed pass/fail requirement (an access spec, a RAMS clause, an insurance level) voids the whole submission.
+>
+> Bidframe turns a 40-page tender into a 15-minute pass/fail read, each deal-breaker linked to its clause, then drafts each answer from your own accreditations — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a scaffolding tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+**Wave 3c near-misses (manual follow-up — email only via directory/index, not confirmed rendered on their own site; do NOT fabricate):**
+- **Old Plean Roofing** (Stirling) — https://oldpleanroofing.co.uk — husband-and-wife Mark & Fiona Thornton; does HA/factor work. `info@oldpleanroofing.co.uk` indexed from their own /contact/ page but not confirmed rendered — strong ICP shape, worth verifying the email.
+- **JS Roofing** (Clydebank) — small family (~20 yrs); names West Dunbartonshire Council + Clydebank HA. Email only on Yell/Thomson Local (`Jsroofing@hotmail.co.uk`), not on their own Wix site → not verified.
+
 <!-- next waves appended below -->
 
