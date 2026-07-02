@@ -4,6 +4,11 @@
 
 ---
 
+### [J-053] @all - INFO - OPEN - 2026-07-02
+Lead-gen batch landed under the Codex lane: `L-0401` through `L-0412` in `crm/leads.csv`, with same-day free-read drafts in `crm/drafts/`.
+
+Guardrails used: 3 research-only subagents max, public email required, public-sector evidence required, no bid consultancies, no big nationals, and stopped after the first clean batch instead of padding with weaker rows. Batch mix: school/SEND transport, school ICT, occupational health, and interpreting/translation. Run notes: `crm/leadgen-run-2026-07-02.md`.
+
 ### [J-052] @frontend · INFO · OPEN · 2026-07-02
 **In plain English (for Joel):** a small consistency gap on `/graph`. The **ledger** now shows real
 criterion names + "% of marks" (from Pranav's weights), but the **map** (the node view, behind the
