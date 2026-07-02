@@ -115,6 +115,18 @@ def test_form_layout_deadline_on_its_own_line_is_isolated():
         "the deadline line must be isolated as its own candidate, not merged into the address"
 
 
+def test_table_row_with_several_gates_splits_into_separate_cells():
+    """A table row flattens (PyMuPDF) to one line with big column gaps. If several distinct
+    deal-breakers share that row, they must each become their own candidate — otherwise the
+    one-to-one matcher can only ever credit ONE of them, silently dropping the others."""
+    row = [(5, "Minimum turnover GBP 500,000    Public liability insurance GBP 5m    "
+               "Tenders must arrive no later than 12:00")]
+    cands = [c["text"] for c in scan_candidates(row)]
+    assert any("turnover" in c.lower() and "insurance" not in c.lower() for c in cands)
+    assert any("insurance" in c.lower() and "turnover" not in c.lower() for c in cands)
+    assert any("no later than" in c.lower() and "turnover" not in c.lower() for c in cands)
+
+
 def test_uncovered_gating_surfaces_what_extraction_missed():
     # extraction only caught the innocuous line -> the collusion + deadline + pass/fail gates are missed
     extracted = [{"text": "The service runs Monday to Friday."}]

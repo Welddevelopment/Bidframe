@@ -79,9 +79,18 @@ def _units(text: str):
     otherwise be swallowed into one giant punctuation-free run and its signal diluted below the
     match threshold. Isolating each line keeps that disqualifier recognisable as its own unit."""
     seen: set[str] = set()
-    # 1. newline-delimited lines — isolate form/address fields the collapse would otherwise merge
-    for line in (text or "").split("\n"):
-        line = re.sub(r"\s+", " ", line).strip()
+    # 1. per line: isolate form/address fields AND table cells. A table ROW flattens to one line
+    #    with big column gaps ("Turnover £500k    Insurance £5m    Deadline 5pm"); split on those
+    #    gaps + cell delimiters so each distinct gate is its own unit — the one-to-one eval can then
+    #    credit each (a single merged row-unit could only ever credit one). Then also yield the whole
+    #    collapsed line, which keeps a gate phrase that legitimately spans cells ("no later than").
+    for raw_line in (text or "").split("\n"):
+        for cell in re.split(r"\s{2,}|[\t|│┃¦]", raw_line):
+            cell = re.sub(r"\s+", " ", cell).strip()
+            if len(cell) >= _MIN_LEN and cell not in seen:
+                seen.add(cell)
+                yield cell
+        line = re.sub(r"\s+", " ", raw_line).strip()
         if len(line) >= _MIN_LEN and line not in seen:
             seen.add(line)
             yield line
