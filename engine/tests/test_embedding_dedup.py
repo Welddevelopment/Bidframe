@@ -19,6 +19,7 @@ from engine.reconcile import (
     _numeric_conflict,
     group_candidates,
     merge_group,
+    reconcile,
 )
 from engine.embeddings import EMBED_SIM_THRESHOLD, build_index, semantic_enabled
 
@@ -177,3 +178,62 @@ def test_union_merge_escalates_gating_from_any_pass():
     m = merge_group(groups[0])
     assert m["is_gating"] is True and m["type"] == "mandatory"  # escalated from pass 1
     assert m["confidence"] >= max(0.6, 0.7)  # noisy-OR is monotonic up
+
+
+# --------------------------------------------------------------------------- #
+# 7b. Ensemble / multi-pass union through reconcile() end-to-end (item 2)
+#     The eval harness now routes extraction through extract_chunk_multi
+#     (engine/scripts/run_tender.py), so EXTRACT_PASSES>1 feeds a pass-tagged union
+#     into reconcile. These pin the three claims that make that safe to measure:
+#     recall preserved, precision collapse, gating safety.
+# --------------------------------------------------------------------------- #
+def _pass_raw(seq, text, *, pass_no=0, page=3, clause=None, gating=False,
+              typ="mandatory", conf=0.8):
+    """A raw shaped like backend's multi-pass output: raw_id pass-tagged the way
+    extract_chunk_multi does it (pass 0 -> 'raw-...', pass N -> 'raw-pN-...')."""
+    prefix = "raw" if pass_no == 0 else f"raw-p{pass_no}"
+    return _raw(f"{prefix}-c1-{seq}", text, page=page, clause=clause, gating=gating,
+                typ=typ, conf=conf)
+
+
+def test_union_preserves_a_pass1_only_requirement_recall():
+    """The whole point of multi-pass: pass 1 catches a requirement pass 0 missed. The
+    union must KEEP a distinct req found in only one pass — never dedup it away."""
+    env = {"tender_id": "t", "title": "T", "raw_requirements": [
+        _pass_raw("0001", "The supplier must hold ISO 9001 certification.", pass_no=0),
+        _pass_raw("0002", "Provide references from prior public-sector contracts.", pass_no=0),
+        _pass_raw("0001", "The supplier must hold ISO 9001 certification.", pass_no=1),  # re-find
+        _pass_raw("0009", "Attend a mandatory pre-tender site visit.", pass_no=1),       # NEW
+    ]}
+    final, _ = reconcile(env)
+    texts = {r["text"] for r in final["requirements"]}
+    assert len(final["requirements"]) == 3          # the exact ISO re-find collapses (4 -> 3)
+    assert "Attend a mandatory pre-tender site visit." in texts  # pass-1-only survives
+
+
+def test_union_collapses_a_cross_pass_paraphrase_precision():
+    """Precision guard: a diversity pass (temp=0.7) rewords the SAME requirement past the
+    lexical gate. The semantic path collapses it so the union doesn't inflate the count;
+    lexical-only honestly can't, and stays 2 (no silent over-merge without the index)."""
+    p0 = _pass_raw("0001", "The contractor shall submit monthly cleaning reports.", pass_no=0)
+    p1 = _pass_raw("0001", "A written account of janitorial activity is required every four weeks.",
+                   pass_no=1)
+    assert not _lexical_ok(p0, p1)  # reworded past the lexical gate
+    idx = _FakeIndex({p0["text"]: "reporting", p1["text"]: "reporting"})
+    env = {"tender_id": "t", "title": "T", "raw_requirements": [p0, p1]}
+    assert len(reconcile(env, idx)[0]["requirements"]) == 1   # collapsed via embeddings
+    assert len(reconcile(env)[0]["requirements"]) == 2        # lexical-only: honestly separate
+
+
+def test_union_never_merges_two_distinct_gating_rows_across_passes():
+    """Safety under the union: two DIFFERENT disqualifiers (one surfaced per pass) must
+    both survive even with a hot index — losing a distinct gating row is the worst failure."""
+    g0 = _pass_raw("0001", "Public liability insurance is mandatory for all bidders.",
+                   pass_no=0, gating=True)
+    g1 = _pass_raw("0002", "Bids received after the stated deadline will be rejected.",
+                   pass_no=1, gating=True)
+    idx = _FakeIndex({g0["text"]: "gate", g1["text"]: "gate"})  # would merge if vectors were allowed
+    final, _ = reconcile({"tender_id": "t", "title": "T",
+                          "raw_requirements": [g0, g1]}, idx)
+    assert len(final["requirements"]) == 2
+    assert all(r["is_gating"] for r in final["requirements"])

@@ -4,6 +4,21 @@
 
 ---
 
+### [G-033] @j @backend @all · INFO · OPEN · 2026-07-02
+**Closed the loop on J-056 item 2: the eval harness couldn't MEASURE the ensemble — the reconcile side was ready, but `run_tender`/`eval_all` extracted single-pass. Fixed + pinned the union invariants. 137 tests green.**
+
+**Plain English (for Joel):** Pranav built the "read each page a few times and combine what you find" feature (multi-pass), and my dedup already knew how to merge the overlap. But I found a gap: our *accuracy scorer* was still reading each page only once, so turning the feature on would change the live product but **not the number we measure** — we'd be flying blind on whether it actually helps. One-line fix so the scorer uses the same multi-pass path the live app does (off by default, identical results until you switch it on). Then I added three safety checks proving the combine step is trustworthy: a requirement found in only one pass survives, a reworded duplicate collapses, and two *different* deal-breakers never get merged into one.
+
+**Technical:**
+- **The gap:** `backend/app/pipeline.py` (live API) routes through `extract_chunk_multi` (honours `EXTRACT_PASSES`), but `engine/scripts/run_tender.py:raw_envelope_from_pdf` — which `eval_all` imports for its extraction — called `extractor.extract_chunk(chunk)` directly. So `EXTRACT_PASSES=3 python -m engine.scripts.eval_all` would score the *single-pass* set: the ensemble was unmeasurable.
+- **Fix (`engine/scripts/run_tender.py`, my lane):** route through `extract_chunk_multi(extractor, chunk)`, mirroring the live pipeline. **True no-op at the default** (`extract_chunk_multi` returns `extractor.extract_chunk(chunk)` verbatim when `EXTRACT_PASSES≤1` or non-openai — backend-verified byte-identical, B-013), so every single-pass eval number is unchanged. Unlocks `EXTRACT_PASSES=N python -m engine.scripts.eval_all` to measure recall/precision of the union.
+- **Ensemble invariants pinned (`engine/tests/test_embedding_dedup.py`, +3, all offline via the injected `_FakeIndex`, pass-tagged raws like backend emits):** (1) **recall** — a requirement surfaced in only pass 1 survives the union (never dedup'd away); (2) **precision** — a cross-pass paraphrase (temp=0.7 diversity) collapses via the semantic path, and lexical-only honestly stays separate (no silent over-merge without the index); (3) **safety** — two DISTINCT gating rows, one per pass, both survive even with a hot index. Item 2's escalation (gating/mandatory if ANY pass flags it + noisy-OR agreement boost) was already covered by `test_union_merge_escalates_gating_from_any_pass`.
+- **Suite: 134 → 137 green.** No new files, no schema/API change, no codemap impact. `reconcile()` still pure/offline.
+
+**@backend:** no action — this consumes your `extract_chunk_multi` exactly as designed; the pass-tagged `raw_id`s union cleanly through reconcile with no special-casing. When you want a real ensemble read, `EXTRACT_PASSES=2` (or 3) on an `eval_all` run will now show it.
+
+**⚠️ @all — parallel-session collision I caught + resolved:** two generalist sessions were live at once (worktrees `jolly-hermann` = me, `gracious-hertz`). Both had started the real-key `eval_all` against the **same 30k-TPM key** → they'd 429 each other + double-spend. I **killed my run** and left gracious-hertz's in-flight (it's on `gpt-4o-mini`, `RECONCILE_SEMANTIC=1`, `EXTRACT_PASSES=1`); the museum-41pp number + the B-013 determinism before/after will come from that session. Heads-up there's also a 3rd worktree `strange-ptolemy` on an older commit. **If you're acting as generalist in a second session: don't double-run key-bound work, and mind `board-generalist.md` (this file) for clobbers — pull --rebase before pushing.**
+
 ### [G-032] @j @backend @all · INFO · OPEN · 2026-07-02
 **J-056 item 1 (semantic dedup) landed — and measuring it surfaced the REAL precision blocker: the extractor emits no clause refs, so reconcile was silently a no-op on live data. Fixed. 134 tests green.**
 

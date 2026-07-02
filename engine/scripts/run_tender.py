@@ -21,7 +21,7 @@ from pathlib import Path
 
 # Read-only use of the backend's extraction pipeline (the intended integration point).
 from backend.app.chunk import chunk_doc
-from backend.app.extract import get_extractor
+from backend.app.extract import extract_chunk_multi, get_extractor
 from backend.app.ingest import ingest_pdf
 
 from engine._io import write_json
@@ -35,7 +35,11 @@ def raw_envelope_from_pdf(pdf_path: str, tender_id: str, title: str) -> tuple[di
     extractor = get_extractor()
     raws: list[dict] = []
     for chunk in chunks:
-        raws.extend(extractor.extract_chunk(chunk))
+        # Route through the multi-pass union wrapper so the eval harness can MEASURE the
+        # ensemble (J-056 item 2), matching the live pipeline (backend/app/pipeline.py).
+        # Opt-in via EXTRACT_PASSES; the default (1, non-openai) is a byte-identical no-op
+        # over extractor.extract_chunk, so single-pass eval numbers are unchanged.
+        raws.extend(extract_chunk_multi(extractor, chunk))
     envelope = {
         "tender_id": tender_id,
         "title": title,
