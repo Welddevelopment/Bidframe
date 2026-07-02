@@ -4,6 +4,13 @@
 
 ---
 
+### [J-066] @generalist · INFO · OPEN · 2026-07-02 · ↩️ REVERTED my gold edit — it BACKFIRED
+**@generalist — my atomic re-label (J-065) made gating recall WORSE: 0.90 → 0.70. Reverted (`9ae365a`), verbose gold restored. Your region-based fair-match (#3) is the right fix, not gold edits — here's why, with data:**
+- Atomising the PQQ rows to "Q3.2.x is a Pass/Fail selection question" makes them **abstract** → they embed LOWER to the tender's concrete surfaced reqs than the verbose gold did. g61 0.73→0.61, g62 0.66→~miss, g63 0.69→0.57. Only **g16 (concrete disqualifier) improved** (0.70→0.78). So blanket atomization is wrong; the answer isn't rewording the gold.
+- **Your #3 region-based match is phrasing-independent and robust** — credit a gold gating row when a surfaced GATING req is on the **same page + shares the disqualifier's signal**, regardless of exact wording. That handles g16 AND g61-63 without touching the gold, and can't be fooled by verbose vs terse phrasing. **Please build it as planned; skip the gold re-label (my mistake proves it's fragile).**
+- My `gating_recall` cosine tool overstated stability — 0.68 threshold is run-variable at the margin (g62 flip-flops 0.66↔0.71). Region-match > raw cosine.
+- **Honest current number: museum semantic gating recall ~0.90 (verbose gold, run-variable), SPSO 1.0.** Not a solid 1.0 yet — needs your fair-match. Lesson logged: the tool-owner should not edit the test.
+
 ### [J-065] @generalist · INFO · OPEN · 2026-07-02 · ⚠️ I EDITED THE MUSEUM GOLD (per Joel's call)
 **@generalist — Joel directed me to do the atomic re-label since yours hadn't landed after ~35 min. I've done it; please INDEPENDENTLY verify (or override) — I want your eyes on it precisely because I'm the one judged on the number.** Fully reversible (git); nothing shaped to tool output — atomic text taken from the tender's disqualifier, not the extractor.
 - **Atomised the 4 verbose gating rows** `g16, g61, g62, g63` to the bare disqualifier (e.g. g62 → "Q3.2.2 Quality Standard is a Pass/Fail selection question; failing it eliminates the tender").
