@@ -206,23 +206,38 @@ def _is_structural_nongate(text: str) -> bool:
     return len(re.findall(r"[A-Za-z]{3,}", text)) < 3
 
 
-def consolidate_candidates(candidates: list[dict], dedup_overlap: float = 0.90) -> list[dict]:
+def consolidate_candidates(candidates: list[dict], dedup_overlap: float = 0.90,
+                           min_len_ratio: float = 0.6) -> list[dict]:
     """Recall-safe precision pass on the generous net's output (deterministic, no LLM): drop
     structural non-gates (TOC leaders, contact blocks, digit/symbol lines, tiny fragments) and
     collapse same-page near-duplicate fragments (>= dedup_overlap token overlap), keeping the
     FULLEST line per cluster. Returns a SUBSET in the original order — never adds.
 
-    The overlap bar is deliberately high: distinct-but-similar gates (e.g. museum's Q3.2.x Pass/Fail
-    questions) must stay SEPARATE. Verified to hold gating recall 10/10 on the museum + bradwell gold
-    (0.85 already merges those distinct gates and drops to 9/10; 0.90 keeps them apart)."""
+    Two guards keep it from dropping a real gate:
+      * high overlap bar — distinct-but-similar gates (museum's Q3.2.x Pass/Fail questions) stay
+        SEPARATE (0.85 already merges them and drops to 9/10; 0.90 keeps them apart);
+      * LENGTH guard — a short, focused gate line is fully contained in (100% token overlap with) a
+        long bloated block (e.g. SPSO's 'Arrive no later than…' inside an address block), so without
+        this the focused line got absorbed and the bloated representative embedded poorly to the gold
+        (SPSO 2/2 -> 0/2). Only merge when the two lines are within min_len_ratio in length.
+    Verified to hold gating recall on ALL THREE gold tenders: museum 10/10, bradwell 10/10, SPSO 2/2."""
     kept = [c for c in candidates if not _is_structural_nongate(c.get("text", ""))]
     reps: list[tuple[set, object, dict]] = []
-    for c in sorted(kept, key=lambda x: -len(x.get("text", ""))):  # longest becomes the representative
-        ct = content_tokens(c.get("text", "")); pg = c.get("source_page")
-        if any(pg == r[1] and ct and r[0] and len(ct & r[0]) / min(len(ct), len(r[0])) >= dedup_overlap
-               for r in reps):
-            continue
-        reps.append((ct, pg, c))
+    for c in sorted(kept, key=lambda x: -len(x.get("text", ""))):  # longest first -> representative
+        ct = content_tokens(c.get("text", "")); pg = c.get("source_page"); lc = len(c.get("text", ""))
+        dup = False
+        for rt, rp, rc in reps:
+            if rp != pg or not ct or not rt:
+                continue
+            if len(ct & rt) / min(len(ct), len(rt)) < dedup_overlap:
+                continue
+            lr = len(rc.get("text", ""))
+            if min(lc, lr) / max(lc, lr, 1) < min_len_ratio:  # don't absorb a focused line into a bloated one
+                continue
+            dup = True
+            break
+        if not dup:
+            reps.append((ct, pg, c))
     rep_ids = {id(r[2]) for r in reps}
     return [c for c in kept if id(c) in rep_ids]  # original order preserved
 

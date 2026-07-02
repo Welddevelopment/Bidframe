@@ -212,6 +212,20 @@ def test_consolidate_dedups_near_duplicates_keeping_fullest():
     assert any("collusion" in c["text"] for c in out)               # distinct p6 gate survives
 
 
+def test_consolidate_does_not_absorb_a_focused_gate_into_a_bloated_block():
+    """SPSO regression: a short focused deadline line is 100%-token-contained in a long address
+    block. Without the length guard it got absorbed and the bloated representative embedded poorly
+    to the gold (SPSO 2/2 -> 0/2). The focused gate line MUST survive."""
+    focused = "Arrive no later than 12.00 noon 06/11/2013"
+    cands = [
+        {"text": "Elaine Blows Facilities Administrator Scottish Public Services Ombudsman "
+                 "4 Melville Street Edinburgh EH3 7NS " + focused + " Your submission must be complete",
+         "source_page": 6},
+        {"text": focused, "source_page": 6},
+    ]
+    assert any(c["text"] == focused for c in consolidate_candidates(cands))
+
+
 def test_consolidate_keeps_distinct_gates_on_the_same_page():
     cands = [
         {"text": "The bidder must hold public liability insurance of £5m.", "source_page": 5},
