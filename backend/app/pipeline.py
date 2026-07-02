@@ -182,6 +182,51 @@ def _autofill(requirements: list[Requirement], capability_folder=None, answerer=
         return requirements, []
 
 
+MAX_RECTS_PER_REQ = 12   # a long multi-line excerpt; caps payload + avoids pathological hits
+
+
+def _attach_source_rects(requirements: "list[Requirement]", docs: "list[tuple[str, str, str]]") -> None:
+    """Fill each requirement's source_rect with the PDF bounding box(es) of its excerpt
+    on its source_page (J-049 P3 — pixel-accurate highlighting for the frontend's source
+    verification). Opens each document's PDF once via PyMuPDF and runs page.search_for.
+    Additive + fully guarded: no fitz, an unlocatable excerpt, or any error just leaves
+    source_rect None (the client falls back to a text-layer search), never breaks upload."""
+    try:
+        import fitz
+    except ImportError:
+        return
+    paths = {doc_id: path for doc_id, path, _ in docs}
+    by_doc: dict[str, list] = {}
+    for r in requirements:
+        if r.source_doc_id:
+            by_doc.setdefault(r.source_doc_id, []).append(r)
+    for doc_id, reqs in by_doc.items():
+        path = paths.get(doc_id)
+        if not path:
+            continue
+        try:
+            with fitz.open(path) as pdf:
+                for r in reqs:
+                    excerpt = (r.source_excerpt or "").strip()
+                    pno = (r.source_page or 1) - 1
+                    if not excerpt or pno < 0 or pno >= pdf.page_count:
+                        continue
+                    try:
+                        # Collapse whitespace so a reflowed/space-normalised excerpt still
+                        # matches the PDF's own line-wrapped text as closely as possible.
+                        needle = " ".join(excerpt.split())[:400]
+                        rects = pdf[pno].search_for(needle)
+                        if rects:
+                            r.source_rect = [
+                                [round(x.x0, 1), round(x.y0, 1), round(x.x1, 1), round(x.y1, 1)]
+                                for x in rects[:MAX_RECTS_PER_REQ]
+                            ]
+                    except Exception:
+                        continue  # one bad excerpt never blocks the rest
+        except Exception as exc:
+            print(f"[pipeline] source_rect skipped for {doc_id} ({exc})")
+
+
 def run_pipeline_multi(
     docs: "list[tuple[str, str, str]]",
     tender_id: str,
@@ -304,6 +349,9 @@ def run_pipeline_multi(
     deal_breakers = sum(1 for r in requirements if r.is_gating)
     emit("graph", "Mapping award criteria and flagging deal-breakers", 0.90,
          requirement_count=len(requirements), deal_breaker_count=deal_breakers)
+
+    # Highlight coordinates for source verification (J-049 P3) — additive, guarded.
+    _attach_source_rects(requirements, docs)
 
     requirements, capability_docs = _autofill(requirements)
     emit("autofill", "Drafting first answers from your evidence", 0.97,

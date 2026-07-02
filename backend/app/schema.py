@@ -64,6 +64,12 @@ class Requirement(BaseModel):
     # Nullable — single-file tenders default to the one doc, so nothing breaks.
     source_doc_id: Optional[str] = None
     source_filename: Optional[str] = None
+    # Highlight coordinates (J-049 P3): PDF bounding box(es) of source_excerpt on
+    # source_page, so the frontend can highlight the exact line instead of a best-guess
+    # text search. Each rect is [x0, y0, x1, y1] in PDF points (top-left origin); a
+    # multi-line excerpt yields several rects. Nullable — absent when the excerpt can't
+    # be located (e.g. reflowed/OCR'd text), so the client falls back to text search.
+    source_rect: Optional[list[list[float]]] = None
 
 
 class CapabilityDoc(BaseModel):

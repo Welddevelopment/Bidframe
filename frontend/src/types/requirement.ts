@@ -58,6 +58,12 @@ export interface Requirement {
   // Multi-file tender packs (#4): which document in the pack this came from.
   source_doc_id?: string | null;
   source_filename?: string | null;
+  // Highlight coordinates (J-049 P3): PDF bounding box(es) of source_excerpt on
+  // source_page, each [x0, y0, x1, y1] in PDF points (top-left origin); a multi-line
+  // excerpt yields several rects. Nullable — absent when the excerpt can't be located,
+  // so the source panel falls back to a text-layer search. Lets the verification view
+  // highlight the exact line instead of guessing.
+  source_rect?: number[][] | null;
 }
 
 // A published award criterion for the tender (e.g. Quality 40%). Additive:

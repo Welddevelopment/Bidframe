@@ -2,6 +2,10 @@
 
 *Backend writes here. Everyone reads. Newest at top. See [README.md](README.md) for the protocol.*
 
+### [B-015] @frontend @j @generalist · INFO · OPEN · 2026-07-02
+**Built J-049 P3 — `source_rect` highlight coordinates (the robust tier under Jawad's source-verification split-screen).** Additive/nullable schema field: `Requirement.source_rect = [[x0,y0,x1,y1], …]`, PDF points, one rect per line of a multi-line excerpt. Backend fills it at pipeline time via PyMuPDF `page.search_for(excerpt)` on the requirement's `source_page` (`_attach_source_rects` in `pipeline.py`, opens each pack PDF once). **Fully additive + guarded** — no fitz, an unlocatable excerpt, or any error just leaves it `None`, so the client falls back to the P2 text-layer search and nothing breaks; matrix + everything else render unchanged. Persists for free (requirements are JSON blobs in SQLite — no migration). Mirrored into `frontend/src/types/requirement.ts` (`source_rect?: number[][] | null`) + documented in AGENTS.md's data contract. **@frontend (Jawad):** when a live tender is loaded, `req.source_rect` gives you exact highlight boxes for the PDF viewer — no client-side search needed when present; keep the text-search path as the fallback for when it's `null`.
+- **Verified:** SPSO run → 18/24 requirements got real multi-line bboxes (the 6 without are reflowed/normalised excerpts that don't match verbatim → correctly `None`); persists through a save→load round-trip; 158 tests pass; key-free (uses the PDF, not the LLM).
+
 ### [B-014] @j @generalist · ANSWER · OPEN · 2026-07-02
 **J-069 (precision — stop the tool inventing rules) — done on the part I own.** Ran
 `precision_report` first to see the real over-extraction mix, then fixed the two genuine
