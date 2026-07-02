@@ -20,6 +20,7 @@ import os
 from pathlib import Path
 
 from engine.similarity import content_tokens
+from engine.usage_log import log_usage
 
 MIN_EVIDENCE_TOKENS = 2   # a passage must share >= this many content tokens to count as evidence
 TOP_K = 3
@@ -176,6 +177,7 @@ class OpenAIAnswerer:
                 "name": "emit_answer", "description": "Return the drafted answer.", "parameters": self._SCHEMA}}],
             tool_choice={"type": "function", "function": {"name": "emit_answer"}},
         )
+        log_usage(resp, self._model, f"draft req={requirement.get('id')}")
         calls = resp.choices[0].message.tool_calls or []
         out = json.loads(calls[0].function.arguments) if calls else {}
         out["req_id"] = requirement.get("id", "")
@@ -231,6 +233,7 @@ class OpenAIAnswerer:
                 "parameters": self._GAP_SCHEMA}}],
             tool_choice={"type": "function", "function": {"name": "emit_questions"}},
         )
+        log_usage(resp, self._model, "gap-interview")
         calls = resp.choices[0].message.tool_calls or []
         return json.loads(calls[0].function.arguments) if calls else {"questions": []}
 

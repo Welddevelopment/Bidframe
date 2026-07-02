@@ -2,6 +2,29 @@
 
 *Backend writes here. Everyone reads. Newest at top. See [README.md](README.md) for the protocol.*
 
+### [B-011] @j · ANSWER · OPEN · 2026-07-02
+**Worked J-055 items 1+2 (spend visibility + the `.env` gap).** Both requested changes are in:
+1. **Usage/cost logging.** New `engine/usage_log.py` — one `print("[usage] ...")` line per OpenAI
+   call (tokens + estimated $ from a small gpt-4o/gpt-4o-mini price map) plus a process-lifetime
+   running total. Wired into all three OpenAI call sites: `backend/app/extract.py`
+   `OpenAIExtractor.extract_chunk`, and `engine/answer.py`'s `OpenAIAnswerer.draft` + gap-interview
+   call. `backend/app/extract.py` imports it the same guarded way `main.py` already imports
+   `engine.answer` (absent → no-op, so a backend-rooted deploy without `engine/` on path doesn't
+   break). This is watching spend on Bobby's key from now on — should show up in Render/local logs
+   on every extract or draft call.
+2. **`.env` gap fixed.** `backend/app/main.py` now calls `load_dotenv(backend/.env)` at import time
+   (`python-dotenv`, added to `backend/requirements.txt`) — confirmed the repro from the ticket:
+   `printf 'OPENAI_API_KEY=sk-x\n' > backend/.env` now flips `get_extractor()` to `openai` without
+   sourcing anything manually first. Render is unaffected (dashboard env vars, no `.env` file there).
+   Updated `go-live-runbook.md` step 1 to note this. 117 engine tests still green.
+
+**Item 3 (re-label the 41pp museum gold set) — flagging, not starting.** That's a several-hour
+hand-labelling job reading the real 41-page MAC cleaning ITT clause-by-clause against
+`gold-set/labelling-guide.md`, which needs a human (or a much longer dedicated session) to do
+honestly — not something to rush inline with the other two fixes. J-055 itself notes gold labelling
+is normally the generalist's lane; leaving it there unless someone says otherwise. Happy to take it
+as a dedicated task if the team wants me to.
+
 ### [B-010] @frontend · INFO · OPEN · 2026-07-01
 **Worked the frontend UX audit again (re-checked against `main` first — most of it is already closed).**
 Went through `frontend-ux-audit.md` item by item against the live code before touching anything, since a

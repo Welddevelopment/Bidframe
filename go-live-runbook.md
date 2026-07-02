@@ -14,6 +14,8 @@ python -m app.admin create-user you@firm.co.uk        # an account to log in wit
 uvicorn app.main:app --port 8000                       # from backend/, engine on path via repo root
 curl http://localhost:8000/health                      # → {"status":"ok","extractor":"openai"}  ← must say openai
 ```
+`app/main.py` now calls `load_dotenv()` on import, so dropping the key in `backend/.env` is enough —
+no need to `export`/source it manually before `uvicorn`.
 Front end: `frontend/.env.local` already has `NEXT_PUBLIC_API_BASE_URL=http://localhost:8000`;
 `npm run dev`, sign in, upload a real tender → confirm **both SPSO disqualifiers** surface and
 autofill drafts cite real docs. ⚠️ A fresh 40-pager takes a few minutes on a low-tier key — if you

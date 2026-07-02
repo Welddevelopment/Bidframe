@@ -17,6 +17,13 @@ import uuid
 from pathlib import Path
 from typing import List, Optional
 
+from dotenv import load_dotenv
+
+# Load backend/.env into os.environ before anything reads it (get_extractor(), the
+# answerer, auth). Render/production sets env vars via its dashboard, not a .env file,
+# so this is a no-op there — local dev is the only place a .env exists.
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
+
 from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, UploadFile
 from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware

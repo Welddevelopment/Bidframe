@@ -28,6 +28,12 @@ import time
 
 from .chunk import Chunk
 
+try:  # present at repo-root runtime; absent on a backend-rooted deploy (then logging is skipped)
+    from engine.usage_log import log_usage as _log_usage
+except ImportError:  # pragma: no cover
+    def _log_usage(resp, model, label) -> None:
+        return
+
 MAX_RETRIES = 3
 RETRY_BACKOFF = [1.0, 3.0, 8.0]
 
@@ -258,6 +264,7 @@ class OpenAIExtractor:
                     }],
                     tool_choice={"type": "function", "function": {"name": "emit_requirements"}},
                 )
+                _log_usage(resp, self._model, f"extract chunk={chunk.id}")
                 calls = resp.choices[0].message.tool_calls or []
                 items: list[dict] = []
                 if calls:

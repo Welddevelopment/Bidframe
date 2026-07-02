@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `43361a7` · 2026-07-02T13:38:45+01:00
+> Map of commit `7c965eb` · 2026-07-02T12:38:57Z
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,17 +12,17 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 124 | 44,601 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
-| **backend** | 19 | 2,592 | Backend — FastAPI (PDF ingest, extraction, REST API) |
-| **engine** | 55 | 3,184 | Engine — reconcile / eval / answer-draft pipeline + tests |
+| **frontend** | 126 | 44,801 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **backend** | 19 | 2,607 | Backend — FastAPI (PDF ingest, extraction, REST API) |
+| **engine** | 56 | 3,221 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 678 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
 | **gold** | 4 | 222 | Eval gold-set — hand-labelled requirements for accuracy measurement |
 | **data** | 17 | 0 | Data — tender source PDFs (not parsed here) |
-| **comms** | 5 | 1,387 | Comms — async agent message boards |
+| **comms** | 5 | 1,410 | Comms — async agent message boards |
 | **docs** | 3 | 1,663 | Docs — plans & specs |
 | **ci** | 1 | 62 | CI — GitHub Actions |
 | **tooling** | 1 | 516 | Tooling — repo scripts (incl. this map generator) |
-| **root** | 407 | 21,332 | Root — docs, config, role briefs |
+| **root** | 407 | 21,334 | Root — docs, config, role briefs |
 
 ## System shape
 
@@ -242,46 +242,48 @@ graph LR
   n0[admin.py] --> n1[auth.py]
   n2[chunk.py] --> n3[ingest.py]
   n4[extract.py] --> n2[chunk.py]
-  n5[graph.py] --> n6[schema.py]
-  n7[main.py] --> n1[auth.py]
-  n7[main.py] --> n4[extract.py]
-  n7[main.py] --> n3[ingest.py]
-  n7[main.py] --> n8[pipeline.py]
-  n7[main.py] --> n6[schema.py]
-  n7[main.py] --> n9[answer.py]
-  n8[pipeline.py] --> n2[chunk.py]
-  n8[pipeline.py] --> n4[extract.py]
-  n8[pipeline.py] --> n5[graph.py]
-  n8[pipeline.py] --> n3[ingest.py]
-  n8[pipeline.py] --> n6[schema.py]
-  n8[pipeline.py] --> n9[answer.py]
-  n8[pipeline.py] --> n10[reconcile.py]
-  n11[store.py] --> n6[schema.py]
-  n9[answer.py] --> n12[similarity.py]
-  n13[eval.py] --> n14[_io.py]
-  n13[eval.py] --> n12[similarity.py]
-  n15[eval_answers.py] --> n14[_io.py]
-  n15[eval_answers.py] --> n9[answer.py]
-  n15[eval_answers.py] --> n12[similarity.py]
-  n10[reconcile.py] --> n14[_io.py]
-  n10[reconcile.py] --> n12[similarity.py]
-  n16[calibrate.py] --> n14[_io.py]
-  n16[calibrate.py] --> n13[eval.py]
-  n17[draft_answers.py] --> n14[_io.py]
-  n17[draft_answers.py] --> n9[answer.py]
-  n17[draft_answers.py] --> n13[eval.py]
-  n18[eval_all.py] --> n14[_io.py]
-  n18[eval_all.py] --> n13[eval.py]
-  n18[eval_all.py] --> n10[reconcile.py]
-  n18[eval_all.py] --> n19[run_tender.py]
-  n19[run_tender.py] --> n2[chunk.py]
-  n19[run_tender.py] --> n4[extract.py]
-  n19[run_tender.py] --> n3[ingest.py]
-  n19[run_tender.py] --> n14[_io.py]
-  n19[run_tender.py] --> n13[eval.py]
-  n19[run_tender.py] --> n10[reconcile.py]
-  n20[parse_check.py]
-  n21[stress_test.py]
+  n4[extract.py] --> n5[usage_log.py]
+  n6[graph.py] --> n7[schema.py]
+  n8[main.py] --> n1[auth.py]
+  n8[main.py] --> n4[extract.py]
+  n8[main.py] --> n3[ingest.py]
+  n8[main.py] --> n9[pipeline.py]
+  n8[main.py] --> n7[schema.py]
+  n8[main.py] --> n10[answer.py]
+  n9[pipeline.py] --> n2[chunk.py]
+  n9[pipeline.py] --> n4[extract.py]
+  n9[pipeline.py] --> n6[graph.py]
+  n9[pipeline.py] --> n3[ingest.py]
+  n9[pipeline.py] --> n7[schema.py]
+  n9[pipeline.py] --> n10[answer.py]
+  n9[pipeline.py] --> n11[reconcile.py]
+  n12[store.py] --> n7[schema.py]
+  n10[answer.py] --> n13[similarity.py]
+  n10[answer.py] --> n5[usage_log.py]
+  n14[eval.py] --> n15[_io.py]
+  n14[eval.py] --> n13[similarity.py]
+  n16[eval_answers.py] --> n15[_io.py]
+  n16[eval_answers.py] --> n10[answer.py]
+  n16[eval_answers.py] --> n13[similarity.py]
+  n11[reconcile.py] --> n15[_io.py]
+  n11[reconcile.py] --> n13[similarity.py]
+  n17[calibrate.py] --> n15[_io.py]
+  n17[calibrate.py] --> n14[eval.py]
+  n18[draft_answers.py] --> n15[_io.py]
+  n18[draft_answers.py] --> n10[answer.py]
+  n18[draft_answers.py] --> n14[eval.py]
+  n19[eval_all.py] --> n15[_io.py]
+  n19[eval_all.py] --> n14[eval.py]
+  n19[eval_all.py] --> n11[reconcile.py]
+  n19[eval_all.py] --> n20[run_tender.py]
+  n20[run_tender.py] --> n2[chunk.py]
+  n20[run_tender.py] --> n4[extract.py]
+  n20[run_tender.py] --> n3[ingest.py]
+  n20[run_tender.py] --> n15[_io.py]
+  n20[run_tender.py] --> n14[eval.py]
+  n20[run_tender.py] --> n11[reconcile.py]
+  n21[parse_check.py]
+  n22[stress_test.py]
 ```
 
 ## Files by area
@@ -310,6 +312,8 @@ graph LR
 - `frontend/package.json`
 - `frontend/postcss.config.mjs`
 - `frontend/public/brand/README.md`
+- `frontend/public/codemap.html`
+- `frontend/public/codemap.html`
 - `frontend/public/codemap.html`
 - `frontend/public/pdf.worker.min.mjs` — @licstart The following is the entire license notice for the
 - `frontend/src/app/answers/page.tsx` — exports `metadata`
@@ -474,6 +478,7 @@ graph LR
 - `engine/tests/test_report.py`
 - `engine/tests/test_similarity.py`
 - `engine/tests/test_to_final.py`
+- `engine/usage_log.py` — cheap OpenAI spend visibility (J-055).
 
 ### prompts — Prompts — LLM prompt specs (extraction, classification, answers, gaps)
 
@@ -929,4 +934,4 @@ graph LR
 
 ---
 
-*642 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
+*645 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
