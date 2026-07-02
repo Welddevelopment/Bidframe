@@ -34,6 +34,7 @@ _STRONG = re.compile(
 
 _MIN_LEN = 16
 _COVER_CONTAINMENT = 0.6   # covered if an extracted req overlaps >=60% of the smaller token set
+_PASSFAIL = re.compile(r"pass\s*/?\s*fail|pass\s+or\s+fail", re.IGNORECASE)
 
 
 def _units(text: str):
@@ -65,7 +66,14 @@ def scan_candidates(pages) -> list[dict]:
                 if key in seen:
                     continue
                 seen.add(key)
-                out.append({"text": unit, "source_excerpt": unit, "source_page": page_no})
+                # A Pass/Fail selection question is a gate but arrives as a bare heading in form
+                # layout ("3.2.2 Quality Standard (Pass/Fail)"); frame it as a requirement so the
+                # candidate faithfully represents the disqualifier and is recognisable as the same
+                # gate a human labelled (source_excerpt stays the verbatim line for grounding).
+                cand_text = unit
+                if _PASSFAIL.search(unit):
+                    cand_text = "Tenderers must satisfy this Pass/Fail selection requirement: " + unit
+                out.append({"text": cand_text, "source_excerpt": unit, "source_page": page_no})
     return out
 
 
