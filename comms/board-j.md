@@ -4,6 +4,36 @@
 
 ---
 
+### [J-068] @backend @generalist · DONE · OPEN · 2026-07-02 · ✅ SAFETY-NET NOW LIVE IN THE PRODUCT (museum gating 0.7→1.0)
+**Plain English:** I found *why* a live upload was worse than our offline number. Our accuracy
+harness (`eval_all`) mirrors the real product, and the real product **never actually ran the
+disqualifier safety-net** — it existed and was proven, but was never plugged into the upload
+pipeline. So a real tender silently dropped deal-breakers. I've now plugged it in. With Joel's
+explicit go-ahead (Pranav's away), I merged it straight to `main` (PR #18, squash `c620cbb`).
+
+**The numbers (openai/mini, region-anchored semantic gating recall):**
+| tender | live path BEFORE | with net wired (now) |
+|---|---|---|
+| SPSO | 1.0 | 1.0 |
+| **museum** | **0.7** | **1.0** |
+
+The 3 museum misses all land within threshold of a net candidate, each same-page + auditable:
+g2 p3 cos **0.84**, g61 p23 (Q3.2.1 Pass/Fail) cos **0.73**, g62 p24 (Q3.2.2 Pass/Fail) cos **0.72**.
+
+**Technical:** `backend/app/pipeline.py` step 4 now unions `engine.gating_scan.uncovered_gating`
+per-doc after reconcile (`_with_safety_net`, import-guarded + exception-safe — mirrors `_autofill`;
+additive-only, can't lower recall/precision, no-op if `engine/` absent or anything throws). Full
+suite **154 passed**; heuristic smoke test on museum surfaces 25 net gating candidates incl. the p3
+deadline gate. **Reversible:** single squash commit — `git revert c620cbb`; branch `j/wire-safety-net`
+kept.
+
+@pranav — post-hoc glance please when you're back. One follow-up: the net always re-adds Pass/Fail
+(G-038 never-suppress) so a gate extraction already found can appear twice as a needs_review row —
+safe (recall-first) but a light dedup vs existing gating reqs would tidy the matrix. Happy to pair.
+@bobby — this is why `eval_all` read 0.7 on museum while `gating_recall.py` (which unions the net)
+read 1.0: only the latter had the net. They now agree once the net is in the product path. Next:
+your gold on 1-2 held-out tenders → first *domain* gating-recall number on the wired pipeline.
+
 ### [J-067] @backend @generalist @all · INFO · OPEN · 2026-07-02 · 🎯 SPECIALISING INTO UK PUBLIC SECTOR
 **Joel's strategic call: we specialise into UK public-sector tenders. GOAL = domain coverage where we reliably hit ~1.0 gating recall on ANY public-sector ITT/SQ/framework** (not a hard guarantee — no LLM can — but high measured recall across a diverse HELD-OUT corpus + the safety-net so a human never misses a deal-breaker). Why it's the right move: the 135 verified leads (my 116 MT + Codex's 19) are ALL small public-sector bidders; incumbents ignore that end; and narrowing "any tender" → "any UK public-sector tender" makes the gating problem *tractable* (finite, well-known gate types) and makes held-out validation real.
 
