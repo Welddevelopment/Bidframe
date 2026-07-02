@@ -319,5 +319,55 @@ Dropped: **Yates Jetting Ltd** — duplicate of existing **L-0360** (same domain
 >
 > Joel, Bidframe
 
+### Wave 1c (cont.) — heating / plumbing / electrical maintenance (named HA contractors)
+*3 verified stragglers from the building/grounds sweep · all kept (1 PERFECT, 2 GOOD) · 0 duplicates.*
+
+---
+
+#### MT-20 · Headcorn Heating Ltd · to: mail@headcornheating.co.uk · PERFECT
+*3-person family heating firm (est. 1976), Ashford/Headcorn, Kent (directors Andrew Grant & Elton Ross). Named contractor for Town & Country Housing (HA) oil/solid-fuel heating; phone matches. Source: tch.org.uk/repairs*
+**Subject:** Your Town & Country Housing heating bids — what would disqualify them?
+> Hi Andrew,
+>
+> You're Town & Country Housing's contractor for oil and solid-fuel heating — so you're bidding HA heating work where one missed pass/fail requirement (an OFTEC/Gas Safe scope, an insurance level, a response time) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own certifications and method docs — a citation on every claim, nothing invented.
+>
+> I'm running free 15-minute live reads today and tomorrow — send me a heating tender you're bidding and I'll show you, on the call, exactly what would disqualify it. A couple of slots left; after this week it's a paid pilot.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-21 · Sandy's Plumbing · to: sandy@sandysplumbing.co.uk · GOOD
+*Small family plumbing firm (16+ yrs), Oakley/Aylesbury, Bucks. Listed as a contractor on Red Kite Community Housing's partners page (identity match inferred from Bucks geography/trade, not an explicit cross-link — softer proof). Source: redkitehousing.org.uk/about-us/our-partners*
+**Subject:** Your Red Kite / Bucks repairs bids — the pass/fail gates
+> Hi Sandy,
+>
+> As a Red Kite Community Housing contractor you're already trusted for social-housing plumbing — and the repairs tenders you bid have pass/fail requirements where one missed line voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — every claim cited.
+>
+> Free 15-minute live reads today and tomorrow — send me a Red Kite or Bucks Council repairs tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-22 · LJH Electrical · to: luke@ljhelectrical.com · GOOD
+*Owner-led electrical firm ("Luke and his team"), Havant, Hants; NICEIC. High-volume social-housing EICRs — names Orbit, A2Dominion, Richmond Housing on its own site (some via subcontracting). Source: ljhelectrical.com/social-housing-eicrs*
+**Subject:** Win the EICR framework directly, not just as a subcontractor
+> Hi Luke,
+>
+> You run high-volume social-housing EICR compliance for HAs like Orbit and A2Dominion — but a lot of it comes through subcontracting. To win those framework places directly, you're up against firms with bid teams on the paperwork.
+>
+> Bidframe reads the electrical-testing/compliance tender and surfaces the pass/fail deal-breakers first, each linked to its clause, then drafts each answer from your own NICEIC and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a compliance framework you're eyeing and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
 <!-- next waves appended below -->
 
