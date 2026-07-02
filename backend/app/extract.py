@@ -36,6 +36,11 @@ except ImportError:  # pragma: no cover
 
 MAX_RETRIES = 3
 RETRY_BACKOFF = [1.0, 3.0, 8.0]
+# temperature=0 + a fixed seed make extraction reproducible run-to-run (J-056: the same
+# tender was scoring 0.84-1.0 recall across runs purely from sampling noise at the
+# default temp=1.0). OpenAI's seed is best-effort determinism, not a guarantee, but
+# combined with temp=0 it removes the bulk of the wobble.
+EXTRACT_SEED = 42
 
 # ---- classification signal words ---------------------------------------------
 MANDATORY_SIGNALS = (
@@ -162,7 +167,11 @@ _LLM_SYSTEM = (
     "disqualification', or a hard eligibility/minimum threshold that must be met at "
     "submission (minimum turnover, a required certification/insurance, a submission "
     "deadline). Most mandatory requirements are NOT gating; when unsure, set "
-    "is_gating=false. Report honest "
+    "is_gating=false. Do NOT extract background/scope description, definitions, the "
+    "buyer's own statements, headings, or explanatory notes as requirements - that "
+    "noise tanks precision. One obligation = one object: split only genuinely separate "
+    "obligations; never fragment one into overlapping pieces or emit it twice/at two "
+    "granularities; each distinct obligation once per chunk. Report honest "
     "0-1 confidence. (Full spec: prompts/extraction.md.)"
 )
 
@@ -250,6 +259,8 @@ class OpenAIExtractor:
             try:
                 resp = self._client.chat.completions.create(
                     model=self._model,
+                    temperature=0,
+                    seed=EXTRACT_SEED,
                     messages=[
                         {"role": "system", "content": _LLM_SYSTEM},
                         {"role": "user", "content": _user_prompt(chunk)},
@@ -296,6 +307,7 @@ class ClaudeExtractor:
                 msg = self._client.messages.create(
                     model=self._model,
                     max_tokens=4096,
+                    temperature=0,  # no seed param on the Anthropic API; temp=0 is the best we get
                     system=_LLM_SYSTEM,
                     tools=[{
                         "name": "emit_requirements",
