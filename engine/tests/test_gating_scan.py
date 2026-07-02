@@ -37,6 +37,27 @@ def test_covered_disqualifier_is_not_re_added():
     assert "collusive" not in joined  # already covered -> not duplicated
 
 
+def test_passfail_gate_never_suppressed_by_a_generic_covering_req():
+    # museum g61-63: a distinct "3.2.x (Pass/Fail)" selection gate was masked because a
+    # generic "submit the documents" req shared >=60% boilerplate tokens. A Pass/Fail gate
+    # is a hard disqualifier and must surface anyway (recall-first). (G-038)
+    pages = [(24, "3.2.2 Quality Standard (Pass/Fail). Describe your quality management systems.")]
+    cand = scan_candidates(pages)[0]["text"]
+    # a generic req that token-CONTAINS the candidate (containment 1.0 -> old rule would suppress)
+    extracted = [{"text": cand + " plus additional unrelated submission paperwork details."}]
+    out = uncovered_gating(extracted, pages)
+    assert any("3.2.2" in c["source_excerpt"] for c in out), "Pass/Fail gate must not be suppressed"
+
+
+def test_non_passfail_gate_still_suppressed_when_covered():
+    # control: the coverage suppression still applies to non-pass/fail candidates.
+    pages = [(1, "Any tenderer engaged in collusive tendering shall be disqualified.")]
+    extracted = [{"text": "Any tenderer engaged in collusive tendering shall be disqualified "
+                          "from the whole procurement process without exception."}]
+    joined = " ".join(c["text"].lower() for c in uncovered_gating(extracted, pages))
+    assert "collusive" not in joined
+
+
 def test_no_gates_means_no_candidates():
     pages = [(1, "The service runs Monday to Friday. Staff wear uniforms. Bins are emptied daily.")]
     assert uncovered_gating([{"text": "irrelevant"}], pages) == []

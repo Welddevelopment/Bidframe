@@ -98,7 +98,13 @@ def uncovered_gating(extracted_reqs: list[dict], pages, raw_id_prefix: str = "ga
     extracted_token_sets = [content_tokens(r.get("text", "")) for r in extracted_reqs]
     extra: list[dict] = []
     for seq, cand in enumerate(scan_candidates(pages)):
-        if _covered(content_tokens(cand["text"]), extracted_token_sets):
+        # Recall-first: a Pass/Fail selection gate is a hard disqualifier — never let the
+        # containment heuristic suppress it. A generic "…complete and submit the documents…"
+        # req shares enough boilerplate to falsely "cover" a distinct "3.2.x (Pass/Fail)"
+        # question (museum g61-63), which silently drops a deal-breaker. Non-pass/fail
+        # candidates keep the coverage suppression as before. (G-038)
+        is_passfail = bool(_PASSFAIL.search(cand.get("source_excerpt", "")))
+        if not is_passfail and _covered(content_tokens(cand["text"]), extracted_token_sets):
             continue
         excerpt = cand["source_excerpt"][:300]
         extra.append({
