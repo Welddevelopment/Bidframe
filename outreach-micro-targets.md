@@ -1303,5 +1303,115 @@ These are perfect-shape tiny firms with NAMED council/HA clients but **no email 
 >
 > Joel, Bidframe
 
+### Wave 5a — family asbestos surveying / removal (council / HA / school / NHS)
+*7 verified · all kept (1 PERFECT, 6 GOOD) · 0 duplicates. Seam note: PERFECT-tier thinning — only ESM cleanly names public clients; the rest are tiny/owner-run with self-declared public-sector work.*
+
+---
+
+#### MT-80 · Environmental Solutions Midlands Ltd · to: enquiries@esminfo.co.uk · PERFECT
+*Family firm since 2009 (founder-brothers Kevin & Craig Nicklin + Deborah; ~8 staff), Wolverhampton. Named clients: Cannock, Dudley & Wolverhampton Councils, Solihull Community Housing, NHS. Source: esm-group.co.uk*
+**Subject:** Your Dudley / Wolverhampton council asbestos bids — deal-breakers caught first
+> Hi Kevin and Craig,
+>
+> You handle asbestos for Cannock, Dudley and Wolverhampton Councils and Solihull Community Housing — so you're bidding council/HA frameworks where one missed pass/fail requirement (a UKAS scope, a licence condition, an insurance level) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> I'm running free 15-minute live reads today and tomorrow — send me a council/HA asbestos tender you're bidding and I'll show you, on the call, exactly what would disqualify it. A couple of slots left; after this week it's a paid pilot.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-81 · Airtech Analysis Ltd · to: info@airtech.org.uk · GOOD
+*Family-run independent asbestos consultancy (owners Rick Taylor & Karl Hull; "no aspirations to be one of the larger consultancies"). Self-declared public + private nationwide; named case studies are private. Source: airtech.org.uk*
+**Subject:** Public-sector asbestos tenders — before you commit surveyor hours
+> Hi Rick and Karl,
+>
+> As an owner-run consultancy that deliberately stays small, unpaid tender paperwork is the worst use of your surveyor hours — and one missed pass/fail requirement voids the whole bid.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a public-sector asbestos tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-82 · Envirosurv Ltd · to: info@envirosurv.com · GOOD
+*Husband-and-wife micro-firm (HSE removal licence since 2014), Wickford, Essex. Self-declared work for health authorities, HAs & local authorities across London/SE/Midlands (none named). Source: envirosurv.com/about-us*
+**Subject:** Council & HA asbestos bids — paperwork off your evenings
+> Hi there,
+>
+> As a husband-and-wife team bidding to councils and housing associations with no back-office, the tender paperwork eats your evenings — and one missed pass/fail requirement voids the whole bid.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own licence and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council or HA asbestos tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-83 · Ranson Surveying · to: info@ransonsurveying.com · GOOD
+*Solo owner-operator asbestos consultancy (Dom Ranson, est. 2012), Halifax. Self-declared portfolio incl. HAs, schools, healthcare (none named). Source: ransonsurveying.com*
+**Subject:** HA & school asbestos tenders — the bid team you don't have
+> Hi Dom,
+>
+> As a solo Halifax surveyor taking on housing-association and school work single-handed, tender paperwork is time you can't bill — and one missed pass/fail requirement voids the whole bid.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me an HA or school asbestos tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-84 · Hatch Consultancy · to: info@hatchconsultancy.co.uk · GOOD
+*Owner-run asbestos survey/management micro-consultancy (Chris Pearce, 25+ yrs), West Devon. Self-declared school asbestos-management + Plymouth HMO surveys (none named). Source: hatchconsultancy.co.uk*
+**Subject:** School & council asbestos tenders — deal-breakers caught first
+> Hi Chris,
+>
+> As a one-man consultancy doing school asbestos-management work, unpaid hours on a council/MAT bid are the last thing you can afford — and one missed pass/fail requirement voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a school or council asbestos tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-85 · Valleys Waste Services · to: info@valleyswasteservices.co.uk · GOOD
+*Family-run asbestos-removal/waste firm (20+ yrs), Brynmawr, South Wales Valleys. Self-declared public-sector work (none named). Source: valleyswasteservices.co.uk/asbestos-removal*
+**Subject:** Public-sector asbestos-removal bids — the pass/fail gates
+> Hi there,
+>
+> You chase public-sector asbestos-removal work in the South Wales Valleys — tenders where one missed pass/fail requirement (a licence condition, a disposal-chain clause, an insurance level) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own licence and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a public-sector asbestos tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-86 · Armco Asbestos Consultants Ltd · to: info@armco.org.uk · GOOD
+*Specialist asbestos consultancy, single Bury base (Companies House 09166587). Named client: management surveys across Leeds for Habinteg Housing Association. ⚠ Size not confirmed tiny — verify before assuming micro. Source: armco.org.uk/asbestos-surveys-leeds*
+**Subject:** Turn your Habinteg HA work into more framework wins
+> Hi there,
+>
+> You already deliver asbestos surveys for Habinteg Housing Association — so you're bidding social-housing frameworks where one missed pass/fail requirement voids the whole submission however strong your record.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me an HA asbestos tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
 <!-- next waves appended below -->
 
