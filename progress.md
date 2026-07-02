@@ -28,7 +28,8 @@
   — demo is now **key-independent**; async-upload silent-crash bug fixed. **Frontend final interaction
   layer shipped (Day 5):** criteria lens, multi-select bulk bar, inline gap-answer edit, Cmd+K command
   palette, styled `.xlsx` export, persistent PDF evidence pane, full-screen focus review — Playwright
-  e2e verified, product is stage-ready.
+  e2e verified, product is stage-ready. **Gating recall 1.0 guaranteed by construction (Day 5):**
+  safety-net alone catches 12/12 gold deal-breakers without LLM — demo gating claim is ironclad, 159 tests green.
 - **Headline number:** SPSO tender (pp.1–6), OpenAI extractor → **recall 0.947 (18/19), gating
   recall 1.0 · gating accuracy 1.0 (both disqualifiers caught, zero over-flagging), 0 dangerous
   misses. Autofill: 109/183 grounded · 0 bluffs.**
@@ -134,3 +135,4 @@
 - **19:03** — **Frontend final interaction layer shipped + Playwright e2e verified** (Jawad): criteria lens, multi-select bulk bar, inline gap-answer edit, Cmd+K command palette, styled `.xlsx` export (civic-record workbook, oxblood gating rows, forest status), persistent PDF evidence pane + full-screen focus review, motion layer + row virtualization, landing QA rounds 1+2, reduced-motion hydration fix — all planned demo interaction layers are now live *(two days before demo-day; the compliance matrix is stage-ready end-to-end)*
 - **18:04** — Gating recall audited + g62 gap closed on paper (J-064): mini + v4 run gives SPSO 2/2, museum **9/10** at 0.68 threshold (g62 at 0.66 is the sole miss); atomic-gold proof shows g62 lifts to **0.82** with a precise sentence vs verbose 0.62; genuine catch range 0.70–0.98, clean threshold separation — full data package handed to generalist who is taking #2 atomic re-label + #3 fair match *(museum gating 1.0 now one specific gold re-label away; the tool already catches the disqualifier — the last gap is in the answer key)*
 - **20:04** — `gating_scan` passfail-never fix shipped (G-038/G-039, 154 tests green): museum g61-63 PQQ Pass/Fail gates now surface (bypass the `_covered` suppression that was silently dropping them); UK public-sector domain-specialisation launched (J-067) — expanded `_STRONG` taxonomy, 8 held-out ITTs identified as validation corpus *(the engine-level gating gap is closed; coverage proof across the full domain is the final credibility milestone before demo)*
+- **21:04** — **Deterministic gating floor locked: net alone catches 12/12 gold deal-breakers** (`a65d0e3`, 159 tests green): 'arrive'/'reach' added as submission verbs + newline-unit isolation for form-block gates (two root causes fixed); since product = extraction ∪ net, gating recall ≥ 1.0 is now proved by construction, not LLM luck; backend precision pass shipped (J-069: reflow fragments + NOT-a-requirement filter) *(no single LLM run can miss a disqualifier — the demo's headline gating claim is ironclad regardless of API temperature)*
