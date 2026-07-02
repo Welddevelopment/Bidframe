@@ -1,9 +1,6 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bidframe">
-  <!-- Civic-record mark: a forest frame around a short ledger, top line settled.
-       Paper sheet, ink lines, forest frame and tick. Brand tokens only. -->
-  <rect x="1" y="1" width="30" height="30" rx="4" fill="#f6f2e9" />
-  <rect x="2.75" y="2.75" width="26.5" height="26.5" rx="2.75" fill="none" stroke="#2c5640" stroke-width="2.5" />
-  <path d="M9 11.25 L13 15.25 L20 8.25" fill="none" stroke="#2c5640" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" />
-  <line x1="9" y1="19.5" x2="23" y2="19.5" stroke="#6b6358" stroke-width="2" stroke-linecap="square" />
-  <line x1="9" y1="23.75" x2="23" y2="23.75" stroke="#6b6358" stroke-width="2" stroke-linecap="square" />
+<svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bidframe">
+  <title>Bidframe</title>
+  <circle cx="32" cy="32" r="31" fill="#f6f2e9" />
+  <path d="M18 28V18H29M35 18H46V29M18 36V46H29M46 36V46H35" stroke="#211d17" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter" />
+  <path d="M23 31H35M23 38H41" stroke="#211d17" stroke-width="3" stroke-linecap="square" />
 </svg>

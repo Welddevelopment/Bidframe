@@ -50,10 +50,5 @@ into a genuine alarm; completion is the one place it celebrates. Everywhere else
 ## Remaining
 1. **@j / @jawad:** ack the locked `signal-oxblood` retune (`#B42D24`), then merge to `main`.
 2. **Joel:** the Cal.com *Redirect on booking* step above.
-3. **Logo (brainstorm-only — NOT built this pass; direction picked):** the current owl muddies to a blob at
-   28px and the "wise owl" cliché fights the civic tone. **Chosen direction: a forest Register Seal** (echoes
-   the `ApprovalStamp` device — the brand speaks the product's "approve" language, forest is legit brand
-   furniture, legible at 24px) **as the primary mark + the Fraunces wordmark as the horizontal nav lockup**,
-   with a corner-bracket "frame mark" as the favicon glyph. Guardrails for whoever builds it: crisp geometric
-   vector only (no stamp texture — SLOP-CHECK), set upright at nav size (tilt for hero only), and **no red on
-   the mark** (a red-eye owl variant was rejected — it would put signal-oxblood on brand furniture).
+3. **Logo:** the owl/register-seal direction has been replaced by the clause frame. The primary mark is a
+   bracketed clause, and the favicon uses the same minimal frame so it stays legible at 16px.

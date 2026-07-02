@@ -1,34 +1,32 @@
-# Bidframe — Brand Assets
+# Bidframe - Brand Assets
 
-The Bidframe mark: an **owl** held in a paper disc — it reads in the dark and
-catches what you'd miss. Its right eye is the oxblood **deal-breaker bead**, the
-same signal used throughout the product.
+The Bidframe mark is a **clause frame**: four crisp brackets around tender text.
+It says the product frames the bid and surfaces the requirement that would
+otherwise be missed.
 
-Direction **3b**: paper disc, ink keyline, ink owl, amber beak, oxblood eye.
+Direction: minimal clause frame for the lockup, brand mark, and favicon-scale use.
 
 ---
 
 ## Files
 
-### Primary (vector — use these wherever possible)
+### Primary vector assets
 | File | Use |
 |------|-----|
-| `bidframe-logo-horizontal.svg` | Default lockup — mark + wordmark. Headers, nav, docs. |
-| `bidframe-logo-stacked.svg` | Vertical lockup — square-ish spaces, splash, print. |
-| `bidframe-logo-horizontal-reversed.svg` | Lockup for dark backgrounds (paper wordmark). |
-| `bidframe-mark.svg` | The mark alone — avatars, app icon, social. |
-| `bidframe-favicon.svg` | Mark tuned for tiny sizes (thicker, no inner keyline). |
-| `bidframe-favicon-ink.svg` | Ink-disc favicon — more legible on light browser tabs. |
+| `bidframe-logo-horizontal.svg` | Default lockup - mark + wordmark. Headers, nav, docs. |
+| `bidframe-logo-stacked.svg` | Vertical lockup - square-ish spaces, splash, print. |
+| `bidframe-logo-horizontal-reversed.svg` | Lockup for dark backgrounds. |
+| `bidframe-mark.svg` | Clause-frame mark alone - avatars, social, large app icon. |
+| `bidframe-favicon.svg` | Minimal clause frame - browser tab and tiny UI uses. |
+| `bidframe-favicon-ink.svg` | Minimal reversed favicon for dark surfaces. |
 
 In the app, the lockup is rendered inline by `src/components/BrandLogo.tsx`
-(so it inherits the page's Fraunces and needs no request); the browser tab icon
-is wired through Next's file convention at `src/app/icon.svg`. These SVGs are the
-portable brand kit for decks, email signatures, partner docs, and social.
+so it inherits the page's Fraunces and needs no request. The browser tab icon is
+wired through Next's file convention at `src/app/icon.svg`.
 
-### Raster (PNG)
-Not included here yet — export from the SVGs if a raster is needed (the favicon
-and in-app logo both use SVG, which every current browser supports). Suggested
-set if you do: `bidframe-mark-512/192.png`, `bidframe-apple-touch-180.png`,
+### Raster
+Not included here yet. Export from the SVGs if a raster is needed. Suggested set:
+`bidframe-mark-512/192.png`, `bidframe-apple-touch-180.png`,
 `bidframe-favicon-32/16.png`.
 
 ---
@@ -37,19 +35,15 @@ set if you do: `bidframe-mark-512/192.png`, `bidframe-apple-touch-180.png`,
 
 | Token | Hex | Role |
 |-------|-----|------|
-| Ink | `#211d17` | Owl, keyline, wordmark |
-| Paper | `#f6f2e9` | Disc, knockouts |
-| Oxblood | `#8a2d2a` | Deal-breaker eye-bead |
-| Coral | `#d2785a` | Eye-bead on dark (ink favicon only) |
-| Amber | `#d2a435` | Beak |
+| Ink | `#211d17` | Brackets, clause lines, wordmark |
+| Paper | `#f6f2e9` | Disc and knockouts |
 
-Wordmark: **Fraunces**, weight 600, tracking ≈ -0.02em.
+Wordmark: **Fraunces**, weight 600, tracking 0.
 
 ---
 
-## Usage rules
+## Usage Rules
 
-- **Clear space:** keep padding ≥ the owl's eye diameter on all sides.
-- **Minimum size:** mark 24px (digital) / 10mm (print); horizontal lockup 120px wide.
-- **Don't:** recolour the owl, restyle the wordmark font, add effects/shadows,
-  or stretch. On busy photos, place the mark on a solid paper or ink disc.
+- **Clear space:** keep padding at least the width of one corner bracket on all sides.
+- **Minimum size:** favicon 16px; mark 24px digital / 10mm print.
+- **Don't:** add status colours to the mark, restyle the wordmark font, add effects, or stretch.
