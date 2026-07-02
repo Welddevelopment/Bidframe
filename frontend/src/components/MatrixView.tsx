@@ -21,9 +21,11 @@ import {
 } from "@/lib/triage";
 import { deriveVisibleGroups, type MatrixLens } from "@/lib/matrix-derive";
 import { requirementPdfUrl, sourceRefLabel } from "@/lib/source-doc";
+import { exportMatrixXlsx } from "@/lib/export-matrix-xlsx";
 import { AppMain } from "./AppMain";
 import { ApprovalStamp } from "./ApprovalStamp";
 import { BulkActionBar } from "./BulkActionBar";
+import { CommandPalette } from "./CommandPalette";
 import { ComplianceMatrix } from "./ComplianceMatrix";
 import { DocumentHeader } from "./DocumentHeader";
 import { FocusMode } from "./FocusMode";
@@ -208,6 +210,9 @@ export function MatrixView({ title }: { title: string }) {
   // Focus mode: the full-screen one-at-a-time review overlay (Shift+F, or the
   // quiet Focus affordance in the matrix toolbar). An overlay, not a route.
   const [focusMode, setFocusMode] = useState(false);
+  // The command palette (Cmd+K / Ctrl+K). While it is up, the j/k/a/e/f
+  // worklist shortcuts stand down — cmdk owns the keyboard.
+  const [paletteOpen, setPaletteOpen] = useState(false);
   const isWide = useIsWide();
 
   const triage = deriveTriage(requirements);
@@ -216,7 +221,9 @@ export function MatrixView({ title }: { title: string }) {
   // for resolving a shift-click into a contiguous range of rows. Derived with
   // an empty query: a range never silently sweeps in rows a search is hiding
   // beyond what is on screen, because filters and lens match the live view.
-  const { flatOrder } = deriveVisibleGroups({
+  // (The palette's "Go to requirement" group searches the same visibleGroups,
+  // so it can only land on rows the current filters would actually show.)
+  const { flatOrder, groups: visibleGroups } = deriveVisibleGroups({
     groups: triage.groups,
     query: "",
     activeFilter,
@@ -391,12 +398,21 @@ export function MatrixView({ title }: { title: string }) {
     []
   );
 
+  // The two export paths: the styled Excel workbook (primary — dynamic import,
+  // exceljs stays in its own async chunk) and the plain CSV (quiet secondary).
+  const exportXlsx = useCallback(() => {
+    void exportMatrixXlsx({ title, requirements, awardCriteria });
+  }, [title, requirements, awardCriteria]);
+
+  const exportCsv = useCallback(() => {
+    exportRequirements(requirements);
+  }, [requirements]);
+
   // The header Next routes to the highest-priority unresolved item and opens it.
-  // When nothing is pending it becomes Export response (a no-op stub here, the
-  // export route is a later pass).
+  // When nothing is pending it becomes Export response — the styled workbook.
   function onNext() {
     if (priorityId) setSelectedId(priorityId);
-    else exportRequirements(requirements);
+    else exportXlsx();
   }
 
   // The panel Next advances to the next item within its current triage group,
@@ -422,6 +438,20 @@ export function MatrixView({ title }: { title: string }) {
     function onKey(event: KeyboardEvent) {
       // Focus mode owns the keyboard while it is up (its own j/k/a/Esc).
       if (focusMode) return;
+      // Cmd+K / Ctrl+K toggles the command palette — checked before the input
+      // bail so it works from the search box too.
+      if (
+        (event.metaKey || event.ctrlKey) &&
+        !event.altKey &&
+        event.key.toLowerCase() === "k"
+      ) {
+        event.preventDefault();
+        setPaletteOpen((open) => !open);
+        return;
+      }
+      // While the palette is up, cmdk owns the keyboard: the j/k/a/e/f
+      // worklist shortcuts (and Shift+F) are suppressed.
+      if (paletteOpen) return;
       const el = event.target as HTMLElement | null;
       if (
         el &&
@@ -467,7 +497,7 @@ export function MatrixView({ title }: { title: string }) {
     }
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [triage.groups, selectedId, approveWithUndo, focusMode]);
+  }, [triage.groups, selectedId, approveWithUndo, focusMode, paletteOpen]);
 
   // Live product, no tender loaded → the onboarding empty state (after all hooks).
   if (noTenderLoaded) {
@@ -570,7 +600,8 @@ export function MatrixView({ title }: { title: string }) {
                 edited={requirements.filter((req) => req.status === "edited").length}
                 flagged={requirements.filter((req) => req.status === "flagged").length}
                 time={latestDecisionTimeLabel(requirements)}
-                onExport={() => exportRequirements(requirements)}
+                onExportXlsx={exportXlsx}
+                onExportCsv={exportCsv}
               />
             )}
             {priorityId !== null && requirements.length > 0 && (
@@ -669,6 +700,30 @@ export function MatrixView({ title }: { title: string }) {
           onClear={clearSelection}
         />
       )}
+
+      {/* The command palette (Cmd+K): every matrix action from the keyboard. */}
+      <CommandPalette
+        open={paletteOpen}
+        onOpenChange={setPaletteOpen}
+        groups={visibleGroups}
+        onSelectRequirement={setSelectedId}
+        activeFilter={activeFilter}
+        onFilter={setActiveFilter}
+        categories={availableCategories}
+        activeCategories={activeCategories}
+        onToggleCategory={toggleCategory}
+        sortBy={sortBy}
+        onSortChange={setSortBy}
+        density={density}
+        onDensityChange={setDensity}
+        lens={lens}
+        onLensChange={setLens}
+        onEnterFocus={() => setFocusMode(true)}
+        evidenceOpen={evidenceOpen}
+        onToggleEvidence={() => setEvidenceOpen((open) => !open)}
+        onExportXlsx={exportXlsx}
+        onExportCsv={exportCsv}
+      />
     </>
   );
 }
@@ -684,14 +739,16 @@ function CompletionSummary({
   edited,
   flagged,
   time,
-  onExport,
+  onExportXlsx,
+  onExportCsv,
 }: {
   total: number;
   approved: number;
   edited: number;
   flagged: number;
   time?: string;
-  onExport: () => void;
+  onExportXlsx: () => void;
+  onExportCsv: () => void;
 }) {
   const clean = flagged === 0;
   const noun = total === 1 ? "requirement" : "requirements";
@@ -721,13 +778,22 @@ function CompletionSummary({
             </p>
           )}
         </div>
-        <button
-          type="button"
-          onClick={onExport}
-          className="shrink-0 self-start rounded-md bg-forest px-4 py-2 text-sm font-semibold text-paper shadow-[var(--depth-control)] transition-colors hover:bg-forest-hover sm:self-auto"
-        >
-          Export response
-        </button>
+        <div className="flex shrink-0 items-center gap-4 self-start sm:self-auto">
+          <button
+            type="button"
+            onClick={onExportCsv}
+            className="font-mono text-xs text-ink-muted underline decoration-hairline underline-offset-4 transition-colors hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+          >
+            .csv
+          </button>
+          <button
+            type="button"
+            onClick={onExportXlsx}
+            className="rounded-md bg-forest px-4 py-2 text-sm font-semibold text-paper shadow-[var(--depth-control)] transition-colors hover:bg-forest-hover"
+          >
+            Export .xlsx
+          </button>
+        </div>
       </div>
     </section>
   );
