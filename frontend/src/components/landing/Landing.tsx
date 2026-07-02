@@ -445,11 +445,11 @@ function PanelFrame({
 function ConfidenceDocket() {
   return (
     <div className="card-live surface-grain w-full overflow-hidden rounded-lg border border-moss-line bg-paper-raised shadow-[var(--depth-sheet)]">
-      <div className="flex items-center justify-between border-b border-hairline bg-paper px-5 py-3">
-        <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted">
-          Risk register
+      <div className="flex items-center justify-between border-b border-hairline bg-paper px-5 py-3.5">
+        <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-muted">
+          Evidence check
         </span>
-        <span className="font-mono text-[11px] text-ink-muted">draft evidence</span>
+        <span className="font-mono text-[11px] text-ink-muted">source status</span>
       </div>
       <div className="divide-y divide-hairline">
         <ConfidenceStampRow
@@ -474,9 +474,9 @@ function ConfidenceDocket() {
           example="Matches the clause exactly"
         />
       </div>
-      <div className="border-t border-hairline bg-paper px-5 py-3">
-        <p className="font-mono text-[11px] leading-relaxed text-ink-muted">
-          Nothing enters the answer unchecked when the source is weak.
+      <div className="border-t border-hairline bg-paper/70 px-5 py-3">
+        <p className="max-w-[38ch] font-mono text-[11px] leading-relaxed text-ink-muted">
+          Weak sources stay visible until a human clears them.
         </p>
       </div>
     </div>
@@ -498,16 +498,16 @@ function ConfidenceStampRow({
   example: string;
 }) {
   return (
-    <div className="grid gap-3 px-5 py-4 sm:grid-cols-[176px_1fr] sm:items-center sm:gap-5">
+    <div className="grid gap-3 px-5 py-4 transition-colors hover:bg-paper/55 sm:grid-cols-[182px_1fr] sm:items-center sm:gap-5">
       <div className="flex min-w-0 items-center gap-2.5">
         <ConfidenceIndicator
           confidence={confidence}
           unanswerable={unanswerable}
           variant="dot"
         />
-        <span className="text-sm font-medium text-ink">{label}</span>
+        <span className="text-sm font-medium leading-snug text-ink">{label}</span>
       </div>
-      <span className="border-l border-hairline pl-3 font-mono text-xs leading-relaxed text-ink-muted">
+      <span className="border-l border-hairline pl-3 font-mono text-xs leading-relaxed text-ink-muted sm:pl-4">
         {example}
       </span>
     </div>
