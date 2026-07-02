@@ -144,7 +144,7 @@ export function DemoScrolly({ intro }: { intro?: React.ReactNode }) {
   // so the grid collapses back to the two-column split.
   return (
     <div className="mx-auto max-w-[1160px] px-6">
-      <div className="grid grid-cols-[minmax(18rem,24rem)_1fr] gap-12 xl:grid-cols-[7rem_minmax(18rem,22rem)_1fr] xl:gap-16">
+      <div className="grid grid-cols-[minmax(18rem,24rem)_1fr] gap-12 xl:grid-cols-[8.5rem_minmax(18rem,22rem)_1fr] xl:gap-16">
         <div className="hidden xl:block">
           <div className="sticky top-0 flex h-screen items-center">
             <ScrollyRail active={activeStep} />

@@ -39,7 +39,7 @@ export function ScrollyRail({ active }: { active: number }) {
                 <span className="tabular-nums">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span>{step.kicker}</span>
+                <span className="whitespace-nowrap">{step.kicker}</span>
               </button>
             </li>
           );

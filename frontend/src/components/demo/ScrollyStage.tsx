@@ -231,7 +231,7 @@ function AnswerCard({
   const req = SAMPLE_ANSWERED;
   const answer = req.answer;
   return (
-    <div className="surface-grain w-full max-w-[32rem] rounded-lg border border-hairline bg-paper-raised p-5 shadow-[var(--depth-row)]">
+    <div className="surface-grain w-full max-w-[34rem] rounded-lg border border-hairline bg-paper-raised p-6 shadow-[var(--depth-row)]">
       <p className="font-mono text-xs uppercase tracking-wide text-ink-muted">
         Requirement
       </p>
