@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `a495254` · 2026-07-02T22:43:12+01:00
+> Map of commit `cb9c56e` · 2026-07-02T21:44:18Z
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,9 +12,9 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 138 | 50,238 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
-| **backend** | 19 | 2,926 | Backend — FastAPI (PDF ingest, extraction, REST API) |
-| **engine** | 68 | 5,360 | Engine — reconcile / eval / answer-draft pipeline + tests |
+| **frontend** | 140 | 50,426 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **backend** | 19 | 2,940 | Backend — FastAPI (PDF ingest, extraction, REST API) |
+| **engine** | 70 | 5,513 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 713 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
 | **gold** | 6 | 330 | Eval gold-set — hand-labelled requirements for accuracy measurement |
 | **data** | 17 | 0 | Data — tender source PDFs (not parsed here) |
@@ -300,55 +300,57 @@ graph LR
   n9[pipeline.py] --> n7[schema.py]
   n9[pipeline.py] --> n10[answer.py]
   n9[pipeline.py] --> n11[embeddings.py]
-  n9[pipeline.py] --> n12[gating_scan.py]
-  n9[pipeline.py] --> n13[reconcile.py]
-  n14[store.py] --> n7[schema.py]
-  n10[answer.py] --> n15[similarity.py]
+  n9[pipeline.py] --> n12[gating_filter.py]
+  n9[pipeline.py] --> n13[gating_scan.py]
+  n9[pipeline.py] --> n14[reconcile.py]
+  n15[store.py] --> n7[schema.py]
+  n10[answer.py] --> n16[similarity.py]
   n10[answer.py] --> n5[usage_log.py]
-  n11[embeddings.py] --> n15[similarity.py]
+  n11[embeddings.py] --> n16[similarity.py]
   n11[embeddings.py] --> n5[usage_log.py]
-  n16[eval.py] --> n17[_io.py]
-  n16[eval.py] --> n15[similarity.py]
-  n18[eval_answers.py] --> n17[_io.py]
-  n18[eval_answers.py] --> n10[answer.py]
-  n18[eval_answers.py] --> n15[similarity.py]
-  n12[gating_scan.py] --> n15[similarity.py]
-  n13[reconcile.py] --> n17[_io.py]
-  n13[reconcile.py] --> n11[embeddings.py]
-  n13[reconcile.py] --> n15[similarity.py]
-  n19[calibrate.py] --> n17[_io.py]
-  n19[calibrate.py] --> n16[eval.py]
-  n20[draft_answers.py] --> n17[_io.py]
-  n20[draft_answers.py] --> n10[answer.py]
-  n20[draft_answers.py] --> n16[eval.py]
-  n21[eval_all.py] --> n17[_io.py]
-  n21[eval_all.py] --> n11[embeddings.py]
-  n21[eval_all.py] --> n16[eval.py]
-  n21[eval_all.py] --> n12[gating_scan.py]
-  n21[eval_all.py] --> n13[reconcile.py]
-  n21[eval_all.py] --> n22[run_tender.py]
-  n23[gating_coverage.py] --> n17[_io.py]
-  n23[gating_coverage.py] --> n12[gating_scan.py]
-  n24[gating_recall.py] --> n17[_io.py]
-  n24[gating_recall.py] --> n11[embeddings.py]
-  n24[gating_recall.py] --> n16[eval.py]
-  n24[gating_recall.py] --> n12[gating_scan.py]
-  n24[gating_recall.py] --> n13[reconcile.py]
-  n24[gating_recall.py] --> n22[run_tender.py]
-  n25[precision_report.py] --> n17[_io.py]
-  n25[precision_report.py] --> n16[eval.py]
-  n25[precision_report.py] --> n13[reconcile.py]
-  n25[precision_report.py] --> n22[run_tender.py]
-  n25[precision_report.py] --> n15[similarity.py]
-  n22[run_tender.py] --> n2[chunk.py]
-  n22[run_tender.py] --> n4[extract.py]
-  n22[run_tender.py] --> n3[ingest.py]
-  n22[run_tender.py] --> n17[_io.py]
-  n22[run_tender.py] --> n11[embeddings.py]
-  n22[run_tender.py] --> n16[eval.py]
-  n22[run_tender.py] --> n13[reconcile.py]
-  n26[parse_check.py]
-  n27[stress_test.py]
+  n17[eval.py] --> n18[_io.py]
+  n17[eval.py] --> n16[similarity.py]
+  n19[eval_answers.py] --> n18[_io.py]
+  n19[eval_answers.py] --> n10[answer.py]
+  n19[eval_answers.py] --> n16[similarity.py]
+  n12[gating_filter.py] --> n5[usage_log.py]
+  n13[gating_scan.py] --> n16[similarity.py]
+  n14[reconcile.py] --> n18[_io.py]
+  n14[reconcile.py] --> n11[embeddings.py]
+  n14[reconcile.py] --> n16[similarity.py]
+  n20[calibrate.py] --> n18[_io.py]
+  n20[calibrate.py] --> n17[eval.py]
+  n21[draft_answers.py] --> n18[_io.py]
+  n21[draft_answers.py] --> n10[answer.py]
+  n21[draft_answers.py] --> n17[eval.py]
+  n22[eval_all.py] --> n18[_io.py]
+  n22[eval_all.py] --> n11[embeddings.py]
+  n22[eval_all.py] --> n17[eval.py]
+  n22[eval_all.py] --> n13[gating_scan.py]
+  n22[eval_all.py] --> n14[reconcile.py]
+  n22[eval_all.py] --> n23[run_tender.py]
+  n24[gating_coverage.py] --> n18[_io.py]
+  n24[gating_coverage.py] --> n13[gating_scan.py]
+  n25[gating_recall.py] --> n18[_io.py]
+  n25[gating_recall.py] --> n11[embeddings.py]
+  n25[gating_recall.py] --> n17[eval.py]
+  n25[gating_recall.py] --> n13[gating_scan.py]
+  n25[gating_recall.py] --> n14[reconcile.py]
+  n25[gating_recall.py] --> n23[run_tender.py]
+  n26[precision_report.py] --> n18[_io.py]
+  n26[precision_report.py] --> n17[eval.py]
+  n26[precision_report.py] --> n14[reconcile.py]
+  n26[precision_report.py] --> n23[run_tender.py]
+  n26[precision_report.py] --> n16[similarity.py]
+  n23[run_tender.py] --> n2[chunk.py]
+  n23[run_tender.py] --> n4[extract.py]
+  n23[run_tender.py] --> n3[ingest.py]
+  n23[run_tender.py] --> n18[_io.py]
+  n23[run_tender.py] --> n11[embeddings.py]
+  n23[run_tender.py] --> n17[eval.py]
+  n23[run_tender.py] --> n14[reconcile.py]
+  n27[parse_check.py]
+  n28[stress_test.py]
 ```
 
 ## Files by area
@@ -377,6 +379,8 @@ graph LR
 - `frontend/package.json`
 - `frontend/postcss.config.mjs`
 - `frontend/public/brand/README.md`
+- `frontend/public/codemap.html`
+- `frontend/public/codemap.html`
 - `frontend/public/codemap.html`
 - `frontend/public/pdf.worker.min.mjs` — @licstart The following is the entire license notice for the
 - `frontend/src/app/answers/page.tsx` — exports `metadata`
@@ -518,6 +522,7 @@ graph LR
 - `engine/fixtures/capability/cap-008-insurance.txt`
 - `engine/fixtures/capability/cap-009-health-safety-coshh.txt`
 - `engine/fixtures/capability/cap-010-quality-assurance.txt`
+- `engine/gating_filter.py` — MODEL precision filter for the generous gating safety-net.
 - `engine/gating_scan.py` — deterministic disqualifier SAFETY NET (never miss a deal-breaker).
 - `engine/gold/mock.gold.json`
 - `engine/reconcile.py` — Reconcile/dedupe — pipeline step 5 (Generalist lane).
@@ -554,6 +559,7 @@ graph LR
 - `engine/tests/test_eval_metrics.py`
 - `engine/tests/test_eval_report.py`
 - `engine/tests/test_gap_questions.py` — Sharper gap questions: the OpenAI answerer phrases the gap interview via J's
+- `engine/tests/test_gating_filter.py` — The model precision filter must improve precision without EVER lowering the recall floor:
 - `engine/tests/test_gating_scan.py` — gating_scan safety net: surfaces disqualifier lines extraction missed, stays quiet when covered.
 - `engine/tests/test_grouping.py`
 - `engine/tests/test_io.py`
@@ -1025,4 +1031,4 @@ graph LR
 
 ---
 
-*671 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
+*675 tracked files mapped. Generated by `scripts/gen_codemap.py`.*

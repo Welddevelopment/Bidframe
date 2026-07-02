@@ -64,6 +64,16 @@ try:
 except ImportError:  # pragma: no cover - deploy without engine/ on path
     _HAVE_SAFETY_NET = False
 
+# Stage 2 of the deal-breaker engine — the MODEL precision filter (engine.gating_filter). The net
+# above is generous (recall-first); this reads each flagged line and drops obvious false positives
+# (scope-of-work, boilerplate, nav) — it can only REMOVE from the net's set, so the recall floor is
+# preserved. OFF unless GATING_FILTER is set + a key is present; fail-open (keeps all on any error).
+try:
+    from engine.gating_filter import filter_gating_candidates as _engine_filter_gating
+    _HAVE_GATING_FILTER = True
+except ImportError:  # pragma: no cover - deploy without engine/ on path
+    _HAVE_GATING_FILTER = False
+
 # Auditable autofill (generalist steps 12-13) — engine.answer drafts a grounded answer
 # per requirement (or flags needs_input). Same import-safe pattern as reconcile above:
 # present when engine/ is on the path (repo-root runtime, after the render.yaml fix in
@@ -131,6 +141,10 @@ def _with_safety_net(reconciled: list[dict], pages) -> list[dict]:
         return reconciled
     try:
         extra = _engine_uncovered_gating(reconciled, [(p.number, p.text) for p in pages])
+        # Stage 2: model precision filter drops obvious false flags (opt-in via GATING_FILTER +
+        # key). Fail-open — on any error it returns `extra` unchanged, so the recall floor holds.
+        if _HAVE_GATING_FILTER and extra:
+            extra = _engine_filter_gating(extra)
         return reconciled + extra
     except Exception as exc:  # safety-net is additive — never let it break the upload
         print(f"[pipeline] safety-net skipped ({exc})")
