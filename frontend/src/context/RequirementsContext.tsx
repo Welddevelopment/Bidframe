@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 import type {
   AwardCriterion,
   CapabilityDoc,
@@ -41,8 +42,6 @@ interface RequirementsContextValue {
   title: string;
   tenderId: string | null;
   drafting: boolean;
-  notice: string | null;
-  dismissNotice: () => void;
   updateRequirement: (id: string, patch: Partial<Requirement>) => void;
   approve: (id: string) => void;
   editRequirement: (id: string, note: string) => void;
@@ -94,8 +93,6 @@ export function RequirementsProvider({
   // autofill action knows which tender to draft against.
   const [tenderId, setTenderId] = useState<string | null>(null);
   const [drafting, setDrafting] = useState(false);
-  // A transient notice (e.g. a failed save) shown as a small toast.
-  const [notice, setNotice] = useState<string | null>(null);
 
   // Where the answers response workspace persists a human's draft edits + gap
   // answers (localStorage; there's no backend endpoint for answer text yet). Key
@@ -202,7 +199,7 @@ export function RequirementsProvider({
     updateRequirement(id, { status, decision });
     if (isApiEnabled()) {
       patchRequirement(id, { status, decision }).catch(() => {
-        setNotice(SAVE_FAILED);
+        toast.error(SAVE_FAILED);
       });
     }
   }
@@ -223,7 +220,7 @@ export function RequirementsProvider({
     if (isApiEnabled()) {
       for (const id of ids) {
         patchRequirement(id, { status, decision }).catch(() => {
-          setNotice(SAVE_FAILED);
+          toast.error(SAVE_FAILED);
         });
       }
     }
@@ -273,7 +270,7 @@ export function RequirementsProvider({
           status: entry.status,
           decision: entry.decision,
         }).catch(() => {
-          setNotice(SAVE_FAILED);
+          toast.error(SAVE_FAILED);
         });
       }
     }
@@ -309,7 +306,7 @@ export function RequirementsProvider({
     updateRequirement(id, { status: "pending", decision: null });
     if (isApiEnabled()) {
       patchRequirement(id, { status: "pending", decision: null }).catch(() => {
-        setNotice(SAVE_FAILED);
+        toast.error(SAVE_FAILED);
       });
     }
   }
@@ -391,40 +388,10 @@ export function RequirementsProvider({
         answerOpenQuestion,
         loadTender,
         draftAnswers,
-        notice,
-        dismissNotice: () => setNotice(null),
       }}
     >
       {children}
-      {notice && (
-        <SaveNotice message={notice} onDismiss={() => setNotice(null)} />
-      )}
     </RequirementsContext.Provider>
-  );
-}
-
-// A small, dismissible toast pinned to the bottom of the viewport. The oxblood
-// reading edge marks it as a problem without a coloured slab (the status system).
-function SaveNotice({
-  message,
-  onDismiss,
-}: {
-  message: string;
-  onDismiss: () => void;
-}) {
-  return (
-    <div className="no-print fixed inset-x-0 bottom-4 z-[70] flex justify-center px-4">
-      <div className="surface-grain flex max-w-md items-start gap-3 rounded-lg border border-l-2 border-hairline border-l-signal-oxblood-frame bg-paper-raised p-3 shadow-[var(--depth-sheet)]">
-        <p className="text-sm leading-snug text-ink">{message}</p>
-        <button
-          type="button"
-          onClick={onDismiss}
-          className="shrink-0 text-xs text-ink-muted transition-colors hover:text-ink"
-        >
-          Dismiss
-        </button>
-      </div>
-    </div>
   );
 }
 

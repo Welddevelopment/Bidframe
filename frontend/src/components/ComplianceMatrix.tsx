@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import type { Requirement } from "@/types/requirement";
+import type { AwardCriterion, Requirement } from "@/types/requirement";
 import {
   isConfidentNonGating,
   pendingStatusWord,
@@ -8,7 +8,11 @@ import {
   type TriageGroup,
 } from "@/lib/triage";
 import { alsoCitedLabel } from "@/lib/dedupe";
-import { deriveVisibleGroups, type VisibleGroup } from "@/lib/matrix-derive";
+import {
+  deriveVisibleGroups,
+  type MatrixLens,
+  type VisibleGroup,
+} from "@/lib/matrix-derive";
 import {
   ConfidenceIndicator,
   confidenceTier,
@@ -24,6 +28,22 @@ export type Density = "compact" | "comfortable";
 const ROW_PADDING: Record<Density, string> = {
   comfortable: "py-2",
   compact: "py-1",
+};
+
+// The multi-select contract. The matrix only reports "this row was toggled,
+// shift held or not" — the owner keeps the anchor and resolves shift into a
+// range over the derive's flatOrder. Omitted on frozen surfaces, where no
+// checkbox renders and the grid keeps its original margin width.
+export interface MatrixSelection {
+  ids: Set<string>;
+  onToggle: (id: string, shiftKey: boolean) => void;
+}
+
+// The row grid. With selection live, the ref margin widens to make room for the
+// checkbox; without it the original geometry is untouched. Full literal strings.
+const ROW_GRID: Record<"plain" | "selectable", string> = {
+  plain: "grid-cols-[46px_30px_1fr_auto]",
+  selectable: "grid-cols-[68px_30px_1fr_auto]",
 };
 
 // The resting row wash, keyed to the confidence tier so the worklist carries a
@@ -113,6 +133,8 @@ function MatrixRow({
   density,
   onSelect,
   onApprove,
+  selection,
+  onAnswerQuestion,
 }: {
   req: Requirement;
   isSelected: boolean;
@@ -121,10 +143,16 @@ function MatrixRow({
   density: Density;
   onSelect: (id: string) => void;
   onApprove: (id: string) => void;
+  // Multi-select (omitted on frozen surfaces — no checkbox renders).
+  selection?: MatrixSelection;
+  // Inline gap answering (omitted on frozen surfaces — the prompt stays static).
+  onAnswerQuestion?: (reqId: string, questionId: string, text: string) => void;
 }) {
   const canApproveInline = isConfidentNonGating(req);
   const preview = req.answer?.text ?? req.draft_answer ?? null;
   const alsoOn = alsoCitedLabel(alsoCitedOn);
+  const checked = selection?.ids.has(req.id) ?? false;
+  const selectionActive = (selection?.ids.size ?? 0) > 0;
 
   // A gating item with no resolved decision is the unanswerable oxblood case.
   const unanswerable = req.is_gating && req.status === "pending";
@@ -160,12 +188,33 @@ function MatrixRow({
           onSelect(req.id);
         }
       }}
-      className={`group grid w-full cursor-pointer grid-cols-[46px_30px_1fr_auto] items-start gap-x-3 px-2.5 ${ROW_PADDING[density]} text-left transition-[background-color,box-shadow] focus:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ink/40 ${shape} ${state}`}
+      className={`group grid w-full cursor-pointer ${
+        ROW_GRID[selection ? "selectable" : "plain"]
+      } items-start gap-x-3 px-2.5 ${ROW_PADDING[density]} text-left transition-[background-color,box-shadow] focus:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ink/40 ${shape} ${state}`}
     >
-      {/* The register margin: a gating pennant then the clause ref, right-aligned
-          in mono. The pennant marks the deal-breaker even on decided rows, where
-          the alarm meter no longer shows. */}
+      {/* The register margin: the selection checkbox (when selection is live),
+          a gating pennant, then the clause ref, right-aligned in mono. The
+          pennant marks the deal-breaker even on decided rows, where the alarm
+          meter no longer shows. */}
       <span className="flex items-start justify-end gap-1 pt-1 text-right font-mono text-[11px] leading-tight text-accent/85">
+        {selection && (
+          <input
+            type="checkbox"
+            aria-label={`Select ${req.id}`}
+            checked={checked}
+            onChange={() => {}}
+            onClick={(e) => {
+              e.stopPropagation();
+              selection.onToggle(req.id, e.shiftKey);
+            }}
+            onKeyDown={(e) => e.stopPropagation()}
+            className={`mt-px h-3 w-3 shrink-0 cursor-pointer accent-forest ${
+              checked || selectionActive
+                ? "opacity-100"
+                : "opacity-0 focus-visible:opacity-100 group-hover:opacity-100"
+            }`}
+          />
+        )}
         {req.is_gating && (
           <svg
             width="8"
@@ -223,6 +272,15 @@ function MatrixRow({
             {preview}
           </p>
         )}
+
+        {/* A gap is a to-do, not a hover secret: the unanswered-question prompt
+            is ALWAYS visible, and clicking it opens the inline quick-answer
+            form right here in the register. */}
+        <OpenQuestionSlot
+          req={req}
+          density={density}
+          onAnswerQuestion={onAnswerQuestion}
+        />
       </div>
 
       {/* The status word, or for confident non-gating items a single quiet
@@ -248,6 +306,105 @@ function MatrixRow({
           <StatusWord req={req} />
         )}
       </div>
+    </div>
+  );
+}
+
+// The inline gap-answer slot. When a requirement carries unanswered open
+// questions, a quiet amber one-liner names the debt ("1 question needs your
+// answer") — always visible, never a hover reveal. Clicking it unfolds a small
+// quick-answer form under the row text: the question, a textarea, Save. Saving
+// hands the text to answerOpenQuestion upstream; the unanswered list shrinks,
+// so the form advances to the next question by itself and folds away when none
+// remain. Without a handler (frozen surfaces) the prompt renders as plain text.
+function OpenQuestionSlot({
+  req,
+  density,
+  onAnswerQuestion,
+}: {
+  req: Requirement;
+  density: Density;
+  onAnswerQuestion?: (reqId: string, questionId: string, text: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [text, setText] = useState("");
+  const unanswered = (req.open_questions ?? []).filter(
+    (q) => q.answer === null
+  );
+  if (unanswered.length === 0) return null;
+
+  const prompt =
+    unanswered.length === 1
+      ? "1 question needs your answer"
+      : `${unanswered.length} questions need your answers`;
+  const current = unanswered[0];
+
+  function save() {
+    const trimmed = text.trim();
+    if (!trimmed || !onAnswerQuestion) return;
+    onAnswerQuestion(req.id, current.id, trimmed);
+    setText("");
+    // If this was the last question the slot unmounts with the list; otherwise
+    // `current` recomputes to the next unanswered question on the next render.
+    if (unanswered.length === 1) setOpen(false);
+  }
+
+  return (
+    <div className={density === "compact" ? "mt-0.5" : "mt-1"}>
+      {onAnswerQuestion ? (
+        <button
+          type="button"
+          aria-expanded={open}
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpen((v) => !v);
+          }}
+          className="inline-flex items-center gap-1.5 text-xs text-signal-amber transition-colors hover:underline focus:outline-none focus-visible:underline"
+        >
+          <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-signal-amber" />
+          {prompt}
+        </button>
+      ) : (
+        <p className="inline-flex items-center gap-1.5 text-xs text-signal-amber">
+          <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-signal-amber" />
+          {prompt}
+        </p>
+      )}
+
+      {open && onAnswerQuestion && (
+        <div
+          role="none"
+          onClick={(e) => e.stopPropagation()}
+          onKeyDown={(e) => e.stopPropagation()}
+          className={`cursor-default rounded-md border border-hairline bg-paper-raised px-3 shadow-[var(--depth-control)] ${
+            density === "compact" ? "mt-1 py-2" : "mt-1.5 py-2.5"
+          }`}
+        >
+          <p className="text-sm leading-snug text-ink">{current.question}</p>
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            rows={density === "compact" ? 2 : 3}
+            placeholder="Your answer"
+            className="mt-1.5 w-full resize-y rounded border border-hairline bg-paper px-2 py-1.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-muted focus:border-forest focus:ring-1 focus:ring-forest"
+          />
+          <div className="mt-1.5 flex items-center justify-between gap-3">
+            <span className="font-mono text-[11px] text-ink-muted">
+              {unanswered.length === 1
+                ? "Last question"
+                : `${unanswered.length} to answer`}
+            </span>
+            <button
+              type="button"
+              onClick={save}
+              disabled={text.trim().length === 0}
+              className="rounded-md bg-forest px-3 py-1 text-xs font-semibold text-paper shadow-[var(--depth-control)] transition-colors hover:bg-forest-hover disabled:cursor-not-allowed disabled:bg-ink-muted/40"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -287,6 +444,9 @@ function MatrixGroup({
   onSelect,
   onApprove,
   onApproveAll,
+  showCoverage,
+  selection,
+  onAnswerQuestion,
 }: {
   // A visible group with its display dedupe precomputed by deriveVisibleGroups
   // (one collapseDuplicates pass per group, shared with the shown counter).
@@ -301,6 +461,10 @@ function MatrixGroup({
   onSelect: (id: string) => void;
   onApprove: (id: string) => void;
   onApproveAll: (ids: string[]) => void;
+  // Criteria-lens coverage: a slim decided/total track under the group header.
+  showCoverage?: boolean;
+  selection?: MatrixSelection;
+  onAnswerQuestion?: (reqId: string, questionId: string, text: string) => void;
 }) {
   // Near-duplicate rows arrive already collapsed (display only — nothing is
   // dropped; each representative carries the pages its duplicates were cited on).
@@ -309,6 +473,9 @@ function MatrixGroup({
   const { representatives, meta } = group;
   const approvable = representatives.filter(isConfidentNonGating);
   const rowsId = `group-rows-${group.key}`;
+  const decidedCount = representatives.filter(
+    (req) => req.status !== "pending"
+  ).length;
 
   return (
     <section>
@@ -316,7 +483,8 @@ function MatrixGroup({
           so the label and count remain legible while the section runs long. A
           paper ground and a hairline keep it reading as a register rule, not a
           floating bar. */}
-      <div className="sticky top-0 z-10 -mx-1 flex items-center justify-between gap-3 border-b border-hairline bg-paper px-1 pb-2 pt-2">
+      <div className="sticky top-0 z-10 -mx-1 border-b border-hairline bg-paper px-1 pb-2 pt-2">
+        <div className="flex items-center justify-between gap-3">
         {collapsible ? (
           <button
             type="button"
@@ -347,6 +515,30 @@ function MatrixGroup({
             Approve all confident ({approvable.length})
           </button>
         )}
+        </div>
+        {showCoverage && (
+          // Criteria-lens coverage: how much of this criterion is decided,
+          // as the same slim forest track the worklist header carries.
+          <div
+            className="mt-1.5 h-1 w-full overflow-hidden rounded-full bg-hairline"
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={representatives.length}
+            aria-valuenow={decidedCount}
+            aria-label={`${group.label}: ${decidedCount} of ${representatives.length} decided`}
+          >
+            <div
+              className="h-full rounded-full bg-forest transition-[width] duration-500"
+              style={{
+                width: `${
+                  representatives.length > 0
+                    ? (decidedCount / representatives.length) * 100
+                    : 0
+                }%`,
+              }}
+            />
+          </div>
+        )}
       </div>
       {expanded && (
         <div id={rowsId} className="mt-2 flex flex-col gap-0.5">
@@ -359,6 +551,8 @@ function MatrixGroup({
               density={density}
               onSelect={onSelect}
               onApprove={onApprove}
+              selection={selection}
+              onAnswerQuestion={onAnswerQuestion}
             />
           ))}
         </div>
@@ -379,6 +573,12 @@ export function ComplianceMatrix({
   onToggleGroup,
   density = "comfortable",
   onDensityChange,
+  lens = "triage",
+  onLensChange,
+  awardCriteria,
+  selection,
+  onApproveMany,
+  onAnswerQuestion,
 }: {
   groups: TriageGroup[];
   selectedId: string | null;
@@ -390,15 +590,35 @@ export function ComplianceMatrix({
   // order untouched: when sortBy is omitted the rows are left as grouped.
   activeCategories?: Set<string>;
   sortBy?: SortKey;
-  // Folded groups + the toggle handler. Omitted on the frozen demo/hero surfaces,
-  // where every group stays open and no toggle renders.
-  collapsed?: Set<GroupKey>;
-  onToggleGroup?: (key: GroupKey) => void;
+  // Folded groups + the toggle handler, keyed by the visible group's string key
+  // (a triage GroupKey under the triage lens, a criterion id under criteria).
+  // Omitted on the frozen demo/hero surfaces, where every group stays open and
+  // no toggle renders.
+  collapsed?: Set<string>;
+  onToggleGroup?: (key: string) => void;
   // Row density + its setter. Optional and defaulting to comfortable so the
   // frozen demo/hero surfaces render unchanged; the toggle only shows when a
   // setter is supplied.
   density?: Density;
   onDensityChange?: (density: Density) => void;
+  // The grouping lens + its setter. Optional, defaulting to triage, so the
+  // frozen surfaces render exactly as before; the segmented control only shows
+  // when a setter is supplied.
+  lens?: MatrixLens;
+  onLensChange?: (lens: MatrixLens) => void;
+  // The tender's published award criteria, for real names + weights on the
+  // criteria-lens group headers.
+  awardCriteria?: AwardCriterion[];
+  // Multi-select. Omitted on frozen surfaces: no checkbox renders and the row
+  // grid keeps its original geometry.
+  selection?: MatrixSelection;
+  // Batch approve for the group header's "Approve all confident" — lets the
+  // owner make it one state pass + one undo toast. Falls back to per-row
+  // onApprove calls when omitted (the frozen surfaces).
+  onApproveMany?: (ids: string[]) => void;
+  // Inline gap answering. Omitted on frozen surfaces: the unanswered-question
+  // prompt renders as static text with no form.
+  onAnswerQuestion?: (reqId: string, questionId: string, text: string) => void;
 }) {
   const [query, setQuery] = useState("");
   const normalisedQuery = query.trim().toLowerCase();
@@ -417,12 +637,17 @@ export function ComplianceMatrix({
         activeFilter,
         activeCategories,
         sortBy,
+        lens,
+        awardCriteria,
       }),
-    [groups, query, activeFilter, activeCategories, sortBy]
+    [groups, query, activeFilter, activeCategories, sortBy, lens, awardCriteria]
   );
 
   function approveAll(ids: string[]) {
-    for (const id of ids) onApprove(id);
+    // One batch pass (and one undo toast) when the owner provides it; the
+    // frozen surfaces fall back to per-row approves.
+    if (onApproveMany) onApproveMany(ids);
+    else for (const id of ids) onApprove(id);
   }
 
   return (
@@ -441,6 +666,9 @@ export function ComplianceMatrix({
           <span className="font-mono text-xs text-ink-muted">
             {shownCount} shown
           </span>
+          {onLensChange && (
+            <LensToggle lens={lens} onLensChange={onLensChange} />
+          )}
           {onDensityChange && (
             <DensityToggle density={density} onDensityChange={onDensityChange} />
           )}
@@ -449,18 +677,17 @@ export function ComplianceMatrix({
 
       {visible.map((group) => {
         const collapsible = onToggleGroup !== undefined;
-        // VisibleGroup.key is string-typed (lens-ready); on this triage-grouped
-        // surface it is always a GroupKey.
-        const groupKey = group.key as GroupKey;
         // Force a group open when its rows must be seen regardless of the fold:
-        // while searching (never hide a hit), when filtered to it, or when it holds
-        // the selected row. Otherwise honour the user's fold state.
+        // while searching (never hide a hit), when the triage filter points at
+        // it (its key matches only under the triage lens; under criteria the
+        // filter is row-level and never a group key), or when it holds the
+        // selected row. Otherwise honour the user's fold state.
         const expanded =
           !collapsible ||
           normalisedQuery.length > 0 ||
-          activeFilter === groupKey ||
+          activeFilter === group.key ||
           group.items.some((req) => req.id === selectedId) ||
-          !(collapsed?.has(groupKey) ?? false);
+          !(collapsed?.has(group.key) ?? false);
         return (
           <MatrixGroup
             key={group.key}
@@ -468,11 +695,14 @@ export function ComplianceMatrix({
             expanded={expanded}
             collapsible={collapsible}
             density={density}
-            onToggle={() => onToggleGroup?.(groupKey)}
+            onToggle={() => onToggleGroup?.(group.key)}
             selectedId={selectedId}
             onSelect={onSelect}
             onApprove={onApprove}
             onApproveAll={approveAll}
+            showCoverage={lens === "criteria"}
+            selection={selection}
+            onAnswerQuestion={onAnswerQuestion}
           />
         );
       })}
@@ -487,6 +717,48 @@ export function ComplianceMatrix({
           hasQuery={normalisedQuery.length > 0}
         />
       )}
+    </div>
+  );
+}
+
+// The lens toggle: the same two-word segmented control register as the density
+// toggle beside it. Triage groups by what each row needs from you; Criteria
+// regroups the same rows under the tender's published award criteria.
+function LensToggle({
+  lens,
+  onLensChange,
+}: {
+  lens: MatrixLens;
+  onLensChange: (lens: MatrixLens) => void;
+}) {
+  const options: { key: MatrixLens; label: string }[] = [
+    { key: "triage", label: "Triage" },
+    { key: "criteria", label: "Criteria" },
+  ];
+  return (
+    <div
+      role="group"
+      aria-label="Group rows by"
+      className="inline-flex items-center overflow-hidden rounded-md border border-hairline"
+    >
+      {options.map((option) => {
+        const active = lens === option.key;
+        return (
+          <button
+            key={option.key}
+            type="button"
+            aria-pressed={active}
+            onClick={() => onLensChange(option.key)}
+            className={`px-2 py-1 font-mono text-[11px] transition-colors ${
+              active
+                ? "bg-ink/[0.06] font-medium text-ink"
+                : "text-ink-muted hover:text-ink"
+            }`}
+          >
+            {option.label}
+          </button>
+        );
+      })}
     </div>
   );
 }

@@ -1,11 +1,17 @@
-import type { Requirement } from "@/types/requirement";
+import type { AwardCriterion, Requirement } from "@/types/requirement";
 import {
   compareRequirements,
+  groupOf,
   type GroupKey,
   type SortKey,
   type TriageGroup,
 } from "@/lib/triage";
 import { collapseDuplicates, type DedupeMeta } from "@/lib/dedupe";
+import { critKey, criterionLabel, orderedCritKeys, UNASSIGNED } from "@/lib/structure";
+
+// How the matrix groups its rows: by what each item needs from you (triage, the
+// default) or by the award criterion it is scored against (the criteria lens).
+export type MatrixLens = "triage" | "criteria";
 
 // The matrix's visible-worklist derivation, pulled out of ComplianceMatrix so it
 // is pure, testable, and computed ONCE per render (the component previously
@@ -40,22 +46,54 @@ export interface VisibleMatrix {
   flatOrder: string[];
 }
 
+// Regroup the triage worklist by award criterion for the criteria lens. Rows
+// flatten in triage order, then gather under critKey(criteria_ref) in the
+// canonical criterion order (lib/structure.ts). Labels prefer the tender's
+// published criteria ("Quality · 40%"); the synthetic criterionLabel covers a
+// ref with no published match, and unassigned rows share the catch-all.
+function regroupByCriteria(
+  groups: TriageGroup[],
+  awardCriteria: AwardCriterion[]
+): { key: string; label: string; items: Requirement[] }[] {
+  const all = groups.flatMap((group) => group.items);
+  const byName = new Map(awardCriteria.map((c) => [c.id, c]));
+  return orderedCritKeys(all).map((key) => {
+    const criterion = key === UNASSIGNED ? undefined : byName.get(key);
+    const label = criterion
+      ? `${criterion.name} · ${criterion.weight}%`
+      : criterionLabel(key === UNASSIGNED ? null : key);
+    return {
+      key,
+      label,
+      items: all.filter((req) => critKey(req.criteria_ref) === key),
+    };
+  });
+}
+
 // Replicates the matrix's filter/sort semantics exactly: free-text search over
 // text/category/source_clause/answer.text, then the category set filter, then
 // the sortBy comparator (source order when omitted); empty groups are dropped
-// and an active triage filter narrows to its one group.
+// and an active triage filter narrows to its one group. Under the criteria lens
+// rows group by award criterion instead, and the triage filter degrades to a
+// row-level predicate (groupOf) so it keeps meaning something.
 export function deriveVisibleGroups({
   groups,
   query,
   activeFilter,
   activeCategories,
   sortBy,
+  lens = "triage",
+  awardCriteria = [],
 }: {
   groups: TriageGroup[];
   query: string;
   activeFilter: GroupKey | null;
   activeCategories?: Set<string>;
   sortBy?: SortKey;
+  // The grouping lens. Omitted (frozen surfaces) = triage, exactly as before.
+  lens?: MatrixLens;
+  // The tender's published criteria, for real names + weights on group labels.
+  awardCriteria?: AwardCriterion[];
 }): VisibleMatrix {
   const normalisedQuery = query.trim().toLowerCase();
   // An empty (or omitted) category set means no category filtering.
@@ -63,12 +101,16 @@ export function deriveVisibleGroups({
     activeCategories && activeCategories.size > 0 ? activeCategories : null;
   const comparator = sortBy ? compareRequirements(sortBy) : null;
 
+  const sourceGroups =
+    lens === "criteria" ? regroupByCriteria(groups, awardCriteria) : groups;
+
   const visible: VisibleGroup[] = [];
   const flatOrder: string[] = [];
   let shownCount = 0;
 
-  for (const group of groups) {
-    if (activeFilter !== null && group.key !== activeFilter) continue;
+  for (const group of sourceGroups) {
+    if (lens === "triage" && activeFilter !== null && group.key !== activeFilter)
+      continue;
 
     let items =
       normalisedQuery.length === 0
@@ -86,6 +128,11 @@ export function deriveVisibleGroups({
           );
     if (categoryFilter) {
       items = items.filter((req) => categoryFilter.has(req.category));
+    }
+    if (lens === "criteria" && activeFilter !== null) {
+      // The triage header filter as a row predicate: within each criterion,
+      // keep only the rows that belong to the filtered triage group.
+      items = items.filter((req) => groupOf(req) === activeFilter);
     }
     if (comparator) {
       items = [...items].sort(comparator);

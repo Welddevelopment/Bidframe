@@ -7,6 +7,7 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
+import { toast } from "sonner";
 import { useRequirements } from "@/context/RequirementsContext";
 import { isApiEnabled } from "@/lib/api";
 import type { Requirement } from "@/types/requirement";
@@ -17,8 +18,10 @@ import {
   type GroupKey,
   type SortKey,
 } from "@/lib/triage";
+import { deriveVisibleGroups, type MatrixLens } from "@/lib/matrix-derive";
 import { AppMain } from "./AppMain";
 import { ApprovalStamp } from "./ApprovalStamp";
+import { BulkActionBar } from "./BulkActionBar";
 import { ComplianceMatrix } from "./ComplianceMatrix";
 import { DocumentHeader } from "./DocumentHeader";
 import { GatingHero } from "./GatingHero";
@@ -119,9 +122,29 @@ function latestDecisionTimeLabel(requirements: Requirement[]): string | undefine
   return when.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
 }
 
+// The short human name for a requirement in an undo toast: its clause ref when
+// present, else its page — the same margin ref the matrix rows carry.
+function toastRef(req: Requirement | undefined): string {
+  if (!req) return "1 requirement";
+  return (
+    req.source_clause?.replace(/^section\s+/i, "") ?? `p.${req.source_page}`
+  );
+}
+
 export function MatrixView({ title }: { title: string }) {
-  const { requirements, tenderId, approve, editRequirement, flag } =
-    useRequirements();
+  const {
+    requirements,
+    tenderId,
+    approve,
+    editRequirement,
+    flag,
+    awardCriteria,
+    approveMany,
+    flagMany,
+    snapshotDecisions,
+    restoreDecisions,
+    answerOpenQuestion,
+  } = useRequirements();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<GroupKey | null>(null);
   // Category filter (empty set = all categories shown) and the row sort order.
@@ -147,14 +170,16 @@ export function MatrixView({ title }: { title: string }) {
   const [density, setDensity] = useState<"compact" | "comfortable">(
     "comfortable"
   );
-  // Which groups the user has folded away. The long, low-priority groups start
+  // Which groups the user has folded away, keyed by the visible group's string
+  // key (triage GroupKeys and criterion ids share one fold state, so a fold
+  // survives switching lenses). The long, low-priority triage groups start
   // collapsed so a big tender opens short; the actionable ones start open. Held
   // here (not in ComplianceMatrix) so the fold survives the matrix unmounting when
   // a requirement opens the split.
-  const [collapsedGroups, setCollapsedGroups] = useState<Set<GroupKey>>(
-    () => new Set<GroupKey>(["ready", "decided"])
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(
+    () => new Set<string>(["ready", "decided"])
   );
-  const toggleGroup = useCallback((key: GroupKey) => {
+  const toggleGroup = useCallback((key: string) => {
     setCollapsedGroups((prev) => {
       const next = new Set(prev);
       if (next.has(key)) next.delete(key);
@@ -162,9 +187,152 @@ export function MatrixView({ title }: { title: string }) {
       return next;
     });
   }, []);
+  // The grouping lens: triage (what each row needs from you) or the tender's
+  // award criteria. Under criteria the header's triage filter degrades to a
+  // row-level predicate (see lib/matrix-derive.ts).
+  const [lens, setLens] = useState<MatrixLens>("triage");
+  // Multi-select for bulk decisions: the selected row ids plus the shift-range
+  // anchor (the last row toggled without shift).
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(
+    () => new Set<string>()
+  );
+  const [anchorId, setAnchorId] = useState<string | null>(null);
   const isWide = useIsWide();
 
   const triage = deriveTriage(requirements);
+
+  // The display order the matrix will render (before its local search box),
+  // for resolving a shift-click into a contiguous range of rows. Derived with
+  // an empty query: a range never silently sweeps in rows a search is hiding
+  // beyond what is on screen, because filters and lens match the live view.
+  const { flatOrder } = deriveVisibleGroups({
+    groups: triage.groups,
+    query: "",
+    activeFilter,
+    activeCategories,
+    sortBy,
+    lens,
+    awardCriteria,
+  });
+
+  // Toggle one row's selection; shift extends from the anchor (the last row
+  // toggled without shift) through the clicked row, in display order.
+  const toggleSelected = useCallback(
+    (id: string, shiftKey: boolean) => {
+      setSelectedIds((prev) => {
+        const next = new Set(prev);
+        if (shiftKey && anchorId && anchorId !== id) {
+          const from = flatOrder.indexOf(anchorId);
+          const to = flatOrder.indexOf(id);
+          if (from !== -1 && to !== -1) {
+            const [lo, hi] = from < to ? [from, to] : [to, from];
+            for (let i = lo; i <= hi; i += 1) next.add(flatOrder[i]);
+            return next;
+          }
+        }
+        if (next.has(id)) next.delete(id);
+        else next.add(id);
+        return next;
+      });
+      if (!shiftKey) setAnchorId(id);
+    },
+    [anchorId, flatOrder]
+  );
+
+  const clearSelection = useCallback(() => {
+    setSelectedIds(new Set<string>());
+    setAnchorId(null);
+  }, []);
+
+  // ---- Undoable decisions -------------------------------------------------
+  // Every decision handler snapshots the affected rows BEFORE mutating, then
+  // raises a toast whose Undo puts the snapshot back exactly (status + note).
+
+  const undoAction = useCallback(
+    (ids: string[]) => {
+      const snapshot = snapshotDecisions(ids);
+      return {
+        label: "Undo",
+        onClick: () => restoreDecisions(snapshot),
+      };
+    },
+    [snapshotDecisions, restoreDecisions]
+  );
+
+  const approveWithUndo = useCallback(
+    (id: string) => {
+      const action = undoAction([id]);
+      approve(id);
+      toast(`Approved ${toastRef(requirements.find((r) => r.id === id))}`, {
+        action,
+      });
+    },
+    [approve, requirements, undoAction]
+  );
+
+  const editWithUndo = useCallback(
+    (id: string, note: string) => {
+      const action = undoAction([id]);
+      editRequirement(id, note);
+      toast(`Edited ${toastRef(requirements.find((r) => r.id === id))}`, {
+        action,
+      });
+    },
+    [editRequirement, requirements, undoAction]
+  );
+
+  const flagWithUndo = useCallback(
+    (id: string, note: string) => {
+      const action = undoAction([id]);
+      flag(id, note);
+      toast(`Flagged ${toastRef(requirements.find((r) => r.id === id))}`, {
+        action,
+      });
+    },
+    [flag, requirements, undoAction]
+  );
+
+  // Batch approve (the group header's "Approve all confident" and the bulk
+  // bar): one state pass, one toast, one undo.
+  const approveManyWithUndo = useCallback(
+    (ids: string[]) => {
+      if (ids.length === 0) return;
+      const action = undoAction(ids);
+      approveMany(ids);
+      const label =
+        ids.length === 1
+          ? `Approved ${toastRef(requirements.find((r) => r.id === ids[0]))}`
+          : `Approved ${ids.length} requirements`;
+      toast(label, { action });
+    },
+    [approveMany, requirements, undoAction]
+  );
+
+  // Bulk-bar approve: only the confident non-gating members of the selection —
+  // a sweep can never wave a deal-breaker through.
+  const selectedList = requirements.filter((req) => selectedIds.has(req.id));
+  const eligibleSelected = selectedList.filter(isConfidentNonGating);
+
+  const bulkApprove = useCallback(() => {
+    approveManyWithUndo(eligibleSelected.map((req) => req.id));
+    clearSelection();
+  }, [approveManyWithUndo, eligibleSelected, clearSelection]);
+
+  const bulkFlag = useCallback(
+    (note: string) => {
+      const ids = selectedList.map((req) => req.id);
+      if (ids.length === 0) return;
+      const action = undoAction(ids);
+      flagMany(ids, note);
+      const label =
+        ids.length === 1
+          ? `Flagged ${toastRef(selectedList[0])}`
+          : `Flagged ${ids.length} requirements`;
+      toast(label, { action });
+      clearSelection();
+    },
+    [selectedList, flagMany, undoAction, clearSelection]
+  );
   // The distinct categories present, sorted by label, for the header's category
   // filter (the chip UI lands in the next step). Cheap to derive each render,
   // like triage above.
@@ -270,7 +438,7 @@ export function MatrixView({ title }: { title: string }) {
         const cur = ordered.find((r) => r.id === selectedId);
         if (cur && isConfidentNonGating(cur)) {
           event.preventDefault();
-          approve(selectedId);
+          approveWithUndo(selectedId);
         }
       } else if (event.key === "e" || event.key === "f") {
         // Edit / flag both need a typed note, so they cannot act blind from the
@@ -285,7 +453,7 @@ export function MatrixView({ title }: { title: string }) {
     }
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [triage.groups, selectedId, approve]);
+  }, [triage.groups, selectedId, approveWithUndo]);
 
   // Live product, no tender loaded → the onboarding empty state (after all hooks).
   if (noTenderLoaded) {
@@ -333,9 +501,9 @@ export function MatrixView({ title }: { title: string }) {
               <RequirementPanel
                 requirement={selected}
                 variant="split"
-                onApprove={approve}
-                onEdit={editRequirement}
-                onFlag={flag}
+                onApprove={approveWithUndo}
+                onEdit={editWithUndo}
+                onFlag={flagWithUndo}
                 onNext={() => goNext(selected.id)}
                 onClose={close}
               />
@@ -392,7 +560,8 @@ export function MatrixView({ title }: { title: string }) {
               groups={triage.groups}
               selectedId={selectedId}
               onSelect={setSelectedId}
-              onApprove={approve}
+              onApprove={approveWithUndo}
+              onApproveMany={approveManyWithUndo}
               activeFilter={activeFilter}
               activeCategories={activeCategories}
               sortBy={sortBy}
@@ -400,6 +569,11 @@ export function MatrixView({ title }: { title: string }) {
               onToggleGroup={toggleGroup}
               density={density}
               onDensityChange={setDensity}
+              lens={lens}
+              onLensChange={setLens}
+              awardCriteria={awardCriteria}
+              selection={{ ids: selectedIds, onToggle: toggleSelected }}
+              onAnswerQuestion={answerOpenQuestion}
             />
             <p className="mt-6 font-mono text-[11px] text-ink-muted/70">
               Keys: j / k to move, a to approve a confident item.
@@ -413,11 +587,22 @@ export function MatrixView({ title }: { title: string }) {
       {!isWide && (
         <RequirementDrawer
           requirement={selected}
-          onApprove={approve}
-          onEdit={editRequirement}
-          onFlag={flag}
+          onApprove={approveWithUndo}
+          onEdit={editWithUndo}
+          onFlag={flagWithUndo}
           onNext={selected ? () => goNext(selected.id) : () => {}}
           onClose={close}
+        />
+      )}
+
+      {/* The floating bulk-decision bar, alive while any rows are selected. */}
+      {selectedIds.size > 0 && (
+        <BulkActionBar
+          count={selectedIds.size}
+          eligibleCount={eligibleSelected.length}
+          onApprove={bulkApprove}
+          onFlag={bulkFlag}
+          onClear={clearSelection}
         />
       )}
     </>

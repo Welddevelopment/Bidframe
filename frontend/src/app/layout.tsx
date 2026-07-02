@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, IBM_Plex_Mono } from "next/font/google";
 import localFont from "next/font/local";
+import { Toaster } from "sonner";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { RequirementsProvider } from "@/context/RequirementsContext";
@@ -55,6 +56,27 @@ export default function RootLayout({
         <AuthProvider>
           <RequirementsProvider>{children}</RequirementsProvider>
         </AuthProvider>
+        {/* Undo toasts for decisions + save-failure notices, restyled from
+            sonner's defaults into the register: raised paper on a hairline
+            rule, mono small text; an error carries the oxblood reading edge. */}
+        <Toaster
+          position="bottom-center"
+          gap={8}
+          toastOptions={{
+            unstyled: true,
+            classNames: {
+              toast:
+                "surface-grain pointer-events-auto flex w-[356px] max-w-full items-center gap-3 rounded-lg border border-hairline bg-paper-raised px-4 py-3 shadow-[var(--depth-sheet)]",
+              title: "font-mono text-xs leading-snug text-ink",
+              description: "font-mono text-[11px] leading-snug text-ink-muted",
+              actionButton:
+                "ml-auto shrink-0 rounded-md border border-hairline bg-paper px-2 py-1 font-mono text-[11px] font-medium text-ink shadow-[var(--depth-control)] transition-colors hover:text-forest",
+              cancelButton:
+                "ml-auto shrink-0 font-mono text-[11px] text-ink-muted transition-colors hover:text-ink",
+              error: "border-l-2 border-l-signal-oxblood-frame",
+            },
+          }}
+        />
       </body>
     </html>
   );
