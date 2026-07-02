@@ -25,13 +25,14 @@
   4 cue-cards, QA prep (12 scenarios), backup plan all in `demo-day/`. CRM at **400 named leads** (L-0400 goal hit)
   with humanized drafts across every public-sector SME segment. **SPSO demo pre-bake committed**
   (`spso-prebake.json` — real gpt-4o run: 183 reqs · gating recall 1.0 · 48 grounded · 0 bluffs)
-  — demo is now **key-independent**; async-upload silent-crash bug fixed.
+  — demo is now **key-independent**; async-upload silent-crash bug fixed. **Frontend final interaction
+  layer shipped (Day 5):** criteria lens, multi-select bulk bar, inline gap-answer edit, Cmd+K command
+  palette, styled `.xlsx` export, persistent PDF evidence pane, full-screen focus review — Playwright
+  e2e verified, product is stage-ready.
 - **Headline number:** SPSO tender (pp.1–6), OpenAI extractor → **recall 0.947 (18/19), gating
   recall 1.0 · gating accuracy 1.0 (both disqualifiers caught, zero over-flagging), 0 dangerous
   misses. Autofill: 109/183 grounded · 0 bluffs.**
-- **Next up:** wire `spso-prebake.json` into `/demo` route (frontend, G-021); set `OPENAI_API_KEY`
-  on Render behind invite-only auth for live hosted path; execute Day-4 outreach (400 named leads ready);
-  execute J-043 graph reframe + PDF.js source-verification build.
+- **Next up:** set `OPENAI_API_KEY` on Render for the live hosted path; execute outreach (312 verified+email rows pre-staged in `sendable-list-2026-07-02.csv`); final demo run-through (demo-day is 4 Jul).
 
 ---
 
@@ -130,4 +131,5 @@
 - **15:04** — **Precision push landed across all three lanes** (B-013/G-032/J-059): extraction now deterministic (`temp=0 + seed=42`, fixes 0.84↔1.0 recall wobble); semantic dedup collapses SPSO **246→122 reqs** (precision **0.32→0.41**, gating recall **1.0** held, 0 dangerous misses); silent chunk-dropper crash fixed (`source_excerpt` coerce, had cost 6 gating disqualifiers on museum); layout-aware ingest + wider chunk overlap + vision OCR fallback + multi-pass union opt-in; extraction prompt v3 (table precision); persistent spend ledger (`python -m engine.usage_log`) *(accuracy is now stable rather than noisy; precision up without touching recall or the disqualifier catch — demo numbers are locked and repeatable)*
 - **16:04** — **Museum gating gap diagnosed as mostly measurement artifact** (J-061/G-033): "gating recall 0.3" revealed as ~half scoring blind spot — the tool catches collusion + fail-gate clauses but the lexical scorer can't credit paraphrased gold; true human-adjudicated recall ~0.7; extraction **v4** fixes the real gap (PQQ Pass/Fail selection questions now flagged `is_gating`); G-033 wires eval harness to measure multi-pass ensemble; `gating_scan` deterministic safety-net committed; **137 tests green** *(the product was already catching most museum disqualifiers — the remaining gap is PQQ classification + measurement robustness, not a fundamental extraction failure)*
 - **17:04** — **Semantic gating recall breakthrough: 10/10 museum disqualifiers confirmed surfaced** (J-063, `engine/scripts/gating_recall.py`): embedding cosine match (0.70–0.98) proves every gold disqualifier has a credited gating req — g16 collusion, g61–63 PQQ, g70 fail-gate all verified; "0.3" was entirely a lexical-scorer blind spot on verbose gold summaries, not a pipeline miss; all-hands plan to fold semantic gating recall into `eval_all` as the official number (generalist to validate + rebase gold, backend to wire `gating_scan` into pipeline) *(gating recall 1.0 is now provably reachable — the release gate is sign-off + wiring, not a new extraction capability)*
+- **19:03** — **Frontend final interaction layer shipped + Playwright e2e verified** (Jawad): criteria lens, multi-select bulk bar, inline gap-answer edit, Cmd+K command palette, styled `.xlsx` export (civic-record workbook, oxblood gating rows, forest status), persistent PDF evidence pane + full-screen focus review, motion layer + row virtualization, landing QA rounds 1+2, reduced-motion hydration fix — all planned demo interaction layers are now live *(two days before demo-day; the compliance matrix is stage-ready end-to-end)*
 - **18:04** — Gating recall audited + g62 gap closed on paper (J-064): mini + v4 run gives SPSO 2/2, museum **9/10** at 0.68 threshold (g62 at 0.66 is the sole miss); atomic-gold proof shows g62 lifts to **0.82** with a precise sentence vs verbose 0.62; genuine catch range 0.70–0.98, clean threshold separation — full data package handed to generalist who is taking #2 atomic re-label + #3 fair match *(museum gating 1.0 now one specific gold re-label away; the tool already catches the disqualifier — the last gap is in the answer key)*
