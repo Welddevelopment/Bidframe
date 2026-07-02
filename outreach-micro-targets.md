@@ -497,5 +497,225 @@ Dropped: **Yates Jetting Ltd** — duplicate of existing **L-0360** (same domain
 >
 > Joel, Bidframe
 
+#### MT-31 · Stacks Contractors Limited · to: admin@stackscontractorsltd.co.uk · GOOD
+*Family building/property contractor (founded 2010), Marston Green, Birmingham. Named awarded supplier on Coventry City Council's published contracts register (Spon Street remedial works, Jan 2026). NB mailbox domain (stackscontractorsltd.co.uk) differs from website (stackscontractors.com). Source: coventry.gov.uk contracts register*
+**Subject:** Your Coventry City Council works — what would disqualify the next bid?
+> Hi there,
+>
+> You hold a live Coventry City Council works contract (the Spon Street remedial works) — so you're bidding council building work where one missed pass/fail requirement (an accreditation, an insurance level, a method statement) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council works tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-32 · JLN Plumbing & Heating Ltd · to: info@jlnplumbing.co.uk · GOOD
+*Family-led M&E firm (~16 staff; James & Claire Lacey), Coventry. Self-declared council/school/college work (no named contract found — softer proof). Email verified on own site. Source: jlnplumbing.co.uk*
+**Subject:** Council & school M&E bids — the pass/fail gates
+> Hi James and Claire,
+>
+> You do plumbing and heating for councils, schools and colleges — so you're bidding public-sector M&E work where one missed pass/fail requirement (a Gas Safe scope, a DBS clause, an insurance level) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council or school tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+### Wave 2b — family/owner-run pest control (council / HA / NHS)
+*6 verified · all kept (1 PERFECT, 5 GOOD) · 0 duplicates. Seam note: verifiable emails are easy but independently-named public contracts are scarce (tiny firms self-publish council/HA links); firms with named framework awards are mid-size regionals outside ICP. Aardvark (Wigan Council + NHS) is the strongest tiny+named fit.*
+
+---
+
+#### MT-33 · Aardvark Pest Control · to: info@aardvarkpest.co.uk · PERFECT
+*Family-run pest firm, Wigan/North-West (single owner-run operator). Own site names current clients "Wigan Council" + "national health authorities (NHS)" (self-published). Source: aardvarkpest.co.uk*
+**Subject:** Your Wigan Council / NHS pest tenders — what would disqualify the bid?
+> Hi there,
+>
+> You name Wigan Council and the NHS as clients — so you're bidding public-sector pest-control work where one missed pass/fail requirement (a BPCA scope, an insurance level, a response KPI) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> I'm running free 15-minute live reads today and tomorrow — send me a council or NHS pest tender you're bidding and I'll show you, on the call, exactly what would disqualify it. A couple of slots left; after this week it's a paid pilot.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-34 · All Aspects Pest Control (AAPS) · to: tony@aaps.org.uk · GOOD
+*Family firm, Reading (all contact routes to "Tony"). Own site: "we regularly deliver training for Reading Borough Council staff" (named council, but training not a service contract). Source: aaps.org.uk*
+**Subject:** When Reading Council tenders pest control — caught first
+> Hi Tony,
+>
+> You already train Reading Borough Council's staff — so when they (or a neighbouring council) tender pest control, one missed pass/fail requirement can void the whole bid.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council pest tender you're eyeing and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-35 · Musca Pest Management Services · to: muscapestmanagement@gmail.com · GOOD
+*Sole trader ("Chris"), Derbyshire; National Pest Awards 2023 Sole-Trader finalist. Derbyshire CC "Trusted Trader" + TrustMark (accreditation-level proof, no named contract). Source: muscapestmanagement.co.uk*
+**Subject:** Council pest tenders — the read done for you, free
+> Hi Chris,
+>
+> As a one-person firm on Derbyshire's Trusted Trader list, you can't spare a day decoding a council pest tender — and one missed pass/fail clause voids the whole bid.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council pest tender you're eyeing and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-36 · Lincspest Ltd · to: info@lincspest.co.uk · GOOD
+*Family firm (Brighton family — Trevor & Ben), Raithby by Spilsby, Lincs. Own site lists services to "Schools" and "Local Authorities" (sector-level, no named client). Source: lincspest.co.uk/services*
+**Subject:** Your Lincolnshire school & council pest bids — caught first
+> Hi there,
+>
+> You already service Lincolnshire schools and local authorities — so you're bidding public-sector pest work where one missed pass/fail requirement voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — every claim cited.
+>
+> Free 15-minute live reads today and tomorrow — send me a council or school pest tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-37 · Combat Pest Control · to: info@combatpestcontrol.com · GOOD
+*Small London firm ("top 3 small pest businesses"). Own site: 5 yrs working with housing associations, supported housing & NHS hospitals (self-declared, none named). Source: combatpestcontrol.com/social-housing-organisations*
+**Subject:** Housing-association pest tenders — the pass/fail gates
+> Hi there,
+>
+> You've spent years working with housing associations and NHS sites — so you're bidding social-housing pest work where one missed pass/fail requirement voids the whole submission however strong your service.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own docs — a citation on every claim.
+>
+> Free 15-minute live reads today and tomorrow — send me an HA pest tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-38 · All-Gone Pest Control Ltd · to: info@all-gonepestcontrol.com · GOOD
+*Tiny 2-technician firm ("Jimi" & "Paul", 20+ yrs), Bournemouth/BCP area. Self-declared council/school work. ⚠ Caveat: firm claims "approved BCP Council contractor" but BCP Council's own site states it has no current preferred provider — so don't assert that claim in outreach. Source: all-gonepestcontrol.com*
+**Subject:** Council & school pest tenders across BCP — caught first
+> Hi there,
+>
+> You cover the whole BCP area doing pest control for schools and businesses — so when a council or school tenders pest control, one missed pass/fail requirement voids the whole bid.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council or school pest tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+### Wave 2c — small family security / CCTV / locksmith firms (council / HA / schools)
+*7 verified · 6 kept (2 PERFECT, 4 GOOD) · 1 dropped. Dropped: **CTS Security** (King's Lynn) — strong named public-sector proof but self-styles as "Norfolk's leading" with unconfirmed staff count; trips the "if it looks big, drop it" rule.*
+
+---
+
+#### MT-39 · Blake Fire & Security Systems · to: info@blakefire-security.co.uk · PERFECT
+*Family firm (est. 1979, MD Ian Blake), Essex; "big enough to cope, small enough to care". Named school clients: Wethersfield C of E Primary (testimonial), Chalkwell School; 200+ Essex schools. Source: blakefire-security.co.uk/school-security*
+**Subject:** Your Essex school security bids — what would disqualify them?
+> Hi Ian,
+>
+> You secure Essex state schools like Wethersfield and Chalkwell — so you're bidding school/MAT security work where one missed pass/fail requirement (a safeguarding clause, an accreditation, a DBS requirement) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and project record — a citation on every claim, nothing invented.
+>
+> I'm running free 15-minute live reads today and tomorrow — send me a school security tender you're bidding and I'll show you, on the call, exactly what would disqualify it. A couple of slots left; after this week it's a paid pilot.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-40 · Around The Clock Locks (ATCL) · to: info@atcl.co.uk · PERFECT
+*Family locksmith (est. 2000), Romford/Essex & East London. Client list names Waltham Forest Council, Peabody and The Guinness Partnership. Source: atcl.co.uk*
+**Subject:** Your Waltham Forest / HA lock & security bids — caught first
+> Hi there,
+>
+> You're an approved locksmith for Waltham Forest Council and HAs like Peabody and Guinness — so you're bidding council/HA framework work where one missed pass/fail requirement voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council or HA framework you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-41 · Select 1 Security & Electrical · to: info@select1securityandelectrical.com · GOOD
+*Family firm (est. 2009, founder Darran Wilson), Baildon, West Yorks. Named NHS project: full electrical fit-out of Trafford House, Manchester (216 workstations). Source: select1securityandelectrical.com*
+**Subject:** NHS / public-sector fit-out tenders — the pass/fail gates
+> Hi Darran,
+>
+> You've delivered a full NHS fit-out (Trafford House) — so you're bidding NHS and public-sector security/electrical work where one missed pass/fail requirement voids the whole submission on a technicality.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and project record — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a public-sector tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-42 · Active CCTV · to: info@active-cctv.co.uk · GOOD
+*Family CCTV firm (owner "Adrian"; team Adrian/Matt/Tom), Colwyn Bay, North Wales. Primary-school CCTV installs (headteacher testimonials; school unnamed — softer proof). Source: active-cctv.co.uk/commercial-cctv/school-cctv-systems*
+**Subject:** Welsh school CCTV tenders — what would disqualify the bid?
+> Hi Adrian,
+>
+> You install CCTV in Welsh primary schools — so you're bidding council/school security work where one missed pass/fail requirement (a safeguarding clause, an accreditation, a data-protection requirement) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a school or council security tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-43 · APL Locksmiths · to: info@apllocksmiths.co.uk · GOOD
+*Family MLA locksmith (grew from one-man to team of five), Stockport. Trade profile: handles housing associations, schools, universities (self-declared, no named client). Source: apllocksmiths.co.uk; locksmithjournal.co.uk profile*
+**Subject:** Social-housing lock & security frameworks — the pass/fail gates
+> Hi there,
+>
+> You already handle housing-association, school and university lock & security work — so the framework tenders you'd bid have pass/fail requirements where one missed line voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — every claim cited.
+>
+> Free 15-minute live reads today and tomorrow — send me an HA or education framework you're eyeing and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-44 · Millennium Locksmiths · to: sales@millenniumlocksmiths.co.uk · GOOD
+*Solo owner-run locksmith ("Tim"; est. 2005), Prestwood/Great Missenden, Bucks. Dedicated service pages for schools/nurseries/colleges and landlords/HAs (self-declared, no named client). Source: millenniumlocksmiths.co.uk*
+**Subject:** School & HA lock tenders — the read done for you, free
+> Hi Tim,
+>
+> You pitch for school, nursery, college and housing-association lock & security work — tenders where one missed pass/fail requirement voids the whole bid, and as a solo firm the paperwork eats your day.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a school or HA tender you're eyeing and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
 <!-- next waves appended below -->
 
