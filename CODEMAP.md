@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `10e64e6` · 2026-07-02T22:19:21Z
+> Map of commit `004002c` · 2026-07-02T23:33:45+01:00
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -13,8 +13,8 @@
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
 | **frontend** | 138 | 50,242 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
-| **backend** | 19 | 3,010 | Backend — FastAPI (PDF ingest, extraction, REST API) |
-| **engine** | 70 | 5,649 | Engine — reconcile / eval / answer-draft pipeline + tests |
+| **backend** | 20 | 3,076 | Backend — FastAPI (PDF ingest, extraction, REST API) |
+| **engine** | 71 | 5,711 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 713 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
 | **gold** | 6 | 330 | Eval gold-set — hand-labelled requirements for accuracy measurement |
 | **data** | 17 | 0 | Data — tender source PDFs (not parsed here) |
@@ -285,72 +285,73 @@ graph LR
   n2[chunk.py] --> n3[ingest.py]
   n4[extract.py] --> n2[chunk.py]
   n4[extract.py] --> n5[usage_log.py]
-  n6[graph.py] --> n7[schema.py]
+  n6[extract_cache.py] --> n4[extract.py]
+  n7[graph.py] --> n8[schema.py]
   n3[ingest.py] --> n5[usage_log.py]
-  n8[main.py] --> n1[auth.py]
-  n8[main.py] --> n4[extract.py]
-  n8[main.py] --> n3[ingest.py]
-  n8[main.py] --> n9[pipeline.py]
-  n8[main.py] --> n7[schema.py]
-  n8[main.py] --> n10[answer.py]
-  n9[pipeline.py] --> n2[chunk.py]
-  n9[pipeline.py] --> n4[extract.py]
-  n9[pipeline.py] --> n6[graph.py]
-  n9[pipeline.py] --> n3[ingest.py]
-  n9[pipeline.py] --> n7[schema.py]
-  n9[pipeline.py] --> n10[answer.py]
-  n9[pipeline.py] --> n11[embeddings.py]
-  n9[pipeline.py] --> n12[gating_filter.py]
-  n9[pipeline.py] --> n13[gating_scan.py]
-  n9[pipeline.py] --> n14[reconcile.py]
-  n15[store.py] --> n7[schema.py]
-  n10[answer.py] --> n16[similarity.py]
-  n10[answer.py] --> n5[usage_log.py]
-  n11[embeddings.py] --> n16[similarity.py]
-  n11[embeddings.py] --> n5[usage_log.py]
-  n17[eval.py] --> n18[_io.py]
-  n17[eval.py] --> n16[similarity.py]
-  n19[eval_answers.py] --> n18[_io.py]
-  n19[eval_answers.py] --> n10[answer.py]
-  n19[eval_answers.py] --> n16[similarity.py]
-  n12[gating_filter.py] --> n5[usage_log.py]
-  n13[gating_scan.py] --> n16[similarity.py]
-  n14[reconcile.py] --> n18[_io.py]
-  n14[reconcile.py] --> n11[embeddings.py]
-  n14[reconcile.py] --> n16[similarity.py]
-  n20[calibrate.py] --> n18[_io.py]
-  n20[calibrate.py] --> n17[eval.py]
-  n21[draft_answers.py] --> n18[_io.py]
-  n21[draft_answers.py] --> n10[answer.py]
-  n21[draft_answers.py] --> n17[eval.py]
-  n22[eval_all.py] --> n18[_io.py]
-  n22[eval_all.py] --> n11[embeddings.py]
-  n22[eval_all.py] --> n17[eval.py]
-  n22[eval_all.py] --> n13[gating_scan.py]
-  n22[eval_all.py] --> n14[reconcile.py]
-  n22[eval_all.py] --> n23[run_tender.py]
-  n24[gating_coverage.py] --> n18[_io.py]
-  n24[gating_coverage.py] --> n13[gating_scan.py]
-  n25[gating_recall.py] --> n18[_io.py]
-  n25[gating_recall.py] --> n11[embeddings.py]
-  n25[gating_recall.py] --> n17[eval.py]
-  n25[gating_recall.py] --> n13[gating_scan.py]
-  n25[gating_recall.py] --> n14[reconcile.py]
-  n25[gating_recall.py] --> n23[run_tender.py]
-  n26[precision_report.py] --> n18[_io.py]
-  n26[precision_report.py] --> n17[eval.py]
-  n26[precision_report.py] --> n14[reconcile.py]
-  n26[precision_report.py] --> n23[run_tender.py]
-  n26[precision_report.py] --> n16[similarity.py]
-  n23[run_tender.py] --> n2[chunk.py]
-  n23[run_tender.py] --> n4[extract.py]
-  n23[run_tender.py] --> n3[ingest.py]
-  n23[run_tender.py] --> n18[_io.py]
-  n23[run_tender.py] --> n11[embeddings.py]
-  n23[run_tender.py] --> n17[eval.py]
-  n23[run_tender.py] --> n14[reconcile.py]
-  n27[parse_check.py]
-  n28[stress_test.py]
+  n9[main.py] --> n1[auth.py]
+  n9[main.py] --> n4[extract.py]
+  n9[main.py] --> n3[ingest.py]
+  n9[main.py] --> n10[pipeline.py]
+  n9[main.py] --> n8[schema.py]
+  n9[main.py] --> n11[answer.py]
+  n10[pipeline.py] --> n2[chunk.py]
+  n10[pipeline.py] --> n4[extract.py]
+  n10[pipeline.py] --> n7[graph.py]
+  n10[pipeline.py] --> n3[ingest.py]
+  n10[pipeline.py] --> n8[schema.py]
+  n10[pipeline.py] --> n11[answer.py]
+  n10[pipeline.py] --> n12[embeddings.py]
+  n10[pipeline.py] --> n13[gating_filter.py]
+  n10[pipeline.py] --> n14[gating_scan.py]
+  n10[pipeline.py] --> n15[reconcile.py]
+  n16[store.py] --> n8[schema.py]
+  n11[answer.py] --> n17[similarity.py]
+  n11[answer.py] --> n5[usage_log.py]
+  n12[embeddings.py] --> n17[similarity.py]
+  n12[embeddings.py] --> n5[usage_log.py]
+  n18[eval.py] --> n19[_io.py]
+  n18[eval.py] --> n17[similarity.py]
+  n20[eval_answers.py] --> n19[_io.py]
+  n20[eval_answers.py] --> n11[answer.py]
+  n20[eval_answers.py] --> n17[similarity.py]
+  n13[gating_filter.py] --> n5[usage_log.py]
+  n14[gating_scan.py] --> n17[similarity.py]
+  n15[reconcile.py] --> n19[_io.py]
+  n15[reconcile.py] --> n12[embeddings.py]
+  n15[reconcile.py] --> n17[similarity.py]
+  n21[calibrate.py] --> n19[_io.py]
+  n21[calibrate.py] --> n18[eval.py]
+  n22[draft_answers.py] --> n19[_io.py]
+  n22[draft_answers.py] --> n11[answer.py]
+  n22[draft_answers.py] --> n18[eval.py]
+  n23[eval_all.py] --> n19[_io.py]
+  n23[eval_all.py] --> n12[embeddings.py]
+  n23[eval_all.py] --> n18[eval.py]
+  n23[eval_all.py] --> n14[gating_scan.py]
+  n23[eval_all.py] --> n15[reconcile.py]
+  n23[eval_all.py] --> n24[run_tender.py]
+  n25[gating_coverage.py] --> n19[_io.py]
+  n25[gating_coverage.py] --> n14[gating_scan.py]
+  n26[gating_recall.py] --> n19[_io.py]
+  n26[gating_recall.py] --> n12[embeddings.py]
+  n26[gating_recall.py] --> n18[eval.py]
+  n26[gating_recall.py] --> n14[gating_scan.py]
+  n26[gating_recall.py] --> n15[reconcile.py]
+  n26[gating_recall.py] --> n24[run_tender.py]
+  n27[precision_report.py] --> n19[_io.py]
+  n27[precision_report.py] --> n18[eval.py]
+  n27[precision_report.py] --> n15[reconcile.py]
+  n27[precision_report.py] --> n24[run_tender.py]
+  n27[precision_report.py] --> n17[similarity.py]
+  n24[run_tender.py] --> n2[chunk.py]
+  n24[run_tender.py] --> n4[extract.py]
+  n24[run_tender.py] --> n3[ingest.py]
+  n24[run_tender.py] --> n19[_io.py]
+  n24[run_tender.py] --> n12[embeddings.py]
+  n24[run_tender.py] --> n18[eval.py]
+  n24[run_tender.py] --> n15[reconcile.py]
+  n28[parse_check.py]
+  n29[stress_test.py]
 ```
 
 ## Files by area
@@ -489,6 +490,7 @@ graph LR
 - `backend/app/auth.py` — self-hosted, invite-only authentication.
 - `backend/app/chunk.py` — page-aware overlapping chunker.
 - `backend/app/extract.py` — chunk → raw requirement objects.
+- `backend/app/extract_cache.py` — content-addressed cache for the expensive LLM extraction step.
 - `backend/app/graph.py` — relationship edges (criteria_ref · depends_on).
 - `backend/app/ingest.py` — PDF → page-numbered text.
 - `backend/app/main.py` — Tender Breakdown API — FastAPI app.
@@ -556,6 +558,7 @@ graph LR
 - `engine/tests/test_eval_match.py`
 - `engine/tests/test_eval_metrics.py`
 - `engine/tests/test_eval_report.py`
+- `engine/tests/test_extract_cache.py` — Regression tests for backend/app/extract_cache.py — content-addressed extraction cache.
 - `engine/tests/test_gap_questions.py` — Sharper gap questions: the OpenAI answerer phrases the gap interview via J's
 - `engine/tests/test_gating_filter.py` — The model precision filter must improve precision without EVER lowering the recall floor:
 - `engine/tests/test_gating_scan.py` — gating_scan safety net: surfaces disqualifier lines extraction missed, stays quiet when covered.
@@ -1029,4 +1032,4 @@ graph LR
 
 ---
 
-*673 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
+*675 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
