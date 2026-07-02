@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `8e305d4` · 2026-07-02T20:44:41+01:00
+> Map of commit `3f5cef6` · 2026-07-02T20:51:53+01:00
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,7 +12,7 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 138 | 50,209 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **frontend** | 138 | 50,254 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
 | **backend** | 19 | 2,773 | Backend — FastAPI (PDF ingest, extraction, REST API) |
 | **engine** | 65 | 4,789 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 713 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
@@ -240,22 +240,23 @@ graph LR
   n17[Landing.tsx] --> n55[SiteFooter.tsx]
   n17[Landing.tsx] --> n56[FernFrond.tsx]
   n17[Landing.tsx] --> n85[PineBranch.tsx]
-  n17[Landing.tsx] --> n86[Seal.tsx]
+  n17[Landing.tsx] --> n86[PressedLeaf.tsx]
+  n17[Landing.tsx] --> n87[Seal.tsx]
   n17[Landing.tsx] --> n57[TreelineDivider.tsx]
   n82[ProductShots.tsx] --> n67[ApprovalStamp.tsx]
   n55[SiteFooter.tsx] --> n14[BrandLogo.tsx]
   n55[SiteFooter.tsx] --> n52[BookDemoButton.tsx]
   n55[SiteFooter.tsx] --> n85[PineBranch.tsx]
-  n55[SiteFooter.tsx] --> n86[Seal.tsx]
+  n55[SiteFooter.tsx] --> n87[Seal.tsx]
   n55[SiteFooter.tsx] --> n57[TreelineDivider.tsx]
-  n86[Seal.tsx] --> n53[BotanicalSprig.tsx]
+  n87[Seal.tsx] --> n53[BotanicalSprig.tsx]
   n12[AuthContext.tsx] --> n15[api.ts]
   n7[RequirementsContext.tsx] --> n20[mock-requirements.ts]
-  n7[RequirementsContext.tsx] --> n87[answer-store.ts]
+  n7[RequirementsContext.tsx] --> n88[answer-store.ts]
   n7[RequirementsContext.tsx] --> n15[api.ts]
   n7[RequirementsContext.tsx] --> n8[requirement.ts]
   n20[mock-requirements.ts] --> n8[requirement.ts]
-  n87[answer-store.ts] --> n8[requirement.ts]
+  n88[answer-store.ts] --> n8[requirement.ts]
   n33[answers.ts] --> n45[triage.ts]
   n33[answers.ts] --> n8[requirement.ts]
   n15[api.ts] --> n8[requirement.ts]
@@ -273,8 +274,7 @@ graph LR
   n44[source-doc.ts] --> n8[requirement.ts]
   n65[structure.ts] --> n8[requirement.ts]
   n45[triage.ts] --> n8[requirement.ts]
-  n88[error.tsx]
-  n89[PressedLeaf.tsx]
+  n89[error.tsx]
 ```
 
 ## Backend + Engine module graph (Python, tests excluded)
@@ -403,7 +403,7 @@ graph LR
 - `frontend/src/components/ApprovalStamp.tsx` — The approval stamp (design-language.md, device 6): a clean forest mark set
 - `frontend/src/components/AuthGate.tsx` — exports `AuthGate`
 - `frontend/src/components/AutofillButton.tsx` — exports `AutofillButton`
-- `frontend/src/components/BrandLogo.tsx` — The Bidframe lockup (brand kit lives in frontend/public/brand). The owl mark
+- `frontend/src/components/BrandLogo.tsx` — The Bidframe lockup: a friendlier forest owl plus the Fraunces wordmark,
 - `frontend/src/components/BulkActionBar.tsx` — exports `BulkActionBar`
 - `frontend/src/components/CapabilityUpload.tsx` — exports `CapabilityUpload`
 - `frontend/src/components/CategoryTag.tsx` — exports `CategoryDot`
