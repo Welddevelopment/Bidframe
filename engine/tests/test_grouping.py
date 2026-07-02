@@ -38,12 +38,14 @@ def test_same_page_different_clause_blocks_merge():
     assert len(group_candidates([a, b])) == 2
 
 
-def test_null_clause_blocks_merge_even_if_text_identical():
+def test_null_clause_merges_identical_text_on_same_page():
+    # Clause-less extractions are the real case (100% null on live SPSO): identical text
+    # on the SAME page collapses (same-page proximity fallback when clause is unknown).
     a = {"raw_id": "z1", "text": "The supplier must hold ISO 9001 certification.",
          "source_page": 14, "source_clause": None}
     b = {"raw_id": "z2", "text": "The supplier must hold ISO 9001 certification.",
          "source_page": 14, "source_clause": None}
-    assert len(group_candidates([a, b])) == 2
+    assert len(group_candidates([a, b])) == 1
 
 
 def test_different_requirements_same_page_clause_blocked_by_token_floor():

@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `3cde178` · 2026-07-02T14:24:35+01:00
+> Map of commit `7154ebb` · 2026-07-02T14:34:49+01:00
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -13,16 +13,16 @@
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
 | **frontend** | 124 | 44,601 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
-| **backend** | 19 | 2,724 | Backend — FastAPI (PDF ingest, extraction, REST API) |
-| **engine** | 57 | 3,375 | Engine — reconcile / eval / answer-draft pipeline + tests |
+| **backend** | 19 | 2,729 | Backend — FastAPI (PDF ingest, extraction, REST API) |
+| **engine** | 59 | 3,846 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 703 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
 | **gold** | 4 | 204 | Eval gold-set — hand-labelled requirements for accuracy measurement |
 | **data** | 17 | 0 | Data — tender source PDFs (not parsed here) |
-| **comms** | 5 | 1,474 | Comms — async agent message boards |
+| **comms** | 5 | 1,491 | Comms — async agent message boards |
 | **docs** | 3 | 1,663 | Docs — plans & specs |
 | **ci** | 1 | 62 | CI — GitHub Actions |
 | **tooling** | 1 | 516 | Tooling — repo scripts (incl. this map generator) |
-| **root** | 407 | 21,337 | Root — docs, config, role briefs |
+| **root** | 407 | 21,338 | Root — docs, config, role briefs |
 
 ## System shape
 
@@ -257,34 +257,40 @@ graph LR
   n9[pipeline.py] --> n3[ingest.py]
   n9[pipeline.py] --> n7[schema.py]
   n9[pipeline.py] --> n10[answer.py]
-  n9[pipeline.py] --> n11[reconcile.py]
-  n12[store.py] --> n7[schema.py]
-  n10[answer.py] --> n13[similarity.py]
+  n9[pipeline.py] --> n11[embeddings.py]
+  n9[pipeline.py] --> n12[reconcile.py]
+  n13[store.py] --> n7[schema.py]
+  n10[answer.py] --> n14[similarity.py]
   n10[answer.py] --> n5[usage_log.py]
-  n14[eval.py] --> n15[_io.py]
-  n14[eval.py] --> n13[similarity.py]
-  n16[eval_answers.py] --> n15[_io.py]
-  n16[eval_answers.py] --> n10[answer.py]
-  n16[eval_answers.py] --> n13[similarity.py]
-  n11[reconcile.py] --> n15[_io.py]
-  n11[reconcile.py] --> n13[similarity.py]
-  n17[calibrate.py] --> n15[_io.py]
-  n17[calibrate.py] --> n14[eval.py]
-  n18[draft_answers.py] --> n15[_io.py]
-  n18[draft_answers.py] --> n10[answer.py]
-  n18[draft_answers.py] --> n14[eval.py]
-  n19[eval_all.py] --> n15[_io.py]
-  n19[eval_all.py] --> n14[eval.py]
-  n19[eval_all.py] --> n11[reconcile.py]
-  n19[eval_all.py] --> n20[run_tender.py]
-  n20[run_tender.py] --> n2[chunk.py]
-  n20[run_tender.py] --> n4[extract.py]
-  n20[run_tender.py] --> n3[ingest.py]
-  n20[run_tender.py] --> n15[_io.py]
-  n20[run_tender.py] --> n14[eval.py]
-  n20[run_tender.py] --> n11[reconcile.py]
-  n21[parse_check.py]
-  n22[stress_test.py]
+  n11[embeddings.py] --> n14[similarity.py]
+  n11[embeddings.py] --> n5[usage_log.py]
+  n15[eval.py] --> n16[_io.py]
+  n15[eval.py] --> n14[similarity.py]
+  n17[eval_answers.py] --> n16[_io.py]
+  n17[eval_answers.py] --> n10[answer.py]
+  n17[eval_answers.py] --> n14[similarity.py]
+  n12[reconcile.py] --> n16[_io.py]
+  n12[reconcile.py] --> n11[embeddings.py]
+  n12[reconcile.py] --> n14[similarity.py]
+  n18[calibrate.py] --> n16[_io.py]
+  n18[calibrate.py] --> n15[eval.py]
+  n19[draft_answers.py] --> n16[_io.py]
+  n19[draft_answers.py] --> n10[answer.py]
+  n19[draft_answers.py] --> n15[eval.py]
+  n20[eval_all.py] --> n16[_io.py]
+  n20[eval_all.py] --> n11[embeddings.py]
+  n20[eval_all.py] --> n15[eval.py]
+  n20[eval_all.py] --> n12[reconcile.py]
+  n20[eval_all.py] --> n21[run_tender.py]
+  n21[run_tender.py] --> n2[chunk.py]
+  n21[run_tender.py] --> n4[extract.py]
+  n21[run_tender.py] --> n3[ingest.py]
+  n21[run_tender.py] --> n16[_io.py]
+  n21[run_tender.py] --> n11[embeddings.py]
+  n21[run_tender.py] --> n15[eval.py]
+  n21[run_tender.py] --> n12[reconcile.py]
+  n22[parse_check.py]
+  n23[stress_test.py]
 ```
 
 ## Files by area
@@ -427,6 +433,7 @@ graph LR
 - `engine/__init__.py` — Bidframe engine package (Generalist lane): reconcile/dedupe + eval harness.
 - `engine/_io.py` — UTF-8-safe JSON I/O. This box defaults to cp1252 (J-008 crash); never rely on it.
 - `engine/answer.py` — auditable autofill: grounded answer-draft + gap interview (Generalist lane).
+- `engine/embeddings.py` — optional semantic dedup for reconcile (J-056, Generalist).
 - `engine/eval.py` — Eval harness: score tool output against a hand-labelled gold set.
 - `engine/eval_answers.py` — groundedness eval for auditable autofill (Generalist lane).
 - `engine/fixtures/capability/cap-001-company-profile.txt`
@@ -460,6 +467,7 @@ graph LR
 - `engine/tests/test_autofill_wiring.py` — Integration: auditable autofill is wired into the live API (generalist lane).
 - `engine/tests/test_calibrate.py`
 - `engine/tests/test_draft_concurrency.py` — draft_all parallelism: drafting concurrently must be byte-identical to sequential.
+- `engine/tests/test_embedding_dedup.py` — Embedding semantic dedup (J-056, Generalist).
 - `engine/tests/test_end_to_end.py`
 - `engine/tests/test_eval_all.py`
 - `engine/tests/test_eval_answers.py` — Groundedness eval — turns "the autofill never bluffs" into an auditable number.
@@ -934,4 +942,4 @@ graph LR
 
 ---
 
-*644 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
+*646 tracked files mapped. Generated by `scripts/gen_codemap.py`.*

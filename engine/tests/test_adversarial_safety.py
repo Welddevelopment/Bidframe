@@ -9,10 +9,12 @@ The four claims under attack:
   3. Autofill never bluffs — it grounds in real evidence or flags needs_input.
   4. The eval can't hide a disqualifier miss — a missed gating req always surfaces.
 
-Known, documented limitation (NOT a regression — see comms G-015): reconcile is
-lexical, so two near-identical-but-different requirements that share the SAME page
-AND clause could merge. The page+clause AND-gate is the mitigation (the extractor
-clause-separates distinct requirements); a semantic guard is future work.
+Guards (G-032): merges are gated by same-page + clause-compatibility, then a
+numeric-conflict guard (disjoint numbers — £5m vs £10m, ISO 9001 vs 14001 — never
+merge), an exact-text collapse, the conservative lexical gate, and an opt-in
+embedding gate that NEVER touches a gating row. A gating row fuzzy-merges only with
+the strong provenance of a matching clause; with an unknown (null) clause it
+collapses on exact text only, mirroring the shipped frontend safety net.
 """
 from __future__ import annotations
 
@@ -60,11 +62,33 @@ def test_different_clause_never_merges_even_if_identical_text():
     assert len(group_candidates([a, b])) == 2
 
 
-def test_null_clause_never_merges():
-    """Conservative: a null clause is not a match key — don't merge on it."""
+def test_null_clause_merges_exact_text_on_same_page():
+    """Real extractors emit NO clause (100% null on the live SPSO run), so with the clause
+    unknown we fall back to same-page proximity: IDENTICAL text on the same page collapses
+    (the clause-less duplicate the old 'null clause never merges' gate wrongly kept)."""
     a, b = _raw("a", DUP_A, clause=None), _raw("b", DUP_A, clause=None)
+    assert _mergeable(a, b) is True
+    assert len(group_candidates([a, b])) == 1
+
+
+def test_null_clause_different_page_still_never_merges():
+    """The page gate is absolute — identical text on different pages never merges,
+    clause or no clause (a wrongly-merged cross-page requirement is a silent miss)."""
+    a, b = _raw("a", DUP_A, page=3, clause=None), _raw("b", DUP_A, page=4, clause=None)
     assert _mergeable(a, b) is False
     assert len(group_candidates([a, b])) == 2
+
+
+def test_null_clause_gating_collapses_on_exact_text_only():
+    """A gating row with an UNKNOWN clause fuzzy-merges with nothing — it collapses on
+    exact text only (weak provenance must not fold two distinct disqualifiers). The SAME
+    near-duplicate gating rows WITH a matching clause are the genuine ISO dup and merge."""
+    a = _raw("a", DUP_A, clause=None, gating=True)
+    b = _raw("b", DUP_B, clause=None, gating=True)   # near-identical but NOT exact
+    assert _mergeable(a, b) is False
+    a2 = _raw("a", DUP_A, clause="4.2.1", gating=True)
+    b2 = _raw("b", DUP_B, clause="4.2.1", gating=True)
+    assert _mergeable(a2, b2) is True
 
 
 def test_low_token_overlap_never_merges_insurance_vs_turnover():

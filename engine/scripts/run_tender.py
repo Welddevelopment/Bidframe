@@ -62,7 +62,9 @@ def main(argv) -> int:
     args = p.parse_args(argv[1:])
 
     envelope, extractor_name = raw_envelope_from_pdf(args.pdf, args.tender_id, args.title)
-    final, report = reconcile(envelope)
+    from engine.embeddings import build_index
+    embed_index = build_index([r.get("text", "") for r in envelope.get("raw_requirements", [])])
+    final, report = reconcile(envelope, embed_index)
 
     # Scope the tool output to the gold's labelled page range for a fair comparison.
     reqs = final["requirements"]

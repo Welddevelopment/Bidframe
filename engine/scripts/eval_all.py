@@ -47,11 +47,15 @@ def aggregate(rows: list[dict]) -> dict:
 
 def _score_one(entry: dict, extractor_box: list) -> dict:
     from engine.scripts.run_tender import raw_envelope_from_pdf
+    from engine.embeddings import build_index
     gold = load_gold_csv(REPO_ROOT / entry["gold"], tender_id=entry["tender_id"])
     envelope, extractor_name = raw_envelope_from_pdf(
         str(REPO_ROOT / entry["pdf"]), entry["tender_id"], entry.get("title", ""))
     extractor_box[0] = extractor_name
-    final, _ = reconcile(envelope)
+    # Build the embedding index here so the eval exercises semantic dedup when
+    # RECONCILE_SEMANTIC is on (None otherwise -> unchanged baseline).
+    embed_index = build_index([r.get("text", "") for r in envelope.get("raw_requirements", [])])
+    final, _ = reconcile(envelope, embed_index)
     reqs = final["requirements"]
     mp = entry.get("max_page")
     if mp:

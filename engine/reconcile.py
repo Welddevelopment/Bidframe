@@ -6,20 +6,30 @@ API serves and the frontend renders.
 
 PRIME DIRECTIVE: reconcile CONSERVATIVELY. Wrongly merging two genuinely-
 different requirements is a silent miss — the worst failure (a missed gating
-requirement disqualifies a bid). We merge only on a conservative AND of FOUR
-signals, escalate safety flags on merge, and never let a disqualifier vanish.
+requirement disqualifies a bid). Two rows merge only when they are on the SAME
+PAGE and clause-compatible, then pass a text/embedding + numeric + gating guard;
+we escalate safety flags on merge and never let a disqualifier vanish.
+
+Clause note (G-032): clause is the strong provenance signal WHEN PRESENT, but real
+extractors frequently emit none (100% null clause on the live SPSO run), which made
+the old "same page AND same non-null clause" gate a no-op on real data. So a missing
+clause falls back to same-page proximity, and the fuzzy paths lean on the guards:
+gating rows fuzzy-merge only with a matching clause (else exact text only), the
+embedding path never touches a gating row, and disjoint numbers never merge.
 """
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from math import prod
 from pathlib import Path
 
 from engine._io import read_json, write_json
 from engine.similarity import (
-    similarity, token_similarity, TEXT_SIM_THRESHOLD, TOKEN_SIM_FLOOR,
+    similarity, token_similarity, _normalise, TEXT_SIM_THRESHOLD, TOKEN_SIM_FLOOR,
 )
+from engine.embeddings import EMBED_SIM_THRESHOLD, EmbeddingIndex, build_index
 
 # needs_review = merged confidence < this (strict). CALIBRATED on the SPSO gold
 # (engine/scripts/calibrate.py): highest threshold flagging <=10% of confirmed-correct
@@ -37,35 +47,105 @@ FINAL_KEYS = (
 
 
 # --------------------------------------------------------------------------- #
-# Merge predicate — conservative AND of four signals
+# Merge predicate — same-page + clause-compatible, then text/numeric/gating guards
 # --------------------------------------------------------------------------- #
 def _source_proximal(a: dict, b: dict) -> bool:
-    """Same page AND same non-null clause. (Char offsets are chunk-local => not used.)"""
+    """Same page, and clause-compatible (equal clauses, or a null clause on either side).
+
+    Clause is the strong provenance signal WHEN PRESENT: two rows on the same page with
+    DIFFERENT non-null clauses are different requirements and never merge. But refusing to
+    merge on a MISSING clause made reconcile a no-op on real extractions (100% null clause
+    on the live SPSO run), so a null clause falls back to same-page proximity and the
+    text/numeric/gating guards decide. Different page still never merges."""
     if a.get("source_page") != b.get("source_page"):
         return False
+    ca, cb = a.get("source_clause"), b.get("source_clause")
+    if ca is not None and cb is not None:
+        return ca == cb
+    return True
+
+
+def _same_clause(a: dict, b: dict) -> bool:
+    """Both rows carry the SAME non-null clause — the strong provenance that lets a gating
+    row fuzzy-merge (the genuine ISO cross-chunk duplicate)."""
     ca, cb = a.get("source_clause"), b.get("source_clause")
     return ca is not None and cb is not None and ca == cb
 
 
-def _mergeable(a: dict, b: dict) -> bool:
+def _lexical_ok(a: dict, b: dict) -> bool:
+    """The conservative, deterministic gate: high char-ratio AND a token-Jaccard floor.
+
+    Unchanged from the original merge predicate. char-ratio alone over-scores shared
+    tender boilerplate; the token floor blocks that (see engine/similarity.py)."""
     return (
         similarity(a.get("text", ""), b.get("text", "")) >= TEXT_SIM_THRESHOLD
         and token_similarity(a.get("text", ""), b.get("text", "")) >= TOKEN_SIM_FLOOR
-        and _source_proximal(a, b)
     )
 
 
-def group_candidates(raws: list[dict]) -> list[list[dict]]:
+_NUM = re.compile(r"\d[\d,]*(?:\.\d+)?")
+
+
+def _numeric_conflict(a: str, b: str) -> bool:
+    """True when both texts carry numbers and share NONE of them.
+
+    Applied to EVERY fuzzy path: 'ISO 9001' vs 'ISO 14001', '£5m' vs '£10m', '3 years'
+    vs '5 years' read alike (and embed alike) but are DIFFERENT requirements. Only ever
+    *blocks* a merge (conservative) — it can never force one; exact-text merges are
+    unaffected (identical text shares all its numbers)."""
+    na = {n.replace(",", "") for n in _NUM.findall(a or "")}
+    nb = {n.replace(",", "") for n in _NUM.findall(b or "")}
+    if not na or not nb:
+        return False
+    return na.isdisjoint(nb)
+
+
+def _mergeable(a: dict, b: dict, embed_index: EmbeddingIndex | None = None) -> bool:
+    """Decide whether two raw candidates are the same requirement. Order matters:
+
+      1. Not same-page / clause-compatible  -> never merge (a wrong merge is a silent miss).
+      2. Disjoint numbers (£5m vs £10m, ISO 9001 vs 14001) -> never merge, on ANY path.
+      3. Exact (normalised) text on the same page -> always a safe collapse (incl. gating);
+         this is what finally folds the clause-less near-duplicates real extractors emit.
+      4. Fuzzy LEXICAL match (char-ratio AND token-Jaccard floor, unchanged): merges — but
+         a GATING row only fuzzy-merges with the strong provenance of a matching clause
+         (the genuine ISO cross-chunk duplicate); with an unknown clause a gating row
+         collapses on exact text only, mirroring the shipped frontend safety net.
+      5. Fuzzy SEMANTIC match (embedding cosine, opt-in via an index): non-gating ONLY —
+         distinct disqualifiers can embed close, and losing one is the worst failure, so
+         the vector path never touches a gating row.
+    """
+    if not _source_proximal(a, b):
+        return False
+    ta, tb = a.get("text", ""), b.get("text", "")
+    if _numeric_conflict(ta, tb):
+        return False
+    if _normalise(ta) == _normalise(tb):
+        return True
+
+    # --- fuzzy paths (non-exact text) ---
+    gating = bool(a.get("is_gating")) or bool(b.get("is_gating"))
+    if _lexical_ok(a, b):
+        if gating and not _same_clause(a, b):
+            return False
+        return True
+    # semantic path — opt-in, non-gating only
+    if gating or embed_index is None:
+        return False
+    return embed_index.cosine(ta, tb) >= EMBED_SIM_THRESHOLD
+
+
+def group_candidates(raws: list[dict], embed_index: EmbeddingIndex | None = None) -> list[list[dict]]:
     """Cluster candidates that are the same requirement.
 
     All-pairs mutual mergeability (anti-transitivity guard): a candidate joins a
     group only if it is mergeable with EVERY current member, never via a chain.
-    Input order is preserved.
+    Input order is preserved. Pass an EmbeddingIndex to enable the semantic path.
     """
     groups: list[list[dict]] = []
     for item in raws:
         for g in groups:
-            if all(_mergeable(item, member) for member in g):
+            if all(_mergeable(item, member, embed_index) for member in g):
                 g.append(item)
                 break
         else:
@@ -217,9 +297,13 @@ def build_report(raw_envelope: dict, id_pairs: list[tuple[str, dict]]) -> dict:
 # --------------------------------------------------------------------------- #
 # Orchestrator
 # --------------------------------------------------------------------------- #
-def reconcile(raw_envelope: dict) -> tuple[dict, dict]:
-    """Raw envelope -> (final envelope, reconcile report). Pure; no I/O."""
-    groups = group_candidates(raw_envelope.get("raw_requirements", []))
+def reconcile(raw_envelope: dict, embed_index: EmbeddingIndex | None = None) -> tuple[dict, dict]:
+    """Raw envelope -> (final envelope, reconcile report). Pure; no I/O.
+
+    Pass an EmbeddingIndex (built at an I/O boundary via engine.embeddings.build_index)
+    to enable the optional semantic dedup path; None (the default) is the deterministic
+    lexical-only behaviour — so this function stays pure and offline by default."""
+    groups = group_candidates(raw_envelope.get("raw_requirements", []), embed_index)
     merged = [merge_group(g) for g in groups]
     id_pairs = assign_ids(merged)
     requirements = [to_final(m, req_id) for req_id, m in id_pairs]
@@ -254,7 +338,10 @@ def main(argv) -> int:
         print(f"error: {exc}", file=sys.stderr)
         return 2
 
-    final, report = reconcile(raw_envelope)
+    # Build the embedding index here (an I/O boundary) so reconcile() stays pure. Returns
+    # None unless RECONCILE_SEMANTIC is set + a key is present -> lexical-only by default.
+    embed_index = build_index([r.get("text", "") for r in raw_envelope.get("raw_requirements", [])])
+    final, report = reconcile(raw_envelope, embed_index)
     stem = Path(args.raw).stem
     out_path = args.out or str(Path(args.raw).with_name(stem + ".final.json"))
     report_path = args.report or str(Path(args.raw).with_name(stem + ".report.json"))

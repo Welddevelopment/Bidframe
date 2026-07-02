@@ -43,6 +43,7 @@ try:
         merge_group as _engine_merge,
         NEEDS_REVIEW_THRESHOLD as _ENGINE_NEEDS_REVIEW,
     )
+    from engine.embeddings import build_index as _engine_build_index
     _HAVE_ENGINE = True
 except ImportError:  # pragma: no cover - deploy without engine/ on path
     _HAVE_ENGINE = False
@@ -81,9 +82,13 @@ def _reconcile(raws: list[dict]) -> list[dict]:
     Prefers the generalist's conservative engine (engine.reconcile): merge only on a
     high text + token + same-page + same-clause match, noisy-OR confidence, and safety
     escalation so a disqualifier is never downgraded. Falls back to a thin similarity
-    dedupe only when engine/ isn't importable (e.g. a backend-rooted deploy)."""
+    dedupe only when engine/ isn't importable (e.g. a backend-rooted deploy).
+
+    Semantic (embedding) dedup is opt-in: build_index() returns None unless
+    RECONCILE_SEMANTIC is set + a key is present, so this stays lexical-only by default."""
     if _HAVE_ENGINE:
-        return [_engine_merge(group) for group in _engine_group(raws)]
+        embed_index = _engine_build_index([r.get("text", "") for r in raws])
+        return [_engine_merge(group) for group in _engine_group(raws, embed_index)]
 
     # --- fallback placeholder (engine/ not on path) ---
     kept: list[dict] = []

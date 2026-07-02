@@ -21,6 +21,7 @@ from pathlib import Path
 PRICES = {
     "gpt-4o": (2.50, 10.00),
     "gpt-4o-mini": (0.15, 0.60),
+    "text-embedding-3-small": (0.02, 0.0),  # embeddings: input-only, no completion side
 }
 
 # Append-only cross-process ledger (gitignored). Default: repo-root/usage-ledger.jsonl.
@@ -34,6 +35,24 @@ _running_total_usd = 0.0
 def _cost(model: str, prompt_tokens: int, completion_tokens: int) -> float:
     prompt_price, completion_price = PRICES.get(model, (0.0, 0.0))
     return prompt_tokens / 1_000_000 * prompt_price + completion_tokens / 1_000_000 * completion_price
+
+
+def _append_ledger(model: str, label: str, pt: int, ct: int, cost: float) -> None:
+    """Append one call to the cross-process ledger. Never raises (ledger I/O must not
+    block a real extraction)."""
+    try:
+        rec = {
+            "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "model": model,
+            "label": label,
+            "prompt_tokens": pt,
+            "completion_tokens": ct,
+            "cost_usd": round(cost, 6),
+        }
+        with open(LEDGER_PATH, "a", encoding="utf-8") as f:
+            f.write(json.dumps(rec) + "\n")
+    except OSError:
+        pass
 
 
 def log_usage(resp, model: str, label: str) -> None:
@@ -56,19 +75,31 @@ def log_usage(resp, model: str, label: str) -> None:
         f"[usage] {label} model={model} prompt={pt} completion={ct} total={tt} "
         f"cost=${cost:.4f} running_total=${_running_total_usd:.4f}"
     )
-    try:
-        rec = {
-            "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            "model": model,
-            "label": label,
-            "prompt_tokens": pt,
-            "completion_tokens": ct,
-            "cost_usd": round(cost, 6),
-        }
-        with open(LEDGER_PATH, "a", encoding="utf-8") as f:
-            f.write(json.dumps(rec) + "\n")
-    except OSError:
-        pass  # never block extraction on ledger I/O
+    _append_ledger(model, label, pt, ct, cost)
+
+
+def log_embedding_usage(resp, model: str, label: str) -> None:
+    """Log tokens + estimated $ for one OpenAI *embeddings* response (semantic dedup).
+
+    Separate from log_usage on purpose: an embeddings response carries prompt_tokens /
+    total_tokens but NO completion_tokens — reusing log_usage would AttributeError, and
+    because build_index() swallows exceptions the whole feature would silently self-disable.
+    Prints the per-call line and appends to the same cross-process ledger. Never raises.
+    """
+    global _running_total_usd
+    usage = getattr(resp, "usage", None)
+    if usage is None:
+        return
+    pt = getattr(usage, "prompt_tokens", None)
+    if pt is None:
+        pt = getattr(usage, "total_tokens", 0) or 0
+    cost = _cost(model, pt, 0)
+    _running_total_usd += cost
+    print(
+        f"[usage] {label} model={model} tokens={pt} "
+        f"cost=${cost:.4f} running_total=${_running_total_usd:.4f}"
+    )
+    _append_ledger(model, label, pt, 0, cost)
 
 
 def read_total(path: Path | str | None = None) -> dict:
