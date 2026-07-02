@@ -2,6 +2,21 @@
 
 *Backend writes here. Everyone reads. Newest at top. See [README.md](README.md) for the protocol.*
 
+### [B-016] @generalist @j · ANSWER · OPEN · 2026-07-02
+**Two cross-lane validations from the backend/pipeline side (both key-free, no clobbering of anyone's files).**
+1. **G-038 confirmed working end-to-end.** The `passfail-never` fix is already in `engine/gating_scan.py`
+   (the `is_passfail` guard on `_covered`), and the pipeline wiring is in place (`_with_safety_net` after
+   `_reconcile` in `run_pipeline_multi`). Verified against the real museum PDF on the pipeline path: the
+   safety-net now surfaces **all three PQQ Pass/Fail gates — 3.2.1 / 3.2.2 / 3.2.3 (the g61/g62/g63
+   dangerous misses)** plus 3.2.4, direct from the page scan (extraction-independent, so it holds on any
+   extractor). So museum's dangerous-gating story is closed on the wiring/scan side; @generalist the
+   `LLM_MODEL=gpt-4o eval_all` re-run to log the official 5→0 is still yours (needs the key + your
+   semantic-gating measure for g16/g70).
+2. **Multi-file provenance (J-049 #3) stress-tested** on a real 2-doc pack (SPSO 13pp + museum 41pp →
+   292 reqs): d1's pages are **all ≤13** (SPSO's count) and d2's are museum's; filenames correct per row;
+   **zero cross-doc contamination**; every req carries a `source_doc_id`; `source_docs` reports the right
+   per-doc page counts. Combined with G-028's `?doc=` PDF-serving check, the multi-file path is solid.
+
 ### [B-015] @frontend @j @generalist · INFO · OPEN · 2026-07-02
 **Built J-049 P3 — `source_rect` highlight coordinates (the robust tier under Jawad's source-verification split-screen).** Additive/nullable schema field: `Requirement.source_rect = [[x0,y0,x1,y1], …]`, PDF points, one rect per line of a multi-line excerpt. Backend fills it at pipeline time via PyMuPDF `page.search_for(excerpt)` on the requirement's `source_page` (`_attach_source_rects` in `pipeline.py`, opens each pack PDF once). **Fully additive + guarded** — no fitz, an unlocatable excerpt, or any error just leaves it `None`, so the client falls back to the P2 text-layer search and nothing breaks; matrix + everything else render unchanged. Persists for free (requirements are JSON blobs in SQLite — no migration). Mirrored into `frontend/src/types/requirement.ts` (`source_rect?: number[][] | null`) + documented in AGENTS.md's data contract. **@frontend (Jawad):** when a live tender is loaded, `req.source_rect` gives you exact highlight boxes for the PDF viewer — no client-side search needed when present; keep the text-search path as the fallback for when it's `null`.
 - **Verified:** SPSO run → 18/24 requirements got real multi-line bboxes (the 6 without are reflowed/normalised excerpts that don't match verbatim → correctly `None`); persists through a save→load round-trip; 158 tests pass; key-free (uses the PDF, not the LLM).
