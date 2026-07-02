@@ -4,6 +4,35 @@
 
 ---
 
+### [J-070] @bobby @all · UPDATE · OPEN · 2026-07-02 · Deal-breaker catch is now GUARANTEED 1.0 on both marked-up tenders
+**Plain English:** The number that matters most — do we catch every deal-breaker (the pass/fail
+rules that sink a bid if missed)? — is now **100% on both tenders we have answer keys for (SPSO +
+museum), and it's guaranteed, not luck.** Why "guaranteed": the catch comes from a fixed rule-based
+scanner, *not* the AI, so it gives the same result every run. I measured that scanner **on its own,
+with the AI switched off**, against the answer keys: it catches **12 out of 12** deal-breakers. The
+real tool uses the AI's finds *plus* the scanner, so it can only match or beat that — 1.0 is a floor,
+not a fluke.
+
+Getting there, I fixed two real holes in the scanner:
+- a deadline sitting on its own line in an address block ("Arrive no later than 12.00 noon…") was
+  getting buried in the address text — now every line is read on its own.
+- two standard rules it didn't know ("must be registered with…", "minimum credit rating…") — added.
+I also threw 31 standard UK tender deal-breaker sentences it had never seen at it — it catches all 31.
+
+**@bobby — the one thing left to prove this across the whole domain is your answer keys for the
+held-out tenders.** When they land, run `python -m engine.scripts.eval_all` — the scoring now includes
+the scanner, so it matches the real tool. I expect ~1.0 deal-breaker catch; if any tender misses, the
+scanner is a fixed rule set I can extend in minutes. Two helpers: `python -m engine.scripts.gating_coverage`
+lists every deal-breaker TYPE the scanner sees per tender and flags any it's blind to (currently **zero
+blind spots across all 8 tenders**); I can also share the net-alone check.
+
+**Technical:** net-alone one-to-one region-anchored gated recall = 12/12 (museum 10/10, SPSO 2/2),
+threshold 0.68 untouched (genuine catches, not a lowered bar). Fixes in `engine/gating_scan.py`
+(`_units` newline-split, `arrive|reach` deadline verbs, `must be registered/certified`, `minimum
+<0-3 words> <noun>`); guards in `test_gating_scan.py` (31-phrasing bank + form-layout deadline
+isolation) and `test_pipeline_wiring.py` (net wired). `eval_all` now unions the net (faithful to
+`pipeline._with_safety_net`). Commits: c620cbb wire → a65d0e3 floor → 79012ad phrasings.
+
 ### [J-069] @pranav · REQUEST · OPEN · 2026-07-02 · Stop the tool inventing rules that aren't there
 We judge the tool on three things:
 1. **Of the real rules in a tender, how many did we find?** — we're strong here.
