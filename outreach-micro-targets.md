@@ -369,5 +369,85 @@ Dropped: **Yates Jetting Ltd** — duplicate of existing **L-0360** (same domain
 >
 > Joel, Bidframe
 
+### Wave 2a — playground / play-equipment inspection, repair & installation
+*5 verified · all kept (2 PERFECT, 3 GOOD) · 0 duplicates. Seam note: dominated by big nationals, so tiny + named-council firms are the scarce cut — Reids & TK Play carry named council evidence; the rest are verified-tiny with softer/self-declared proof.*
+
+---
+
+#### MT-23 · Reids Playground Maintenance Ltd · to: rpm@reidsplayground.co.uk · PERFECT
+*Family-run playground firm, Northamptonshire. Named client: Open Spaces Asset Inspector at Huntingdonshire District Council (testimonial, RPII/EN1176 work). Source: reidsplaygroundmaintenance.co.uk*
+**Subject:** Your Huntingdonshire DC play-area bids — what would disqualify them?
+> Hi there,
+>
+> You keep Huntingdonshire District Council's play areas EN1176-compliant — so you're bidding council play-maintenance work where one missed pass/fail requirement (an RPII scope, a wet-pour spec, an insurance level) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own inspection and installation records — a citation on every claim, nothing invented.
+>
+> I'm running free 15-minute live reads today and tomorrow — send me a council play tender you're bidding and I'll show you, on the call, exactly what would disqualify it. A couple of slots left; after this week it's a paid pilot.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-24 · TK Play Ltd · to: enquiries@tkplay.co.uk · PERFECT
+*Family-run playground specialist, North Devon (own workshop; 100+ public playgrounds since 2011). Named clients: North Tawton TC, St Ives TC, Torridge DC, several parish councils. Sources: tkplay.co.uk/news, tkplay.co.uk/projects*
+**Subject:** Your parish & town council play bids — deal-breakers caught first
+> Hi there,
+>
+> You win play-area work for town, parish and district councils across Devon and Cornwall — tenders where one missed pass/fail requirement (an EN1176 spec, an inclusive-play standard, an insurance level) voids the whole bid.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own 100+ project record — every claim cited.
+>
+> Free 15-minute live reads today and tomorrow — send me a council play tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-25 · TMPI Ltd · to: trevor.tmpi@gmail.com · GOOD
+*One-man RPII annual play inspector (Trevor Muller, 15+ yrs), Charing Heath, Kent; serves LAs/parish councils/schools across London & SE (self-declared, no named council). Source: tmpi.ltd*
+**Subject:** Council inspection contracts — without the tender admin
+> Hi Trevor,
+>
+> As a one-man RPII inspection business, tender paperwork eats the billable days — and one missed pass/fail requirement in a council inspection tender voids the whole bid.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own RPII record — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council inspection tender you're eyeing and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-26 · Inspect & Repair · to: info@inspectandrepair.co.uk · GOOD
+*Family-run RPII inspection/repair team (30+ yrs engineering), covers Somerset/Devon/Cornwall/Dorset; schools/parks/councils (self-declared, no named council). Source: inspectandrepair.co.uk/our-services*
+**Subject:** Council play-area tenders — the pass/fail gates
+> Hi there,
+>
+> You inspect and repair council and school play areas across the South West — so you're bidding council maintenance work where one missed pass/fail requirement voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own RPII and method records — every claim cited.
+>
+> Free 15-minute live reads today and tomorrow — send me a council tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-27 · Premier Playgrounds Ltd · to: info@premierplaygrounds.co.uk · GOOD
+*Small owner-led play installer ("Noel and the lads"), Norfolk/East Anglia (founded 2011); parish councils & schools (softer/self-declared proof). Source: premierplaygrounds.co.uk*
+**Subject:** Your parish council play installs — what would disqualify the bid?
+> Hi Noel,
+>
+> You install play areas for parish councils and schools across East Anglia — tenders where one missed pass/fail requirement (an EN1176 spec, a safety-surfacing standard, an insurance level) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own installation record — a citation on every claim.
+>
+> Free 15-minute live reads today and tomorrow — send me a council play tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
 <!-- next waves appended below -->
 
