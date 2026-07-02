@@ -17,6 +17,23 @@ def test_scan_finds_strong_disqualifier_signals():
     assert "pass/fail" in texts.replace(" ", "") or "pass/fail" in texts
 
 
+def test_taxonomy_catches_canonical_uk_ps_gate_vocabulary():
+    """Canonical UK public-sector gate phrasings the 8-tender corpus may not all use verbatim,
+    but real tenders will — the net must recognise them so recall generalises beyond the corpus."""
+    pages = [
+        (1, "A supplier deemed ineligible under the exclusion grounds cannot proceed."),
+        (2, "Failure to sign the declaration will render your tender invalid."),
+        (3, "Any bid that is void will be set aside."),
+        # generalised submission-deadline phrasing (verb + words + 'no later than')
+        (4, "You must submit your Tender no later than 23-Oct-2025 12:00."),
+    ]
+    joined = " ".join(c["text"].lower() for c in scan_candidates(pages))
+    assert "ineligible" in joined
+    assert "invalid" in joined
+    assert "void" in joined
+    assert "no later than" in joined
+
+
 def test_uncovered_gating_surfaces_what_extraction_missed():
     # extraction only caught the innocuous line -> the collusion + deadline + pass/fail gates are missed
     extracted = [{"text": "The service runs Monday to Friday."}]

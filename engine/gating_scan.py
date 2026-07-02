@@ -25,8 +25,11 @@ from engine.similarity import content_tokens
 _STRONG = re.compile(
     # 1. explicit exclusion / rejection / disqualification / debarment
     r"(reject(ed|ion)?|exclud(e|ed|ing|sion)|disqualif(y|ied|ication|ies)|eliminat(e|ed|ion)|"
-    r"debarr(ed|ing)?|will\s+not\s+be\s+(considered|evaluated|accepted|assessed|progressed|"
-    r"short[-\s]?listed)|shall\s+be\s+excluded|grounds\s+for\s+exclusion|mandatory\s+exclusion|"
+    r"debarr(ed|ing)?|ineligib(le|ility)?|will\s+not\s+be\s+(considered|evaluated|accepted|"
+    r"assessed|progressed|short[-\s]?listed)|shall\s+be\s+excluded|grounds\s+for\s+exclusion|"
+    r"mandatory\s+exclusion|(render|invalidat)\w*\s+.{0,25}(void|invalid|non[-\s]?compliant)|"
+    r"(void|invalid)\s+(tender|bid|submission|proposal|response|offer)|"
+    r"(tender|bid|submission|proposal|response|offer)s?\b.{0,25}\b(void|invalid)\b|"
     # 2. pass/fail selection stage (SQ / PQQ / SPD)
     r"pass\s*/?\s*fail|pass\s+or\s+fail|\bpqq\b|\bsq\b|selection\s+questionnaire|"
     r"deemed\s+.{0,25}fail|fail(ure|ed|s)?\s+.{0,40}(reject|exclu|disqualif|eliminat|not\s+be\s+considered)|"
@@ -40,7 +43,8 @@ _STRONG = re.compile(
     r"must\s+(complete|submit|return|be\s+returned|be\s+completed)|"
     r"failure\s+to\s+(complete|submit|return|provide|comply|meet)|"
     # 6. submission deadline / late / incomplete
-    r"(received|submitted|returned)\s+no\s+later\s+than|closing\s+(date|time)|\bdeadline\b|"
+    r"(receiv(e|ed)|submit(ted)?|return(ed)?|lodg(e|ed)|upload(ed)?)\b.{0,40}no\s+later\s+than|"
+    r"closing\s+(date|time)|\bdeadline\b|"
     r"late\s+(tender|bid|submission|response)s?|incomplete\s+(tender|bid|submission|response)s?)",
     re.IGNORECASE,
 )

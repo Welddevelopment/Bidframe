@@ -1,0 +1,155 @@
+"""gating_coverage.py — gate-FAMILY coverage diagnostic for the public-sector safety-net.
+
+The release goal is ~1.0 gating recall on ANY UK public-sector tender. The failure mode is a
+disqualifier FAMILY the deterministic net (engine.gating_scan) does not recognise, so a whole
+class of deal-breaker slips through. This tool is the standing instrument that catches that
+BEFORE it costs recall — and before gold sets exist, so we can harden the taxonomy now.
+
+For each tender PDF it runs the net's scan and buckets every surfaced candidate line into the
+named UK public-sector gate families (exclusion / pass-fail selection / integrity / minimum
+standing / mandatory returns / submission deadline). It then flags a BLIND SPOT: a family whose
+language is visibly present in the raw text but which the net fired zero times on — the exact
+signal that the taxonomy has a gap on that tender.
+
+Gold-free, regex-only, no LLM, no key, reproducible offline (reuses gating_scan.scan_candidates).
+It measures the NET's family reach, not correctness of a specific answer key — that stays the
+gold set's job (engine.eval / engine.scripts.gating_recall).
+
+Usage (repo root):
+  python -m engine.scripts.gating_coverage                 # every PDF in the eval manifest
+  python -m engine.scripts.gating_coverage path/to.pdf ... # ad-hoc tender PDF(s)
+"""
+from __future__ import annotations
+
+import re
+import sys
+from pathlib import Path
+
+from engine._io import read_json
+from engine.gating_scan import _STRONG, scan_candidates
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+MANIFEST = REPO_ROOT / "gold-set" / "eval-manifest.json"
+
+# A human-readable decomposition of _STRONG into the named UK public-sector gate families. Kept
+# deliberately close to _STRONG's grouped comments; a candidate can match more than one family.
+FAMILIES: dict[str, re.Pattern] = {
+    "exclusion": re.compile(
+        r"reject(ed|ion)?|exclud(e|ed|ing|sion)|disqualif|eliminat(e|ed|ion)|debarr|ineligib|"
+        r"will\s+not\s+be\s+(considered|evaluated|accepted|assessed|progressed|short[-\s]?listed)|"
+        r"grounds\s+for\s+exclusion|mandatory\s+exclusion|(render|invalidat)\w*\s+.{0,25}"
+        r"(void|invalid|non[-\s]?compliant)|(void|invalid)\s+(tender|bid|submission|proposal|"
+        r"response|offer)|(tender|bid|submission|proposal|response|offer)s?\b.{0,25}\b"
+        r"(void|invalid)\b", re.I),
+    "passfail": re.compile(
+        r"pass\s*/?\s*fail|pass\s+or\s+fail|\bpqq\b|\bsq\b|selection\s+questionnaire|"
+        r"deemed\s+.{0,25}fail|fail(ure|ed|s)?\s+.{0,40}(reject|exclu|disqualif|eliminat|"
+        r"not\s+be\s+considered)", re.I),
+    "integrity": re.compile(
+        r"canvass|collusi|non[-\s]?complian|conflict\s+of\s+interest|anti[-\s]?competitive", re.I),
+    "minimums": re.compile(
+        r"minimum\s+(annual\s+)?(turnover|standard|requirement|level|threshold|score|rating)|"
+        r"must\s+hold|must\s+(possess|have|maintain)\s+.{0,40}(certificat|accreditat|insurance|"
+        r"licen[cs]e|registration)|(employer'?s|public)\s+liability|professional\s+indemnity", re.I),
+    "returns": re.compile(
+        r"must\s+(complete|submit|return|be\s+returned|be\s+completed)|"
+        r"failure\s+to\s+(complete|submit|return|provide|comply|meet)", re.I),
+    "deadline": re.compile(
+        r"(receiv(e|ed)|submit(ted)?|return(ed)?|lodg(e|ed)|upload(ed)?)\b.{0,40}no\s+later\s+than|"
+        r"closing\s+(date|time)|\bdeadline\b|late\s+(tender|bid|submission|response)s?|"
+        r"incomplete\s+(tender|bid|submission|response)s?", re.I),
+}
+
+# Weaker "is this family genuinely present in the document at all?" probes — so a family that
+# fires 0 times on a tender whose raw text clearly contains it is flagged as a real blind spot
+# (rather than a family that's simply absent from that tender, which is expected and fine).
+PRESENT: dict[str, re.Pattern] = {
+    "exclusion": re.compile(r"exclu|disqualif|reject|debarr|ineligib", re.I),
+    "passfail": re.compile(r"pass\s*/?\s*fail|\bpqq\b|selection\s+questionnaire|\bsq\b", re.I),
+    "integrity": re.compile(r"collusi|canvass|conflict\s+of\s+interest|anti[-\s]?competitive", re.I),
+    "minimums": re.compile(r"turnover|professional\s+indemnity|liability\s+insurance|"
+                           r"must\s+hold|accreditat", re.I),
+    "returns": re.compile(r"failure\s+to\s+(complete|submit|return|provide)|"
+                          r"must\s+(complete|submit|return)", re.I),
+    "deadline": re.compile(r"closing\s+(date|time)|no\s+later\s+than|deadline", re.I),
+}
+
+
+def _pages(pdf_path: Path):
+    import fitz
+    doc = fitz.open(pdf_path)
+    out = [(i + 1, doc.load_page(i).get_text("text")) for i in range(doc.page_count)]
+    doc.close()
+    return out
+
+
+def _tender_pdfs(argv: list[str]) -> list[tuple[str, Path]]:
+    """Ad-hoc PDF paths if given, else every distinct PDF referenced by the eval manifest."""
+    if argv:
+        return [(Path(a).stem, Path(a)) for a in argv]
+    manifest = read_json(MANIFEST)
+    seen: dict[str, Path] = {}
+    for e in manifest.get("tenders", []):
+        p = REPO_ROOT / e["pdf"]
+        seen.setdefault(e.get("tender_id", p.stem), p)
+    return list(seen.items())
+
+
+def analyse(pdf_path: Path) -> dict:
+    pages = _pages(pdf_path)
+    full = "\n".join(t for _, t in pages)
+    cands = scan_candidates(pages)
+    counts = {f: 0 for f in FAMILIES}
+    for c in cands:
+        exc = c["source_excerpt"]
+        for f, rx in FAMILIES.items():
+            if rx.search(exc):
+                counts[f] += 1
+    blind = [f for f in FAMILIES if not counts[f] and PRESENT[f].search(full)]
+    return {"total": len(cands), "counts": counts, "blind": blind, "pages": len(pages)}
+
+
+def main(argv) -> int:
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
+    tenders = _tender_pdfs(argv[1:])
+    fams = list(FAMILIES)
+    print("Gate-FAMILY coverage of the deterministic safety-net (regex-only, gold-free):\n")
+    print(f"{'tender':<32}{'pp':>4}{'cand':>6}  " + "".join(f"{f[:8]:>9}" for f in fams))
+    all_blind: list[tuple[str, str]] = []
+    for tid, pdf in tenders:
+        if not pdf.exists():
+            print(f"{tid[:31]:<32}  (PDF not found: {pdf})")
+            continue
+        a = analyse(pdf)
+        row = f"{tid[:31]:<32}{a['pages']:>4}{a['total']:>6}  "
+        for f in fams:
+            n = a["counts"][f]
+            row += f"{(str(n) if n else ('GAP' if f in a['blind'] else '·')):>9}"
+        print(row)
+        all_blind += [(tid, f) for f in a["blind"]]
+    print("\nBLIND SPOTS (family present in the raw text but the net fired 0 — taxonomy gap to close):")
+    if all_blind:
+        for tid, f in all_blind:
+            print(f"  ⚠ {tid}: {f}")
+    else:
+        print("  none — every present gate-family fires at least once on every tender scanned.")
+    # sanity: confirm the decomposed families cover _STRONG (no family-less strong candidates)
+    unclassified = 0
+    for tid, pdf in tenders:
+        if not pdf.exists():
+            continue
+        for c in scan_candidates(_pages(pdf)):
+            if _STRONG.search(c["source_excerpt"]) and not any(
+                    rx.search(c["source_excerpt"]) for rx in FAMILIES.values()):
+                unclassified += 1
+    if unclassified:
+        print(f"\n  note: {unclassified} strong candidate(s) matched _STRONG but no named family "
+              f"— the family decomposition drifted from _STRONG; re-sync FAMILIES.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv))
