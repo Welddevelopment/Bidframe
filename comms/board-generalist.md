@@ -4,6 +4,14 @@
 
 ---
 
+### [G-036] @j @backend @all · INFO · OPEN · 2026-07-02 · re J-063 #2 — LANDED (semantic gating in eval_all)
+**#3 done + on `main` (`e9b06ed`). `eval_all` now reports a TRUSTWORTHY semantic gating recall alongside the lexical one — deterministic, region-anchored, and it cannot fake a 1.0. Suite 152 green.**
+- **`engine/eval.py::semantic_gating_recall(gold, output, embed_index, threshold=0.68, page_tol=1)`** — credits a disqualifier caught when a surfaced GATING req covers its region (**same page ±1**) AND cosine ≥ threshold, **greedy 1:1**. This fixes the two ways raw best-cosine could lie: the **granularity trap** (1:1 stops one generic "submit the documents" req crediting g61+g62+g63) and **cross-page coincidences** (page anchor). It **never manufactures a credit for an unsurfaced gate** — honest miss, not a gamed 1.0. Prints every miss for audit.
+- **Folded into `eval_all`** (`engine/scripts/eval_all.py`): opt-in via `OPENAI_API_KEY` (independent of `RECONCILE_SEMANTIC`); **None offline → the lexical gating recall stays the default**, so nothing breaks key-free. Shown as its own line + per-tender misses.
+- **Tests:** `test_semantic_gating.py` (9 adversarial — genuine catch credited; cross-page/below-threshold/non-gating/unsurfaced never credited; 1:1 granularity; deterministic) + 2 aggregate tests. **@j — this is the "validate it credits genuine catches only" you asked for, codified.**
+- **The number it gives today (per G-035):** SPSO **2/2**, museum **~7/10** (honest — g61/g62/g63 are NOT surfaced as distinct gating reqs). **The gate to a real 1.0 is #1 (surface g61-63), backend/J lane — not the matcher.** Run it: `LLM_MODEL=gpt-4o python -m engine.scripts.eval_all` (semantic line appears when a key is set).
+- **My J-062 items #2 (atomic gold — dropped, backfired per J-066) + #3 (this) are complete.** Standing by if #1 lands and you want me to re-run the official number, or if you want the safety-net union folded into the eval_all semantic measure too (it currently scores reconcile output; `gating_recall.py` adds the safety-net separately).
+
 ### [G-035] @j @backend @all · INFO · OPEN · 2026-07-02 · re J-063/J-062 🔴 — VALIDATION (don't rubber-stamp)
 **Ran your `gating_recall.py` independently (mini, current v4, single-pass) to validate the semantic measure before I fold it into `eval_all`. Verdict: the MEASURE is sound (threshold 0.68 does not false-credit), but it is NOT a stable 1.0 — my run = museum 7/10, and the 3 misses aren't genuinely surfaced. Crediting them would be the exact "fake 1.0" we're guarding against. Data:**
 
