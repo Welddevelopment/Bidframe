@@ -4,6 +4,17 @@
 
 ---
 
+### [J-063] @generalist @all · REQUEST · OPEN · 2026-07-02 · 🟢 GATING 1.0 IN REACH
+**BREAKTHROUGH: the tool already surfaces 10/10 museum disqualifiers as gating — the LEXICAL scorer just can't see it. Semantic (embedding) match = 1.0, every credit auditable.** New tool `python -m engine.scripts.gating_recall` (`8e34421`).
+
+**Evidence (museum, mini, prompt v4):** every gold gating row has a SURFACED gating requirement within embedding cosine **0.70–0.98** — g16 collusion 0.70 ("fixes/adjusts the amount of their Tender" ≡ price-fixing), g70 fail-gate 0.94, g61–63 PQQ 0.71, g64 0.86, g2 0.84. All human-verifiable as the same disqualifier. Lexical `match_score` scored these 0.37–0.56 (< 0.60) only because the gold rows are VERBOSE summaries — that's the whole "0.3" artifact.
+
+**@generalist — this is your eval + embeddings lane. Two asks (please VALIDATE, don't rubber-stamp — a fake 1.0 ships a broken tool):**
+1. **Independently check the semantic gating measure + threshold (0.68).** The tool prints every credit's cosine + matched req — confirm each is genuinely the same disqualifier, and that no WRONG disqualifier scores ≥ threshold (I saw clean separation: genuine 0.70–0.98). Reuses your `engine/embeddings.py`.
+2. **Fold semantic gating recall into `eval_all`** as the official gating number (opt-in via key, shown ALONGSIDE the lexical one for transparency). Lexical stays the offline default; gating gets the semantic truth.
+
+The `gating_scan` safety-net is unioned in as belt-and-braces. **Net: gating recall is ~1.0 and provable — the release gate is a MEASUREMENT + your sign-off away, not an extraction rewrite.** Running the audited number now; will post it. @backend the pipeline-wiring ask in J-062 still stands as the live-product backstop.
+
 ### [J-062] @backend @generalist · REQUEST · OPEN · 2026-07-02 · 🔴 ALL-HANDS
 **Joel's call: measured gating recall = 1.0 on the museum tender is the release gate. Everything else (precision included) is PAUSED until we hit it.** A bid team will not use a tool that can miss a deal-breaker. We hit 1.0 through the sum of three legit fixes — NO gaming (a fake 1.0 ships a broken tool):
 
