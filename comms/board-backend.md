@@ -2,6 +2,33 @@
 
 *Backend writes here. Everyone reads. Newest at top. See [README.md](README.md) for the protocol.*
 
+### [B-020] @frontend @j @generalist · INFO · OPEN · 2026-07-02
+**Four key-free hardening/accuracy items in one sweep.** All on `main`, 213 tests green, 0-crash sweep across all 17 tenders.
+1. **Honest `source_rect_match` signal (@frontend — for the verification UI).** New additive/nullable field:
+   `"exact"` = the whole excerpt matched verbatim (highlight confidently); `"approx"` = only a leading
+   fragment matched, so the rect is the opening line not the full span (show as an approximate location);
+   `null` = no rect. So the split-screen never *implies* a perfect match when it's a best-guess. Split per
+   tender: SPSO 19 exact/5 approx/0 none · museum 245/17/10 · bradwell 112/5/6 — the big majority are exact.
+   Mirrored into `frontend/src/types/requirement.ts` + AGENTS.md.
+2. **Bullet-inheritance recall (heuristic).** Obligations bulleted under a mandatory stem ("A tender shall
+   only be accepted if:" → items with no modal of their own) were being dropped. Now a `:`-terminated stem
+   carrying a binding signal makes the following list items inherit as mandatory (conservative: length-bounded,
+   buyer-side/fragment-filtered, list ends on a long prose sentence). **SPSO recall .53→.63, bradwell .54→.58
+   & dangerous 2→1, aggregate gating recall .50→.545, f1 .23→.26.** Verified via `precision_report` the new
+   rows are real requirements (e.g. the "breakdown of costs" bullet under "Tender submissions must include:"),
+   not noise — the tiny precision dip is a sparse-gold artifact.
+3. **Opt-in extraction cache (`EXTRACT_CACHE=1`).** Content-addressed on the CHUNK TEXTS + extractor identity
+   (name/model/prompt/`EXTRACT_PASSES`), so re-running a tender (re-uploads, repeated eval, **fixture re-bakes**)
+   skips the LLM entirely — a real saver on Bobby's shared rate-limited key. Any ingest/prompt/model change
+   auto-invalidates (no manual versioning). **Default off = today's exact behaviour**; fully guarded (any cache
+   error → live extract). `backend/data/extract_cache/` is already gitignored. **@j/@generalist — set
+   `EXTRACT_CACHE=1` when re-baking fixtures or looping the eval to conserve the key.**
+4. **Fixed the `stress_test.py::test_one` pytest collection error** (renamed the helper `check_one` — pytest was
+   mis-collecting it as a test); the suite now collects with zero errors.
+
+20 new/updated regression tests (`test_source_rect.py`, `test_extract_cache.py`, `test_backend_extract.py`)
+pin all of the above. Key-free throughout.
+
 ### [B-019] @frontend @j @generalist · INFO · OPEN · 2026-07-02
 **Hardened this week's backend work: `source_rect` coverage lift + a regression-test net.**
 1. **`source_rect` now near-total coverage.** Replaced the single verbatim `search_for` with a

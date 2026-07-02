@@ -20,33 +20,35 @@ def _one_page(text: str):
     return doc, page
 
 
-def test_search_rects_finds_full_excerpt():
+def test_search_rects_finds_full_excerpt_exact():
     doc, page = _one_page("The Contractor shall provide all cleaning equipment.")
-    rects = pipeline._search_rects(page, "The Contractor shall provide all cleaning equipment.")
+    rects, match = pipeline._search_rects(page, "The Contractor shall provide all cleaning equipment.")
     doc.close()
     assert rects and len(rects[0]) == 4  # a fitz Rect is x0,y0,x1,y1
+    assert match == "exact"
 
 
-def test_search_rects_prefix_fallback_when_full_absent():
+def test_search_rects_prefix_fallback_is_approx():
     # the page has only the opening; the excerpt's tail isn't present -> full search
-    # fails, but the first-N-words fallback still locates the line.
+    # fails, but the first-N-words fallback still locates the line, flagged approximate.
     doc, page = _one_page("The Contractor shall provide staff")
     excerpt = "The Contractor shall provide staff for the whole contract term at every listed site."
-    rects = pipeline._search_rects(page, excerpt)
+    rects, match = pipeline._search_rects(page, excerpt)
     doc.close()
     assert rects is not None
+    assert match == "approx"
 
 
 def test_search_rects_returns_none_when_absent():
     doc, page = _one_page("Entirely unrelated page content about badgers.")
-    rects = pipeline._search_rects(page, "The Contractor shall hold ISO 9001 certification.")
+    rects, match = pipeline._search_rects(page, "The Contractor shall hold ISO 9001 certification.")
     doc.close()
-    assert rects is None
+    assert rects is None and match is None
 
 
 def test_search_rects_ignores_too_short_excerpt():
     doc, page = _one_page("The Contractor shall provide staff.")
-    assert pipeline._search_rects(page, "and") is None
+    assert pipeline._search_rects(page, "and") == (None, None)
     doc.close()
 
 
@@ -67,6 +69,7 @@ def test_attach_source_rects_fills_and_is_guarded(tmp_path):
     )
     pipeline._attach_source_rects([req], [("d1", str(pdf_path), "d1.pdf")])
     assert req.source_rect and len(req.source_rect[0]) == 4
+    assert req.source_rect_match == "exact"
 
 
 def test_attach_source_rects_missing_doc_leaves_none():

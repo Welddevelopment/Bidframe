@@ -64,6 +64,10 @@ export interface Requirement {
   // so the source panel falls back to a text-layer search. Lets the verification view
   // highlight the exact line instead of guessing.
   source_rect?: number[][] | null;
+  // Trust signal for source_rect: "exact" = whole excerpt matched verbatim (highlight
+  // confidently); "approx" = only a leading fragment matched, so the rect is the opening
+  // line, not the full span (show as an approximate location). null when there's no rect.
+  source_rect_match?: "exact" | "approx" | null;
 }
 
 // A published award criterion for the tender (e.g. Quality 40%). Additive:

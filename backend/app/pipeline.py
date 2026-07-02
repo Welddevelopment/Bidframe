@@ -18,6 +18,7 @@ from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Callable, Optional
 
+from . import extract_cache
 from .chunk import chunk_doc
 from .extract import extract_chunk_multi, get_extractor
 from .graph import build_graph
@@ -207,24 +208,26 @@ MAX_RECTS_PER_REQ = 12   # a long multi-line excerpt; caps payload + avoids path
 
 
 def _search_rects(page, excerpt: str):
-    """Locate `excerpt` on a PDF page, returning bounding-box rects or None. Tries the
-    whole (whitespace-collapsed) excerpt first — the best, full-sentence highlight — then
-    falls back to progressively shorter prefixes (first sentence, first 8 words, first 4)
-    so a long/reflowed/OCR-normalised excerpt that doesn't match verbatim still resolves
-    to at least its opening line, which is enough for the client to scroll to + highlight."""
+    """Locate `excerpt` on a PDF page. Returns (rects, match) or (None, None). Tries the
+    whole (whitespace-collapsed) excerpt first — a full-sentence highlight, match="exact" —
+    then falls back to progressively shorter prefixes (first sentence, first 8 words, first
+    4), which resolve a long/reflowed/OCR-normalised excerpt to at least its opening line but
+    only approximately, match="approx". The frontend uses `match` to be honest: highlight the
+    line confidently on "exact", show it as an approximate location on "approx"."""
     needle = " ".join(excerpt.split())
     if len(needle) < 6:
-        return None
-    candidates = [needle[:300]]
+        return None, None
+    full = needle[:300]
+    candidates = [(full, "exact")]
     first_sentence = re.split(r"(?<=[.;:])\s", needle)[0]
-    if 8 <= len(first_sentence) < len(needle[:300]):
-        candidates.append(first_sentence[:200])
+    if 8 <= len(first_sentence) < len(full):
+        candidates.append((first_sentence[:200], "approx"))
     words = needle.split()
     if len(words) >= 8:
-        candidates.append(" ".join(words[:8]))
+        candidates.append((" ".join(words[:8]), "approx"))
     if len(words) >= 4:
-        candidates.append(" ".join(words[:4]))
-    for cand in candidates:
+        candidates.append((" ".join(words[:4]), "approx"))
+    for cand, match in candidates:
         if len(cand) < 8:
             continue
         try:
@@ -232,8 +235,8 @@ def _search_rects(page, excerpt: str):
         except Exception:
             rects = None
         if rects:
-            return rects[:MAX_RECTS_PER_REQ]
-    return None
+            return rects[:MAX_RECTS_PER_REQ], match
+    return None, None
 
 
 def _attach_source_rects(requirements: "list[Requirement]", docs: "list[tuple[str, str, str]]") -> None:
@@ -263,12 +266,13 @@ def _attach_source_rects(requirements: "list[Requirement]", docs: "list[tuple[st
                     if not excerpt or pno < 0 or pno >= pdf.page_count:
                         continue
                     try:
-                        rects = _search_rects(pdf[pno], excerpt)
+                        rects, match = _search_rects(pdf[pno], excerpt)
                         if rects:
                             r.source_rect = [
                                 [round(x.x0, 1), round(x.y0, 1), round(x.x1, 1), round(x.y1, 1)]
                                 for x in rects
                             ]
+                            r.source_rect_match = match
                     except Exception:
                         continue  # one bad excerpt never blocks the rest
         except Exception as exc:
@@ -340,6 +344,18 @@ def run_pipeline_multi(
     total = total_chunks or 1
     for doc_id, filename, doc, chunks in doc_chunks:
         bucket = raws_by_doc.setdefault(doc_id, [])
+        # Content-addressed cache (opt-in, EXTRACT_CACHE=1): skip the LLM entirely when this
+        # document's chunks + extractor identity have been extracted before. Keyed on the
+        # chunk texts, so any ingest/prompt/model change auto-invalidates. See extract_cache.
+        cached = extract_cache.load(chunks, extractor)
+        if cached is not None:
+            bucket.extend(cached)
+            done += len(chunks)
+            emit("extract", "Extracting requirements (cached)",
+                 0.15 + 0.60 * (min(done, total) / total),
+                 done=min(done, total), total=total,
+                 raw_count=sum(len(v) for v in raws_by_doc.values()))
+            continue
         for ch in chunks:
             try:
                 bucket.extend(extract_chunk_multi(extractor, ch))
@@ -349,6 +365,7 @@ def run_pipeline_multi(
             raw_total = sum(len(v) for v in raws_by_doc.values())
             emit("extract", "Extracting requirements", 0.15 + 0.60 * (done / total),
                  done=done, total=total, raw_count=raw_total)
+        extract_cache.save(chunks, extractor, bucket)
 
     # 4. Reconcile — per document (never merge a duplicate across documents), then
     #    concatenate + re-number across the whole pack.

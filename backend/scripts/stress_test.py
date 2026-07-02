@@ -73,7 +73,7 @@ def download_new(sources: Path) -> None:
             log(f"- {_now()} · DOWNLOAD FAILED `{url}` — {type(exc).__name__}: {exc}")
 
 
-def test_one(client, pdf: Path) -> None:
+def check_one(client, pdf: Path) -> None:
     """Run one tender through the full API; log any breakage in detail."""
     try:
         with pdf.open("rb") as f:
@@ -162,7 +162,7 @@ def main(argv: list[str]) -> int:
             log("  (no tenders yet — add URLs to the sources file)")
         with TestClient(app) as client:
             for pdf in pdfs:
-                test_one(client, pdf)
+                check_one(client, pdf)
         if passes and p >= passes:
             break
         time.sleep(sleep_s)

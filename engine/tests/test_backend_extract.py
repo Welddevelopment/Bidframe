@@ -119,6 +119,40 @@ def test_extract_chunk_multi_noop_for_heuristic_even_when_passes_set(monkeypatch
     assert extract.extract_chunk_multi(ex, ch) == ex.extract_chunk(ch)
 
 
+# ---- bullet-inheritance recall (list items under a mandatory stem) ----------
+
+def test_list_stem_detected():
+    assert extract._is_list_stem("A tender shall only be accepted if:") is True
+    # no colon -> not a stem
+    assert extract._is_list_stem("The Contractor shall provide staff.") is False
+    # colon but no binding signal -> not a stem
+    assert extract._is_list_stem("The following applies:") is False
+
+
+def test_bulleted_obligations_inherit_the_stem():
+    # the two bullets carry no modal of their own; they must be picked up under the stem
+    ch = _chunk(
+        "A tender shall only be accepted if:\n"
+        "The submission is in the English language and prices in pounds sterling.\n"
+        "The submission is complete and fully compliant with this ITT."
+    )
+    reqs = extract.HeuristicExtractor().extract_chunk(ch)
+    texts = " || ".join(r["text"].lower() for r in reqs)
+    assert "english language" in texts
+    assert "fully compliant" in texts
+
+
+def test_inheritance_does_not_run_without_a_stem():
+    # signal-less lines with no governing stem stay dropped (precision guard)
+    ch = _chunk(
+        "This section describes the site.\n"
+        "The submission is in the English language.\n"
+        "Prices are in pounds sterling."
+    )
+    reqs = extract.HeuristicExtractor().extract_chunk(ch)
+    assert reqs == []
+
+
 # ---- determinism knobs are present ------------------------------------------
 
 def test_extract_seed_is_fixed():

@@ -70,6 +70,11 @@ class Requirement(BaseModel):
     # multi-line excerpt yields several rects. Nullable — absent when the excerpt can't
     # be located (e.g. reflowed/OCR'd text), so the client falls back to text search.
     source_rect: Optional[list[list[float]]] = None
+    # How trustworthy source_rect is: "exact" = the whole excerpt matched verbatim (highlight
+    # confidently); "approx" = only a leading fragment matched, so the rect locates the
+    # opening line but not the full span (show as an approximate location). None when there's
+    # no rect. Lets the verification UI be honest instead of implying a perfect match.
+    source_rect_match: Optional[str] = None
 
 
 class CapabilityDoc(BaseModel):

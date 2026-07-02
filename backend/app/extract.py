@@ -171,6 +171,33 @@ def _looks_like_requirement(sentence: str) -> bool:
     )
 
 
+def _is_list_stem(sentence: str) -> bool:
+    """A line that introduces a list of obligations: ends with ':' and carries a binding
+    signal (e.g. 'A tender shall only be accepted if:', 'The Contractor must ensure:').
+    The bullet items that follow inherit the obligation even without their own modal."""
+    s = sentence.strip()
+    if not s.endswith(":") or len(s) > 200:
+        return False
+    low = s.lower()
+    return any(sig in low for sig in MANDATORY_SIGNALS) or any(sig in low for sig in GATING_SIGNALS)
+
+
+def _plausible_list_item(sentence: str) -> bool:
+    """A signal-less line that is still a plausible obligation when governed by a list stem:
+    reasonable length, not a buyer-side/continuation/dangling fragment. Kept tight so
+    inheritance lifts recall without dragging precision back down."""
+    s = sentence.strip()
+    low = s.lower()
+    if not (20 <= len(s) <= 220):
+        return False
+    if s[:1].islower():
+        return False
+    if any(low.startswith(op) for op in _BUYER_SIDE_OPENERS):
+        return False
+    last = low.rstrip(".;:").split()[-1] if low.rstrip(".;:").split() else ""
+    return last not in _FRAGMENT_TAIL
+
+
 class HeuristicExtractor:
     """Rule-based extractor — no API key required."""
 
@@ -179,25 +206,9 @@ class HeuristicExtractor:
     def extract_chunk(self, chunk: Chunk) -> list[dict]:
         out: list[dict] = []
         seq = 0
-        reflowed = _SOFT_WRAP.sub(" ", chunk.text)
-        for raw_sentence in _SENT_SPLIT.split(reflowed):
-            sentence = " ".join(raw_sentence.split())
-            if not _looks_like_requirement(sentence):
-                continue
-            req_type = _classify_type(sentence)
-            gating = _is_gating(sentence, req_type)
-            # Heuristic confidence: gating/clear signals score higher; cap modest
-            # because rule-based extraction is inherently uncertain.
-            low = sentence.lower()
-            conf = 0.55
-            if any(s in low for s in MANDATORY_SIGNALS):
-                conf += 0.1
-            if gating:
-                conf += 0.1
-            conf = min(conf, 0.8)
-            # Locate the sentence in the ORIGINAL (un-reflowed) chunk text for an accurate
-            # page. Reflow collapsed soft-wrap newlines to spaces + shifted offsets, so
-            # match the first few words whitespace-flexibly rather than an exact substring.
+
+        def emit(sentence: str, req_type: str, gating: bool, conf: float, inherited: bool) -> None:
+            nonlocal seq
             start = _find_in_original(chunk.text, sentence)
             page = chunk.page_at(start) if start >= 0 else chunk.page_start
             out.append(
@@ -213,11 +224,42 @@ class HeuristicExtractor:
                     "category": _category(sentence),
                     "confidence": round(conf, 2),
                     "char_start": start if start >= 0 else None,
-                    "char_end": (start + len(raw_sentence.strip())) if start >= 0 else None,
-                    "extractor_notes": "heuristic/rule-based — verify with LLM extractor",
+                    "char_end": (start + len(sentence)) if start >= 0 else None,
+                    "extractor_notes": (
+                        "heuristic/list-item under a mandatory stem — verify with LLM extractor"
+                        if inherited else "heuristic/rule-based — verify with LLM extractor"
+                    ),
                 }
             )
             seq += 1
+
+        reflowed = _SOFT_WRAP.sub(" ", chunk.text)
+        governing = 0   # >0 while inside a list introduced by a mandatory/gating stem
+        for raw_sentence in _SENT_SPLIT.split(reflowed):
+            sentence = " ".join(raw_sentence.split())
+            if not sentence:
+                continue
+            if _looks_like_requirement(sentence):
+                req_type = _classify_type(sentence)
+                gating = _is_gating(sentence, req_type)
+                low = sentence.lower()
+                conf = 0.55
+                if any(s in low for s in MANDATORY_SIGNALS):
+                    conf += 0.1
+                if gating:
+                    conf += 0.1
+                emit(sentence, req_type, gating, min(conf, 0.8), inherited=False)
+            elif governing > 0 and _plausible_list_item(sentence):
+                # signal-less bullet under a mandatory stem — inherit as mandatory, lower conf
+                emit(sentence, "mandatory", _is_gating(sentence, "mandatory"), 0.5, inherited=True)
+
+            # update the list-stem context AFTER handling the sentence
+            if _is_list_stem(sentence):
+                governing = 6            # inherit for the next few list items
+            elif len(sentence) > 220:
+                governing = 0            # a long prose sentence ends the list
+            elif governing > 0:
+                governing -= 1
         return out
 
 
