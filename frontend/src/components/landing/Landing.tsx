@@ -12,6 +12,7 @@ import { HowItWorks } from "./HowItWorks";
 import { SiteFooter } from "./SiteFooter";
 import { FernFrond } from "./art/FernFrond";
 import { PineBranch } from "./art/PineBranch";
+import { PressedLeaf } from "./art/PressedLeaf";
 import { TreelineDivider } from "./art/TreelineDivider";
 import { Seal } from "./art/Seal";
 
@@ -103,16 +104,18 @@ export function Landing() {
             <TreelineDivider className="hero-ridge absolute inset-x-0 bottom-0 h-24 w-full text-moss sm:h-32" />
             <TreelineDivider
               flip
-              className="hero-canopy absolute -top-10 inset-x-0 hidden h-28 w-full rotate-180 text-forest/[0.08] md:block lg:h-32"
+              className="hero-canopy absolute -top-10 inset-x-0 hidden h-28 w-full rotate-180 text-forest/[0.1] md:block lg:h-32"
             />
-            <FernFrond className="art-draw absolute -right-28 top-24 hidden h-[430px] w-auto rotate-[7deg] text-forest/[0.16] md:block lg:-right-20 lg:top-14 lg:h-[620px] lg:text-forest/[0.22]" />
-            <FernFrond className="art-draw absolute -left-32 top-28 hidden h-[420px] w-auto origin-center -scale-x-100 -rotate-[6deg] text-forest/[0.13] md:block lg:-left-24 lg:top-20 lg:h-[600px] lg:text-forest/[0.18]" />
-            <FernFrond className="art-draw absolute -right-10 top-[360px] hidden h-[360px] w-auto rotate-[18deg] text-pine/[0.08] xl:block" />
-            <PineBranch className="art-draw absolute -left-24 bottom-24 hidden h-48 w-auto -rotate-[5deg] text-forest/[0.14] md:block lg:-left-20 lg:h-64 lg:text-forest/[0.18]" />
-            <PineBranch className="art-draw absolute left-8 top-28 hidden h-36 w-auto rotate-[9deg] text-pine/[0.08] xl:block" />
+            <FernFrond className="art-draw absolute -right-28 top-24 hidden h-[430px] w-auto rotate-[7deg] text-forest/[0.2] md:block lg:-right-20 lg:top-14 lg:h-[620px] lg:text-forest/[0.28]" />
+            <FernFrond className="art-draw absolute -left-32 top-28 hidden h-[420px] w-auto origin-center -scale-x-100 -rotate-[6deg] text-forest/[0.16] md:block lg:-left-24 lg:top-20 lg:h-[600px] lg:text-forest/[0.22]" />
+            <FernFrond className="art-draw absolute -right-10 top-[360px] hidden h-[360px] w-auto rotate-[18deg] text-pine/[0.1] xl:block" />
+            <FernFrond className="art-draw absolute -right-20 top-[315px] h-[260px] w-auto rotate-[13deg] text-forest/[0.16] md:hidden" />
+            <PineBranch className="art-draw absolute -left-24 bottom-24 hidden h-48 w-auto -rotate-[5deg] text-forest/[0.18] md:block lg:-left-20 lg:h-64 lg:text-forest/[0.24]" />
+            <PineBranch className="art-draw absolute left-8 top-28 hidden h-36 w-auto rotate-[9deg] text-pine/[0.1] xl:block" />
+            <PineBranch className="art-draw absolute -left-24 top-32 h-36 w-auto -rotate-[9deg] text-forest/[0.14] md:hidden" />
             <Seal
               id="seal-hero"
-              className="absolute left-[5%] top-[48%] hidden h-32 w-32 -translate-y-1/2 -rotate-[8deg] text-forest/[0.045] md:block lg:left-[7%] lg:top-[44%] lg:h-40 lg:w-40 lg:text-forest/[0.06]"
+              className="absolute left-[5%] top-[48%] hidden h-32 w-32 -translate-y-1/2 -rotate-[8deg] text-forest/[0.055] md:block lg:left-[7%] lg:top-[44%] lg:h-40 lg:w-40 lg:text-forest/[0.075]"
             />
           </div>
 
@@ -414,6 +417,12 @@ function FeatureSection({
   return (
     <Band surface={surface} space="air">
       <div className="mx-auto max-w-[760px] text-center">
+        <DrawOn className="mx-auto mb-5 flex h-10 w-10 items-center justify-center text-forest/35">
+          <PressedLeaf
+            variant={tilt === "left" ? "fern" : "oak"}
+            className="h-10 w-10"
+          />
+        </DrawOn>
         <Head align="center" size={size}>
           {title}
         </Head>

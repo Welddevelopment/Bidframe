@@ -539,9 +539,9 @@ body {
    bands paint over it, so it never touches a working surface. */
 .paper-grid {
   background-image:
-    linear-gradient(to right, rgba(33, 29, 23, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(33, 29, 23, 0.035) 1px, transparent 1px);
-  background-size: 32px 32px;
+    linear-gradient(to right, rgba(44, 86, 64, 0.024) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(44, 86, 64, 0.018) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
 /* The landing hero's own graph paper: slightly firmer lines than the shared
@@ -576,7 +576,14 @@ body {
 .forest-hero {
   position: relative;
   isolation: isolate;
-  background-color: var(--color-paper);
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(251, 248, 241, 0.96) 0%,
+      rgba(246, 242, 233, 0.98) 42%,
+      rgba(232, 235, 221, 0.78) 100%
+    ),
+    var(--color-paper);
 }
 .forest-hero::before,
 .forest-hero::after {
@@ -588,27 +595,38 @@ body {
 }
 .forest-hero::before {
   background-image:
-    linear-gradient(to right, rgba(33, 29, 23, 0.055) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(33, 29, 23, 0.055) 1px, transparent 1px);
-  background-size: 32px 32px;
-  mask-image: linear-gradient(to bottom, black 0%, black 62%, transparent 100%);
+    linear-gradient(to right, rgba(44, 86, 64, 0.032) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(44, 86, 64, 0.026) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: linear-gradient(to bottom, black 0%, black 48%, transparent 100%);
 }
 .forest-hero::after {
-  top: 54%;
+  top: 36%;
   background:
     linear-gradient(
       to bottom,
       rgba(232, 235, 221, 0),
-      rgba(232, 235, 221, 0.74) 58%,
-      rgba(232, 235, 221, 0.96)
+      rgba(232, 235, 221, 0.58) 46%,
+      rgba(205, 213, 189, 0.7) 100%
+    ),
+    linear-gradient(
+      115deg,
+      rgba(44, 86, 64, 0.12),
+      rgba(44, 86, 64, 0) 42%
+    ),
+    linear-gradient(
+      245deg,
+      rgba(29, 58, 43, 0.13),
+      rgba(29, 58, 43, 0) 44%
     );
 }
 .hero-ridge {
   z-index: 1;
-  opacity: 0.8;
+  opacity: 0.95;
 }
 .hero-canopy {
   z-index: 1;
+  opacity: 0.95;
 }
 
 /* Proof climax: the dark pine band becomes an official register. These are not
