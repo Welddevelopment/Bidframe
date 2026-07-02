@@ -19,16 +19,29 @@ import re
 
 from engine.similarity import content_tokens
 
-# STRONG = explicit disqualifier / pass-fail / submission-deadline language. These, if uncovered
-# by extraction, are surfaced. (BROAD signals like bare "minimum"/"mandatory" are too noisy to
-# auto-add — kept out of the safety net; the LLM pass handles those.)
+# UK PUBLIC-SECTOR DISQUALIFIER TAXONOMY — the finite set of gate types that void a bid in a UK
+# ITT / SQ / framework. High-recall by design (the LLM pass + reconcile dedup filter downstream);
+# grouped for maintainability. Specialising into public sector = making this taxonomy exhaustive.
 _STRONG = re.compile(
-    r"(reject(ed|ion)?|exclud(e|ed|ing|sion)|disqualif(y|ied|ication|ies)|"
-    r"eliminat(e|ed|ion)|will\s+not\s+be\s+(considered|evaluated|accepted|assessed)|"
-    r"pass\s*/?\s*fail|pass\s+or\s+fail|shall\s+be\s+excluded|deemed\s+.{0,25}fail|"
-    r"fail(ure|ed|s)?\s+.{0,40}(reject|exclu|disqualif|eliminat|not\s+be\s+considered)|"
-    r"canvass|collusi|non[-\s]?complian|"
-    r"(received|submitted|returned)\s+no\s+later\s+than|closing\s+(date|time)|\bdeadline\b)",
+    # 1. explicit exclusion / rejection / disqualification / debarment
+    r"(reject(ed|ion)?|exclud(e|ed|ing|sion)|disqualif(y|ied|ication|ies)|eliminat(e|ed|ion)|"
+    r"debarr(ed|ing)?|will\s+not\s+be\s+(considered|evaluated|accepted|assessed|progressed|"
+    r"short[-\s]?listed)|shall\s+be\s+excluded|grounds\s+for\s+exclusion|mandatory\s+exclusion|"
+    # 2. pass/fail selection stage (SQ / PQQ / SPD)
+    r"pass\s*/?\s*fail|pass\s+or\s+fail|\bpqq\b|\bsq\b|selection\s+questionnaire|"
+    r"deemed\s+.{0,25}fail|fail(ure|ed|s)?\s+.{0,40}(reject|exclu|disqualif|eliminat|not\s+be\s+considered)|"
+    # 3. integrity gates
+    r"canvass|collusi|non[-\s]?complian|conflict\s+of\s+interest|anti[-\s]?competitive|"
+    # 4. mandatory minimums / thresholds / required holdings (certs, insurance, turnover)
+    r"minimum\s+(annual\s+)?(turnover|standard|requirement|level|threshold|score|rating)|"
+    r"must\s+hold|must\s+(possess|have|maintain)\s+.{0,40}(certificat|accreditat|insurance|licen[cs]e|registration)|"
+    r"(employer'?s|public)\s+liability|professional\s+indemnity|"
+    # 5. mandatory returns / completeness
+    r"must\s+(complete|submit|return|be\s+returned|be\s+completed)|"
+    r"failure\s+to\s+(complete|submit|return|provide|comply|meet)|"
+    # 6. submission deadline / late / incomplete
+    r"(received|submitted|returned)\s+no\s+later\s+than|closing\s+(date|time)|\bdeadline\b|"
+    r"late\s+(tender|bid|submission|response)s?|incomplete\s+(tender|bid|submission|response)s?)",
     re.IGNORECASE,
 )
 
