@@ -20,7 +20,7 @@ from dataclasses import dataclass, field
 from .ingest import IngestedDoc
 
 TARGET_CHARS = 3000     # ~per-chunk size; small enough for careful extraction
-OVERLAP_CHARS = 400     # carried into the next chunk so boundaries aren't lost
+OVERLAP_CHARS = 800     # ~200 tokens carried into the next chunk so boundaries aren't lost
 
 
 @dataclass

@@ -14,12 +14,23 @@ rendering). Scaffolded by J.
 
 from __future__ import annotations
 
+import base64
+import os
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 
+try:  # present at repo-root runtime; absent on a backend-rooted deploy (then no-op)
+    from engine.usage_log import log_usage as _log_usage
+except ImportError:  # pragma: no cover
+    def _log_usage(resp, model, label) -> None:
+        return
+
 # A page with less than this much text is "sparse" → try pdfplumber to recover it.
 SPARSE_PAGE_CHARS = 100
+# Cap on genuinely scanned pages sent to gpt-4o vision per document — bounds cost on a
+# fully-scanned tender; pages beyond the cap fall through to the sparse-page warning.
+MAX_VISION_PAGES = 15
 
 
 @dataclass
@@ -56,7 +67,11 @@ def _extract_with_fitz(pdf_path: Path) -> list[str] | None:
     out: list[str] = []
     with fitz.open(str(pdf_path)) as doc:
         for page in doc:
-            out.append(page.get_text("text"))
+            # sort=True orders text blocks top-to-bottom/left-to-right by position
+            # rather than internal PDF stream order, so multi-column tender layouts
+            # (common in appendices/schedules) read in the correct sequence instead
+            # of interleaving columns mid-sentence.
+            out.append(page.get_text("text", sort=True))
     return out
 
 
@@ -100,6 +115,63 @@ def _enrich_with_pdfplumber(pdf_path: Path, pages_text: list[str]) -> list[str]:
                 if table_text and table_text not in text:
                     text = f"{text}\n[table]\n{table_text}"
             enriched[i] = text
+    return enriched
+
+
+def _recover_sparse_with_vision(pdf_path: Path, pages_text: list[str]) -> list[str]:
+    """OCR genuinely image-only pages via gpt-4o vision, for pages still sparse after
+    PyMuPDF/pypdf + pdfplumber (i.e. truly scanned, not just table/form-heavy). No-op
+    without OPENAI_API_KEY or without fitz/openai installed — never blocks ingest.
+    Capped at MAX_VISION_PAGES per document to bound cost on a fully-scanned tender."""
+    if not os.environ.get("OPENAI_API_KEY"):
+        return pages_text
+    sparse_idx = [i for i, t in enumerate(pages_text) if len(t.strip()) < SPARSE_PAGE_CHARS]
+    if not sparse_idx:
+        return pages_text
+    try:
+        import fitz
+        from openai import OpenAI
+    except ImportError:
+        return pages_text
+
+    if len(sparse_idx) > MAX_VISION_PAGES:
+        print(
+            f"[ingest] {len(sparse_idx)} sparse pages in {pdf_path.name}, "
+            f"vision-OCR capped at {MAX_VISION_PAGES} to bound cost"
+        )
+        sparse_idx = sparse_idx[:MAX_VISION_PAGES]
+
+    client = OpenAI()
+    model = os.environ.get("LLM_VISION_MODEL", "gpt-4o")
+    enriched = list(pages_text)
+    with fitz.open(str(pdf_path)) as doc:
+        for i in sparse_idx:
+            if i >= doc.page_count:
+                continue
+            try:
+                pix = doc[i].get_pixmap(dpi=150)
+                img_b64 = base64.b64encode(pix.tobytes("png")).decode("ascii")
+                resp = client.chat.completions.create(
+                    model=model,
+                    temperature=0,
+                    messages=[{
+                        "role": "user",
+                        "content": [
+                            {"type": "text", "text": (
+                                "Transcribe every word of text visible on this scanned "
+                                "tender document page, preserving reading order and line "
+                                "breaks. Output plain text only, no commentary."
+                            )},
+                            {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{img_b64}"}},
+                        ],
+                    }],
+                )
+                _log_usage(resp, model, f"vision-ocr page={i + 1}")
+                text = resp.choices[0].message.content or ""
+                if len(text.strip()) > len(enriched[i].strip()):
+                    enriched[i] = text
+            except Exception as exc:
+                print(f"[ingest] vision OCR failed on page {i + 1} of {pdf_path.name} ({exc})")
     return enriched
 
 
@@ -168,6 +240,7 @@ def ingest_pdf(pdf_path: str | Path, *, enrich: bool = True) -> IngestedDoc:
 
     if enrich:
         raw_pages = _enrich_with_pdfplumber(path, raw_pages)
+        raw_pages = _recover_sparse_with_vision(path, raw_pages)
         raw_pages = _strip_headers_footers(raw_pages)
         raw_pages = _flag_sparse_pages(raw_pages)
 
