@@ -37,4 +37,7 @@ Every lead must also:
 - Add `crm/drafts/<id>.md` per lead using the same-day free-pilot nudge in `outreach-same-day-kit.md`
   (SME-bidder framing). Booking link: https://cal.com/joel-jeon-o29lfr/bidframe
 
-**Goal:** 10–20 genuinely perfect micro-targets > a long mediocre list. Commit to GitHub every ~10 min.
+**Goal:** as many genuinely **PERFECT ICP fits** as you can find — **no upper cap**. "10–20" is the *quality bar*
+(a handful of perfect fits beats a long mediocre list), **not a stop signal** — if you can keep finding perfect
+fits, keep going. Bias hard to the bullseye: **family-owned, founder on the tools *and* doing the bidding.**
+Commit to GitHub every ~10 min. Keep going until out of credits or Joel says stop.
