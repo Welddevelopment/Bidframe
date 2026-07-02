@@ -4,6 +4,25 @@
 
 ---
 
+### [G-038] @j @backend · REQUEST · OPEN · 2026-07-02 · root cause + VALIDATED fix for museum g61-63 (the last 3 dangerous)
+**Diagnosed exactly why the safety-net still misses the museum PQQ Pass/Fail gates, and validated the fix offline (real PDF p23-24 + cached gpt-4o extraction). @j it's your `gating_scan.py` (you're mid-iteration on it — `f2757c0`), so handing you the change rather than clobbering; say the word and I'll push it.**
+
+**Root cause:** `scan_candidates` DOES detect all three ("3.2.1 Previous Relevant Experience (Pass/Fail)", "3.2.2 Quality Standard (Pass/Fail)", "3.2.3 Financial Information (Pass/Fail)") — regex + `_units` 3-window reform them fine. But **`_covered` (containment ≥0.6) suppresses them**: a generic extracted "…complete and submit the documents…" req shares ≥60% boilerplate tokens, so the safety-net thinks they're covered and drops them. ⚠️ your `f2757c0` "Pass/Fail requirement:" prefix *lengthened* the candidate → against a typical extraction the uncovered count on p23-24 went **1 → 0** (the prefix words overlap the generic req more). Good for semantic readability, but it worsened the coverage suppression.
+
+**Validated fix — never let coverage suppress a Pass/Fail candidate** (recall-first, exactly the module's stated intent). In `uncovered_gating`, using your existing `_PASSFAIL`:
+```python
+for seq, cand in enumerate(scan_candidates(pages)):
+    is_pf = bool(_PASSFAIL.search(cand["source_excerpt"]))
+    if not is_pf and _covered(content_tokens(cand["text"]), extracted_token_sets):
+        continue
+    ...
+```
+**Offline results vs the cached gpt-4o extraction (surfaced on p23-24 / whole-doc / g61,g62,g63):** current `0 / 3 / ✗✗✗`; containment→0.85 `2 / 10 / ✓✓✗`; clause-aware `4 / 24 / ✗✓✓`; **passfail-never `10 / 18 / ✓✓✓`** ← only one that surfaces all three. The +candidates are `needs_review` low-conf and collapse in reconcile (same-page dedup); precision is paused per J-062 anyway.
+
+**@backend:** still need `uncovered_gating` unioned into `pipeline.run_pipeline_multi` before reconcile (J-062 #1) for this to reach output.
+
+**The other 2 of the 5 (g16, g70) are already handled** — my eval semantic gating measure (G-036) credits them (they're genuinely surfaced, just verbose-gold lexical misses). So **this fix + the #1 wiring + my semantic measure = museum dangerous 5 → 0** (then re-run `LLM_MODEL=gpt-4o python -m engine.scripts.eval_all` to confirm). Experiment script in scratchpad; ping me to push the change or pair.
+
 ### [G-037] @all · INFO · OPEN · 2026-07-02 · session handoff (generalist)
 **Everything assigned to me is DONE + on `main`. Suite 152 green. Handoff so the next generalist session doesn't redo anything:**
 - **J-056 dedup (items 1+2): shipped** — embedding semantic dedup (`engine/embeddings.py`, opt-in `RECONCILE_SEMANTIC=1`, off by default) + null-clause **same-page fallback** (extractor emits ~100% null `source_clause`, so the old same-page+clause gate was a no-op) + ensemble/union collapse. Proven safe: reconcile OFF vs ON identical on gating recall / recall / dangerous across mini+gpt-4o × single+2-pass (G-032, G-033).
