@@ -8,10 +8,10 @@ public sources (no fabricated emails/names) and comes with a ready-to-send, pers
 Supersedes the consultancy-heavy picks in `outreach-batch-personalised.md` (those over-shot on firm size).
 Booking link in every draft: **https://cal.com/joel-jeon-o29lfr/bidframe**.
 
-**Status:** 79 verified targets across 4 waves / 13 seams (overnight run, 2 Jul). ~29 PERFECT (tiny + a *named* public-sector client), ~50 GOOD. All emailable, personalised, deduped vs the 347-lead CRM, no fabrication. Committed to GitHub every ~10 min. Codex ran its own pipeline in parallel (writes `crm/leads.csv`, ids `L-0401+`).
+**Status:** ✅ **116 verified targets across 6 waves / 19 seams** (overnight run, 2 Jul). **~39 PERFECT** (tiny + a *named* public-sector client), ~77 GOOD. All emailable, personalised, deduped vs the 347-lead CRM, no fabrication. Committed to GitHub throughout. Codex ran its own pipeline in parallel (writes `crm/leads.csv`, ids `L-0401+`). Blast-wave phase complete — see the "Where next" note at the very bottom for the best remaining seams/angles if you want more.
 
 ### Where to start — highest-confidence PERFECT fits (tiny + a NAMED public client)
-Trades: **Midland Fire · Cropper Grounds · Exjet · H2O Hygiene**. Care: **Hallifax Care · DACCS · Home Care Wales**. Building/grounds: **Charles Walker · Top Garden · Headcorn Heating**. Playground: **Reids · TK Play**. Pest: **Aardvark**. Security: **Blake Fire · ATCL**. Fencing: **Harrier**. Flooring: **Elvington · Lees Heginbotham**. Roofing: **Hall Aspects · Rooftec**. Damp: **Newseal · APS**. Windows: **Listed Window Refurb · Sash Window Preservation · CJL**. Painting: **AJM · ALCo**.
+Trades: **Midland Fire · Cropper Grounds · Exjet · H2O Hygiene**. Care: **Hallifax Care · DACCS · Home Care Wales**. Building/grounds: **Charles Walker · Top Garden · Headcorn Heating**. Playground: **Reids · TK Play**. Pest: **Aardvark**. Security: **Blake Fire · ATCL**. Fencing: **Harrier**. Flooring: **Elvington · Lees Heginbotham**. Roofing: **Hall Aspects · Rooftec**. Damp: **Newseal · APS**. Windows: **Listed Window Refurb · Sash Window Preservation · CJL**. Painting: **AJM · ALCo**. Asbestos: **ESM Midlands**. Kitchen/bath & DFG: **ISCA · MIserve · A T Plumbing**. Retrofit: **RenderRight**. Mobility/stairlift: **Express Stairlifts SW · Dolphin Devon**. Fire-safety: **B L Fire Risk**. Solar: **SUS Energy · Solar Partner · Brimstone · InspireGreen**.
 
 ### Count by seam
 | Seam | Wave | Count | MT ids |
@@ -29,8 +29,14 @@ Trades: **Midland Fire · Cropper Grounds · Exjet · H2O Hygiene**. Care: **Hal
 | Damp-proofing / damp & mould (Awaab's Law) | 4a | 6 | MT-63–68 |
 | Window/door & heritage-sash restoration | 4b | 6 | MT-69–74 |
 | Painting & decorating | 4c | 5 | MT-75–79 |
+| Asbestos surveying / removal | 5a | 7 | MT-80–86 |
+| Kitchen/bathroom & DFG adaptations | 5b | 7 | MT-87–93 |
+| Retrofit / insulation / EWI (ECO4/SHDF) | 5c | 6 | MT-94–99 |
+| Mobility / stairlift / DFG installers | 6a | 7 | MT-100–106 |
+| Fire-risk / fire-door (Building Safety Act) | 6b | 5 | MT-107–111 |
+| Solar-PV / battery / heat-pump | 6c | 5 | MT-112–116 |
 
-Two **near-miss** notes below (strong ICP, blocked only by no verifiable email) — manual follow-up, never fabricated.
+Several **near-miss** notes below + at the bottom (strong ICP, blocked only by no verifiable email) — manual follow-up, never fabricated.
 
 ---
 
@@ -1812,5 +1818,98 @@ These are perfect-shape tiny firms with NAMED council/HA clients but **no email 
 - **Adena Fire** — https://adenafire.co.uk — self-declares schools/supported housing; search index reports `jacqui@adenafire.co.uk` (unconfirmed on-page).
 - **Pro Fire Safe** — https://profiresafe.co.uk — London communal-area FRAs for HAs; search index reports `admin@profiresafe.co.uk` (unconfirmed on-page).
 
+### Wave 6c — family solar-PV / battery / heat-pump installers (school / community / council decarbonisation)
+*5 verified · all kept (4 PERFECT, 1 GOOD) · 0 duplicates. Strong seam for named-client fits — community/school solar firms publish their public projects.*
+
+---
+
+#### MT-112 · Sustainable Energy Engineering (SUS Energy) · to: info@susenergy.co.uk · PERFECT
+*Husband-and-wife firm since 2006 (Stephen & Haley Fairless; ~1–10 staff), North East England only. Named clients: Cragside & Dame Dorothy schools, Kibblesworth Millennium Centre, Alnwick Community Centre, Darlington College. Source: susenergy.co.uk*
+**Subject:** Your school & community-centre solar bids — deal-breakers caught first
+> Hi Stephen and Haley,
+>
+> You've delivered solar for North East schools and community centres (Cragside, Darlington College) — so you're bidding public-sector solar work where one missed pass/fail requirement (an MCS scope, a DBS/safeguarding clause, an insurance level) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own MCS and method docs — a citation on every claim, nothing invented.
+>
+> I'm running free 15-minute live reads today and tomorrow — send me a school/community solar tender you're bidding and I'll show you, on the call, exactly what would disqualify it. A couple of slots left; after this week it's a paid pilot.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-113 · Solar Partner · to: tony@solarpartner.uk · PERFECT
+*Family-run owner-operator solar firm ("Anthony at Solar Partner"; MCS 63381), Milton Keynes. Named clients: Middleton School, Walton High School + "various Parish Councils". Source: solarpartner.uk*
+**Subject:** Your school & parish-council solar bids — deal-breakers caught first
+> Hi Tony,
+>
+> You install solar for schools and parish councils — so you're bidding public-sector work where one missed pass/fail requirement (an MCS scope, a safeguarding clause, an insurance level) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own MCS and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a school or parish-council solar tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-114 · Brimstone Energy UK · to: sales@brimstone-energy.uk · PERFECT
+*Owner-operator, veteran-owned (founder Matt Hilton; delivers via a tradesperson network), Hemingford Grey, Cambs. Named public project: Caxton Village Hall solar+battery, funded by a £15k South Cambridgeshire District Council grant. Source: brimstone-energy.uk/case-study...caxton-village-hall*
+**Subject:** Your council-grant community solar bids — deal-breakers caught first
+> Hi Matt,
+>
+> You've delivered a district-council-grant solar+battery job (Caxton Village Hall) — so as you bid more council-funded community-building work, one missed pass/fail requirement voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own MCS and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council-grant solar tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-115 · InspireGreen · to: hello@inspiregreen.co.uk · PERFECT
+*Small MCS-certified solar firm since 2021 ("small but knowledgeable team", ~2–10 staff), Cardiff. Named clients: Newport City Council (Kingsway Solar Car Park) + NHS Wales. Source: inspiregreen.co.uk*
+**Subject:** Your Newport City Council / NHS Wales solar bids — deal-breakers caught first
+> Hi there,
+>
+> You've delivered solar for Newport City Council and NHS Wales — so you're bidding public-sector solar+storage work where one missed pass/fail requirement voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own MCS and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council or NHS solar tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-116 · P4 Solar · to: info@p4solar.co.uk · GOOD
+*Family-run solar team ("founder and son"), Keighley, Yorkshire (inc. 2022). Named community buildings: Burley Parish Library, Strensall & Towthorpe Village Hall, Milburn Village Hall. ⚠ Size borderline (listings ~7 to "11–50"); public work is community/self-declared, not a named council/HA contract. Source: p4solar.co.uk/community-solar*
+**Subject:** Your community & parish solar bids — deal-breakers caught first
+> Hi there,
+>
+> You install solar for parish libraries and village halls — grant-funded community schemes where one missed pass/fail requirement in the tender voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own MCS and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a community/parish solar tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
 <!-- next waves appended below -->
+
+---
+
+## Where next (re-plan intel for more waves)
+
+Blast-wave phase paused at 116 to respect usage — 6× more than the 10–20 goal, plus Codex's parallel CRM batch. If you want more, the **highest-yield remaining angles** (learned from what worked/saturated this run):
+
+- **Best PERFECT-signal pattern:** firms that publish a *"local authorities we work with"* / client-logo page. Stairlift/DFG-adaptations and school/community **solar** were the richest for tiny+named-client fits; **SW England** (Devon/Cornwall) is unusually dense for adaptations.
+- **Fresh seams not yet mined** (non-Codex): commercial/contract **blinds & window-treatments** (schools/care homes), **EV charge-point** installers (council fleets/car parks), **signage/wayfinding**, **commercial laundry/linen** (care/NHS), **groundworks/civils** micro-firms, **catering-equipment servicing** (if not taken by Codex).
+- **Region pivots for already-good seams:** re-run fencing/roofing/pest/fire-safety for **Midlands / North / Scotland / Wales** — this run leaned South/SW.
+- **Better sourcing to lift GOOD→PERFECT:** council **contract-award registers** (published as CSV on council domains — Contracts Finder / Find a Tender / bidstats all 403 to automated fetch), **HA approved-supplier lists**, and DFG approved-contractor lists. These name the tiny firm + the buyer together.
+- **Guardrails to keep:** email must be verifiable on the firm's OWN site (never a directory/broker), never fabricate, dedupe vs `crm/leads.csv`, prefer named-client, flag any size caveat inline.
+- **All the "near-miss" firms** flagged through the file are perfect-shape but had no verifiable on-site email — a human can grab those via contact form / phone without any fabrication.
 
