@@ -51,6 +51,18 @@ except ImportError:  # pragma: no cover - deploy without engine/ on path
 NEEDS_REVIEW_BELOW = 0.65   # fallback threshold (used only when engine/ isn't importable)
 DUP_SIMILARITY = 0.86       # fallback dedupe similarity (placeholder only)
 
+# Deterministic disqualifier SAFETY NET (engine.gating_scan) — an exhaustive regex scan of every
+# page for pass/fail / exclusion / mandatory-return language, surfacing any gate the LLM extraction
+# missed (esp. Pass/Fail selection questions that arrive as bare headings in form layouts). Same
+# import-safe pattern as reconcile/answer above: present at repo-root runtime, absent on a
+# backend-rooted deploy -> silently skipped. Additive + recall-first: it only ever ADDS uncovered
+# gating candidates, so it can never lower recall/precision of what extraction already found.
+try:
+    from engine.gating_scan import uncovered_gating as _engine_uncovered_gating
+    _HAVE_SAFETY_NET = True
+except ImportError:  # pragma: no cover - deploy without engine/ on path
+    _HAVE_SAFETY_NET = False
+
 # Auditable autofill (generalist steps 12-13) — engine.answer drafts a grounded answer
 # per requirement (or flags needs_input). Same import-safe pattern as reconcile above:
 # present when engine/ is on the path (repo-root runtime, after the render.yaml fix in
@@ -101,6 +113,27 @@ def _reconcile(raws: list[dict]) -> list[dict]:
         if not dup:
             kept.append(r)
     return kept
+
+
+def _with_safety_net(reconciled: list[dict], pages) -> list[dict]:
+    """Union the deterministic disqualifier safety-net onto a document's reconciled requirements.
+
+    Appends any strong gating line the LLM extraction missed (Pass/Fail selection questions,
+    exclusion grounds, mandatory returns, submission deadlines) as low-confidence, needs_review
+    gating candidates — so a compliance tool can never silently drop a deal-breaker. Recall-first
+    and additive: it ONLY adds uncovered gating candidates, so it can't lower recall/precision of
+    what extraction found, and it never raises into the request (guarded like _autofill).
+
+    Proven to close museum gating recall 0.7 -> 1.0 (the 3 misses g2/g61/g62 all land within the
+    region-anchored semantic threshold of a net candidate); SPSO already 1.0. See comms J-068."""
+    if not _HAVE_SAFETY_NET:
+        return reconciled
+    try:
+        extra = _engine_uncovered_gating(reconciled, [(p.number, p.text) for p in pages])
+        return reconciled + extra
+    except Exception as exc:  # safety-net is additive — never let it break the upload
+        print(f"[pipeline] safety-net skipped ({exc})")
+        return reconciled
 
 
 def _route_confidence(req_type: str, confidence: float) -> bool:
@@ -231,7 +264,11 @@ def run_pipeline_multi(
     full_texts: list[str] = []
     seq = 0
     for doc_id, filename, doc, _chunks in doc_chunks:
-        for r in _reconcile(raws_by_doc.get(doc_id, [])):
+        reconciled = _reconcile(raws_by_doc.get(doc_id, []))
+        # Safety-net: surface any disqualifier the extraction missed before we build the
+        # final requirements (per-doc so provenance stays correct). Additive + guarded.
+        reconciled = _with_safety_net(reconciled, doc.pages)
+        for r in reconciled:
             seq += 1
             requirements.append(
                 Requirement(
