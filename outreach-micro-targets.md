@@ -1618,5 +1618,115 @@ These are perfect-shape tiny firms with NAMED council/HA clients but **no email 
 >
 > Joel, Bidframe
 
+### Wave 6a — family mobility / stairlift / DFG-adaptations installers (council DFG / OT)
+*7 verified · all kept (2 PERFECT, 5 GOOD) · 0 duplicates. Seam note: the reliable PERFECT signal is a "local authorities we work with" page — SW England is dense. Home Solutions SW & Disabled Adaptations name councils but don't confirm family/tiny status (→ GOOD).*
+
+---
+
+#### MT-100 · Express Stairlifts Southwest · to: enquiries@expressstairliftssw.co.uk · PERFECT
+*Family-run stairlift firm, single SW operation. Own contact page names 7 councils: Cornwall, Plymouth City, Teignbridge, East Devon, Torridge, South Hams, West Devon. Source: expressstairliftssw.co.uk/contact*
+**Subject:** Your DFG stairlift bids for 7 SW councils — deal-breakers caught first
+> Hi there,
+>
+> You install stairlifts for seven Devon/Cornwall councils on DFG jobs — so you're bidding council adaptation work where one missed pass/fail requirement (an OT-spec detail, an insurance level, a DBS clause) voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> I'm running free 15-minute live reads today and tomorrow — send me a council DFG/stairlift tender you're bidding and I'll show you, on the call, exactly what would disqualify it. A couple of slots left; after this week it's a paid pilot.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-101 · Dolphin Devon Stairlifts · to: info@dolphindevon.co.uk · PERFECT
+*Independent family-run stairlift/lift firm, Devon-wide. Homepage names Devon CC, Exeter City, Plymouth City, Torridge DC, Torbay, South Hams DC + HAs (Westward, Guinness Trust, LiveWest, Cornerstone). Source: dolphindevon.co.uk*
+**Subject:** Your council & HA adaptation bids — deal-breakers caught first
+> Hi there,
+>
+> You work with six named councils plus several housing associations on adaptations — so you're bidding framework/DFG work where one missed pass/fail requirement voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council/HA adaptations tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-102 · A2B Stairlifts Ltd · to: info@a2bstairlifts.com · GOOD
+*Two-generation family stairlift firm since 2004 ("the same family are still running it — joined by our sons"). Self-declared local/county council + public-access work (none named). Source: a2bstairlifts.com*
+**Subject:** Council & county stairlift bids — the pass/fail gates
+> Hi there,
+>
+> As a two-generation family stairlift firm bidding council and county work yourselves, one missed pass/fail requirement in the tender voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council stairlift tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-103 · South Western Aid · to: sales@southwesternaid.com · GOOD
+*Family firm since 1983 (ceiling-track hoists, wet rooms, moving & handling), Newton Abbot, Devon. Self-declared work for social services / health authorities / county & local authorities / HAs (none named). Source: southwesternaid.com*
+**Subject:** OT & social-services adaptation tenders — deal-breakers caught first
+> Hi there,
+>
+> You fit hoists and wet rooms for social services and housing associations across Devon — so you're bidding OT/DFG-referred work where one missed pass/fail requirement voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own capability docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council/social-services adaptations tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-104 · Liftech Systems · to: sales@liftechsystems.biz · GOOD
+*Small single-site assistive-technology installer (Portsmouth; serves Hants/W.Sussex/Dorset). Self-declared OT / social-services / county-council / HA referrals; a testimonial references a council-arranged DFG stairlift. Source: liftechsystems.biz/about-us*
+**Subject:** OT & social-services stairlift tenders — the pass/fail gates
+> Hi there,
+>
+> You take OT and social-services referrals for stairlifts and hoists across Hampshire — so as you bid council adaptation tenders, one missed pass/fail requirement voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council adaptations tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-105 · Home Solutions SW (Home Solutions (South West) Ltd) · to: enquiries@homesolutions-sw.co.uk · GOOD
+*Small Barnstaple, North Devon adaptations builder (20–25 yrs, TrustMark; wet rooms/ramps/grab-rails). Named clients: North Devon, Torridge, Mid-Devon, Cornwall, West Devon, Somerset councils + Sanctuary & Guinness HAs + "NHS Supplier". ⚠ Family/owner status not stated on site. Source: homesolutions-sw.co.uk*
+**Subject:** On 6 SW councils' approved lists — but out-gunned on the tender?
+> Hi there,
+>
+> You're on the approved contractor list for six-plus SW councils and HAs on DFG adaptations — so one missed pass/fail requirement in a tender voids the whole submission however strong your delivery.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council adaptations tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-106 · Disabled Adaptations Ltd · to: info@disabled-adaptations.co.uk · GOOD
+*Small Bracknell wet-room/level-access adaptations firm. Named clients: Bracknell Forest Council, Guildford BC, Rushmoor BC + Bracknell Forest Homes. ⚠ Family/tiny status not stated on site. Source: disabled-adaptations.co.uk*
+**Subject:** Your Bracknell / Guildford DFG bids — deal-breakers caught first
+> Hi there,
+>
+> You deliver DFG wet rooms for Bracknell Forest, Guildford and Rushmoor councils — so you're bidding council adaptation work where one missed pass/fail requirement voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council adaptations tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
 <!-- next waves appended below -->
 
