@@ -13,6 +13,7 @@ Scaffolded by J as backend cover.
 
 from __future__ import annotations
 
+import re
 from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Callable, Optional
@@ -185,12 +186,42 @@ def _autofill(requirements: list[Requirement], capability_folder=None, answerer=
 MAX_RECTS_PER_REQ = 12   # a long multi-line excerpt; caps payload + avoids pathological hits
 
 
+def _search_rects(page, excerpt: str):
+    """Locate `excerpt` on a PDF page, returning bounding-box rects or None. Tries the
+    whole (whitespace-collapsed) excerpt first — the best, full-sentence highlight — then
+    falls back to progressively shorter prefixes (first sentence, first 8 words, first 4)
+    so a long/reflowed/OCR-normalised excerpt that doesn't match verbatim still resolves
+    to at least its opening line, which is enough for the client to scroll to + highlight."""
+    needle = " ".join(excerpt.split())
+    if len(needle) < 6:
+        return None
+    candidates = [needle[:300]]
+    first_sentence = re.split(r"(?<=[.;:])\s", needle)[0]
+    if 8 <= len(first_sentence) < len(needle[:300]):
+        candidates.append(first_sentence[:200])
+    words = needle.split()
+    if len(words) >= 8:
+        candidates.append(" ".join(words[:8]))
+    if len(words) >= 4:
+        candidates.append(" ".join(words[:4]))
+    for cand in candidates:
+        if len(cand) < 8:
+            continue
+        try:
+            rects = page.search_for(cand)
+        except Exception:
+            rects = None
+        if rects:
+            return rects[:MAX_RECTS_PER_REQ]
+    return None
+
+
 def _attach_source_rects(requirements: "list[Requirement]", docs: "list[tuple[str, str, str]]") -> None:
     """Fill each requirement's source_rect with the PDF bounding box(es) of its excerpt
     on its source_page (J-049 P3 — pixel-accurate highlighting for the frontend's source
-    verification). Opens each document's PDF once via PyMuPDF and runs page.search_for.
-    Additive + fully guarded: no fitz, an unlocatable excerpt, or any error just leaves
-    source_rect None (the client falls back to a text-layer search), never breaks upload."""
+    verification). Opens each document's PDF once via PyMuPDF and runs a tiered search
+    (see _search_rects). Additive + fully guarded: no fitz, an unlocatable excerpt, or any
+    error just leaves source_rect None (the client falls back to a text-layer search)."""
     try:
         import fitz
     except ImportError:
@@ -212,14 +243,11 @@ def _attach_source_rects(requirements: "list[Requirement]", docs: "list[tuple[st
                     if not excerpt or pno < 0 or pno >= pdf.page_count:
                         continue
                     try:
-                        # Collapse whitespace so a reflowed/space-normalised excerpt still
-                        # matches the PDF's own line-wrapped text as closely as possible.
-                        needle = " ".join(excerpt.split())[:400]
-                        rects = pdf[pno].search_for(needle)
+                        rects = _search_rects(pdf[pno], excerpt)
                         if rects:
                             r.source_rect = [
                                 [round(x.x0, 1), round(x.y0, 1), round(x.x1, 1), round(x.y1, 1)]
-                                for x in rects[:MAX_RECTS_PER_REQ]
+                                for x in rects
                             ]
                     except Exception:
                         continue  # one bad excerpt never blocks the rest

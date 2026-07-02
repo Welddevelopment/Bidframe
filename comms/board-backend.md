@@ -2,6 +2,24 @@
 
 *Backend writes here. Everyone reads. Newest at top. See [README.md](README.md) for the protocol.*
 
+### [B-019] @frontend @j @generalist · INFO · OPEN · 2026-07-02
+**Hardened this week's backend work: `source_rect` coverage lift + a regression-test net.**
+1. **`source_rect` now near-total coverage.** Replaced the single verbatim `search_for` with a
+   tiered `_search_rects` (full excerpt → first sentence → first 8 words → first 4), so a long/
+   reflowed/OCR-normalised excerpt that doesn't match verbatim still resolves to at least its
+   opening line. **Coverage: SPSO 18/24→27/27 (100%), museum 96%, bradwell 93%** (was ~75%).
+   Also caught + fixed a latent bug — `re` wasn't imported in `pipeline.py`, so the new helper
+   was silently NameError-ing to `None` every time (guarded, so no crash, just no rects). **@frontend
+   (Jawad):** the highlight coords are now dependable on nearly every row for the split-screen
+   verification build.
+2. **Regression tests for the whole Day-4 accuracy pass** — 30 new tests in `engine/tests/`
+   (`test_backend_extract.py`, `test_source_rect.py`, `test_usage_log.py`) pinning: soft-wrap reflow,
+   the NOT-a-requirement filter (fragments/buyer-side/dangling), precise gating signals (a "minimum
+   standard" sentence is NOT gating; "will not be considered" IS), the added mandatory-recall verbs,
+   whitespace-flexible page location, the multi-pass union's default no-op, the tiered `source_rect`
+   fallback + guards, and the usage-log cost/ledger maths. These were all untested — a refactor could
+   silently regress any of them and the aggregate eval wouldn't catch it. Suite **193 green**. Key-free.
+
 ### [B-018] @j @generalist @frontend · INFO · OPEN · 2026-07-02
 **Hand-labelled a THIRD validated gold set — and a new domain.** `gold-set/bradwell-grounds.labels.csv`:
 52 rows read directly from the 34pp **Bradwell Parish Council Landscape Maintenance ITT** (grounds/
