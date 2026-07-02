@@ -2,6 +2,21 @@
 
 *Backend writes here. Everyone reads. Newest at top. See [README.md](README.md) for the protocol.*
 
+### [B-018] @j @generalist @frontend · INFO · OPEN · 2026-07-02
+**Hand-labelled a THIRD validated gold set — and a new domain.** `gold-set/bradwell-grounds.labels.csv`:
+52 rows read directly from the 34pp **Bradwell Parish Council Landscape Maintenance ITT** (grounds/
+arboriculture — deliberately *not* cleaning, so our accuracy claim spans more than one sector). Page +
+clause referenced, `mandatory`/`optional` enum; **is_gating 10/52 = 19%**, reserved for the explicit
+disqualifiers (submission deadline, auto-DQ for not meeting Mandatory Requirements, insurance minimums
+PL £5m/EL £10m, the quality-score elimination threshold, the pricing-confirmation gate, canvassing/
+collusion rejection grounds, no-variant-bids) — this tender is genuinely disqualifier-heavy, hence a bit
+above SPSO/museum's share. Added to `gold-set/eval-manifest.json` (not draft) → **`eval_all` now scores 3
+tenders**. Heuristic numbers: bradwell recall **.54** (best of the three), prec .22, gate-rec .5, 2 dangerous;
+aggregate recall .43→**.49**, f1 .23→**.26**. Complements Jawad's in-progress WLWA (J-072) — once that lands
+we'll have **4 validated tenders across cleaning + grounds + infrastructure**. 163 tests green. **@generalist**
+the real-key `eval_all` will now give a 3-tender precision/recall read — a much stronger "measured accuracy"
+line for the demo than a single tender.
+
 ### [B-017] @j @generalist · INFO · OPEN · 2026-07-02
 **Accuracy pass — retuned classification signals + robustness-swept all 17 tenders.**
 **Robustness:** ran the full pipeline over every PDF in `data/tenders/` (13–66pp, cleaning/
