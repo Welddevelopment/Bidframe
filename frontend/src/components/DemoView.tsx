@@ -12,6 +12,10 @@ import { SourceVerifyOverlay } from "@/components/SourceVerifyOverlay";
 import { DemoScrolly } from "@/components/demo/DemoScrolly";
 import { BookDemoButton } from "@/components/landing/BookDemoButton";
 import { BotanicalSprig } from "@/components/landing/BotanicalSprig";
+import { DrawOn } from "@/components/landing/DrawOn";
+import { FernFrond } from "@/components/landing/art/FernFrond";
+import { TreelineDivider } from "@/components/landing/art/TreelineDivider";
+import { SiteFooter } from "@/components/landing/SiteFooter";
 import { BrandLogo } from "@/components/BrandLogo";
 
 // A read-only walkthrough of the product for cold visitors arriving from the
@@ -19,12 +23,15 @@ import { BrandLogo } from "@/components/BrandLogo";
 // a pinned stage that transforms through the pipeline — a tender read into a
 // matrix, the deal-breaker lifting out, confidence shown honestly, answers with
 // receipts, the approval stamp, the graph — while short narrative steps scroll
-// past. Then, below the story, the same pipeline is shown for real on a frozen
-// tender: the real GatingHero + ComplianceMatrix and the relationship graph,
-// NON-INTERACTIVE (no-op handlers + pointer-events-none) except one scripted
-// proof — "see a deal-breaker in the document" opens the real SPSO page. Dressed
-// in the Civic Record language throughout. The only actions are "Book a demo"
-// and the source-verify overlay.
+// past. The page's intro copy is passed INTO DemoScrolly (`intro` prop) so it
+// sits beside the pinned stage from the first scroll pixel, with no dead
+// viewport. Then, below the story, the same pipeline is shown for real on a
+// frozen tender: the real GatingHero + ComplianceMatrix and the relationship
+// graph, NON-INTERACTIVE (no-op handlers + pointer-events-none) except one
+// scripted proof — "see a deal-breaker in the document" opens the real SPSO
+// page. Dressed in the Civic Record language and, since the forest uplift, the
+// landing's woodland palette: forest kickers, a drawn fern by the worked
+// example, a pine closing band under a treeline, and the shared SiteFooter.
 
 const noop = () => {};
 
@@ -46,7 +53,7 @@ export function DemoView() {
     : null;
 
   return (
-    <div className="min-h-screen bg-paper paper-grid">
+    <div className="landing-scope min-h-screen bg-paper paper-grid">
       {/* A minimal masthead, not the product SectionNav (no Upload/Answers/Graph). */}
       <header className="border-b-2 border-ink bg-paper">
         <div className="mx-auto flex max-w-[1160px] items-center justify-between px-6 py-4">
@@ -61,36 +68,45 @@ export function DemoView() {
         </div>
       </header>
 
-      {/* Intro — tees up the scroll story. */}
-      <section className="mx-auto max-w-[1160px] px-6 pb-6 pt-12 sm:pt-16">
-        <div className="hero-enter relative max-w-[46rem]">
-          <BotanicalSprig className="pointer-events-none absolute -left-3 -top-3 hidden h-14 w-14 text-forest/30 sm:block" />
-          <p className="font-mono text-xs uppercase tracking-wide text-ink-muted">
-            The product, end to end
-          </p>
-          <h1 className="mt-2 font-serif text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl">
-            From a hundred-page tender to a reviewed bid
-          </h1>
-          <p className="mt-4 max-w-[60ch] text-lg leading-relaxed text-ink-muted">
-            Scroll to watch Bidframe read one public-sector tender. The
-            deal-breakers surface first, it flags what it is unsure of, and it
-            drafts each answer from your own documents with a citation.
-          </p>
-          <div className="mt-6">
-            <BookDemoButton location="demo-intro" />
-          </div>
-        </div>
-      </section>
-
-      {/* The cinematic scroll: pinned stage + stepping narrative. */}
+      {/* The cinematic scroll: pinned stage + stepping narrative. The intro
+          copy lives INSIDE the scrolly (via the `intro` prop) as the first
+          block of the narrative column, so the pinned stage is beside it from
+          the first pixel — no dead viewport between intro and first beat. */}
       <section aria-label="How Bidframe works, step by step">
-        <DemoScrolly />
+        <DemoScrolly
+          intro={
+            <div className="hero-enter relative">
+              <BotanicalSprig className="pointer-events-none absolute -left-3 -top-3 hidden h-14 w-14 text-forest/30 sm:block" />
+              <p className="font-mono text-xs uppercase tracking-wide text-forest">
+                The product, end to end
+              </p>
+              <h1 className="mt-2 font-serif text-3xl font-semibold leading-tight tracking-tight text-ink">
+                From a hundred-page tender to a reviewed bid
+              </h1>
+              <p className="mt-4 max-w-[60ch] text-lg leading-relaxed text-ink-muted">
+                Scroll to watch Bidframe read one public-sector tender. The
+                deal-breakers surface first, it flags what it is unsure of, and
+                it drafts each answer from your own documents with a citation.
+              </p>
+              <div className="mt-6">
+                <BookDemoButton location="demo-intro" />
+              </div>
+            </div>
+          }
+        />
       </section>
 
-      {/* The same pipeline, for real, on a frozen tender — the hands-on example. */}
-      <section className="mx-auto max-w-[1160px] px-6 py-16 sm:py-20">
+      {/* The same pipeline, for real, on a frozen tender — the hands-on example.
+          overflow-x-clip (never overflow-hidden, and never on an ancestor of the
+          scrolly grid — that kills sticky) lets the fern bleed off the left edge
+          without horizontal scroll. */}
+      <section className="overflow-x-clip">
+        <div className="mx-auto max-w-[1160px] px-6 py-16 sm:py-20">
         <div className="relative max-w-[46rem]">
-          <p className="font-mono text-xs uppercase tracking-wide text-ink-muted">
+          <DrawOn className="pointer-events-none absolute -left-28 -top-6 hidden xl:block">
+            <FernFrond className="h-[20rem] w-auto text-forest/25" />
+          </DrawOn>
+          <p className="font-mono text-xs uppercase tracking-wide text-forest">
             Worked example, read-only
           </p>
           <h2 className="mt-2 font-serif text-2xl font-semibold leading-tight tracking-tight text-ink sm:text-3xl">
@@ -165,6 +181,7 @@ export function DemoView() {
             <GraphView interactive={false} />
           </div>
         </div>
+        </div>
       </section>
 
       {verifyOpen && dealBreaker && (
@@ -175,8 +192,10 @@ export function DemoView() {
         />
       )}
 
-      {/* Closing call to action, on an ink band (Civic Record). */}
-      <section className="bg-ink">
+      {/* Closing call to action, on a pine band under a treeline — the same
+          woodland close as the landing page. */}
+      <TreelineDivider className="-mb-px block h-14 w-full text-pine sm:h-24" />
+      <section className="bg-pine">
         <div className="mx-auto max-w-[1160px] px-6 py-16 text-center sm:py-20">
           <h2 className="font-serif text-2xl font-semibold leading-snug text-paper sm:text-3xl">
             See it on a tender you already know
@@ -186,17 +205,13 @@ export function DemoView() {
             have already bid. Book fifteen minutes and bring one.
           </p>
           <div className="mt-7 flex justify-center">
-            <BookDemoButton location="demo-closing" tone="dark" size="lg" />
+            <BookDemoButton location="demo-closing" tone="pine" size="lg" />
           </div>
         </div>
       </section>
 
-      {/* Footer. */}
-      <footer className="bg-ink text-paper">
-        <div className="mx-auto max-w-[1160px] px-6 py-8">
-          <BrandLogo reversed className="h-7 w-auto" />
-        </div>
-      </footer>
+      {/* Shared site footer (pine, flipped treeline sits under the pine band). */}
+      <SiteFooter />
     </div>
   );
 }
