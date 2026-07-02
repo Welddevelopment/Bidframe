@@ -160,3 +160,62 @@ export const SAMPLE_GATING = SAMPLE.filter((r) => r.is_gating);
 
 // The requirement whose grounded answer + receipt drives the autofill beats.
 export const SAMPLE_ANSWERED = SAMPLE[0];
+
+// The honest headline numbers for the demo. Truth source: the frozen SPSO
+// tender the hands-on section runs on (src/data/spso-prebake.json) — 13 pages,
+// 183 extracted requirements, 9 gating deal-breakers. The wall document and the
+// register kicker quote these instead of inventing bigger ones.
+export const DEMO_FACTS = {
+  pages: 13,
+  requirements: 183,
+  dealBreakers: 9,
+  docTitle: "SPSO Cleaning Services ITT",
+} as const;
+
+// One paragraph of the document wall. `lead` and `tail` are plain tender prose;
+// `catch` (present on exactly ONE paragraph) is the deal-breaker sentence the
+// scan lights up — kept as its own field so the stage can wrap it in the
+// [data-wall-catch] span. Everything here is a module constant: deterministic
+// prose, no Math.random, no dates, so SSR and client hydration always agree.
+export type WallParagraph = {
+  lead: string;
+  catch?: string;
+  tail?: string;
+};
+
+// ~8 paragraphs of British procurement boilerplate for the wall beat. Several
+// reuse SAMPLE[i].source_excerpt VERBATIM, so the lines the register later pulls
+// out are genuinely on the page the reader just squinted at. The catch sentence
+// is SAMPLE[1]'s excerpt (Cyber Essentials Plus, pass/fail) — the same clause
+// the deal-breaker dossier lifts in beat 3.
+export const WALL_PARAGRAPHS: WallParagraph[] = [
+  {
+    lead: "1.1 Introduction. The Authority invites tenders for the provision of cleaning services across its estate. Tenderers are advised to read this Invitation to Tender in full before preparing a response, as mandatory requirements appear throughout the document and its schedules. Failure to comply with the instructions set out herein may result in a tender being set aside without further evaluation.",
+  },
+  {
+    lead: "2.4 Submission of Tenders. Tenders shall be submitted through the Authority's e-procurement portal in the format prescribed at Schedule 2. Late submissions will not be accepted in any circumstances. Tenderers shall ensure that all mandatory fields are completed and that supporting evidence is uploaded against the correct schedule reference.",
+  },
+  {
+    lead: SAMPLE[0].source_excerpt,
+    tail: "Certificates shall be provided as part of the tender response and shall name the bidding entity rather than a parent or group company.",
+  },
+  {
+    lead: "3.2 Evaluation. Tenders will be evaluated against the published award criteria on the basis of the most economically advantageous tender. Where a response fails a pass or fail question, the tender as a whole will be excluded from further consideration regardless of the marks achieved elsewhere in the evaluation.",
+  },
+  {
+    lead: "6.1 Information Security. The supplier shall comply with the Authority's information security policies as amended from time to time, and shall notify the Authority without undue delay of any actual or suspected security incident affecting the services.",
+    catch: SAMPLE[1].source_excerpt,
+    tail: "The supplier shall maintain such certification for the duration of the contract and shall provide renewal evidence upon request.",
+  },
+  {
+    lead: SAMPLE[2].source_excerpt,
+    tail: "Each case study shall identify the contracting authority, the contract value and the outcomes achieved, and shall be no longer than two sides of A4.",
+  },
+  {
+    lead: SAMPLE[4].source_excerpt,
+    tail: SAMPLE[3].source_excerpt,
+  },
+  {
+    lead: "10.1 Workforce Matters. The Transfer of Undertakings (Protection of Employment) Regulations may apply to this contract and tenderers shall satisfy themselves as to their application, and shall price accordingly. The supplier shall maintain employer's liability, public liability and professional indemnity insurance at the levels set out in Schedule 5 for the duration of the contract.",
+  },
+];
