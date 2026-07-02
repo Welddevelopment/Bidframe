@@ -27,7 +27,9 @@ _STRONG = re.compile(
     r"(reject(ed|ion)?|exclu(de|ded|ding|des|sion|sionary)|disqualif(y|ied|ication|ies)|"
     r"eliminat(e|ed|ion)|debarr(ed|ing)?|ineligib(le|ility)?|"
     r"(will\s+not|cannot|shall\s+not|won'?t)\s+be\s+(considered|evaluated|accepted|assessed|"
-    r"progressed|short[-\s]?listed|taken\s+forward|entertained)|shall\s+be\s+excluded|"
+    r"progressed|short[-\s]?listed|taken\s+forward|entertained|scored)|shall\s+be\s+excluded|"
+    r"\bnot\s+be\s+accepted\b|variant\s+bids?|remov\w*\s+.{0,25}(consideration|the\s+process|"
+    r"evaluation|participation)|must\s+satisfy|mandatory\s+criteri|"
     r"grounds?\s+for\s+exclusion|mandatory\s+exclusion|"
     r"(render|invalidat)\w*\s+.{0,25}(void|invalid|non[-\s]?compliant)|"
     r"(void|invalid)\s+(tender|bid|submission|proposal|response|offer)|"
@@ -51,8 +53,8 @@ _STRONG = re.compile(
     r"\bcqc\b|care\s+quality\s+commission|\bdbs\b|disclosure\s+and\s+barring|enhanced\s+(disclosure|check)|"
     r"(security|dbs)\s+clearance|food\s+hygiene\s+rating|"
     # 5. mandatory returns / completeness
-    r"must\s+(complete|submit|return|be\s+(returned|completed|submitted|received))|"
-    r"failure\s+to\s+(complete|submit|return|provide|comply|meet)|"
+    r"must\s+(complete|submit|return|provide|be\s+(returned|completed|submitted|received|provided))|"
+    r"failure\s+to\s+(complete|submit|return|provide|comply|meet|confirm|sign|acknowledge|accept)|"
     # 6. submission deadline / late / incomplete
     r"(receiv(e|ed)|submit(ted)?|return(ed)?|lodg(e|ed)|upload(ed)?|arriv(e|ed|es)|reach(es|ed)?)"
     r"\b.{0,70}no\s+later\s+than|closing\s+(date|time)|\bdeadline\b|"

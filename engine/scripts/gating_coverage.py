@@ -37,16 +37,18 @@ FAMILIES: dict[str, re.Pattern] = {
     "exclusion": re.compile(
         r"reject(ed|ion)?|exclu(de|ded|ding|des|sion|sionary)|disqualif|eliminat(e|ed|ion)|debarr|"
         r"ineligib|(will\s+not|cannot|shall\s+not|won'?t)\s+be\s+(considered|evaluated|accepted|"
-        r"assessed|progressed|short[-\s]?listed|taken\s+forward|entertained)|grounds?\s+for\s+"
+        r"assessed|progressed|short[-\s]?listed|taken\s+forward|entertained|scored)|grounds?\s+for\s+"
         r"exclusion|mandatory\s+exclusion|(render|invalidat)\w*\s+.{0,25}(void|invalid|non[-\s]?"
         r"compliant)|(void|invalid)\s+(tender|bid|submission|proposal|response|offer)|(tender|bid|"
         r"submission|proposal|response|offer)s?\b.{0,25}\b(void|invalid)\b|(is|are|deemed|considered)"
         r"\s+(void|invalid)\b|set\s+aside|pass(ed)?\s+over|ruled?\s+out|(will\s+)?not\s+"
-        r"(proceed|progress)\b|non[-\s]?conform\w*", re.I),
+        r"(proceed|progress)\b|non[-\s]?conform\w*|\bnot\s+be\s+accepted\b|variant\s+bids?|"
+        r"remov\w*\s+.{0,25}(consideration|the\s+process|evaluation|participation)", re.I),
     "passfail": re.compile(
         r"pass\s*[-/]?\s*fail|pass\s+or\s+fail|\bpqq\b|\bsq\b|selection\s+questionnaire|"
         r"deemed\s+.{0,25}fail|fail(ure|ed|s)?\s+.{0,40}(reject|exclu|disqualif|eliminat|"
-        r"not\s+be\s+considered)|pass\s+mark|(quality|score|scoring)\s+threshold", re.I),
+        r"not\s+be\s+considered)|pass\s+mark|(quality|score|scoring)\s+threshold|"
+        r"must\s+satisfy|mandatory\s+criteri", re.I),
     "integrity": re.compile(
         r"canvass|collusi|non[-\s]?complian|conflicts?\s+of\s+interest|anti[-\s]?competitive|"
         r"improper\s+(contact|approach|influenc\w*)|(attempt|seek)\w*\s+to\s+influenc\w*|"
@@ -64,8 +66,8 @@ FAMILIES: dict[str, re.Pattern] = {
         r"commission|\bdbs\b|disclosure\s+and\s+barring|enhanced\s+(disclosure|check)|"
         r"(security|dbs)\s+clearance|food\s+hygiene\s+rating", re.I),
     "returns": re.compile(
-        r"must\s+(complete|submit|return|be\s+(returned|completed|submitted|received))|"
-        r"failure\s+to\s+(complete|submit|return|provide|comply|meet)|"
+        r"must\s+(complete|submit|return|provide|be\s+(returned|completed|submitted|received|provided))|"
+        r"failure\s+to\s+(complete|submit|return|provide|comply|meet|confirm|sign|acknowledge|accept)|"
         r"mandatory\s+.{0,20}(site\s+visit|attendance|briefing)|condition\s+of\s+(bidding|tender)", re.I),
     "deadline": re.compile(
         r"(receiv(e|ed)|submit(ted)?|return(ed)?|lodg(e|ed)|upload(ed)?|arriv(e|ed|es)|reach(es|ed)?)"

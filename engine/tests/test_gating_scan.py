@@ -99,6 +99,22 @@ SECTOR_AND_STRUCTURE_GATES = [
 ]
 
 
+# Real deal-breaker phrasings from a HELD-OUT tender (Bradwell grounds ITT, hand-labelled by
+# Pranav) that the scanner missed on first contact — the value of a real test over synthetic banks.
+HELD_OUT_GATES = [
+    "Any bid which includes proposed amendments to the contract shall be deemed a variant bid and not be accepted.",
+    "Tenderers must satisfy these mandatory criteria before their bid will be considered further.",
+    "Failure to confirm acceptance will remove the Tenderer from consideration and their bid will not be scored further.",
+]
+
+
+def test_net_catches_held_out_bradwell_phrasings():
+    """Regression guard for the 3 deal-breakers the Bradwell held-out gold caught us missing
+    (variant-bid rejection, must-satisfy-mandatory-criteria, failure-to-confirm removal)."""
+    misses = [g for g in HELD_OUT_GATES if not _STRONG.search(g)]
+    assert not misses, f"net missed held-out gate phrasings: {misses}"
+
+
 def test_net_catches_sector_and_longdistance_gates():
     """Sector compliance schemes (CQC/Gas Safe/CHAS/DBS/Constructionline) and gates with many
     words between the verb and the trigger — both real on UK public-sector tenders."""
