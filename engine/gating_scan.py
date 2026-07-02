@@ -189,6 +189,44 @@ def _covered(cand_tokens: set[str], extracted_token_sets: list[set[str]]) -> boo
     return False
 
 
+_EMAIL = re.compile(r"\S+@\S+")
+_PHONE = re.compile(r"\d[\d\s()+-]{6,}\d")
+
+
+def _is_structural_nongate(text: str) -> bool:
+    """A line that STRUCTURALLY cannot be a deal-breaker: a table-of-contents dotted leader, a
+    contact block (email/phone), a mostly-digits/symbols line, or a <3-real-word fragment."""
+    if "...." in text:
+        return True
+    if _EMAIL.search(text) or _PHONE.search(text):
+        return True
+    alnum = sum(ch.isalnum() for ch in text)
+    if alnum and sum(ch.isalpha() for ch in text) / alnum < 0.5:
+        return True
+    return len(re.findall(r"[A-Za-z]{3,}", text)) < 3
+
+
+def consolidate_candidates(candidates: list[dict], dedup_overlap: float = 0.90) -> list[dict]:
+    """Recall-safe precision pass on the generous net's output (deterministic, no LLM): drop
+    structural non-gates (TOC leaders, contact blocks, digit/symbol lines, tiny fragments) and
+    collapse same-page near-duplicate fragments (>= dedup_overlap token overlap), keeping the
+    FULLEST line per cluster. Returns a SUBSET in the original order — never adds.
+
+    The overlap bar is deliberately high: distinct-but-similar gates (e.g. museum's Q3.2.x Pass/Fail
+    questions) must stay SEPARATE. Verified to hold gating recall 10/10 on the museum + bradwell gold
+    (0.85 already merges those distinct gates and drops to 9/10; 0.90 keeps them apart)."""
+    kept = [c for c in candidates if not _is_structural_nongate(c.get("text", ""))]
+    reps: list[tuple[set, object, dict]] = []
+    for c in sorted(kept, key=lambda x: -len(x.get("text", ""))):  # longest becomes the representative
+        ct = content_tokens(c.get("text", "")); pg = c.get("source_page")
+        if any(pg == r[1] and ct and r[0] and len(ct & r[0]) / min(len(ct), len(r[0])) >= dedup_overlap
+               for r in reps):
+            continue
+        reps.append((ct, pg, c))
+    rep_ids = {id(r[2]) for r in reps}
+    return [c for c in kept if id(c) in rep_ids]  # original order preserved
+
+
 def uncovered_gating(extracted_reqs: list[dict], pages, raw_id_prefix: str = "gate") -> list[dict]:
     """The safety net: strong disqualifier sentences NOT already covered by extraction, returned
     as raw-format gating requirement dicts (low confidence, needs_review). Union these into the

@@ -59,7 +59,10 @@ DUP_SIMILARITY = 0.86       # fallback dedupe similarity (placeholder only)
 # backend-rooted deploy -> silently skipped. Additive + recall-first: it only ever ADDS uncovered
 # gating candidates, so it can never lower recall/precision of what extraction already found.
 try:
-    from engine.gating_scan import uncovered_gating as _engine_uncovered_gating
+    from engine.gating_scan import (
+        uncovered_gating as _engine_uncovered_gating,
+        consolidate_candidates as _engine_consolidate,
+    )
     _HAVE_SAFETY_NET = True
 except ImportError:  # pragma: no cover - deploy without engine/ on path
     _HAVE_SAFETY_NET = False
@@ -141,6 +144,9 @@ def _with_safety_net(reconciled: list[dict], pages) -> list[dict]:
         return reconciled
     try:
         extra = _engine_uncovered_gating(reconciled, [(p.number, p.text) for p in pages])
+        # Recall-safe precision pass (deterministic): drop structural non-gates + collapse
+        # near-duplicate fragments. Verified to hold gating recall 10/10 on the gold tenders.
+        extra = _engine_consolidate(extra)
         # Stage 2: model precision filter drops obvious false flags (opt-in via GATING_FILTER +
         # key). Fail-open — on any error it returns `extra` unchanged, so the recall floor holds.
         if _HAVE_GATING_FILTER and extra:

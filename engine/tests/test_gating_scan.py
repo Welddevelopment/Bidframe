@@ -1,5 +1,5 @@
 """gating_scan safety net: surfaces disqualifier lines extraction missed, stays quiet when covered."""
-from engine.gating_scan import _STRONG, scan_candidates, uncovered_gating
+from engine.gating_scan import _STRONG, consolidate_candidates, scan_candidates, uncovered_gating
 
 PAGES = [
     (1, "The contract is for cleaning two sites. Any tenderer engaged in collusive tendering "
@@ -186,6 +186,38 @@ def test_hyphenated_gate_word_split_across_a_line_break_is_rejoined():
     pages = [(4, "A supplier subject to a ground for exclu-\nsion cannot be awarded the contract.")]
     texts = " ".join(c["text"].lower() for c in scan_candidates(pages))
     assert "exclusion" in texts
+
+
+def test_consolidate_drops_structural_nongates_keeps_real():
+    cands = [
+        {"text": "The bid will be rejected if incomplete.", "source_page": 1},
+        {"text": "5.3 Clarifications about the tenders .................... 7", "source_page": 2},
+        {"text": "Contact procurement@wlwa.gov.uk for queries.", "source_page": 3},
+        {"text": "Tel: 07570 273528 mob 07000 111222", "source_page": 3},
+    ]
+    texts = [c["text"] for c in consolidate_candidates(cands)]
+    assert "The bid will be rejected if incomplete." in texts        # real gate kept
+    assert not any("...." in t or "@" in t for t in texts)           # TOC + contact dropped
+    assert not any(t.startswith("Tel:") for t in texts)              # phone dropped
+
+
+def test_consolidate_dedups_near_duplicates_keeping_fullest():
+    cands = [
+        {"text": "Tenderers must satisfy this Pass/Fail selection requirement: Quality Standard.", "source_page": 5},
+        {"text": "Tenderers must satisfy this Pass/Fail selection requirement: Quality Standard", "source_page": 5},
+        {"text": "A tenderer engaged in collusion shall be disqualified.", "source_page": 6},
+    ]
+    out = consolidate_candidates(cands)
+    assert len(out) == 2                                             # the two p5 near-dups collapse
+    assert any("collusion" in c["text"] for c in out)               # distinct p6 gate survives
+
+
+def test_consolidate_keeps_distinct_gates_on_the_same_page():
+    cands = [
+        {"text": "The bidder must hold public liability insurance of £5m.", "source_page": 5},
+        {"text": "The bidder must hold professional indemnity insurance of £2m.", "source_page": 5},
+    ]
+    assert len(consolidate_candidates(cands)) == 2   # distinct gates must NOT be merged (recall)
 
 
 def test_taxonomy_catches_canonical_uk_ps_gate_vocabulary():
