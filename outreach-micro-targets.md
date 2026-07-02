@@ -194,5 +194,130 @@ Dropped: **Yates Jetting Ltd** — duplicate of existing **L-0360** (same domain
 >
 > Joel, Bidframe
 
+### Wave 1c — owner-run building / grounds / property-care firms (council & HA)
+*8 verified · all kept (2 PERFECT, 6 GOOD) · 0 duplicates.* Strongest proof: Charles Walker & Homebuilder are both named on **North Yorkshire Council's official housing-repairs contractor list**; Top Garden explicitly tenders for named county councils. Revive/Hamilton public-sector proof is self-declared client work (softer GOOD).
+
+---
+
+#### MT-12 · Charles Walker Construction Ltd · to: hello@charleswalkerconstruction.co.uk · PERFECT
+*3rd-generation family builder, York (~6 people; MD Andrew + wife Alex). Named on North Yorkshire Council's housing-repairs contractor list. Source: northyorks.gov.uk housing-repairs-contractors*
+**Subject:** Your North Yorkshire Council repairs bids — what would disqualify them?
+> Hi Andrew,
+>
+> You're on North Yorkshire Council's housing-repairs contractor list — so you're bidding council minor-works where one missed pass/fail requirement (an accreditation, an insurance level, a method statement) voids the whole submission however strong your work.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+>
+> I'm running free 15-minute live reads today and tomorrow — send me a council tender you're bidding and I'll show you, on the call, exactly what would disqualify it. A couple of slots left; after this week it's a paid pilot.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-13 · Top Garden Services · to: info@topgardenservices.com · PERFECT
+*Family-owned grounds firm, Thetford; explicitly tenders for Norfolk CC, Suffolk CC & East Cambs DC (15+ yrs). Source: topgardenservices.com/tenders*
+**Subject:** Your council grounds tenders — deal-breakers caught first
+> Hi there,
+>
+> You tender grounds-maintenance for Norfolk, Suffolk and East Cambs councils — so you know one missed pass/fail line (a method statement, a SafeContractor cert, a response window) can void the whole bid.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method statements — every claim cited.
+>
+> Free 15-minute live reads today and tomorrow — send me a grounds tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-14 · Homebuilder (Scarborough) Ltd · to: enquiries@homebuilderscarborough.co.uk · GOOD
+*Family builder, Scarborough; new builds/extensions/adaptations. Named on North Yorkshire Council's housing-repairs contractor list. Source: northyorks.gov.uk housing-repairs-contractors*
+**Subject:** North Yorkshire Council minor-works — the pass/fail gates
+> Hi there,
+>
+> You're on North Yorkshire Council's housing-repairs contractor list doing adaptations and renovations — council minor-works where one buried pass/fail requirement voids the whole bid.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations — a citation on every line.
+>
+> Free 15-minute live reads today and tomorrow — send a council tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-15 · Anglian Land Services · to: chris@anglianlandservices.co.uk · GOOD
+*Owner-run family grounds firm (contact "Chris"), East Anglia; parish-council work (Takeley PC named). Source: anglianlandservices.co.uk/council*
+**Subject:** Stepping up from parish to council grounds bids?
+> Hi Chris,
+>
+> You already maintain public spaces for parish councils across East Anglia — and the step up to council/HA grounds frameworks means tenders where one missed pass/fail requirement voids the whole bid.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own method statements and accreditations — every claim cited, so you can bid without a bid team.
+>
+> Free 15-minute live reads today and tomorrow — send me a tender you're eyeing and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-16 · GreenServe GM · to: info@greenservegm.com · GOOD
+*Tiny West Sussex grounds firm (Patching); multi-year Thakeham Parish Council contract, also schools/colleges. Source: greenservegm.com*
+**Subject:** Your council grounds tenders — what would disqualify the bid?
+> Hi there,
+>
+> You've held a parish-council grounds contract for years and work with schools and colleges — so you're bidding public grounds work where one missed pass/fail requirement voids the whole submission.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method statements — every claim cited.
+>
+> Free 15-minute live reads today and tomorrow — send a grounds tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-17 · Revive Property Services (UK) Ltd · to: info@reviveps.co.uk · GOOD
+*Family building contractor, NW England (Liverpool); social-housing voids/disrepair/damp & mould for HAs & councils (self-declared, no named framework). NB mailbox domain (reviveps.co.uk) differs from website (revivepropertyservices.co.uk). Source: revivepropertyservices.co.uk/about-revive*
+**Subject:** Social-housing void tenders — deal-breakers caught first
+> Hi there,
+>
+> Your core work is social-housing voids, disrepair and damp & mould for housing associations and councils — SOR-driven framework tenders where one missed pass/fail requirement voids the whole bid.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations and method docs — a citation on every claim.
+>
+> Free 15-minute live reads today and tomorrow — send me a void/repairs framework you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-18 · Hamilton Builders & Property Care Ltd · to: info@hamiltonbuilders.co.uk · GOOD
+*Small Scottish family builder (30+ yrs), Glasgow/Stirling/Kilsyth; councils + housing associations named as client types (self-declared, no named framework). Source: hamiltonbuilders.co.uk*
+**Subject:** Council & HA repairs frameworks — the pass/fail gates
+> Hi there,
+>
+> You do property care for councils and housing associations around Glasgow — repairs and void frameworks where one missed pass/fail requirement voids the whole bid however strong your work.
+>
+> Bidframe reads the tender and surfaces those deal-breakers first, each linked to its clause, then drafts each answer from your own accreditations — every claim cited.
+>
+> Free 15-minute live reads today and tomorrow — send a framework you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
+#### MT-19 · David Ryan Plumbing / Merrybent Bathrooms Ltd · to: info@darlingtonplumber.co.uk · GOOD
+*Sole operator (est. 1992, David Ryan), Darlington; on North Yorkshire Council's authorised housing-repairs contractors list, does school work. Caveat: based just over the border (Darlington) working into N. Yorks; mailbox domain differs from the bathrooms website. Sources: northyorks.gov.uk housing-repairs-contractors; merrybentbathrooms.co.uk*
+**Subject:** On the council repairs list — but out-gunned on paperwork?
+> Hi David,
+>
+> You're on North Yorkshire Council's authorised housing-repairs contractor list and do school work — but as a one-job-at-a-time operator you're up against big contractors with bid teams on the paperwork.
+>
+> Bidframe reads the tender pack and surfaces the pass/fail deal-breakers first, each linked to its exact clause, then drafts each answer from your own certificates and method docs — a citation on every claim, nothing invented.
+>
+> Free 15-minute live reads today and tomorrow — send me a council tender you're bidding and I'll show you what would disqualify it, live. Paid pilot after this week.
+>
+> Free slot → https://cal.com/joel-jeon-o29lfr/bidframe  ·  or reply with a tender and a time.
+>
+> Joel, Bidframe
+
 <!-- next waves appended below -->
 
