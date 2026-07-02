@@ -22,7 +22,7 @@
 | **docs** | 3 | 1,663 | Docs — plans & specs |
 | **ci** | 1 | 62 | CI — GitHub Actions |
 | **tooling** | 1 | 516 | Tooling — repo scripts (incl. this map generator) |
-| **root** | 407 | 21,338 | Root — docs, config, role briefs |
+| **root** | 407 | 21,354 | Root — docs, config, role briefs |
 
 ## System shape
 
