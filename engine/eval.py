@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 from engine._io import read_json, write_json
-from engine.similarity import similarity
+from engine.similarity import match_score
 
 MATCH_THRESHOLD = 0.60
 
@@ -59,7 +59,7 @@ def match_requirements(gold: dict, output: dict):
     candidates = []
     for gi, g in enumerate(golds):
         for oi, o in enumerate(outs):
-            sim = similarity(g.get("text", ""), o.get("text", ""))
+            sim = match_score(g.get("text", ""), o.get("text", ""))
             if sim >= MATCH_THRESHOLD:
                 same_page = 0 if g.get("source_page") == o.get("source_page") else 1
                 candidates.append((-sim, same_page, gi, oi))

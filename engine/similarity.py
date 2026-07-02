@@ -58,3 +58,31 @@ def token_similarity(a: str, b: str) -> float:
     if not ta or not tb:
         return 0.0
     return len(ta & tb) / len(ta | tb)
+
+
+def match_score(a: str, b: str) -> float:
+    """Eval gold<->output match score in [0,1] — paraphrase & granularity tolerant.
+
+    The MAX of the char-ratio (word-order sensitive) and a content-token overlap
+    (word-order INsensitive: Jaccard blended with smaller-set containment). This
+    lets a gold requirement match an extracted one that is reworded, reordered, or
+    a longer/shorter phrasing of the same obligation — cases the raw char-ratio
+    scores as a miss/false-positive even though the requirement was found.
+
+    Still deterministic + stdlib-only (no embeddings), so the eval number stays
+    reproducible offline. Guardrail: the token path needs >=2 shared content tokens
+    to fire, so a single incidental shared word can never force a spurious match
+    (keeps genuinely-different requirements unmatched — e.g. an ISO cert vs a
+    turnover threshold share nothing and stay separate).
+    """
+    char = similarity(a, b)
+    ta, tb = _content_tokens(a), _content_tokens(b)
+    if not ta or not tb:
+        return char
+    inter = len(ta & tb)
+    if inter < 2:
+        return char
+    jaccard = inter / len(ta | tb)
+    containment = inter / min(len(ta), len(tb))
+    token = 0.5 * jaccard + 0.5 * containment
+    return max(char, token)
