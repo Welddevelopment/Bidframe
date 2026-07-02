@@ -14,7 +14,7 @@ g12,Any Tenderer who directly or indirectly canvasses a MAC representative conce
 g13,Tenderers must complete the Certificate as to Canvassing (Appendix E).,mandatory,no,5,1.13,
 g14,Prices submitted in the Form of Tender (Appendix B) must be fixed for the Initial Contract Period (2 years).,mandatory,no,5,1.14,
 g15,Tenderers must confirm no conflict of interest and complete the Conflict of Interest Declaration (Appendix C).,mandatory,no,6,1.15,
-g16,"A Tenderer engaged in collusive tendering (price-fixing, disclosing bid amounts, non-compete arrangements, or inducements) shall be disqualified.",mandatory,yes,6,1.16,explicit disqualification
+g16,A tenderer engaged in collusive tendering shall be disqualified.,mandatory,yes,6,1.16,explicit disqualification; collusion = price-fixing / disclosing bid amounts / non-compete / inducements
 g17,The successful tenderer shall submit full Product Data Sheets for all cleaning consumables to the Operations Manager.,mandatory,no,7,1.21,
 g18,The Contractor is responsible for establishing the cleaning team structure/size and providing cleaners seven days a week.,mandatory,no,9,2.4,
 g19,"The contractor is responsible for staff holiday/bank-holiday pay, staff absence and personnel issues.",mandatory,no,9,2.4.1,
@@ -59,9 +59,12 @@ g57,"The Contractor shall develop a Business Continuity Plan covering IT failure
 g58,"On contract expiry, the Contractor shall comply with TUPE, maintain service to the final day, transfer work smoothly, provide requested documentation, and return all Client passes/cards/keys/equipment.",mandatory,no,22,2.25,
 g59,Contractors shall work with third-party suppliers to keep disruption to a minimum.,mandatory,no,22,2.26,
 g60,"Tenders must be submitted in three parts (Selection, Quality, Commercial), each sealed separately within the main tender envelope.",mandatory,no,23,3.1,
-g61,"Tenderers must answer Q3.2.1 Previous Relevant Experience (Pass/Fail): business description, similar prior experience, and at least one (up to 3) example within 3 years with contract details.",mandatory,yes,23,3.2.1,Stage-1 Pass/Fail selection criterion; failure eliminates the tender per 4.2
-g62,Tenderers must answer Q3.2.2 Quality Standard (Pass/Fail): quality management approach/systems and any QA accreditation held.,mandatory,yes,24,3.2.2,Stage-1 Pass/Fail; see 4.2
-g63,"Tenderers must answer Q3.2.3 Financial Information (Pass/Fail): 3-year turnover, bank reference details, 2 years' audited accounts, revenue forecast, and any significant financial change.",mandatory,yes,24,3.2.3,Stage-1 Pass/Fail; see 4.2
+g61,Q3.2.1 Previous Relevant Experience is a Pass/Fail selection question; failing it eliminates the tender.,mandatory,yes,23,3.2.1,Stage-1 Pass/Fail selection criterion; failure eliminates per 4.2
+g61b,"For Q3.2.1, tenderers must provide a business description, similar prior experience, and at least one (up to 3) example within 3 years with contract details.",mandatory,no,23,3.2.1,answer content for the g61 Pass/Fail gate
+g62,Q3.2.2 Quality Standard is a Pass/Fail selection question; failing it eliminates the tender.,mandatory,yes,24,3.2.2,Stage-1 Pass/Fail; see 4.2
+g62b,"For Q3.2.2, tenderers must set out their quality management approach/systems and any QA accreditation held.",mandatory,no,24,3.2.2,answer content for the g62 Pass/Fail gate
+g63,Q3.2.3 Financial Information is a Pass/Fail selection question; failing it eliminates the tender.,mandatory,yes,24,3.2.3,Stage-1 Pass/Fail; see 4.2
+g63b,"For Q3.2.3, tenderers must provide 3-year turnover, bank reference details, 2 years' audited accounts, revenue forecast, and any significant financial change.",mandatory,no,24,3.2.3,answer content for the g63 Pass/Fail gate
 g64,"Tenderers must complete and submit Appendices C-J (Conflict of Interest, Contact Details, Canvassing Certificate, Fair Employment Declaration, Environmental Questionnaire, Insurance Questionnaire, Bona Fide Tender Certificate, H&S Questionnaire) (Pass/Fail).",mandatory,yes,24,3.2.4,Stage-1 Pass/Fail; see 4.2
 g65,Tenderers must answer 3.3.1 Implementation/Resource Structure (50 marks): an Implementation Plan and a Staff/Resource Structure.,mandatory,no,25,3.3.1,
 g66,Tenderers must answer 3.3.2 Approach to Delivering the Required Service (100 marks): a General Summary and a Continuous Improvement approach.,mandatory,no,25,3.3.2,
