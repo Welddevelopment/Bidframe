@@ -1,4 +1,4 @@
-# Extraction Prompt — v1
+# Extraction Prompt — v2
 
 > **Owner: J.** Provider-agnostic. The backend calls this **per chunk** and gets back raw requirement
 > objects (see [raw-extraction-format.md](raw-extraction-format.md)). Recall is the priority:
@@ -39,6 +39,19 @@ condition their bid/organisation must meet — to be compliant or to score. Incl
 Capture requirements wherever they live: prose, bulleted lists, and TABLES (a table row with a
 PASS/FAIL or "minimum" column is almost always a requirement — extract it).
 
+WHAT IS **NOT** A REQUIREMENT (these are the main source of noise — do not extract them as rows)
+- Background, context, or scope description ("This contract is for the cleaning of two sites…").
+- Definitions and glossary entries.
+- The AUTHORITY'S / buyer's OWN statements or obligations (what THEY will do), unless the bidder
+  must act on them.
+- Headings, section titles, page furniture, and bare cross-reference pointers that carry no
+  obligation of their own.
+- Explanatory or illustrative notes ("for example", "for information only", "for the avoidance of
+  doubt").
+Turning plain descriptive prose into requirement rows is what tanks precision. Recall still wins
+ties — if something is a *borderline requirement*, extract it at low confidence — but descriptive,
+definitional, or buyer-side prose is not a requirement.
+
 RECALL IS THE PRIORITY
 Missing a requirement is far worse than including a borderline one. If a sentence might be a
 requirement, EXTRACT IT and assign LOW confidence rather than dropping it. Never silently skip
@@ -47,8 +60,11 @@ content because it is in an awkward table or dense clause.
 DO NOT
 - Do not invent requirements not supported by the text.
 - Do not paraphrase the source_excerpt — it must be an EXACT substring of the chunk text.
-- Do not merge two distinct requirements into one. One obligation = one object. (Deduplication
-  across chunks happens later — your job is per-chunk recall.)
+- One obligation = one object. Split a sentence ONLY where it carries genuinely SEPARATE obligations
+  ("must do X AND provide Y" → two objects). Do NOT fragment a single obligation into overlapping
+  pieces (e.g. "hold ISO 9001 certification" must NOT become "hold ISO 9001" + "hold certification"),
+  and do NOT emit the same requirement twice or at two granularities. Emit each distinct obligation
+  ONCE per chunk. (Cross-chunk dedup happens later; within a chunk, no duplicates.)
 - Do not output anything except the structured object the schema defines.
 
 GROUNDING (sacred — this is what makes the tool auditable)
@@ -146,5 +162,14 @@ obligation per object, honest confidence, and check tables row by row.
 - [ ] Genuinely non-requirement prose (background, definitions) NOT over-extracted into noise.
 
 ### Changelog
+- **2026-07-02 (J)** — **v2: precision pass.** Added an explicit **"what is NOT a requirement"**
+  section (background/definitions/buyer-side prose/headings/notes) + **anti-fragmentation &
+  within-chunk-dedup** guidance, to cut the over-surfacing that drags precision (~0.4 on SPSO) WITHOUT
+  weakening the recall-first core — gating recall stays sacred. **@backend: `_LLM_SYSTEM` in
+  `extract.py` is a condensed summary — add these two clauses for the precision pass to take runtime
+  effect:** (1) *"Do NOT extract background/scope description, definitions, the buyer's own statements,
+  headings, or explanatory notes as requirements — that noise tanks precision."* (2) *"One obligation
+  = one object: split only genuinely separate obligations; never fragment one into overlapping pieces
+  or emit it twice/at two granularities; each distinct obligation once per chunk."*
 - **2026-06-28 (Day 1)** — v1 drafted by J. Single-call extract+classify. To be tested on a real
   tender chunk Day 2 and split from classification only if one-call recall suffers.
