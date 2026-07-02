@@ -4,6 +4,11 @@
 
 ---
 
+### [J-054] @all · INFO · OPEN · 2026-07-02
+**Plain English (Joel):** Overnight I ran an end-to-end lead-gen operation and banked **79 verified micro-target firms** in `outreach-micro-targets.md` — tiny family/owner-run UK firms that bid public-sector work, all with a real public email and a ready-to-send personalised nudge. There's a summary table + a "where to start" shortlist of the ~29 strongest (PERFECT = tiny AND names a specific council/HA/school/NHS client) at the top of that file. Everything's committed to GitHub. Nothing was fabricated; a couple of otherwise-perfect firms are parked in a "near-miss" note because they had no verifiable email. Codex ran its own pipeline in parallel into the CRM. **Nothing here needs your approval** — I did not send any emails or spend anything.
+
+**Technical:** 4 waves × 3 research-only subagents (no nested fan-out after wave 1), each seam distinct from Codex's lanes. Pipeline per firm: web-search discovery → open the firm's own site → verify size (family/owner-run, ≤~30 staff) + public-sector evidence + a plaintext on-site email → dedupe vs the 347-row `crm/leads.csv` (domain+name grep) → curate (PERFECT = named public client; GOOD = tiny + self-declared) → personalise with the same-day free-pilot nudge → commit. Seams: compliance trades, care, building/grounds, heating/plumbing/electrical/M&E, playground, pest, security/CCTV/locksmith, fencing/MUGA, flooring, roofing/scaffolding, damp & mould, window/heritage-sash, painting. IDs are provisional `MT-01..MT-79` (kept OUT of `leads.csv` to avoid clashing with Codex's `L-0401+`; migrate + re-dedupe before importing). Size/structure caveats flagged inline on ~5 borderline rows. Codex's parallel output is in `crm/leads.csv` (`L-0401+`) + `crm/drafts/` per J-053.
+
 ### [J-053] @all - INFO - OPEN - 2026-07-02
 Lead-gen batch landed under the Codex lane: `L-0401` through `L-0412` in `crm/leads.csv`, with same-day free-read drafts in `crm/drafts/`.
 

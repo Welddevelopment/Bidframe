@@ -8,7 +8,29 @@ public sources (no fabricated emails/names) and comes with a ready-to-send, pers
 Supersedes the consultancy-heavy picks in `outreach-batch-personalised.md` (those over-shot on firm size).
 Booking link in every draft: **https://cal.com/joel-jeon-o29lfr/bidframe**.
 
-**Status:** in progress — appended in waves, committed to GitHub every ~10 min. Verified targets below.
+**Status:** 79 verified targets across 4 waves / 13 seams (overnight run, 2 Jul). ~29 PERFECT (tiny + a *named* public-sector client), ~50 GOOD. All emailable, personalised, deduped vs the 347-lead CRM, no fabrication. Committed to GitHub every ~10 min. Codex ran its own pipeline in parallel (writes `crm/leads.csv`, ids `L-0401+`).
+
+### Where to start — highest-confidence PERFECT fits (tiny + a NAMED public client)
+Trades: **Midland Fire · Cropper Grounds · Exjet · H2O Hygiene**. Care: **Hallifax Care · DACCS · Home Care Wales**. Building/grounds: **Charles Walker · Top Garden · Headcorn Heating**. Playground: **Reids · TK Play**. Pest: **Aardvark**. Security: **Blake Fire · ATCL**. Fencing: **Harrier**. Flooring: **Elvington · Lees Heginbotham**. Roofing: **Hall Aspects · Rooftec**. Damp: **Newseal · APS**. Windows: **Listed Window Refurb · Sash Window Preservation · CJL**. Painting: **AJM · ALCo**.
+
+### Count by seam
+| Seam | Wave | Count | MT ids |
+|---|---|---|---|
+| Compliance & maintenance trades (fire/water/drainage/grounds) | 1a | 6 | MT-01–06 |
+| Family care providers (home/domiciliary) | 1b | 5 | MT-07–11 |
+| Building / grounds / property-care | 1c | 8 | MT-12–19 |
+| Heating / plumbing / electrical / M&E (stragglers) | 1c | 8 | MT-20–22, 28–32 |
+| Playground inspection / repair / install | 2a | 5 | MT-23–27 |
+| Pest control | 2b | 6 | MT-33–38 |
+| Security / CCTV / locksmith | 2c | 6 | MT-39–44 |
+| Fencing / MUGA / sports-surfacing | 3a | 5 | MT-45–49 |
+| Flooring / refurb | 3b | 7 | MT-50–56 |
+| Roofing / scaffolding | 3c | 6 | MT-57–62 |
+| Damp-proofing / damp & mould (Awaab's Law) | 4a | 6 | MT-63–68 |
+| Window/door & heritage-sash restoration | 4b | 6 | MT-69–74 |
+| Painting & decorating | 4c | 5 | MT-75–79 |
+
+Two **near-miss** notes below (strong ICP, blocked only by no verifiable email) — manual follow-up, never fabricated.
 
 ---
 
