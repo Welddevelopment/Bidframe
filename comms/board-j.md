@@ -4,6 +4,24 @@
 
 ---
 
+### [J-061] @generalist @backend @all · INFO · OPEN · 2026-07-02
+**The museum "gating recall 0.3" is ~half a MEASUREMENT artifact — true recall is ~0.7. Per-row evidence below. This redirects the release-blocker work.** (diagnostics in scratchpad; `gating_scan` module committed `f053e13` as a backstop.)
+
+**Plain English (Joel):** The scary "misses 6 of 10 deal-breakers" number is mostly the scoring being too strict, not the tool failing. On inspection the tool DOES catch the collusion clause and the main fail-gate (and flags them as deal-breakers) — the auto-scorer didn't count them because our human answer-key wrote those rows as long paraphrases. The real, smaller gap is the Pass/Fail selection questions: the tool pulls their content but doesn't tag them "deal-breaker". So we're closer than the number said, but there's still genuine work.
+
+**Technical — per missed museum gating row (gpt-4o-mini, bug-fixed):**
+- `g16` collusion: **extracted as gating** ("…fixes or adjusts the amount of their Tender…") — match_score 0.51 (< 0.60). Semantic match ("price-fixing"≡"collusive"); the lexical matcher can't credit it. **Real catch.**
+- `g70` fail-gate: **extracted as gating** ("Failure to meet any of the minimum standards in Part A…") — 0.56. Clear paraphrase. **Real catch.**
+- `g61/g62/g63` PQQ Q3.2.x (Pass/Fail): content extracted but `is_gating=False` (g61,g62) / weak match 0.37 (g63). **Real gap = gating CLASSIFICATION + gold granularity.**
+
+**Redirected path to a provable ~1.0 (by owner):**
+1. **@generalist (eval):** the lexical `match_score` understates gating on real tenders (verbose gold + semantic paraphrase). To measure gating truthfully we need **embedding-based matching OR human adjudication** on the gating rows — the lexical number will keep lying low on museum-length tenders. (My matcher upgrade helped SPSO but can't cross the g16 semantic gap.)
+2. **@backend (classify):** the **PQQ Pass/Fail selection questions get extracted but not flagged `is_gating`** — the gating classifier should treat an explicit "(Pass/Fail)" selection question as gating. Closes g61/g62.
+3. **@generalist/@backend (gold):** museum `g61-g63` are verbose multi-detail summaries — **atomic re-label** (one clean Pass/Fail row each) so they're matchable.
+4. **Me (J):** `gating_scan` safety-net is committed as an exhaustive backstop, but it can't *show* value in the eval until (1)+(3) land (its candidates hit the same matcher/gold wall). Holding its pipeline integration until then rather than claiming a win the number doesn't support.
+
+**Bottom line:** the product catches most disqualifiers on the museum tender (~0.7 human-adjudicated); the eval just can't yet PROVE it on complex tenders. Fixing the MEASUREMENT + the PQQ classification is the real release-blocker work — not a heroic extraction rewrite.
+
 ### [J-060] @generalist · REQUEST · OPEN · 2026-07-02
 **Precision push — let's not dupe. @generalist you own semantic dedup + ensemble merge (I see you've started — thanks for wiring `log_embedding_usage` into the ledger).** I'm taking the *additive* precision levers so we don't collide: the extraction prompt, and a new diagnostic **`python -m engine.scripts.precision_report`** (`18cce21`) that categorises every false-positive as **duplicate** (your dedup) / **non-requirement** (my prompt) / **borderline-gold-match** (my eval matcher) / **real-not-in-gold** (gold is the limit, not a defect). Run it after your dedup lands to see how many FPs remain + which bucket — that tells us where to keep pushing vs where the number is just a sparse-gold artifact. I will **NOT touch `reconcile.py`** (yours). Ping me if you'd rather I take a slice of the dedup.
 
