@@ -33,6 +33,8 @@ import { deriveTriage } from "@/lib/triage";
 import type { Requirement } from "@/types/requirement";
 
 const MAIN_SLIDE_COUNT = 7;
+// The Solution slide (0-based): the deck's two-beat dramatic moment.
+const STOPSIGN_INDEX = 2;
 const AUTOPLAY_SECONDS = [20, 22, 23, 33, 34, 30, 18] as const;
 const CTA =
   "Talk to us if you would like to help Bidframe scale the first-read layer for public-sector bids.";
@@ -206,7 +208,10 @@ export function PitchDeck() {
   const { requirements, title } = useRequirements();
   const [activeIndex, setActiveIndex] = useState(0);
   const [notesOpen, setNotesOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
+  // The stop-sign slide plays in two beats: 0 = the clause alone, 1 = caught.
+  const [beat, setBeat] = useState(0);
 
   const triage = useMemo(() => deriveTriage(requirements), [requirements]);
   const collapsedGroups = useMemo<Set<string>>(() => new Set(["decided"]), []);
@@ -236,12 +241,31 @@ export function PitchDeck() {
 
   const next = useCallback(() => {
     setAutoplay(false);
+    if (activeIndex === STOPSIGN_INDEX && beat === 0) {
+      setBeat(1);
+      return;
+    }
+    setBeat(0);
     setActiveIndex((current) => Math.min(current + 1, 11));
-  }, []);
+  }, [activeIndex, beat]);
 
   const previous = useCallback(() => {
     setAutoplay(false);
-    setActiveIndex((current) => Math.max(current - 1, 0));
+    if (activeIndex === STOPSIGN_INDEX && beat === 1) {
+      setBeat(0);
+      return;
+    }
+    const target = Math.max(activeIndex - 1, 0);
+    // walking backwards re-enters the stop-sign already resolved
+    setBeat(target === STOPSIGN_INDEX ? 1 : 0);
+    setActiveIndex(target);
+  }, [activeIndex, beat]);
+
+  // Direct jumps (trail map, number keys) land on the finished state.
+  const goTo = useCallback((index: number) => {
+    setAutoplay(false);
+    setBeat(index === STOPSIGN_INDEX ? 1 : 0);
+    setActiveIndex(index);
   }, []);
 
   const toggleAutoplay = useCallback(() => {
@@ -289,26 +313,50 @@ export function PitchDeck() {
       } else if (event.key.toLowerCase() === "f") {
         event.preventDefault();
         toggleFullscreen();
+      } else if (event.key >= "1" && event.key <= "7") {
+        event.preventDefault();
+        goTo(Number(event.key) - 1);
+      } else if (event.key.toLowerCase() === "q") {
+        event.preventDefault();
+        goTo(MAIN_SLIDE_COUNT);
+      } else if (event.key === "?") {
+        event.preventDefault();
+        setHelpOpen((open) => !open);
+      } else if (event.key === "Escape") {
+        setHelpOpen(false);
       }
     }
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [next, previous, toggleAutoplay, toggleFullscreen]);
+  }, [next, previous, goTo, toggleAutoplay, toggleFullscreen]);
 
   useEffect(() => {
     if (!autoplay) return;
     if (activeIndex >= MAIN_SLIDE_COUNT) return;
 
+    // Autoplay fires the stop-sign's second beat partway through the slide.
+    const beatTimeout =
+      activeIndex === STOPSIGN_INDEX
+        ? window.setTimeout(
+            () => setBeat(1),
+            AUTOPLAY_SECONDS[STOPSIGN_INDEX] * 450
+          )
+        : null;
+
     const timeout = window.setTimeout(() => {
       if (activeIndex === MAIN_SLIDE_COUNT - 1) {
         setAutoplay(false);
       } else {
+        setBeat(0);
         setActiveIndex((current) => Math.min(current + 1, MAIN_SLIDE_COUNT - 1));
       }
     }, AUTOPLAY_SECONDS[activeIndex] * 1000);
 
-    return () => window.clearTimeout(timeout);
+    return () => {
+      if (beatTimeout !== null) window.clearTimeout(beatTimeout);
+      window.clearTimeout(timeout);
+    };
   }, [activeIndex, autoplay]);
 
   const slides = useMemo(
@@ -392,7 +440,7 @@ export function PitchDeck() {
           zone: "night",
           light: 0.12,
           notes: [
-            "This is the stop-sign in the forest: let the pulse land, pause, then read the clause out loud.",
+            "Two beats: the slide lands with the clause alone — read it out loud into the pause. The NEXT keypress stamps the green 'caught' line; only then keep talking.",
             "Say it in full: Bidframe turns the tender into a reviewable matrix — deal-breakers first, uncertainty visible, sources attached.",
             "The card is a real gating requirement from the SPSO run, with its clause and page. This is where the room should understand the wedge.",
             "Avoid claiming universal accuracy. This is a real pre-baked run.",
@@ -401,7 +449,9 @@ export function PitchDeck() {
             <div className="pitch-moment">
               <p className="pitch-kicker">The solution</p>
               <h2>Find the clause that can void the bid</h2>
-              <div className="pitch-stopsign">
+              <div
+                className={`pitch-stopsign ${beat > 0 ? "is-resolved" : ""}`}
+              >
                 <span className="pitch-stopsign__blaze" aria-hidden="true" />
                 <p className="pitch-stopsign__caption">
                   This is the line that would kill the bid
@@ -803,6 +853,7 @@ export function PitchDeck() {
       ] satisfies Array<SlideMeta & { body: React.ReactNode }>,
     [
       activeIndex,
+      beat,
       backedCount,
       collapsedGroups,
       dealBreakers,
@@ -888,10 +939,7 @@ export function PitchDeck() {
             labels={trailLabels}
             activeIndex={activeIndex}
             offTrail={inAppendix}
-            onSelect={(index) => {
-              setAutoplay(false);
-              setActiveIndex(index);
-            }}
+            onSelect={goTo}
           />
 
           <div className="pitch-controls no-print">
@@ -946,6 +994,31 @@ export function PitchDeck() {
               <IconFullscreen />
             </button>
           </div>
+
+          {helpOpen && (
+            <aside
+              className="pitch-help no-print"
+              onClick={() => setHelpOpen(false)}
+            >
+              <p>Shortcuts</p>
+              <ul>
+                <li>
+                  <kbd>→</kbd> / <kbd>Space</kbd> next · <kbd>←</kbd> back
+                </li>
+                <li>
+                  <kbd>1</kbd>–<kbd>7</kbd> jump to slide · <kbd>Q</kbd> field
+                  notes
+                </li>
+                <li>
+                  <kbd>A</kbd> autoplay · <kbd>N</kbd> notes · <kbd>F</kbd>{" "}
+                  fullscreen
+                </li>
+                <li>
+                  <kbd>?</kbd> toggle this card · <kbd>Esc</kbd> close
+                </li>
+              </ul>
+            </aside>
+          )}
 
           {notesOpen && (
             <aside className="pitch-notes no-print">

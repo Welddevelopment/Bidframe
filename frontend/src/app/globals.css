@@ -2977,6 +2977,121 @@ body {
   mask-image: linear-gradient(to top, black 0%, black 22%, transparent 52%);
 }
 
+/* Arrival: when the clearing becomes the ground, warm light blooms in and a
+   few fireflies drift. Both are decorative and rest under reduced motion. */
+.pitch-scene__bloom {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(
+    ellipse at 62% 40%,
+    rgba(246, 236, 210, 0.5),
+    rgba(246, 236, 210, 0.12) 42%,
+    transparent 68%
+  );
+  mix-blend-mode: screen;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pitch-scene--clearing.is-active .pitch-scene__bloom {
+    animation: pitch-bloom 2400ms ease-out 300ms both;
+  }
+}
+
+@keyframes pitch-bloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  55% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+}
+
+.pitch-scene__fireflies {
+  position: absolute;
+  inset: 0;
+}
+
+.pitch-scene__fireflies span {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(244, 224, 158, 0.95);
+  box-shadow: 0 0 8px 2px rgba(244, 224, 158, 0.5);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pitch-scene--clearing.is-active .pitch-scene__fireflies span {
+    animation: pitch-firefly 7s ease-in-out infinite;
+  }
+}
+
+.pitch-scene__fireflies span:nth-child(1) {
+  left: 22%;
+  top: 58%;
+  animation-delay: 600ms;
+}
+
+.pitch-scene__fireflies span:nth-child(2) {
+  left: 68%;
+  top: 46%;
+  animation-delay: 1800ms;
+  animation-duration: 8.5s;
+}
+
+.pitch-scene__fireflies span:nth-child(3) {
+  left: 45%;
+  top: 70%;
+  animation-delay: 3200ms;
+}
+
+.pitch-scene__fireflies span:nth-child(4) {
+  left: 82%;
+  top: 64%;
+  animation-delay: 900ms;
+  animation-duration: 9s;
+}
+
+.pitch-scene__fireflies span:nth-child(5) {
+  left: 12%;
+  top: 40%;
+  animation-delay: 2600ms;
+  animation-duration: 7.6s;
+}
+
+.pitch-scene__fireflies span:nth-child(6) {
+  left: 57%;
+  top: 30%;
+  animation-delay: 4200ms;
+  animation-duration: 8s;
+}
+
+@keyframes pitch-firefly {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  20% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.35;
+    transform: translate(14px, -18px);
+  }
+  75% {
+    opacity: 0.8;
+    transform: translate(-8px, -30px);
+  }
+}
+
 /* Paper: the civic record, forest held to the edges. */
 .pitch-scene--paper .pitch-scene__art {
   background: var(--color-paper);
@@ -3608,6 +3723,78 @@ body {
   font-size: clamp(0.66rem, 0.78vw, 0.86rem);
   letter-spacing: 0.06em;
   color: var(--color-signal-light-green);
+  /* beat two: hidden until the presenter resolves the moment */
+  opacity: 0;
+  transform: translateY(0.45rem);
+  transition:
+    opacity 480ms ease,
+    transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pitch-stopsign.is-resolved .pitch-stopsign__card em {
+  opacity: 1;
+  transform: none;
+}
+
+/* on resolve the threat settles: the blaze calms toward the caught green */
+.pitch-stopsign.is-resolved .pitch-stopsign__blaze {
+  border-color: var(--color-signal-light-green);
+  background: rgba(111, 154, 87, 0.28);
+  box-shadow: 0 0 18px rgba(111, 154, 87, 0.55);
+  transition:
+    border-color 600ms ease,
+    background 600ms ease,
+    box-shadow 600ms ease;
+}
+
+/* The shortcut card (?) — presenter reference, click anywhere on it to close. */
+.pitch-help {
+  position: absolute;
+  z-index: 95;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(26rem, 80vw);
+  border: 1px solid rgba(246, 242, 233, 0.22);
+  background: rgba(17, 26, 19, 0.92);
+  padding: 1.1rem 1.25rem;
+  color: var(--color-paper);
+  box-shadow: 0 24px 52px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+}
+
+.pitch-help p {
+  margin: 0;
+  font-family: var(--font-mono-ibm), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(246, 242, 233, 0.7);
+}
+
+.pitch-help ul {
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pitch-help li {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.pitch-help kbd {
+  display: inline-block;
+  min-width: 1.4rem;
+  padding: 0.06rem 0.34rem;
+  border: 1px solid rgba(246, 242, 233, 0.32);
+  border-bottom-width: 2px;
+  background: rgba(246, 242, 233, 0.08);
+  font-family: var(--font-mono-ibm), monospace;
+  font-size: 0.76rem;
+  text-align: center;
 }
 
 
@@ -4131,7 +4318,13 @@ body {
   .pitch-controls,
   .pitch-click-zone,
   .pitch-notes,
+  .pitch-help,
   .pitch-trailmap {
     display: none !important;
+  }
+
+  .pitch-stopsign__card em {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

@@ -91,7 +91,17 @@ export function PitchScene({
             <FernFrond className="pitch-scene__frond" />
           )}
           {name === "clearing" && (
-            <Seal id={`pitch-seal-${name}`} className="pitch-scene__seal" />
+            <>
+              <Seal id={`pitch-seal-${name}`} className="pitch-scene__seal" />
+              {/* arrival: the light blooms and a few fireflies drift when the
+                  clearing becomes the active ground */}
+              <span className="pitch-scene__bloom" />
+              <span className="pitch-scene__fireflies">
+                {Array.from({ length: 6 }, (_, i) => (
+                  <span key={i} />
+                ))}
+              </span>
+            </>
           )}
         </div>
       ))}
