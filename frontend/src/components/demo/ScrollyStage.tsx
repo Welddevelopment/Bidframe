@@ -2,6 +2,7 @@ import { ConfidenceIndicator } from "@/components/ConfidenceIndicator";
 import { ApprovalStamp } from "@/components/ApprovalStamp";
 import { GatingHero } from "@/components/GatingHero";
 import { CategoryTag } from "@/components/CategoryTag";
+import { motion, useTransform, type MotionValue } from "motion/react";
 import {
   SAMPLE,
   SAMPLE_GATING,
@@ -109,45 +110,45 @@ function WallDocument({
   );
 }
 
-function ExtractionThread({ active }: { active: boolean }) {
+function ExtractionThread({ beat }: { beat: MotionValue<number> }) {
+  const opacity = useTransform(beat, [0.45, 0.7, 1.15, 1.4], [0, 1, 1, 0]);
+  const pathLength = useTransform(beat, [0.5, 1.1], [0, 1]);
   return (
-    <svg
+    <motion.svg
       aria-hidden
-      className={`extraction-thread pointer-events-none absolute inset-0 h-full w-full text-accent/55 transition-opacity duration-500 ${
-        active ? "opacity-100 delay-[450ms]" : "opacity-0 delay-0"
-      }`}
+      className="pointer-events-none absolute inset-0 z-[15] h-full w-full text-accent/55"
       viewBox="0 0 520 420"
       preserveAspectRatio="none"
+      style={{ opacity }}
     >
-      <path
+      <motion.path
         d="M72 146 C 180 122, 224 120, 286 134 S 406 154, 470 122"
         fill="none"
-        pathLength={1}
         stroke="currentColor"
         strokeDasharray="1"
         strokeWidth="1.4"
+        style={{ pathLength }}
       />
-      <path
+      <motion.path
         d="M84 190 C 190 198, 226 190, 292 198 S 408 218, 474 208"
         fill="none"
         opacity="0.7"
-        pathLength={1}
         stroke="currentColor"
         strokeDasharray="1"
         strokeWidth="1"
+        style={{ pathLength }}
       />
-    </svg>
+    </motion.svg>
   );
 }
 
-function ExtractionLedger({ active }: { active: boolean }) {
+function ExtractionLedger({ beat }: { beat: MotionValue<number> }) {
+  const opacity = useTransform(beat, [0.7, 1.05, 1.45], [0, 1, 0]);
+  const x = useTransform(beat, [0.7, 1.05], [16, 0]);
   return (
-    <div
-      className={`extraction-ledger absolute right-3 top-5 hidden w-36 rounded-md border border-hairline bg-paper-raised p-3 font-mono text-[9px] uppercase tracking-[0.11em] text-ink-muted shadow-[var(--depth-row)] transition-[opacity,transform] duration-500 lg:block ${
-        active
-          ? "translate-x-0 opacity-100 delay-[1050ms]"
-          : "translate-x-4 opacity-0 delay-0"
-      }`}
+    <motion.div
+      className="absolute right-3 top-5 z-[35] hidden w-36 rounded-md border border-hairline bg-paper-raised p-3 font-mono text-[9px] uppercase tracking-[0.11em] text-ink-muted shadow-[var(--depth-row)] lg:block"
+      style={{ opacity, x }}
       aria-hidden
     >
       <div className="flex items-center justify-between border-b border-hairline pb-2">
@@ -159,7 +160,7 @@ function ExtractionLedger({ active }: { active: boolean }) {
         <span className="block h-1.5 w-5/6 rounded-sm bg-signal-oxblood/25" />
         <span className="block h-1.5 w-3/4 rounded-sm bg-accent/20" />
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -170,6 +171,26 @@ function ExtractionLedger({ active }: { active: boolean }) {
 // (opacity/scale, origin-left) when the honesty beat arrives. The oxblood flare
 // on the gating rows is a colour transition on an always-present left rule, so
 // nothing reflows when they light up.
+type RowProps = {
+  index: number;
+  text: string;
+  page: number;
+  clause: string | null;
+  category: string;
+  confidence: number;
+  needsReview: boolean;
+  isGating: boolean;
+  rowShown: boolean;
+  rowDelayMs: number;
+  flare: boolean;
+  beadShown: boolean;
+  beadDelayMs: number;
+  scrubStyle?: {
+    opacity: MotionValue<number>;
+    y: MotionValue<number>;
+  };
+};
+
 function Row({
   index,
   text,
@@ -184,31 +205,16 @@ function Row({
   flare,
   beadShown,
   beadDelayMs,
-}: {
-  index: number;
-  text: string;
-  page: number;
-  clause: string | null;
-  category: string;
-  confidence: number;
-  needsReview: boolean;
-  isGating: boolean;
-  rowShown: boolean;
-  rowDelayMs: number;
-  flare: boolean;
-  beadShown: boolean;
-  beadDelayMs: number;
-}) {
-  return (
-    <li
-      key={index}
-      className={`flex flex-col gap-1.5 border-b border-l-2 border-b-hairline py-2.5 pl-3 transition-[opacity,transform,border-color,background-color] duration-500 ${EASE} last:border-b-0 ${
-        flare && isGating
-          ? "border-l-signal-oxblood bg-signal-oxblood/10"
-          : "border-l-transparent bg-transparent"
-      } ${rowShown ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"}`}
-      style={{ transitionDelay: `${rowDelayMs}ms` }}
-    >
+  scrubStyle,
+}: RowProps) {
+  const className = `flex flex-col gap-1.5 border-b border-l-2 border-b-hairline py-2.5 pl-3 transition-[opacity,transform,border-color,background-color] duration-500 ${EASE} last:border-b-0 ${
+    flare && isGating
+      ? "border-l-signal-oxblood bg-signal-oxblood/10"
+      : "border-l-transparent bg-transparent"
+  } ${rowShown ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"}`;
+
+  const content = (
+    <>
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
         <CategoryTag category={category} />
         <span
@@ -231,7 +237,45 @@ function Row({
           {clauseRef(page, clause)}
         </span>
       </p>
+    </>
+  );
+
+  if (scrubStyle) {
+    return (
+      <motion.li key={index} className={className} style={scrubStyle}>
+        {content}
+      </motion.li>
+    );
+  }
+
+  return (
+    <li
+      key={index}
+      className={className}
+      style={{ transitionDelay: `${rowDelayMs}ms` }}
+    >
+      {content}
     </li>
+  );
+}
+
+function ScrubRow({
+  beat,
+  rowStart,
+  ...props
+}: RowProps & {
+  beat: MotionValue<number>;
+  rowStart: number;
+}) {
+  const opacity = useTransform(beat, [rowStart, rowStart + 0.25], [0, 1]);
+  const y = useTransform(beat, [rowStart, rowStart + 0.25], [28, 0]);
+  return (
+    <Row
+      {...props}
+      rowShown
+      rowDelayMs={0}
+      scrubStyle={{ opacity, y }}
+    />
   );
 }
 
@@ -245,10 +289,12 @@ function RegisterSheet({
   step,
   composed = false,
   composedBeads = false,
+  beat,
 }: {
   step: number;
   composed?: boolean;
   composedBeads?: boolean;
+  beat?: MotionValue<number>;
 }) {
   const rowsShown = composed || step >= 1;
   const staggerRows = !composed && step === 1;
@@ -263,24 +309,33 @@ function RegisterSheet({
           : `Every requirement, pulled out · five of ${DEMO_FACTS.requirements} shown`}
       </p>
       <ul>
-        {SAMPLE.map((r, i) => (
-          <Row
-            key={r.id}
-            index={i}
-            text={r.text}
-            page={r.source_page}
-            clause={r.source_clause}
-            category={r.category}
-            confidence={r.confidence}
-            needsReview={r.needs_review}
-            isGating={r.is_gating}
-            rowShown={rowsShown}
-            rowDelayMs={staggerRows ? 900 + i * 90 : 0}
-            flare={flare}
-            beadShown={beadsShown}
-            beadDelayMs={popBeads ? 400 + i * 80 : 0}
-          />
-        ))}
+        {SAMPLE.map((r, i) => {
+          const props: RowProps = {
+            index: i,
+            text: r.text,
+            page: r.source_page,
+            clause: r.source_clause,
+            category: r.category,
+            confidence: r.confidence,
+            needsReview: r.needs_review,
+            isGating: r.is_gating,
+            rowShown: rowsShown,
+            rowDelayMs: staggerRows ? 900 + i * 90 : 0,
+            flare,
+            beadShown: beadsShown,
+            beadDelayMs: popBeads ? 400 + i * 80 : 0,
+          };
+          return beat ? (
+            <ScrubRow
+              key={r.id}
+              {...props}
+              beat={beat}
+              rowStart={0.72 + i * 0.06}
+            />
+          ) : (
+            <Row key={r.id} {...props} />
+          );
+        })}
       </ul>
     </div>
   );
@@ -492,91 +547,124 @@ function CriterionTab({
 // per-phase transition-delays. Layers share the frame (absolute inset-0) and
 // centre their sheet.
 
-const LAYER_BASE = `absolute inset-0 flex items-center justify-center transition-[opacity,transform] ${EASE}`;
+const LAYER_BASE = "absolute inset-0 flex items-center justify-center will-change-transform";
 
 // Steps 0–1. Full page at rest; scanned then receding as the register takes
 // over (the 900ms delay hands over exactly as the scan bar finishes its pass).
-function WallLayer({ step }: { step: number }) {
-  const phase = step <= 0 ? "read" : step === 1 ? "resolving" : "gone";
-  const cls =
-    phase === "read"
-      ? "opacity-100 translate-y-0 scale-100 duration-700 delay-0"
-      : phase === "resolving"
-        ? "opacity-0 -translate-y-3 scale-[0.97] duration-700 delay-[900ms]"
-        : "opacity-0 -translate-y-3 scale-[0.97] duration-500 delay-0";
+function WallLayer({
+  step,
+  beat,
+}: {
+  step: number;
+  beat: MotionValue<number>;
+}) {
+  const phase = step <= 0 ? "read" : "resolving";
+  const opacity = useTransform(beat, [0, 1.45, 2], [1, 1, 0]);
+  const y = useTransform(beat, [0, 1.1, 2], [0, -8, -32]);
+  const scale = useTransform(beat, [0, 2], [1, 0.94]);
   return (
-    <div className={`${LAYER_BASE} z-10 ${cls}`}>
-      <WallDocument phase={phase === "gone" ? "resolving" : phase} />
-    </div>
+    <motion.div className={`${LAYER_BASE} z-10`} style={{ opacity, y, scale }}>
+      <WallDocument phase={phase} />
+    </motion.div>
   );
 }
 
 // Steps 1–3. ONE register, three beats: stagger in behind the receding wall,
 // recede under the rising dossier (flare first — the 300ms container delay
 // leaves the oxblood flash readable), return with the beads popping on.
-function RegisterLayer({ step }: { step: number }) {
-  const phase =
-    step < 1
-      ? "before"
-      : step === 1
-        ? "resolve"
-        : step === 2
-          ? "recede"
-          : step === 3
-            ? "beads"
-            : "after";
-  const cls =
-    phase === "before"
-      ? "opacity-0 translate-y-4 scale-100 duration-500 delay-0"
-      : phase === "resolve"
-        ? "opacity-100 translate-y-0 scale-100 duration-500 delay-[900ms]"
-        : phase === "recede"
-          ? "opacity-40 translate-y-3 scale-[0.98] duration-700 delay-300"
-          : phase === "beads"
-            ? "opacity-100 translate-y-0 scale-100 duration-700 delay-200"
-            : "opacity-0 -translate-y-6 scale-100 duration-500 delay-0";
+function RegisterLayer({
+  step,
+  beat,
+}: {
+  step: number;
+  beat: MotionValue<number>;
+}) {
+  const opacity = useTransform(
+    beat,
+    [0.55, 1, 1.85, 2.2, 2.75, 3, 3.65, 4],
+    [0, 1, 1, 0.4, 0.45, 1, 1, 0],
+  );
+  const y = useTransform(
+    beat,
+    [0.55, 1, 2.2, 3, 4],
+    [28, 0, 14, 0, -28],
+  );
+  const scale = useTransform(beat, [0.55, 1, 2.2, 3, 4], [0.98, 1, 0.98, 1, 0.98]);
   return (
-    <div className={`${LAYER_BASE} z-20 ${cls}`}>
-      <RegisterSheet step={step} />
-    </div>
+    <motion.div className={`${LAYER_BASE} z-20`} style={{ opacity, y, scale }}>
+      <RegisterSheet step={step} beat={beat} />
+    </motion.div>
+  );
+}
+
+function LiftProxy({ beat }: { beat: MotionValue<number> }) {
+  const opacity = useTransform(beat, [1.72, 1.88, 2.18, 2.36], [0, 1, 1, 0]);
+  const y = useTransform(beat, [1.78, 2.18], [118, -82]);
+  const scale = useTransform(beat, [1.78, 2.18], [1, 1.28]);
+  return (
+    <motion.div
+      aria-hidden
+      className="surface-grain absolute left-1/2 top-1/2 z-[25] w-[min(27rem,82%)] rounded-md border-l-4 border-l-signal-oxblood border-y-hairline border-r-hairline bg-paper-raised px-4 py-3 shadow-[var(--depth-row)]"
+      style={{ opacity, x: "-50%", y, scale }}
+    >
+      <p className="font-mono text-[10px] uppercase tracking-wide text-signal-oxblood">
+        Deal-breaker
+      </p>
+      <p className="mt-1 line-clamp-2 text-sm leading-snug text-ink">
+        {SAMPLE_GATING[0]?.text}
+      </p>
+    </motion.div>
   );
 }
 
 // Step 2 — the poster moment. The dossier rises over the dimmed register at the
 // widest slot; its two ledger lines write on after it lands (arbitrary variants
 // reach GatingHero's <li>s — the component itself is untouched).
-function DealBreakerLayer({ step }: { step: number }) {
+function DealBreakerLayer({
+  step,
+  beat,
+}: {
+  step: number;
+  beat: MotionValue<number>;
+}) {
   const phase = step < 2 ? "before" : step === 2 ? "in" : "after";
+  const opacity = useTransform(beat, [1.55, 2, 2.85, 3.2], [0, 1, 1, 0]);
+  const y = useTransform(beat, [1.55, 2, 3.2], [64, 0, -44]);
+  const scale = useTransform(beat, [1.55, 2, 3.2], [0.9, 1, 0.98]);
   const cls =
     phase === "before"
-      ? "opacity-0 translate-y-8 scale-[0.96] duration-700 delay-0 [&_li]:opacity-0 [&_li]:translate-y-2"
+      ? "[&_li]:opacity-0 [&_li]:translate-y-2"
       : phase === "in"
-        ? "opacity-100 translate-y-0 scale-100 duration-700 delay-[350ms] [&_li]:opacity-100 [&_li]:translate-y-0 [&_li]:transition-[opacity,transform] [&_li]:duration-500 [&_li:nth-of-type(1)]:delay-[550ms] [&_li:nth-of-type(2)]:delay-[700ms]"
-        : "opacity-0 -translate-y-8 scale-[0.98] duration-500 delay-0 [&_li]:opacity-100 [&_li]:translate-y-0";
+        ? "[&_li]:opacity-100 [&_li]:translate-y-0 [&_li]:transition-[opacity,transform] [&_li]:duration-500 [&_li:nth-of-type(1)]:delay-[550ms] [&_li:nth-of-type(2)]:delay-[700ms]"
+        : "[&_li]:opacity-100 [&_li]:translate-y-0";
   return (
-    <div className={`${LAYER_BASE} z-30 ${cls}`}>
+    <motion.div
+      className={`${LAYER_BASE} z-30 ${cls}`}
+      style={{ opacity, y, scale }}
+    >
       <div className="w-full max-w-[34rem]">
         <GatingHero requirements={SAMPLE_GATING} />
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 // Steps 4–5. The answer persists across both beats; the only change at step 5
 // is the stamp mounting inside .stamp-emphasis (its one-shot settle + the
 // typed audit line are pure CSS on mount).
-function AnswerLayer({ step }: { step: number }) {
-  const phase = step < 4 ? "before" : step <= 5 ? "in" : "after";
-  const cls =
-    phase === "before"
-      ? "opacity-0 translate-y-6 duration-700 delay-0"
-      : phase === "in"
-        ? "opacity-100 translate-y-0 duration-700 delay-150"
-        : "opacity-0 -translate-y-6 duration-500 delay-0";
+function AnswerLayer({
+  step,
+  beat,
+}: {
+  step: number;
+  beat: MotionValue<number>;
+}) {
+  const opacity = useTransform(beat, [3.55, 4, 5.85, 6.15], [0, 1, 1, 0]);
+  const y = useTransform(beat, [3.55, 4, 6.15], [48, 0, -48]);
   return (
-    <div className={`${LAYER_BASE} z-20 ${cls}`}>
+    <motion.div className={`${LAYER_BASE} z-20`} style={{ opacity, y }}>
       <AnswerCard withStamp={step >= 5} emphasis />
-    </div>
+    </motion.div>
   );
 }
 
@@ -584,16 +672,19 @@ function AnswerLayer({ step }: { step: number }) {
 // wrapper hidden→shown and the wires draw; scrolling back re-arms it (the
 // un-draw is masked by the layer fading out). The attribute itself is always
 // rendered — removing it once shown would snap the strokes.
-function GraphLayer({ step }: { step: number }) {
-  const phase = step < 6 ? "before" : "in";
-  const cls =
-    phase === "before"
-      ? "opacity-0 translate-y-6 duration-700 delay-0"
-      : "opacity-100 translate-y-0 duration-700 delay-150";
+function GraphLayer({
+  step,
+  beat,
+}: {
+  step: number;
+  beat: MotionValue<number>;
+}) {
+  const opacity = useTransform(beat, [5.55, 6], [0, 1]);
+  const y = useTransform(beat, [5.55, 6], [34, 0]);
   return (
-    <div className={`${LAYER_BASE} z-20 ${cls}`}>
+    <motion.div className={`${LAYER_BASE} z-20`} style={{ opacity, y }}>
       <GraphVisual drawn={step >= 6} />
-    </div>
+    </motion.div>
   );
 }
 
@@ -629,20 +720,27 @@ export function BeatVisual({ step }: { step: number }) {
 
 // The enhanced pinned stage: one persistent scene of five layers, each a pure
 // function of `step`. Illustrative, so aria-hidden + inert.
-export function ScrollyStage({ step }: { step: number }) {
+export function ScrollyStage({
+  step,
+  beat,
+}: {
+  step: number;
+  beat: MotionValue<number>;
+}) {
   return (
     <div
       className="demo-stage-frame relative h-[min(36rem,calc(100vh-6rem))] w-full"
       aria-hidden
       inert
     >
-      <ExtractionThread active={step === 1} />
-      <ExtractionLedger active={step === 1} />
-      <WallLayer step={step} />
-      <RegisterLayer step={step} />
-      <DealBreakerLayer step={step} />
-      <AnswerLayer step={step} />
-      <GraphLayer step={step} />
+      <ExtractionThread beat={beat} />
+      <ExtractionLedger beat={beat} />
+      <WallLayer step={step} beat={beat} />
+      <RegisterLayer step={step} beat={beat} />
+      <LiftProxy beat={beat} />
+      <DealBreakerLayer step={step} beat={beat} />
+      <AnswerLayer step={step} beat={beat} />
+      <GraphLayer step={step} beat={beat} />
     </div>
   );
 }

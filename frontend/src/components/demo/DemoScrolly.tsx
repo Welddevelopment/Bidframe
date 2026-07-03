@@ -4,12 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { STEPS, type Step } from "./steps";
 import { BeatVisual, ScrollyStage } from "./ScrollyStage";
 import { ScrollyRail } from "./ScrollyRail";
+import { useBeatStep, useScrollTimeline } from "./useScrollTimeline";
 import { BookDemoButton } from "@/components/landing/BookDemoButton";
 
 // The cinematic scroll for /demo: a pinned "stage" that transforms through the
-// pipeline while the narrative steps scroll past. Technique is the repo's own
-// (IntersectionObserver only, CSS transitions only — the Reveal.tsx contract),
-// no scroll libraries, no new deps.
+// pipeline while the narrative steps scroll past. Wide, motion-allowed viewports
+// use a scroll-scrubbed motion timeline; mobile and reduced motion keep the
+// readable stacked renderer.
 //
 // Accessible + robust by construction, the Reveal.tsx way: the markup renders
 // the readable STACKED fallback by default (SSR, no-JS, reduced motion, and
@@ -72,6 +73,7 @@ export function DemoScrolly({ intro }: { intro?: React.ReactNode }) {
   const [activeStep, setActiveStep] = useState(0);
   const [enhanced, setEnhanced] = useState(false);
   const narrativeRef = useRef<HTMLDivElement>(null);
+  const { beat } = useScrollTimeline(narrativeRef, STEPS.length);
 
   // Decide whether to enhance: wide viewport AND motion allowed. Read on the
   // client only, and keep it live so resizing or toggling reduced motion in
@@ -89,31 +91,10 @@ export function DemoScrolly({ intro }: { intro?: React.ReactNode }) {
     };
   }, []);
 
-  // Drive the active beat from the narrative steps crossing the viewport centre.
-  // One observer over the [data-step] sections; the trigger band is the middle
-  // ~10% of the viewport (rootMargin -45%/-45%). setState here is from the
-  // observer callback (not synchronous in the effect body), which is fine.
-  useEffect(() => {
-    if (!enhanced) return;
-    const root = narrativeRef.current;
-    if (!root) return;
-    const steps = Array.from(root.querySelectorAll<HTMLElement>("[data-step]"));
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            const idx = Number(
-              (entry.target as HTMLElement).dataset.step ?? "0"
-            );
-            setActiveStep(idx);
-          }
-        }
-      },
-      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
-    );
-    steps.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, [enhanced]);
+  // The continuous beat drives the stage. The rounded beat still powers the
+  // rail and the existing one-shot details, so the old CSS choreography remains
+  // useful without controlling the film.
+  useBeatStep(beat, enhanced, STEPS.length, setActiveStep);
 
   // Fallback (default / mobile / reduced motion): steps in normal flow, each
   // followed by its own beat visual in its composed final state. No pinning,
@@ -150,7 +131,7 @@ export function DemoScrolly({ intro }: { intro?: React.ReactNode }) {
             <ScrollyRail active={activeStep} />
           </div>
         </div>
-        <div ref={narrativeRef}>
+        <div ref={narrativeRef} className="relative">
           {intro ? (
             <div className="flex min-h-[calc(100vh-8rem)] flex-col justify-center">
               {intro}
@@ -168,7 +149,7 @@ export function DemoScrolly({ intro }: { intro?: React.ReactNode }) {
         </div>
         <div>
           <div className="sticky top-0 flex h-screen items-center justify-center">
-            <ScrollyStage step={activeStep} />
+            <ScrollyStage step={activeStep} beat={beat} />
           </div>
         </div>
       </div>
