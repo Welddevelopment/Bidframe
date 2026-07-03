@@ -7,9 +7,9 @@ Handling asbestos for Cannock, Dudley and Wolverhampton Councils and Solihull Co
 
 **Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. You can see it working on a real council tender at https://bidframe.vercel.app — a minute there shows how it surfaces the pass/fail lines an asbestos framework buries.
 
-I've a few free pilot slots this week and I'd like one to be ESM's. Two asks:
+I've a few free pilot slots left this week and I'd like one to be ESM's — they tend to go quickly, so it's worth booking today. Two asks:
 
-1. **Happy to set ESM up with a slot today** if that helps — it gives me time to prep your tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Set ESM up with a slot today** — an early one gives me time to prep your tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council/HA asbestos tender when you book** (public, or an old pack). I'll pre-run it so the call is a worked walkthrough of *your* document.
 
 Joel · Bidframe

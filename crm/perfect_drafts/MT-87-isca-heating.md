@@ -7,9 +7,9 @@ Fitting DFG wet rooms for Teignbridge, East Devon and Mid-Devon councils means b
 
 I built **Bidframe** for exactly this: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. If you'd like to see it first, https://bidframe.vercel.app has a live demo on a real council tender — deal-breakers pulled to the top, each linked to its clause.
 
-I've a few free pilot slots this week and I'd like one to be ISCA's. Two asks:
+I've a few free pilot slots left this week and I'd like one to be ISCA's — they tend to go fast, so it's worth booking today. Two asks:
 
-1. **Grab a slot whenever suits** — today's ideal, as I can pre-run your tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Book a slot today** — an early one lets me pre-run your tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council adaptations tender when you book** (public, or an old pack you're happy to share). I'll pre-run it so the call is a walkthrough of *your* actual document.
 
 Joel · Bidframe

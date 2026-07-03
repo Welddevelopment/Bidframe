@@ -7,9 +7,9 @@ Six Devon councils — Exeter City, Plymouth City, West Devon Borough, South Ham
 
 I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs, with a citation on every claim. You can watch it read a real council tender at https://bidframe.vercel.app — the same kind of framework your six councils put out, with the deal-breakers lifted first.
 
-I'm running a few free pilots this week and I'd like MIserve to have one. Two quick asks:
+I've a few free pilot slots left this week and I'd like MIserve to have one — they tend to go quickly, so it's worth booking today. Two quick asks:
 
-1. **Today's a good day to book** if it's useful — I'll have MIserve's tender worked up before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **I'd book a slot today** — an early one means I'll have MIserve's tender worked up before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a council adaptations tender** you're bidding. I'll pre-run it so the call is on *your* actual document.
 
 Joel · Bidframe

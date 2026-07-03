@@ -7,9 +7,9 @@ With Awaab's Law driving a wave of damp & mould tenders, and Cornwall Housing am
 
 **Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own CSRT surveys and method docs — a citation on every claim, nothing invented. If you'd rather see it than take my word, https://bidframe.vercel.app runs the tool on a real public-sector tender, deal-breakers pulled to the top.
 
-I've a few free pilot slots this week and I'd like one to be Newseal's. Two asks:
+I've a few free pilot slots left this week and I'd like one to be Newseal's — they tend to go quickly, so it's worth booking today. Two asks:
 
-1. **Today's a good day to book** if it's useful — I'll have Newseal's tender worked up before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **I'd book a slot today** — an early one means I'll have Newseal's tender worked up before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council/HA damp tender when you book** (public, or an old pack). I'll pre-run it so the call is a walkthrough of *your* actual document.
 
 Joel · Bidframe

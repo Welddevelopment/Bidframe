@@ -7,9 +7,9 @@ Flooring homes for City of York Council and York Housing Association means biddi
 
 **Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. You can see it run on a real council tender at https://bidframe.vercel.app — the deal-breakers lifted to the top, each linked back to its clause.
 
-I've a few free pilot slots this week and I'd like one to be Elvington's. Two asks:
+I've a few free pilot slots left this week and I'd like one to be Elvington's — they tend to go quickly, so it's worth booking today. Two asks:
 
-1. **Happy to set Elvington up with a slot today** if that helps — it gives me time to prep your tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Set Elvington up with a slot today** — an early one gives me time to prep your tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council/HA flooring tender when you book** (public, or an old pack you're happy to share). I'll pre-run it so the call is a worked walkthrough of *your* document.
 
 Joel · Bidframe

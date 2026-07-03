@@ -7,9 +7,9 @@ You've tendered grounds-maintenance for Norfolk CC, Suffolk CC and East Cambs DC
 
 I'm building **Bidframe** — it reads a public-sector tender in minutes, surfaces those pass/fail deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method statements, every claim cited. You can watch it read a real council tender at https://bidframe.vercel.app — the same kind of grounds pack you tender, with the pass/fail lines pulled to the top.
 
-I'm running a few free pilots this week and I'd like Top Garden to have one. Two quick asks:
+I've a few free pilot slots left this week and I'd like Top Garden to have one — they tend to go quickly, so it's worth booking today. Two quick asks:
 
-1. **Grab a slot whenever suits** — today's ideal, as I can pre-run your tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today** — an early one lets me pre-run your tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a grounds tender** you're bidding. I'll pre-run it so the whole call is on *your* actual document.
 
 Joel · Bidframe

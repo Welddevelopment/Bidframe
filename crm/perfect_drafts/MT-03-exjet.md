@@ -7,9 +7,9 @@ Bidding council and MoD drainage and civils work means wading through compliance
 
 That's the job I built **Bidframe** for: it reads the tender in minutes, flags every pass/fail deal-breaker first, links each to the exact clause it came from, and drafts answers straight from your own accreditation and method docs — a citation on each, so you approve in minutes. There's a live demo at https://bidframe.vercel.app if you'd rather see it than read about it — it runs the whole thing on a real public-sector pack, deal-breakers first.
 
-I've a few free pilot slots this week and I'd like one to be Exjet's. Two asks:
+I've a few free pilot slots left this week and I'd like one to be Exjet's — they tend to go fast, so it's worth booking today. Two asks:
 
-1. **Grab a slot today if it's helpful** — I'll have Exjet's tender worked up before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today** — an early one means I'll have Exjet's tender worked up before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a drainage tender when you book** (public or an old pack). I'll pre-run it so the call is a prepared walkthrough of *your* real document.
 
 Joel · Bidframe

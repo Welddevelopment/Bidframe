@@ -7,9 +7,9 @@ You've serviced schools, colleges and government sites since 1985 — so you alr
 
 I'm building **Bidframe**. It reads a UK public-sector tender and, in minutes, pulls out those pass/fail deal-breakers, links every one back to the exact clause, and drafts answer text only where your own certificates and method statements back it up — nothing invented. If it's easier to see than to describe, there's a live demo at https://bidframe.vercel.app that reads a real public-sector tender and lifts those deal-breakers to the top, each tied to its clause.
 
-I've a few free pilot slots this week and I'd like one of them to be yours. Two quick asks:
+I've a few free pilot slots left this week and I'd like one of them to be yours — they tend to go quickly, so it's worth booking today. Two quick asks:
 
-1. **Grab a slot whenever suits** — today's a good day if you can, as it gives me time to run your tender through Bidframe before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today** — an early one gives me time to run your tender through Bidframe before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a tender when you book** (a public one, or an old pack you're happy to share). I'll pre-run it through Bidframe so the call is a worked walkthrough of *your* actual tender — deal-breakers, evidence gaps, draft answers — not a generic demo.
 
 Joel · Bidframe

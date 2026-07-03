@@ -7,9 +7,9 @@ Your council, school and care-home water-hygiene contracts come wrapped in L8 an
 
 I'm building **Bidframe**: it reads a public-sector tender and, in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer straight from your own risk-assessment and accreditation evidence — every claim cited, nothing invented. The site has a quick demo on a real public-sector tender (https://bidframe.vercel.app) so you can watch it flag the pass/fail gates for yourself before we speak.
 
-I'm running a few free pilots this week and I'd like H2O to have one. Two quick asks:
+I've a few free pilot slots left this week and I'd like H2O to have one — they tend to fill up quickly, so it's worth booking today. Two quick asks:
 
-1. **Book a slot whenever works, today ideally** — that gives me time to work your tender up through Bidframe before the call: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Book a slot today** — an early one gives me time to work your tender up through Bidframe before the call: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a water-hygiene tender** you're eyeing (a public one is perfect). I'll work it up through Bidframe first, so the call is spent on *your* actual tender — not a generic demo.
 
 Joel · Bidframe

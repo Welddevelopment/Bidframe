@@ -7,9 +7,9 @@ You're trusted by Glasgow, Lanarkshire and Renfrewshire councils and HAs (and NH
 
 I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own PCA surveys and method docs, with a citation on every claim. You can see it in action on a real public-sector tender at https://bidframe.vercel.app before the next damp & mould pack lands on your desk.
 
-I'm running a few free pilots this week and I'd like APS to have one. Two quick asks:
+I've a few free pilot slots left this week and I'd like APS to have one — they tend to go quickly, so it's worth booking today. Two quick asks:
 
-1. **Grab a slot whenever suits** — today's ideal, as I can pre-run your tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **I'd grab a slot today** — an early one lets me pre-run your tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a council/HA damp tender** you're bidding. I'll pre-run it so the call is spent on *your* actual document.
 
 Joel · Bidframe

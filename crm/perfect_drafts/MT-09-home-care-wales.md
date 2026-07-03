@@ -7,9 +7,9 @@ As an approved provider on the North Wales framework delivering for Anglesey Cou
 
 I built **Bidframe** to take that risk off the table: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own policies and evidence, with a citation on every claim. There's a live demo on a real public-sector tender at https://bidframe.vercel.app if you'd like to see it lift the deal-breakers out before your next re-tender lands.
 
-I've a few free pilot slots this week and I'd like one to be yours. Two quick asks:
+I've a few free pilot slots left this week and I'd like one to be yours — they fill up quickly this time of week, so it's worth booking today. Two quick asks:
 
-1. **Grab a slot whenever suits** — today's ideal, as I can pre-run your re-tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today** — an early one lets me pre-run your re-tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send the framework tender when you book** (or a recent pack you're happy to share). I'll pre-run it so the call is a walkthrough of *your* actual re-tender.
 
 Joel · Bidframe

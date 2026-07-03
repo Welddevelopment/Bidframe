@@ -7,9 +7,9 @@ You've delivered for Cromer Town Council, Gresham's School and the Norfolk & Nor
 
 I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own past-project evidence, with a citation on every claim. You can see it read a real council tender at https://bidframe.vercel.app — the pass/fail lines pulled to the top, each tied to its clause.
 
-I'm running a few free pilots this week and I'd like one to be yours. Two quick asks:
+I've a few free pilot slots left this week and I'd like one to be yours — they tend to go fast, so it's worth booking today. Two quick asks:
 
-1. **Today's a good day to book** if it's useful — I'll have your tender read before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **I'd book a slot today** — an early one means I'll have your tender read before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a council or school glazing tender** you're bidding. I'll pre-run it so the call is on *your* actual document, not a demo.
 
 Joel · Bidframe

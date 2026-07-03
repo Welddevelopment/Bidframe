@@ -7,9 +7,9 @@ Winning retrofit work for Barking & Dagenham, Ashford and Leicester City means b
 
 I built **Bidframe** so a husband-and-wife team never loses a bid on a missed mandatory: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs — a citation on every claim. You can see it run on a real public-sector tender at https://bidframe.vercel.app — the deal-breakers pulled straight to the top, each tied to its clause.
 
-I've a few free pilot slots this week and I'd like one to be RenderRight's. Two asks:
+I've a few free pilot slots left this week and I'd like one to be RenderRight's — they tend to go fast, so it's worth booking today. Two asks:
 
-1. **Grab a slot whenever works, today ideally** — that gives me time to work RenderRight's tender up before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today** — an early one gives me time to work RenderRight's tender up before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a retrofit framework when you book** (public, or an old pack you're happy to share). I'll pre-run it so the call is a walkthrough of *your* actual document.
 
 Joel · Bidframe

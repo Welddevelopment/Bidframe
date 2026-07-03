@@ -7,9 +7,9 @@ Winning decorating work at Godalming College, Queen Eleanor's, Glenthorne High a
 
 I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs, with a citation on every claim, so a missed mandatory never sinks a strong bid. There's a live demo on a real public-sector tender at https://bidframe.vercel.app if you'd like to see it catch those before we speak.
 
-I'm running a few free pilots this week and I'd like ALCo to have one. Two quick asks:
+I've a few free pilot slots left this week and I'd like ALCo to have one — they tend to go quickly, so it's worth booking today. Two quick asks:
 
-1. **Today's a good day to grab a slot** if it helps — I'll have ALCo's tender worked up before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **I'd grab a slot today** — an early one means I'll have ALCo's tender worked up before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a school or council decorating tender** you're bidding. I'll pre-run it so the call is on *your* actual document.
 
 Joel · Bidframe

@@ -7,9 +7,9 @@ As Town & Country Housing's contractor for oil and solid-fuel heating, you're bi
 
 **Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own certifications and method docs — a citation on every claim, nothing invented. There's a quick demo on a real public-sector tender at https://bidframe.vercel.app if you want to see it before we grab fifteen minutes.
 
-I've a few free pilot slots this week; I'd like one to be Headcorn's. Two asks:
+I've a few free pilot slots left this week and I'd like one to be Headcorn's — they tend to go quickly, so it's worth booking today. Two asks:
 
-1. **Today's a good day to book** if it's useful — I'll have Headcorn's tender worked up before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **I'd book a slot today** — an early one means I'll have Headcorn's tender worked up before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a heating tender when you book** (public, or an old pack you're happy to share). I'll pre-run it so the call is a walkthrough of *your* actual tender.
 
 Joel · Bidframe

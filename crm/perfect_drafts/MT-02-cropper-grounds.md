@@ -7,9 +7,9 @@ You've maintained grounds and gritted for Uttoxeter Town Council, plus hospitals
 
 I'm building **Bidframe** — it reads a public-sector tender and, in minutes, surfaces those pass/fail deal-breakers first, ties each one to its exact clause, and drafts answers only where your own accreditations and method statements support the claim. You can watch it do exactly that on a real council tender at https://bidframe.vercel.app — the deal-breakers surface first, every one linked back to its clause.
 
-I'm running a few free pilots this week and I'd like Cropper to have one. Two small asks:
+I've a few free pilot slots left this week and I'd like Cropper to have one — they tend to go quickly, so it's worth booking today. Two small asks:
 
-1. **Happy to set Cropper up with a slot today** if that's useful — it means I'll have your tender prepped before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Set Cropper up with a slot today** — an early one means I'll have your tender prepped before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a grounds or gritting tender** you're weighing up. I'll run it through beforehand so we spend the whole call on *your* document, not a demo.
 
 Joel · Bidframe

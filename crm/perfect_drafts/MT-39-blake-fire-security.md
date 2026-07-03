@@ -7,9 +7,9 @@ Securing Essex schools like Wethersfield and Chalkwell means bidding school and 
 
 I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and project record, with a citation on every claim. You can watch it run on a real public-sector tender at https://bidframe.vercel.app — the deal-breakers pulled to the top, the same kind a school-security ITT hides.
 
-I've a few free pilot slots this week and I'd like one to be Blake's. Two asks:
+I've a few free pilot slots left this week and I'd like one to be Blake's — they tend to go fast, so it's worth booking today. Two asks:
 
-1. **Happy to book Blake in today** if that suits — it means I can prep your tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Book Blake in today** — an early slot means I can prep your tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a school security tender when you book** (public, or an old pack you're happy to share). I'll pre-run it so the call is a worked walkthrough of *your* document.
 
 Joel · Bidframe

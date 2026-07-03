@@ -7,9 +7,9 @@ You install stairlifts on DFG jobs for seven Devon and Cornwall councils — so 
 
 I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs, with a citation on every claim. Have a look at https://bidframe.vercel.app — it runs on a real council tender, so you can watch it pull the deal-breakers to the top, the same pass/fail lines a DFG pack hides.
 
-I've a few free pilot slots this week and I'd like one to be yours. Two asks:
+I've a few free pilot slots left this week and I'd like one to be yours — they usually go quickly, so it's worth booking today. Two asks:
 
-1. **Today's a good day to book** if it's useful — I'll have your tender worked up before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **I'd book a slot today** — an early one means I'll have your tender worked up before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council DFG/stairlift tender when you book** (public, or an old pack). I'll pre-run it so the call is a worked walkthrough of *your* document.
 
 Joel · Bidframe

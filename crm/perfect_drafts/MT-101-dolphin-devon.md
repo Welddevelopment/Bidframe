@@ -7,9 +7,9 @@ You work with six named councils plus HAs like LiveWest and Guinness Trust on ad
 
 I built **Bidframe** for exactly this: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. If it's easier to judge by seeing it, https://bidframe.vercel.app has a demo on a real public-sector tender with the deal-breakers pulled straight to the top.
 
-I'm running a few free pilots this week and I'd like Dolphin Devon to have one. Two quick asks:
+I've a few free pilot slots left this week and I'd like Dolphin Devon to have one — they tend to go fast, so it's worth booking today. Two quick asks:
 
-1. **Happy to set Dolphin Devon up with a slot today** if that helps — it means your tender's prepped before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Set Dolphin Devon up with a slot today** — an early one means your tender's prepped before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a council/HA adaptations tender** you're bidding. I'll pre-run it so the call is on *your* actual document.
 
 Joel · Bidframe

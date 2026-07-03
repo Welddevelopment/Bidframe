@@ -7,9 +7,9 @@ As an MLA-approved commercial locksmith across Essex & East London handling hous
 
 **Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. If it's easier to see than to describe, https://bidframe.vercel.app has a live demo on a real public-sector tender, deal-breakers first.
 
-I'm running a few free pilots this week and I'd like ATCL to have one. Two quick asks:
+I've a few free pilot slots left this week and I'd like ATCL to have one — they tend to fill up quickly, so it's worth booking today. Two quick asks:
 
-1. **Grab a slot whenever suits** — today's ideal, as I can pre-run your tender before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today** — an early one lets me pre-run your tender before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a council or HA framework** you're bidding. I'll pre-run it so the call is spent on *your* actual tender, not a demo.
 
 Joel · Bidframe

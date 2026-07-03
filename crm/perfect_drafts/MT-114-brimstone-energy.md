@@ -7,9 +7,9 @@ Delivering the Caxton Village Hall solar+battery job on a £15k South Cambridges
 
 I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own MCS and method docs, with a citation on every claim. You can see it in action on a real public-sector tender at https://bidframe.vercel.app — a quick look shows how it catches the kind of gate a council-grant pack turns on.
 
-I'm running a few free pilots this week and I'd like Brimstone to have one. Two quick asks:
+I've a few free pilot slots left this week and I'd like Brimstone to have one — they tend to go quickly, so it's worth booking today. Two quick asks:
 
-1. **Grab a slot whenever works, today ideally** — that gives me time to work Brimstone's tender up before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today** — an early one gives me time to work Brimstone's tender up before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a council-grant solar tender** you're eyeing. I'll pre-run it so the call is on *your* actual document.
 
 Joel · Bidframe

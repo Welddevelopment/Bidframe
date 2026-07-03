@@ -7,9 +7,9 @@ You built the Bisham Parish Council fence and the Spinfield School fencing yours
 
 I built **Bidframe** for exactly the one-person outfit that can't spare a day on a tender: it reads the pack in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own docs — a citation on every claim, nothing invented. There's a live demo on a real public-sector tender at https://bidframe.vercel.app if you'd like to see it before you spend even a minute on a call.
 
-I've a few free pilot slots this week and I'd like one to be yours. Two asks:
+I've a few free pilot slots left this week and I'd like one to be yours — they tend to go fast, so it's worth booking today. Two asks:
 
-1. **Today's a good day to grab a slot** if it helps — I'll have your tender worked up before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **I'd grab a slot today** — an early one means I'll have your tender worked up before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council or school fencing tender when you book** (public, or an old pack). I'll pre-run it so the call is a walkthrough of *your* actual document.
 
 Joel · Bidframe
