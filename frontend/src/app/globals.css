@@ -2584,21 +2584,134 @@ body {
   border-radius: 0;
 }
 
-.pitch-stage-progress {
+/* --- The trail map: navigation as the walk itself. A dark forest-floor band
+   across the foot of the stage; the route draws forward blaze by blaze, the
+   walker dot carries a lantern glow, and the appendix branches off-trail. */
+.pitch-trailmap {
   position: absolute;
-  z-index: 60;
-  top: 0;
+  z-index: 70;
   left: 0;
   right: 0;
-  height: 3px;
-  background: rgba(246, 242, 233, 0.16);
+  bottom: 0;
+  height: 3.6rem;
+  color: var(--color-paper);
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(6, 18, 11, 0.88) 0%,
+    rgba(6, 18, 11, 0.55) 62%,
+    transparent 100%
+  );
 }
 
-.pitch-stage-progress span {
-  display: block;
-  height: 100%;
-  background: var(--color-signal-oxblood);
-  transition: width 360ms ease;
+.pitch-trailmap__svg {
+  position: absolute;
+  inset: 0.55rem 0 0.35rem;
+  width: 100%;
+  height: calc(100% - 0.9rem);
+  overflow: visible;
+}
+
+.pitch-trailmap__route,
+.pitch-trailmap__sidepath {
+  transition: opacity 420ms ease;
+}
+
+.pitch-trailmap.is-offtrail .pitch-trailmap__route {
+  opacity: 0.4;
+}
+
+.pitch-trailmap__sidepath {
+  opacity: 0.25;
+}
+
+.pitch-trailmap.is-offtrail .pitch-trailmap__sidepath {
+  opacity: 0.95;
+}
+
+.pitch-trailmap__walker {
+  fill: var(--color-signal-amber);
+  filter: drop-shadow(0 0 6px rgba(210, 164, 53, 0.85));
+}
+
+.pitch-trailmap.is-offtrail .pitch-trailmap__walker {
+  opacity: 0.4;
+}
+
+.pitch-trailmap__stop {
+  position: absolute;
+  transform: translate(-50%, -58%);
+  display: grid;
+  justify-items: center;
+  gap: 0.28rem;
+  padding: 0.2rem 0.3rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.pitch-trailmap__blaze {
+  width: 0.58rem;
+  height: 0.58rem;
+  rotate: 45deg;
+  border: 1px solid rgba(246, 242, 233, 0.75);
+  background: rgba(6, 18, 11, 0.7);
+  transition:
+    background 300ms ease,
+    border-color 300ms ease,
+    scale 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.pitch-trailmap__stop.is-passed .pitch-trailmap__blaze {
+  background: rgba(246, 242, 233, 0.85);
+}
+
+.pitch-trailmap__stop.is-here .pitch-trailmap__blaze {
+  background: var(--color-signal-amber);
+  border-color: var(--color-signal-amber);
+  scale: 1.35;
+  box-shadow: 0 0 10px rgba(210, 164, 53, 0.7);
+}
+
+.pitch-trailmap__label {
+  font-family: var(--font-mono-ibm), monospace;
+  font-size: clamp(0.5rem, 0.6vw, 0.66rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0.55;
+  transition: opacity 300ms ease;
+}
+
+.pitch-trailmap__stop:hover .pitch-trailmap__label,
+.pitch-trailmap__stop:focus-visible .pitch-trailmap__label,
+.pitch-trailmap__stop.is-here .pitch-trailmap__label {
+  opacity: 1;
+}
+
+.pitch-trailmap__stop:focus-visible {
+  outline: 1px solid rgba(246, 242, 233, 0.6);
+  outline-offset: 2px;
+}
+
+.pitch-trailmap__fieldnotes {
+  position: absolute;
+  left: 89%;
+  top: 0.35rem;
+  font-family: var(--font-mono-ibm), monospace;
+  font-size: clamp(0.5rem, 0.6vw, 0.66rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.35;
+  transition: opacity 300ms ease;
+}
+
+.pitch-trailmap.is-offtrail .pitch-trailmap__fieldnotes {
+  opacity: 1;
+  color: var(--color-signal-amber);
 }
 
 .pitch-slide {
@@ -2607,6 +2720,8 @@ body {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
   padding: clamp(1.05rem, 1.75vw, 2rem);
+  /* clear the trail band */
+  padding-bottom: 3.9rem;
   opacity: 0;
   transform: translateX(2.4rem) scale(0.992);
   pointer-events: none;
@@ -3208,7 +3323,7 @@ body {
 .pitch-slide-number {
   position: absolute;
   right: clamp(1.2rem, 2vw, 2.4rem);
-  bottom: clamp(1rem, 1.6vw, 1.8rem);
+  bottom: clamp(3.8rem, 5vw, 4.6rem);
   font-family: var(--font-head), Georgia, serif;
   font-size: clamp(3rem, 7vw, 7.5rem);
   line-height: 0.8;
@@ -3316,20 +3431,19 @@ body {
   grid-template-columns: minmax(17rem, 0.48fr) minmax(0, 1fr);
 }
 
+/* Docked into the trail band's right stretch, past the last blaze. */
 .pitch-controls {
   position: absolute;
-  left: 50%;
-  bottom: clamp(0.55rem, 1vw, 1rem);
+  right: clamp(0.5rem, 0.9vw, 1rem);
+  bottom: 0.45rem;
   z-index: 80;
   display: flex;
   align-items: center;
-  gap: 0.35rem;
-  transform: translateX(-50%);
-  border: 1px solid rgba(246, 242, 233, 0.2);
-  background: rgba(17, 26, 19, 0.78);
-  padding: 0.35rem;
+  gap: 0.25rem;
+  border: 1px solid rgba(246, 242, 233, 0.18);
+  background: rgba(17, 26, 19, 0.72);
+  padding: 0.25rem;
   color: var(--color-paper);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(10px);
 }
 
@@ -3360,21 +3474,11 @@ body {
 }
 
 .pitch-counter {
-  min-width: 7.2rem;
-  padding: 0 0.45rem;
+  padding: 0 0.5rem;
   font-family: var(--font-mono-ibm), monospace;
-  font-size: 0.66rem;
-  line-height: 1.05;
-}
-
-.pitch-counter strong,
-.pitch-counter span {
-  display: block;
-}
-
-.pitch-counter span {
-  margin-top: 0.15rem;
-  color: rgba(246, 242, 233, 0.64);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
 }
 
 .pitch-click-zone {
@@ -3568,6 +3672,19 @@ body {
     position: fixed;
   }
 
+  /* No room for the trail band on a phone: hide it and float the controls. */
+  .pitch-trailmap {
+    display: none;
+  }
+
+  .pitch-controls {
+    position: fixed;
+    left: 50%;
+    right: auto;
+    bottom: 0.9rem;
+    transform: translateX(-50%);
+  }
+
   .pitch-notes {
     left: 1rem;
     right: 1rem;
@@ -3623,7 +3740,7 @@ body {
   .pitch-controls,
   .pitch-click-zone,
   .pitch-notes,
-  .pitch-stage-progress {
+  .pitch-trailmap {
     display: none !important;
   }
 }

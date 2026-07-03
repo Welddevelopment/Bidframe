@@ -15,6 +15,7 @@ import {
   zoneIsDark,
   type PitchZone,
 } from "@/components/pitch/PitchScene";
+import { TrailMap } from "@/components/pitch/TrailMap";
 import { GatingHero } from "@/components/GatingHero";
 import { ComplianceMatrix } from "@/components/ComplianceMatrix";
 import { AnswerCard } from "@/components/AnswerCard";
@@ -787,10 +788,11 @@ export function PitchDeck() {
   );
 
   const activeSlide = slides[activeIndex];
-  const mainProgress =
-    activeIndex < MAIN_SLIDE_COUNT
-      ? ((activeIndex + 1) / MAIN_SLIDE_COUNT) * 100
-      : 100;
+  const inAppendix = activeIndex >= MAIN_SLIDE_COUNT;
+  const trailLabels = useMemo(
+    () => slides.slice(0, MAIN_SLIDE_COUNT).map((slide) => slide.bucket),
+    [slides]
+  );
 
   return (
     <main className="pitch-scope">
@@ -801,10 +803,6 @@ export function PitchDeck() {
           aria-label="Bidframe pitch deck"
         >
           <PitchScene zone={activeSlide.zone} light={activeSlide.light} />
-
-          <div className="pitch-stage-progress" aria-hidden="true">
-            <span style={{ width: `${mainProgress}%` }} />
-          </div>
 
           <button
             type="button"
@@ -848,6 +846,16 @@ export function PitchDeck() {
             </section>
           ))}
 
+          <TrailMap
+            labels={trailLabels}
+            activeIndex={activeIndex}
+            offTrail={inAppendix}
+            onSelect={(index) => {
+              setAutoplay(false);
+              setActiveIndex(index);
+            }}
+          />
+
           <div className="pitch-controls no-print">
             <button
               type="button"
@@ -859,13 +867,12 @@ export function PitchDeck() {
             </button>
             <div className="pitch-counter">
               <strong>
-                {activeIndex + 1}/{slides.length}
+                {inAppendix
+                  ? `Notes ${activeIndex - MAIN_SLIDE_COUNT + 1}/${
+                      slides.length - MAIN_SLIDE_COUNT
+                    }`
+                  : `${activeIndex + 1} / ${MAIN_SLIDE_COUNT}`}
               </strong>
-              <span>
-                {activeIndex < MAIN_SLIDE_COUNT
-                  ? `${activeSlide.bucket} slide`
-                  : "Appendix"}
-              </span>
             </div>
             <button
               type="button"
