@@ -61,11 +61,13 @@ named public-sector client we verified** — that combination is why these 39 ar
   **MT-08 → `samantha@daccservices.com`**, **MT-24 → `terry@tkplay.co.uk`**, **MT-115 →
   `josh@inspiregreen.co.uk`**. (MT-63 has a borderline personal iCloud address — use judgment.) The
   other 36 keep the address already in the draft heading. Full per-lead sourcing is in the file.
-- **`outreach-new-leads-overnight.md`** — ⏳ *may be late* (same cap). Extra leads beyond the 39, a warm
-  backlog for **after** the 39 are out. Not needed to start.
+- **`outreach-new-leads-overnight.md`** — ✅ **DONE, on `main` now.** 2 PERFECT (Signet Signs, Solo
+  Blinds) + 9 GOOD verified leads beyond the 39 — a warm backlog for **after** the 39 are out (not needed
+  to start). 7 more seams (surveying, waste, locksmiths, cleaning, arboriculture, groundworks, fencing)
+  are left for a clean next pass if we want more volume.
 
-> **Bottom line: you can send all 39 right now with just the drafts + the ranking. The other two files
-> only refine/extend — never block on them.**
+> **Bottom line: you can send all 39 right now with just the drafts + the ranking. Apply the 3 email
+> upgrades above (MT-08/24/115) as you go. The new-leads file is a backlog, not a blocker.**
 
 ## 7. Tone note
 Deliberately understated — a founder being helpful, with a light "worth booking today" nudge (Joel
