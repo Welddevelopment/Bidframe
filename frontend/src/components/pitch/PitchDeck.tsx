@@ -16,6 +16,11 @@ import {
   type PitchZone,
 } from "@/components/pitch/PitchScene";
 import { TrailMap } from "@/components/pitch/TrailMap";
+import {
+  TenderGlyph,
+  TENDER_STAGES,
+  TENDER_STAGE_LABELS,
+} from "@/components/pitch/TenderGlyph";
 import { GatingHero } from "@/components/GatingHero";
 import { ComplianceMatrix } from "@/components/ComplianceMatrix";
 import { AnswerCard } from "@/components/AnswerCard";
@@ -846,6 +851,17 @@ export function PitchDeck() {
               </div>
             </section>
           ))}
+
+          {/* the story object: one tender page carried through the walk */}
+          <div
+            className={`pitch-story no-print ${
+              inAppendix ? "is-hidden" : ""
+            } ${zoneIsDark(activeSlide.zone) ? "" : "pitch-story--ink"}`}
+            aria-hidden="true"
+          >
+            <TenderGlyph stage={TENDER_STAGES[Math.min(activeIndex, 6)]} />
+            <span>{TENDER_STAGE_LABELS[TENDER_STAGES[Math.min(activeIndex, 6)]]}</span>
+          </div>
 
           <TrailMap
             labels={trailLabels}
