@@ -11,11 +11,13 @@ import { GraphView } from "@/components/GraphView";
 import { SourceVerifyOverlay } from "@/components/SourceVerifyOverlay";
 import { DemoScrolly } from "@/components/demo/DemoScrolly";
 import { DemoTitleCard } from "@/components/demo/DemoTitleCard";
+import { MountOnView } from "@/components/demo/MountOnView";
 import { BookDemoButton } from "@/components/landing/BookDemoButton";
 import { BotanicalSprig } from "@/components/landing/BotanicalSprig";
 import { ClosingArrival } from "@/components/landing/ClosingArrival";
 import { DrawOn } from "@/components/landing/DrawOn";
 import { FernFrond } from "@/components/landing/art/FernFrond";
+import { Reveal } from "@/components/landing/Reveal";
 import { SiteFooter } from "@/components/landing/SiteFooter";
 import { BrandLogo } from "@/components/BrandLogo";
 
@@ -113,56 +115,59 @@ export function DemoView() {
           overflow-x-clip (never overflow-hidden, and never on an ancestor of the
           scrolly grid — that kills sticky) lets the fern bleed off the left edge
           without horizontal scroll. */}
-      <section className="overflow-x-clip">
+      <section className="overflow-x-clip" data-worked-example>
         <div className="mx-auto max-w-[1160px] px-6 py-16 sm:py-20">
-        <div className="relative max-w-[46rem]">
-          <DrawOn className="pointer-events-none absolute -left-28 -top-6 hidden xl:block">
-            <FernFrond className="h-[20rem] w-auto text-forest/25" />
-          </DrawOn>
-          <p className="font-mono text-xs uppercase tracking-wide text-forest">
-            Worked example, read-only
-          </p>
-          <h2 className="mt-2 font-serif text-2xl font-semibold leading-tight tracking-tight text-ink sm:text-3xl">
-            {title}
-          </h2>
-          <p className="mt-4 max-w-[60ch] text-lg leading-relaxed text-ink-muted">
-            This is the real thing, on one real tender. Nothing here is yours to
-            upload or break, but every requirement links back to its clause, and
-            you can open the document to check any line.
-          </p>
-        </div>
+          <Reveal className="relative max-w-[46rem]" delay={80}>
+            <DrawOn className="pointer-events-none absolute -left-28 -top-6 hidden xl:block">
+              <FernFrond className="h-[20rem] w-auto text-forest/25" />
+            </DrawOn>
+            <p className="font-mono text-xs uppercase tracking-wide text-forest">
+              Worked example, read-only
+            </p>
+            <h2 className="mt-2 font-serif text-2xl font-semibold leading-tight tracking-tight text-ink sm:text-3xl">
+              {title}
+            </h2>
+            <p className="mt-4 max-w-[60ch] text-lg leading-relaxed text-ink-muted">
+              This is the real thing, on one real tender. Nothing here is yours
+              to upload or break, but every requirement links back to its
+              clause, and you can open the document to check any line.
+            </p>
+          </Reveal>
 
         {/* The worklist on a grainy raised sheet, frozen (read-only). */}
         <div className="relative mt-8">
           <BotanicalSprig className="pointer-events-none absolute -right-3 -top-4 z-10 hidden h-16 w-16 rotate-180 text-forest/40 sm:block" />
-          <div className="surface-grain rounded-xl border border-hairline bg-paper-raised p-5 shadow-[var(--depth-sheet)] sm:p-7">
-            <h3 className="mb-5 border-b border-hairline pb-3 font-serif text-lg font-semibold text-ink">
-              The requirements, read and triaged
-            </h3>
-            <div className="pointer-events-none select-none">
-              <GatingHero />
-              <ComplianceMatrix
-                groups={triage.groups}
-                selectedId={null}
-                onSelect={noop}
-                onApprove={noop}
-                activeFilter={null}
-                collapsed={collapsedGroups}
-                onToggleGroup={toggleGroup}
-              />
-            </div>
-            {dealBreaker && demoPdfUrl && (
-              <div className="mt-5 border-t border-hairline pt-4">
-                <button
-                  type="button"
-                  onClick={() => setVerifyOpen(true)}
-                  className="inline-flex items-center gap-2 font-mono text-xs text-forest transition-colors hover:text-forest-hover hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper-raised"
-                >
-                  See a deal-breaker in the document
-                </button>
+          <MountOnView enabled minHeight={760}>
+            <div className="surface-grain rounded-xl border border-hairline bg-paper-raised p-5 shadow-[var(--depth-sheet)] sm:p-7">
+              <h3 className="mb-5 border-b border-hairline pb-3 font-serif text-lg font-semibold text-ink">
+                The requirements, read and triaged
+              </h3>
+              <div className="pointer-events-none select-none">
+                <GatingHero className="gating-flare-once" />
+                <ComplianceMatrix
+                  groups={triage.groups}
+                  selectedId={null}
+                  onSelect={noop}
+                  onApprove={noop}
+                  activeFilter={null}
+                  collapsed={collapsedGroups}
+                  onToggleGroup={toggleGroup}
+                  revealKey="demo-spso"
+                />
               </div>
-            )}
-          </div>
+              {dealBreaker && demoPdfUrl && (
+                <div className="mt-5 border-t border-hairline pt-4">
+                  <button
+                    type="button"
+                    onClick={() => setVerifyOpen(true)}
+                    className="lantern-pulse relative inline-flex items-center gap-2 font-mono text-xs text-forest transition-colors hover:text-forest-hover hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper-raised"
+                  >
+                    See a deal-breaker in the document
+                  </button>
+                </div>
+              )}
+            </div>
+          </MountOnView>
         </div>
 
         {/* The relationship graph, annotated. */}

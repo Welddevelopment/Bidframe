@@ -18,6 +18,10 @@ export function MountOnView({
     if (!enabled) return;
     const el = ref.current;
     if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const frame = requestAnimationFrame(() => setMounted(true));
+      return () => cancelAnimationFrame(frame);
+    }
     const io = new IntersectionObserver(
       (entries) => {
         if (entries.some((entry) => entry.isIntersecting)) {

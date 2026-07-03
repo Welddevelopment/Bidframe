@@ -43,9 +43,11 @@ function RejectionStamp() {
 }
 
 export function GatingHero({
+  className,
   onSelect,
   requirements,
 }: {
+  className?: string;
   onSelect?: (id: string) => void;
   requirements?: Requirement[];
 }) {
@@ -62,7 +64,14 @@ export function GatingHero({
   const many = gating.length !== 1;
 
   return (
-    <section className="surface-grain overflow-hidden rounded-lg border border-signal-oxblood-frame bg-[color-mix(in_oklab,var(--color-signal-oxblood)_5%,var(--color-paper-raised))] shadow-[var(--depth-sheet)]">
+    <section
+      className={[
+        "surface-grain overflow-hidden rounded-lg border border-signal-oxblood-frame bg-[color-mix(in_oklab,var(--color-signal-oxblood)_5%,var(--color-paper-raised))] shadow-[var(--depth-sheet)]",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
       {/* The oxblood header bar: the earned bold colour. */}
       <div className="flex items-center gap-2 bg-signal-oxblood px-5 py-2 text-paper">
         <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden>
