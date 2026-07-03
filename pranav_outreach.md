@@ -63,8 +63,10 @@ named public-sector client we verified** — that combination is why these 39 ar
   other 36 keep the address already in the draft heading. Full per-lead sourcing is in the file.
 - **`outreach-new-leads-overnight.md`** — ✅ **DONE, on `main` now.** 2 PERFECT (Signet Signs, Solo
   Blinds) + 9 GOOD verified leads beyond the 39 — a warm backlog for **after** the 39 are out (not needed
-  to start). 7 more seams (surveying, waste, locksmiths, cleaning, arboriculture, groundworks, fencing)
-  are left for a clean next pass if we want more volume.
+  to start). The **2 PERFECT ones are already personalized as ready-to-send drafts — `MT-117` (Signet
+  Signs) + `MT-118` (Solo Blinds) in `crm/perfect_drafts/`** — send them right after the core 39. 7 more
+  seams (surveying, waste, locksmiths, cleaning, arboriculture, groundworks, fencing) are left for a
+  clean next pass if we want more volume.
 
 > **Bottom line: you can send all 39 right now with just the drafts + the ranking. Apply the 3 email
 > upgrades above (MT-08/24/115) as you go. The new-leads file is a backlog, not a blocker.**
