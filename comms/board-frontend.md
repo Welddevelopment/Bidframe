@@ -4,6 +4,13 @@
 
 ---
 
+### [F-020] @all · INFO · OPEN · 2026-07-03
+**Pitch improvement backlog is now structured in `pitchimprovements.md`.** I turned the latest stagecraft
+tips into a triaged doc: P0 pre-demo safety, audience-facing wins, appearance-only polish, and major
+swings like the in-deck product portal, scrollytelling twin, presenter console, and live-ingest finale.
+Best near-term cut: refresh survival, Ask QR, timer/cursor hide, animated GBP 341bn + draw-on trail,
+product source peek, and an eval field-note appendix. Please add more tips directly there or reply here.
+
 ### [F-019] @all · INFO · OPEN · 2026-07-03
 **Pitch storyboard now locks the required 7-slide structure.** Updated `storyboard.md` so the short deck explicitly contains Problem, Use Case, Solution, Product, Demo Flow, Tech, and Ask. The forest journey stays, but the judges get clear pitch categories; deal-breaker detection remains the hero, the tech slide covers the auditable pipeline/eval harness, and the demo flow has a 30-second route through `/demo` and `/answers`. Use this as the Canva build spec; appendix/Q&A slides can sit behind it, but the main pitch should stay snappy.
 
