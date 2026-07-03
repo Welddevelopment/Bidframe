@@ -56,10 +56,11 @@ named public-sector client we verified** — that combination is why these 39 ar
 - **`outreach-priority-ranking.md`** — ✅ **DONE, on `main` now.** The 39 sorted into 🔥 fire-first (13,
   in send order) / high / standard tiers, with a "why" per tier and a ⭐ 6-lead shortlist worth an extra
   hand-tailored touch. **Send in this order** — start with the Fire-first 13, top to bottom.
-- **`crm/best-contact-review.md`** — ⏳ *may be late* (the research agent hit an overnight usage cap; being
-  finished after the reset). When present, it says whether a better *publicly-listed* direct email exists
-  per lead — if so, use that address instead of the draft heading. **Don't wait for it:** if it's not
-  there, send to the address already in each draft heading. It's a refinement, not a blocker.
+- **`crm/best-contact-review.md`** — ✅ **DONE, on `main` now.** Reviewed all 39. **3 leads have a
+  better, publicly-listed NAMED direct email — swap these in before sending** (higher reply odds):
+  **MT-08 → `samantha@daccservices.com`**, **MT-24 → `terry@tkplay.co.uk`**, **MT-115 →
+  `josh@inspiregreen.co.uk`**. (MT-63 has a borderline personal iCloud address — use judgment.) The
+  other 36 keep the address already in the draft heading. Full per-lead sourcing is in the file.
 - **`outreach-new-leads-overnight.md`** — ⏳ *may be late* (same cap). Extra leads beyond the 39, a warm
   backlog for **after** the 39 are out. Not needed to start.
 
