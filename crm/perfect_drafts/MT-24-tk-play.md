@@ -7,9 +7,9 @@ You've built and maintained play areas for North Tawton TC, St Ives TC, Torridge
 
 I'm building **Bidframe** — it reads the tender in minutes, surfaces those pass/fail deal-breakers first, ties each to its exact clause, and drafts answers straight from your own 100-plus project record, with a citation on each. You can see it working on a real council tender at https://bidframe.vercel.app — a minute there shows how it lifts the deal-breakers straight out of the pack.
 
-I'm running a handful of free pilots this week and I'd like one to be TK Play's. Two asks:
+I'm running a few free pilots this week and I'd like one to be TK Play's. Two asks:
 
-1. **Book a slot today, ideally in the next few hours** — I'm setting the free pilots up this afternoon, so getting in now holds TK Play's place: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot whenever works** — today's ideal, as it lets me pre-run your tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a council play tender** you're eyeing. I'll pre-run it so we spend the call on *your* actual document.
 
 Joel · Bidframe

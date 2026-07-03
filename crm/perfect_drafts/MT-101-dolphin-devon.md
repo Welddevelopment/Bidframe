@@ -9,7 +9,7 @@ I built **Bidframe** for exactly this: it reads the tender in minutes, surfaces 
 
 I'm running a few free pilots this week and I'd like Dolphin Devon to have one. Two quick asks:
 
-1. **Grab a slot today** — I'm lining this week's pilots up before the end of the day, so booking now locks Dolphin Devon's in: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Happy to set Dolphin Devon up with a slot today** if that helps — it means your tender's prepped before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a council/HA adaptations tender** you're bidding. I'll pre-run it so the call is on *your* actual document.
 
 Joel · Bidframe

@@ -7,9 +7,9 @@ Decorating for Kendal Town Council and Lancaster City Council means bidding coun
 
 **Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. You can watch it run on a real council tender at https://bidframe.vercel.app — the deal-breakers pulled to the top so nothing hides on page 60.
 
-I've a handful of free pilot slots this week and I'd like one to be AJM's. Two asks:
+I've a few free pilot slots this week and I'd like one to be AJM's. Two asks:
 
-1. **Book a slot today** — I'm setting this week's pilots up this afternoon, so an early booking gets AJM's tender prepped first: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Happy to book AJM in today** if that suits — it means I can prep your tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council/HA decorating tender when you book** (public, or an old pack you're happy to share). I'll pre-run it so the call is a worked walkthrough of *your* document.
 
 Joel · Bidframe

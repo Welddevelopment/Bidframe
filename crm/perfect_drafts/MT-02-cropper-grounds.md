@@ -9,7 +9,7 @@ I'm building **Bidframe** — it reads a public-sector tender and, in minutes, s
 
 I'm running a few free pilots this week and I'd like Cropper to have one. Two small asks:
 
-1. **Book a slot today** — I'm setting the handful of pilots up this afternoon, so getting in now holds Cropper's place: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Happy to set Cropper up with a slot today** if that's useful — it means I'll have your tender prepped before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a grounds or gritting tender** you're weighing up. I'll run it through beforehand so we spend the whole call on *your* document, not a demo.
 
 Joel · Bidframe

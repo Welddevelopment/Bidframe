@@ -7,9 +7,9 @@ Running the business between the two of you as a rural Devon care provider, read
 
 **Bidframe** does that reading for you: it surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own policies and CQC evidence — every claim cited, nothing invented. You can see it running on a real public-sector tender at https://bidframe.vercel.app — a minute there shows the idea better than I can here.
 
-I'm running a handful of free pilots this week and I'd like DACCS to have one. Two asks:
+I'm running a few free pilots this week and I'd like DACCS to have one. Two asks:
 
-1. **Book a slot today** — I'm setting this week's pilots up this afternoon, so getting in now holds DACCS's place: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Happy to book DACCS in today** if that suits — it gives me time to prep your tender before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a Devon care tender** you're weighing up. I'll pre-run it so we spend the call on *your* actual document, not a demo.
 
 Joel · Bidframe

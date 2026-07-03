@@ -7,9 +7,9 @@ You already hold Middlesbrough Council and Thirteen Group roofing work — counc
 
 I built **Bidframe** for exactly that: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. You can watch the whole thing run on a real council tender at https://bidframe.vercel.app if seeing it beats reading about it.
 
-I've a handful of free pilot slots this week and I'd like one to be Hall Aspects'. Two asks:
+I've a few free pilot slots this week and I'd like one to be Hall Aspects'. Two asks:
 
-1. **Grab a slot today** — I'm lining the handful up before the end of the day, so booking now secures Hall Aspects': https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Today's a good day to grab a slot** if it's useful — I'll have Hall Aspects' tender read before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council/HA roofing tender when you book** (public, or an old pack). I'll pre-run it so the call is a walkthrough of *your* actual document.
 
 Joel · Bidframe

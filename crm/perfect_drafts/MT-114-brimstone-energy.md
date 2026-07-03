@@ -9,7 +9,7 @@ I'm building **Bidframe** — it reads the tender in minutes, surfaces those dea
 
 I'm running a few free pilots this week and I'd like Brimstone to have one. Two quick asks:
 
-1. **Book a slot today, ideally in the next few hours** — I'm setting this week's pilots up this afternoon, so an early one gets Brimstone's tender worked up first: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot whenever works, today ideally** — that gives me time to work Brimstone's tender up before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a council-grant solar tender** you're eyeing. I'll pre-run it so the call is on *your* actual document.
 
 Joel · Bidframe

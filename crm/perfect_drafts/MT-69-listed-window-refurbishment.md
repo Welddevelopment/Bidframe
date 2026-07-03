@@ -7,9 +7,9 @@ You've restored windows for Edinburgh City Chambers, Scotland Street School Muse
 
 I built **Bidframe** for exactly this: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own past-project and accreditation evidence — a citation on every claim, nothing invented. There's a live demo on a real public-sector tender at https://bidframe.vercel.app if you'd like to watch it lift the deal-breakers out first.
 
-I've a handful of free pilot slots this week and I'd like one to be yours. Two asks:
+I've a few free pilot slots this week and I'd like one to be yours. Two asks:
 
-1. **Grab a slot today** — I'm lining this week's pilots up before the end of the day, so booking now secures yours: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Happy to set you up with a slot today** if that helps — it gives me time to prep your tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council/heritage window tender when you book** (public, or an old pack). I'll pre-run it so the call is a worked walkthrough of *your* document.
 
 Joel · Bidframe

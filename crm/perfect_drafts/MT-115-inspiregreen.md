@@ -7,9 +7,9 @@ You've delivered solar for Newport City Council (the Kingsway Solar Car Park) �
 
 I built **Bidframe** for exactly this: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own MCS and method docs — a citation on every claim, nothing invented. There's a live demo on a real public-sector tender at https://bidframe.vercel.app if you'd like to watch it turn one into a source-linked checklist first.
 
-I've a handful of free pilot slots this week and I'd like one to be InspireGreen's. Two asks:
+I've a few free pilot slots this week and I'd like one to be InspireGreen's. Two asks:
 
-1. **Grab a slot today** — I'm lining the free pilots up before the end of the day, so booking now locks InspireGreen's in: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Today's a good day to grab a slot** if it helps — I'll have InspireGreen's tender read before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council or NHS solar tender when you book** (public, or an old pack you're happy to share). I'll pre-run it so the call is a worked walkthrough of *your* document.
 
 Joel · Bidframe

@@ -9,7 +9,7 @@ I'm building **Bidframe** — it reads the tender in minutes, surfaces those dea
 
 I'm running a few free pilots this week and I'd like MIserve to have one. Two quick asks:
 
-1. **Book a slot today** — I'm only running a few this week and lining them up before the end of the day, so booking now secures MIserve's: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Today's a good day to book** if it's useful — I'll have MIserve's tender worked up before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a council adaptations tender** you're bidding. I'll pre-run it so the call is on *your* actual document.
 
 Joel · Bidframe

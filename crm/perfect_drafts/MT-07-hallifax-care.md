@@ -9,7 +9,7 @@ I built **Bidframe** for exactly that: it reads the tender in minutes, surfaces 
 
 I've a few free pilot slots this week and I'd like one to be Hallifax's. Two small asks:
 
-1. **Grab a slot today** — I'm lining the pilots up before the end of the day, so booking now secures Hallifax's: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Today's a good day to grab a slot** if it helps — I'll have Hallifax's tender read before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council care tender when you book** (public, or a recent pack you're happy to share). I'll pre-run it so the call is a worked walkthrough of *your* document.
 
 Joel · Bidframe

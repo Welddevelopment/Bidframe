@@ -7,9 +7,9 @@ Holding contracts with Pembrokeshire County Council and Ateb means bidding counc
 
 **Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. There's a live demo on a real public-sector tender at https://bidframe.vercel.app if the two of you want to see it before booking a slot.
 
-I've a handful of free pilot slots this week and I'd like one to be yours. Two asks:
+I've a few free pilot slots this week and I'd like one to be yours. Two asks:
 
-1. **Book a slot today** — I'm setting this week's pilots up this afternoon, so getting in now holds your place: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Happy to set you up with a slot today** if that suits the two of you — it means I can prep your tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a Pembrokeshire CC or Ateb tender when you book** (public, or an old pack). I'll pre-run it so the call is a worked walkthrough of *your* document.
 
 Joel · Bidframe

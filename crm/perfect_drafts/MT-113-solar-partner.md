@@ -7,9 +7,9 @@ Installing solar for schools like Middleton and Walton High, plus parish council
 
 I built **Bidframe** for the owner-operator who can't spare a day on a tender: it reads the pack in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own MCS and method docs — a citation on every claim, nothing invented. If you'd rather see it than take my word for it, https://bidframe.vercel.app runs the tool on a real public-sector tender, deal-breakers lifted to the top.
 
-I've a handful of free pilot slots this week and I'd like one to be Solar Partner's. Two asks:
+I've a few free pilot slots this week and I'd like one to be Solar Partner's. Two asks:
 
-1. **Grab a slot today** — I'm lining the handful up before the end of the day, so booking now secures Solar Partner's: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Happy to book Solar Partner in today** if that suits — it lets me prep your tender before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a school or parish-council solar tender when you book** (public, or an old pack). I'll pre-run it so the call is a walkthrough of *your* actual document.
 
 Joel · Bidframe

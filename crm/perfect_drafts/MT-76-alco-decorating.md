@@ -9,7 +9,7 @@ I'm building **Bidframe** — it reads the tender in minutes, surfaces those dea
 
 I'm running a few free pilots this week and I'd like ALCo to have one. Two quick asks:
 
-1. **Grab a slot today** — I'm lining the handful up before the end of the day, so booking now secures ALCo's: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Today's a good day to grab a slot** if it helps — I'll have ALCo's tender worked up before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a school or council decorating tender** you're bidding. I'll pre-run it so the call is on *your* actual document.
 
 Joel · Bidframe

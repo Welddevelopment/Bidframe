@@ -7,9 +7,9 @@ Public bodies — hospitals, dioceses, councils — tender heritage window resto
 
 I built **Bidframe** for the specialist owner-operator who can't lose a workshop day to paperwork: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own conservation-project evidence — a citation on every claim, nothing invented. If a look helps before we talk, https://bidframe.vercel.app runs the tool on a real public-sector tender with the deal-breakers surfaced first.
 
-I've a handful of free pilot slots this week and I'd like one to be yours. Two asks:
+I've a few free pilot slots this week and I'd like one to be yours. Two asks:
 
-1. **Grab a slot today** — I'm allocating the free pilots this afternoon, so booking before the end of the day locks yours in: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot whenever works** — today's handy, as it lets me read your tender before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a heritage window tender when you book** (public, or an old pack). I'll pre-run it so the call is a walkthrough of *your* actual document.
 
 Joel · Bidframe

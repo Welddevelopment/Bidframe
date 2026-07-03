@@ -7,9 +7,9 @@ Doing fire-risk assessments for an FE college like Hull and for social-housing b
 
 I built **Bidframe** for the one-person practice that can't lose a week to tender-writing: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own competency and method docs — a citation on every claim, nothing invented. You can watch the whole thing run on a real public-sector tender at https://bidframe.vercel.app — worth a minute before you spend one on me.
 
-I've a handful of free pilot slots this week and I'd like one to be yours. Two asks:
+I've a few free pilot slots this week and I'd like one to be yours. Two asks:
 
-1. **Grab a slot today** — I'm setting the pilots up this afternoon, so booking before the end of the day holds yours: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot whenever works** — today's handy, as it gives me time to read your tender before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council/HA FRA tender when you book** (public, or an old pack). I'll pre-run it so the call is a walkthrough of *your* actual document.
 
 Joel · Bidframe

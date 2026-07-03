@@ -7,9 +7,9 @@ You name Wigan Council and the NHS as clients — so you're bidding public-secto
 
 I built **Bidframe** to catch exactly that: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. There's a live demo on a real public-sector tender at https://bidframe.vercel.app if you'd rather see it flag the pass/fail lines than read me describe them.
 
-I've a handful of free pilot slots this week and I'd like Aardvark to have one. Two quick asks:
+I've a few free pilot slots this week and I'd like Aardvark to have one. Two quick asks:
 
-1. **Grab a slot today** — I'm allocating this week's pilots this afternoon, so booking now locks Aardvark's in: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Today's a good day to grab a slot** if it's useful — I'll have Aardvark's tender read before we talk: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council or NHS pest tender when you book** (public, or an old pack). I'll pre-run it so the call is a walkthrough of *your* actual tender.
 
 Joel · Bidframe

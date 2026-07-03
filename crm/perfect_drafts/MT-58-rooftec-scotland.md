@@ -7,9 +7,9 @@ You won the Kingdom Housing Association re-roofing through Public Contracts Scot
 
 I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs, with a citation on every claim. There's a live demo on a real public-sector tender at https://bidframe.vercel.app — worth a minute to see it flag the pass/fail lines a PCS pack turns on.
 
-I've a handful of free pilot slots this week and I'd like one to be Rooftec's. Two asks:
+I've a few free pilot slots this week and I'd like one to be Rooftec's. Two asks:
 
-1. **Book a slot today** — I'm setting this week's pilots up this afternoon, so an early booking gets Rooftec's tender worked up first: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Happy to book Rooftec in today** if that suits — it means I can work your tender up before we speak: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a PCS roofing tender when you book** (public, or an old pack you're happy to share). I'll pre-run it so the call is a worked walkthrough of *your* document.
 
 Joel · Bidframe
