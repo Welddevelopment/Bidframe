@@ -5,7 +5,7 @@ Hi there,
 
 You built the Bisham Parish Council fence and the Spinfield School fencing yourself — so you're bidding council and school work where an insurance level, a DBS/safeguarding clause or a method statement can be the pass/fail line that voids the whole submission.
 
-I built **Bidframe** for exactly the one-person outfit that can't spare a day on a tender: it reads the pack in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own docs — a citation on every claim, nothing invented.
+I built **Bidframe** for exactly the one-person outfit that can't spare a day on a tender: it reads the pack in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own docs — a citation on every claim, nothing invented. There's a live demo on a real public-sector tender at https://bidframe.vercel.app if you'd like to see it before you spend even a minute on a call.
 
 I've a handful of free pilot slots this week and I'd like one to be yours. Two asks:
 

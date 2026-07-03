@@ -5,7 +5,7 @@ Hi Andrew,
 
 Flooring homes for City of York Council and York Housing Association means bidding void and refurb work where a flooring spec, an accreditation or an insurance level can be the pass/fail line that voids an otherwise strong bid.
 
-**Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+**Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. You can see it run on a real council tender at https://bidframe.vercel.app — the deal-breakers lifted to the top, each linked back to its clause.
 
 I've a handful of free pilot slots this week and I'd like one to be Elvington's. Two asks:
 

@@ -5,7 +5,7 @@ Hi Mark,
 
 You won the Kingdom Housing Association re-roofing through Public Contracts Scotland — so you know the next PCS tender turns on pass/fail requirements where one missed line voids the whole bid.
 
-I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs, with a citation on every claim.
+I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs, with a citation on every claim. There's a live demo on a real public-sector tender at https://bidframe.vercel.app — worth a minute to see it flag the pass/fail lines a PCS pack turns on.
 
 I've a handful of free pilot slots this week and I'd like one to be Rooftec's. Two asks:
 

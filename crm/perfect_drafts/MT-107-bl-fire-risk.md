@@ -5,7 +5,7 @@ Hi Bill,
 
 Doing fire-risk assessments for an FE college like Hull and for social-housing blocks means bidding council/HA FRA work where a competency or PAS 79 clause, or an insurance level, can be the pass/fail line that voids the whole submission.
 
-I built **Bidframe** for the one-person practice that can't lose a week to tender-writing: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own competency and method docs — a citation on every claim, nothing invented.
+I built **Bidframe** for the one-person practice that can't lose a week to tender-writing: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own competency and method docs — a citation on every claim, nothing invented. You can watch the whole thing run on a real public-sector tender at https://bidframe.vercel.app — worth a minute before you spend one on me.
 
 I've a handful of free pilot slots this week and I'd like one to be yours. Two asks:
 

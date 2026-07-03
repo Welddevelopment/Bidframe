@@ -5,7 +5,7 @@ Hi there,
 
 As an MLA-approved commercial locksmith across Essex & East London handling housing-association and framework contracts, you're bidding work where one missed pass/fail requirement voids the whole submission however good your service.
 
-**Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+**Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. If it's easier to see than to describe, https://bidframe.vercel.app has a live demo on a real public-sector tender, deal-breakers first.
 
 I'm running a few free pilots this week and I'd like ATCL to have one. Two quick asks:
 

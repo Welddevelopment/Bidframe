@@ -5,7 +5,7 @@ Hi there,
 
 You've built and maintained play areas for North Tawton TC, St Ives TC, Torridge DC and parish councils across Devon and Cornwall — tenders where a single EN1176 spec, inclusive-play standard or insurance level can void the whole bid.
 
-I'm building **Bidframe** — it reads the tender in minutes, surfaces those pass/fail deal-breakers first, ties each to its exact clause, and drafts answers straight from your own 100-plus project record, with a citation on each.
+I'm building **Bidframe** — it reads the tender in minutes, surfaces those pass/fail deal-breakers first, ties each to its exact clause, and drafts answers straight from your own 100-plus project record, with a citation on each. You can see it working on a real council tender at https://bidframe.vercel.app — a minute there shows how it lifts the deal-breakers straight out of the pack.
 
 I'm running a handful of free pilots this week and I'd like one to be TK Play's. Two asks:
 

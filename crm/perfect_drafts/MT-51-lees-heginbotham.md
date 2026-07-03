@@ -5,7 +5,7 @@ Hi there,
 
 You fit floors for Rochdale Borough Housing, Riverside and Guinness Northern Counties — HA tenders where one missed pass/fail line voids the whole submission, however good the fit itself.
 
-I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs, with a citation on every claim.
+I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs, with a citation on every claim. If you'd like a look first, there's a live demo on a real public-sector tender at https://bidframe.vercel.app, the deal-breakers pulled straight to the top.
 
 I'm running a few free pilots this week and I'd like Lees Heginbotham to have one. Two quick asks:
 

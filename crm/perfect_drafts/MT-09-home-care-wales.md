@@ -5,7 +5,7 @@ Hi there,
 
 As an approved provider on the North Wales framework delivering for Anglesey Council, each re-tender puts your whole place at risk over a single pass/fail requirement — however strong your day-to-day care.
 
-I built **Bidframe** to take that risk off the table: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own policies and evidence, with a citation on every claim.
+I built **Bidframe** to take that risk off the table: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own policies and evidence, with a citation on every claim. There's a live demo on a real public-sector tender at https://bidframe.vercel.app if you'd like to see it lift the deal-breakers out before your next re-tender lands.
 
 I've a few free pilot slots this week and I'd like one to be yours. Two quick asks:
 

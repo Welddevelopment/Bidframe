@@ -5,7 +5,7 @@ Hi there,
 
 You work with six named councils plus HAs like LiveWest and Guinness Trust on adaptations — framework and DFG work where one missed pass/fail requirement voids the whole submission.
 
-I built **Bidframe** for exactly this: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+I built **Bidframe** for exactly this: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. If it's easier to judge by seeing it, https://bidframe.vercel.app has a demo on a real public-sector tender with the deal-breakers pulled straight to the top.
 
 I'm running a few free pilots this week and I'd like Dolphin Devon to have one. Two quick asks:
 

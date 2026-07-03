@@ -5,7 +5,7 @@ Hi there,
 
 You keep Huntingdonshire District Council's play areas EN1176-compliant — so you're bidding council play-maintenance work where an RPII scope, a wet-pour spec or an insurance level can be the pass/fail line that bins the bid.
 
-I built **Bidframe** for exactly this: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own inspection and installation records — a citation on every claim, nothing invented.
+I built **Bidframe** for exactly this: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own inspection and installation records — a citation on every claim, nothing invented. If you'd like a look first, https://bidframe.vercel.app runs the tool on a real council tender — deal-breakers pulled to the top, each tied to its clause.
 
 I've a few free pilot slots this week and I'd like Reids to have one. Two quick asks:
 

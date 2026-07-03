@@ -5,7 +5,7 @@ Hi there,
 
 Public bodies — hospitals, dioceses, councils — tender heritage window restoration with strict conservation clauses (you've done Roundway Hospital in Devizes and diocesan work across Oxford, Winchester and Guildford), and one missed pass/fail requirement voids the whole bid.
 
-I built **Bidframe** for the specialist owner-operator who can't lose a workshop day to paperwork: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own conservation-project evidence — a citation on every claim, nothing invented.
+I built **Bidframe** for the specialist owner-operator who can't lose a workshop day to paperwork: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own conservation-project evidence — a citation on every claim, nothing invented. If a look helps before we talk, https://bidframe.vercel.app runs the tool on a real public-sector tender with the deal-breakers surfaced first.
 
 I've a handful of free pilot slots this week and I'd like one to be yours. Two asks:
 

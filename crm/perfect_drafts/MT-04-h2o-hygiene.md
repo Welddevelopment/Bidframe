@@ -5,7 +5,7 @@ Hi there,
 
 Your council, school and care-home water-hygiene contracts come wrapped in L8 and HSG274 detail — the kind of ITT where one missed pass/fail clause bins the whole bid, however strong your service record.
 
-I'm building **Bidframe**: it reads a public-sector tender and, in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer straight from your own risk-assessment and accreditation evidence — every claim cited, nothing invented.
+I'm building **Bidframe**: it reads a public-sector tender and, in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer straight from your own risk-assessment and accreditation evidence — every claim cited, nothing invented. The site has a quick demo on a real public-sector tender (https://bidframe.vercel.app) so you can watch it flag the pass/fail gates for yourself before we speak.
 
 I'm running a handful of free pilots this week and I'd like H2O to have one. Two quick asks:
 

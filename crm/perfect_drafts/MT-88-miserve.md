@@ -5,7 +5,7 @@ Hi there,
 
 Six Devon councils — Exeter City, Plymouth City, West Devon Borough, South Hams DC, East Devon DC and Torridge DC — already trust your kitchen/bathroom adaptation work, so you're bidding frameworks where one missed pass/fail line voids the whole submission however strong your delivery.
 
-I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs, with a citation on every claim.
+I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs, with a citation on every claim. You can watch it read a real council tender at https://bidframe.vercel.app — the same kind of framework your six councils put out, with the deal-breakers lifted first.
 
 I'm running a few free pilots this week and I'd like MIserve to have one. Two quick asks:
 

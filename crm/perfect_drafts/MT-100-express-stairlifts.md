@@ -5,7 +5,7 @@ Hi there,
 
 You install stairlifts on DFG jobs for seven Devon and Cornwall councils — so you're bidding council adaptation work where an OT-spec detail, a DBS clause or an insurance level can be the pass/fail line that voids the whole submission.
 
-I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs, with a citation on every claim.
+I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs, with a citation on every claim. Have a look at https://bidframe.vercel.app — it runs on a real council tender, so you can watch it pull the deal-breakers to the top, the same pass/fail lines a DFG pack hides.
 
 I've a handful of free pilot slots this week and I'd like one to be yours. Two asks:
 

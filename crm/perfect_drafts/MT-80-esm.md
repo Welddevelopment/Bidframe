@@ -5,7 +5,7 @@ Hi Kevin and Craig,
 
 Handling asbestos for Cannock, Dudley and Wolverhampton Councils and Solihull Community Housing means bidding frameworks where a UKAS scope, a licence condition or an insurance level can be the pass/fail line that voids the whole submission.
 
-**Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+**Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. You can see it working on a real council tender at https://bidframe.vercel.app — a minute there shows how it surfaces the pass/fail lines an asbestos framework buries.
 
 I've a handful of free pilot slots this week and I'd like one to be ESM's. Two asks:
 

@@ -5,7 +5,7 @@ Hi there,
 
 You already hold Middlesbrough Council and Thirteen Group roofing work — council and HA repairs where a CHAS scope, a RAMS clause or an insurance level can be the pass/fail line that voids the whole submission.
 
-I built **Bidframe** for exactly that: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented.
+I built **Bidframe** for exactly that: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. You can watch the whole thing run on a real council tender at https://bidframe.vercel.app if seeing it beats reading about it.
 
 I've a handful of free pilot slots this week and I'd like one to be Hall Aspects'. Two asks:
 
