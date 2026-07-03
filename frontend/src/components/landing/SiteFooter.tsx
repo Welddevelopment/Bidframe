@@ -13,7 +13,7 @@ import { TreelineDivider } from "@/components/landing/art/TreelineDivider";
 // paper-toned links, and a mono running foot. No invented email or
 // overclaims, only what the page already stands behind. Everything textual
 // holds at paper/60 or stronger, which clears AA on pine-deep.
-const CONTAINER = "mx-auto w-full max-w-[1160px] px-6";
+const CONTAINER = "mx-auto w-full max-w-[1160px] px-4 sm:px-6";
 
 const linkClass =
   "rounded-sm text-sm text-paper/70 underline decoration-paper/40 decoration-1 underline-offset-4 transition-colors hover:text-paper hover:decoration-paper focus:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-pine-deep";
@@ -39,7 +39,7 @@ export function SiteFooter() {
         <div className={`${CONTAINER} landing-footer__content relative py-12 sm:py-16`}>
           <div className="landing-footer__panel">
             <div className="landing-footer__brand">
-              <BrandLogo reversed className="h-10 w-auto sm:h-12" />
+              <BrandLogo reversed className="h-9 w-auto max-w-[12rem] sm:h-12 sm:max-w-none" />
               <p className="mt-4 max-w-[34ch] text-sm leading-relaxed text-paper/70">
                 For SME bidders and small bid-writing consultancies.
               </p>

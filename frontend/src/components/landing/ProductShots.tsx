@@ -38,8 +38,8 @@ export function ProductGalleryFrame({
 // normal requirements, so "first" is visible before the prose explains it.
 export function DealBreakerCard() {
   return (
-    <div className="card-live surface-grain w-full overflow-hidden rounded-lg border border-hairline bg-paper-raised shadow-[var(--depth-sheet)]">
-      <div className="flex items-center justify-between border-b border-hairline bg-paper px-5 py-3">
+    <div className="card-live surface-grain w-full min-w-0 overflow-hidden rounded-lg border border-hairline bg-paper-raised shadow-[var(--depth-sheet)]">
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 border-b border-hairline bg-paper px-4 py-3 sm:px-5">
         <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-muted">
           Priority register
         </span>
@@ -48,7 +48,7 @@ export function DealBreakerCard() {
         </span>
       </div>
 
-      <div className="p-5">
+      <div className="p-4 sm:p-5">
         <div className="rounded-md border border-signal-oxblood-frame/35 bg-paper shadow-[var(--depth-row)]">
           <div className="border-l-[3px] border-signal-oxblood-frame px-5 py-4">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
@@ -59,7 +59,7 @@ export function DealBreakerCard() {
                 p.14 / Section 4.2.1
               </span>
             </div>
-            <p className="mt-3 text-lg leading-snug text-ink">
+            <p className="mt-3 text-base leading-snug text-ink sm:text-lg">
               The supplier must hold ISO 9001 certification for the full
               contract term.
             </p>
@@ -96,7 +96,7 @@ function PriorityRow({
   status: "check" | "found";
 }) {
   return (
-    <div className="grid grid-cols-[58px_1fr_auto] items-center gap-3 px-4 py-3 text-sm">
+    <div className="grid min-w-0 grid-cols-[44px_minmax(0,1fr)_auto] items-center gap-2.5 px-3 py-3 text-sm sm:grid-cols-[58px_minmax(0,1fr)_auto] sm:gap-3 sm:px-4">
       <span className="font-mono text-[11px] text-ink-muted">{refLabel}</span>
       <span className="truncate text-ink-muted">{label}</span>
       <span
@@ -116,31 +116,31 @@ function PriorityRow({
 // drawer. The page and clause numbers sit in the margin, not as decoration.
 export function ClauseCard() {
   return (
-    <div className="card-live surface-grain w-full overflow-hidden rounded-lg border border-hairline bg-paper-raised shadow-[var(--depth-sheet)]">
-      <div className="grid grid-cols-[72px_1fr] border-b border-hairline bg-paper">
-        <div className="border-r border-hairline px-4 py-3 text-right font-mono text-[11px] uppercase tracking-[0.12em] text-accent">
+    <div className="card-live surface-grain w-full min-w-0 overflow-hidden rounded-lg border border-hairline bg-paper-raised shadow-[var(--depth-sheet)]">
+      <div className="grid grid-cols-[56px_minmax(0,1fr)] border-b border-hairline bg-paper sm:grid-cols-[72px_minmax(0,1fr)]">
+        <div className="border-r border-hairline px-3 py-3 text-right font-mono text-[10px] uppercase tracking-[0.1em] text-accent sm:px-4 sm:text-[11px] sm:tracking-[0.12em]">
           Source
         </div>
-        <div className="flex items-center justify-between gap-3 px-4 py-3">
-          <span className="font-mono text-[11px] text-ink-muted">
+        <div className="flex min-w-0 flex-wrap items-center justify-between gap-x-3 gap-y-1 px-3 py-3 sm:px-4">
+          <span className="min-w-0 font-mono text-[11px] text-ink-muted">
             clicked from requirement row
           </span>
           <span className="font-mono text-[11px] text-accent">open clause</span>
         </div>
       </div>
 
-      <div className="grid gap-0 md:grid-cols-[72px_1fr]">
-        <div className="border-r border-hairline px-4 py-5 text-right font-mono text-xs leading-relaxed text-accent">
+      <div className="grid min-w-0 gap-0 md:grid-cols-[72px_1fr]">
+        <div className="border-b border-hairline px-4 py-3 text-left font-mono text-xs leading-relaxed text-accent md:border-r md:border-b-0 md:py-5 md:text-right">
           4.2.1
           <br />
           p.14
         </div>
-        <div className="p-5">
+        <div className="min-w-0 p-4 sm:p-5">
           <div className="rounded-md border border-accent/25 bg-accent-soft/55 p-4">
             <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
               Requirement
             </p>
-            <p className="mt-2 text-lg leading-snug text-ink">
+            <p className="mt-2 text-base leading-snug text-ink sm:text-lg">
               The supplier must hold ISO 9001 certification.
             </p>
           </div>
@@ -166,26 +166,26 @@ export function ClauseCard() {
 // before the approval stamp. It reads as a workflow, not a static quote.
 export function AnswerCard() {
   return (
-    <div className="card-live surface-grain w-full overflow-hidden rounded-lg border border-hairline bg-paper-raised shadow-[var(--depth-sheet)]">
-      <div className="flex items-center justify-between border-b border-hairline bg-paper px-5 py-3">
+    <div className="card-live surface-grain w-full min-w-0 overflow-hidden rounded-lg border border-hairline bg-paper-raised shadow-[var(--depth-sheet)]">
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 border-b border-hairline bg-paper px-4 py-3 sm:px-5">
         <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-muted">
           Answer workspace
         </span>
         <span className="font-mono text-[11px] text-forest">ready to approve</span>
       </div>
 
-      <div className="p-5">
+      <div className="p-4 sm:p-5">
         <div className="grid gap-2 rounded-md border border-hairline bg-paper/70 p-4">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-muted">
             Requirement
           </p>
-          <p className="text-lg leading-snug text-ink">
+          <p className="text-base leading-snug text-ink sm:text-lg">
             The supplier must hold ISO 9001 certification.
           </p>
         </div>
 
         <div className="mt-4 rounded-md border-l-2 border-forest bg-paper p-4 shadow-[var(--depth-row)]">
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5">
             <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-forest">
               Draft answer
             </p>

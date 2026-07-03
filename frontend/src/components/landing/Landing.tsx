@@ -41,7 +41,7 @@ import { Seal } from "./art/Seal";
 // The hero and the closing are the two deliberate centred focal moments; the
 // giant proof numbers are the climax, held back to just before the closing CTA.
 
-const CONTAINER = "mx-auto w-full max-w-[1160px] px-6";
+const CONTAINER = "mx-auto w-full max-w-[1160px] px-4 sm:px-6";
 
 const COMPARISON_ROWS = [
   { label: "Time", before: "Weeks of expert reading", after: "Minutes" },
@@ -77,10 +77,10 @@ export function Landing() {
     <div className="landing-scope bg-paper">
       {/* Masthead: a slim warm letterhead carrying the one 2px ink rule and the
           prominent forest CTA. */}
-      <header className="sticky top-0 z-30 border-b-2 border-ink bg-paper/85 backdrop-blur-sm">
+      <header className="landing-masthead sticky border-b-2 border-ink bg-paper/90 backdrop-blur-sm">
         <div className={`${CONTAINER} flex items-center justify-between py-3`}>
-          <BrandLogo className="h-7 w-auto" />
-          <div className="flex items-center gap-5">
+          <BrandLogo className="h-6 w-auto max-w-[8.25rem] sm:h-7 sm:max-w-none" />
+          <div className="flex min-w-0 items-center gap-3 sm:gap-5">
             <Link
               href="/demo"
               className="hidden rounded-sm text-sm text-ink-muted underline decoration-hairline decoration-1 underline-offset-4 transition-colors hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper sm:inline"
@@ -93,7 +93,7 @@ export function Landing() {
             >
               Sign in
             </Link>
-            <BookDemoButton location="masthead" />
+            <BookDemoButton location="masthead" className="shrink-0" />
           </div>
         </div>
       </header>
@@ -451,7 +451,7 @@ function PanelFrame({
 function ConfidenceDocket() {
   return (
     <div className="card-live surface-grain w-full overflow-hidden rounded-lg border border-moss-line bg-paper-raised shadow-[var(--depth-sheet)]">
-      <div className="flex items-center justify-between border-b border-hairline bg-paper px-5 py-3.5">
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 border-b border-hairline bg-paper px-4 py-3.5 sm:px-5">
         <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-muted">
           Evidence check
         </span>
@@ -480,7 +480,7 @@ function ConfidenceDocket() {
           example="Matches the clause exactly"
         />
       </div>
-      <div className="border-t border-hairline bg-paper/70 px-5 py-3">
+      <div className="border-t border-hairline bg-paper/70 px-4 py-3 sm:px-5">
         <p className="max-w-[38ch] font-mono text-[11px] leading-relaxed text-ink-muted">
           Weak sources stay visible until a human clears them.
         </p>
@@ -504,7 +504,7 @@ function ConfidenceStampRow({
   example: string;
 }) {
   return (
-    <div className="grid gap-3 px-5 py-4 transition-colors hover:bg-paper/55 sm:grid-cols-[182px_1fr] sm:items-center sm:gap-5">
+    <div className="grid min-w-0 gap-3 px-4 py-4 transition-colors hover:bg-paper/55 sm:grid-cols-[182px_1fr] sm:items-center sm:gap-5 sm:px-5">
       <div className="flex min-w-0 items-center gap-2.5">
         <ConfidenceIndicator
           confidence={confidence}
@@ -513,7 +513,7 @@ function ConfidenceStampRow({
         />
         <span className="text-sm font-medium leading-snug text-ink">{label}</span>
       </div>
-      <span className="border-l border-hairline pl-3 font-mono text-xs leading-relaxed text-ink-muted sm:pl-4">
+      <span className="border-t border-hairline pt-2 font-mono text-xs leading-relaxed text-ink-muted sm:border-l sm:border-t-0 sm:pt-0 sm:pl-4">
         {example}
       </span>
     </div>

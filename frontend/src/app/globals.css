@@ -126,6 +126,24 @@ body {
   position: relative;
   isolation: isolate;
 }
+.landing-masthead {
+  top: env(safe-area-inset-top, 0px);
+  z-index: 80;
+  isolation: isolate;
+}
+.landing-masthead::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: calc(-1 * env(safe-area-inset-top, 0px));
+  height: env(safe-area-inset-top, 0px);
+  background: rgba(246, 242, 233, 0.94);
+  backdrop-filter: blur(8px);
+}
+.landing-masthead > * {
+  position: relative;
+  z-index: 1;
+}
 .landing-scope::before {
   content: "";
   position: fixed;
@@ -254,11 +272,17 @@ body {
     content: none;
   }
   .hero-sheet {
-    --rx: 2deg;
-    --ry: -1deg;
+    --rx: 0deg;
+    --ry: 0deg;
+    max-width: calc(100vw - 2rem);
+  }
+  .hero-matrix {
+    max-width: 100%;
+    overflow: hidden;
   }
   .hero-matrix > .flex {
     gap: 1.25rem;
+    max-width: 100%;
   }
   .hero-matrix .sticky {
     position: static;
@@ -523,6 +547,7 @@ body {
    implying they are clickable, no lift or translate, that stays reserved for the
    one thing you can actually open (the hero sheet). */
 .card-live {
+  min-width: 0;
   transition: box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .card-live:hover {
@@ -543,6 +568,7 @@ body {
    section so the page breathes without feeling animated or gimmicky. */
 .section-panel {
   position: relative;
+  max-width: 100%;
   transform: rotate(var(--panel-tilt));
   transform-origin: center;
   filter: drop-shadow(0 18px 28px rgba(33, 29, 23, 0.12));
@@ -1042,6 +1068,8 @@ body {
 .forest-product-object {
   position: relative;
   isolation: isolate;
+  max-width: 100%;
+  min-width: 0;
   overflow: hidden;
   border: 1px solid rgba(246, 242, 233, 0.2);
   border-radius: 1rem;
@@ -1116,6 +1144,7 @@ body {
 .forest-product-object__card {
   position: relative;
   z-index: 4;
+  min-width: 0;
 }
 .forest-product-object-alert {
   border-color: rgba(180, 45, 36, 0.34);
@@ -1142,8 +1171,8 @@ body {
     display: none;
   }
   .forest-product-object {
-    margin-inline: -0.25rem;
-    padding: 0.9rem;
+    margin-inline: 0;
+    padding: 0.65rem;
     border-radius: 0.85rem;
   }
   .forest-product-object__label {
@@ -1434,7 +1463,7 @@ body {
     opacity: 0.92;
   }
   .forest-hero-plinth {
-    margin-inline: -0.75rem;
+    margin-inline: 0;
     padding: 0.35rem;
   }
   .forest-hero-plinth::before {
@@ -1683,7 +1712,8 @@ body {
 }
 .landing-footer__content {
   position: relative;
-  z-index: 2;
+  z-index: 4;
+  padding-bottom: calc(3rem + env(safe-area-inset-bottom, 0px));
 }
 .landing-footer__panel {
   display: grid;
@@ -1714,7 +1744,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 3;
+  z-index: 2;
   pointer-events: none;
   opacity: 0.18;
   mix-blend-mode: screen;
@@ -1741,6 +1771,12 @@ body {
   }
 }
 
+@media (min-width: 640px) {
+  .landing-footer__content {
+    padding-bottom: calc(4rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 @media (max-width: 720px) {
   .closing-card-frame,
   .closing-card {
@@ -1761,10 +1797,12 @@ body {
   .landing-footer__nav {
     align-items: flex-start;
     flex-direction: column;
+    max-width: 100%;
   }
   .landing-footer__bottom {
     align-items: flex-start;
     flex-direction: column;
+    max-width: 100%;
   }
 }
 
