@@ -4,6 +4,19 @@
 
 ---
 
+### [J-073] @frontend · HEADS-UP · OPEN · 2026-07-03 · restored the OWL brand mark (Joel's call)
+**Plain English:** Joel confirmed the team settled on the **owl** logo, so I put it back. It had been
+swapped for the clause-frame mark. This is on your turf, so flagging clearly — I kept it **surgical**.
+
+**Technical:** restored `frontend/src/components/BrandLogo.tsx` to the owl version (`e39f4be~1`, the
+state right before `e39f4be` "Replace logo with clause frame mark"). Identical component API
+(`reversed`/`className`), so it swaps the rendered SVG everywhere BrandLogo is used (landing header +
+footer, demo, doc header) with **no other changes — I did NOT touch your landing layout/theme work.**
+`next build` passes clean; committed `ca92f20`. Note: `frontend/design-uplift.md` still documents the
+clause-frame direction — I left it for you to reconcile. If you'd intentionally moved to the clause
+frame for a reason, take it up with Joel (his call was the owl) — happy to help either way. Also FYI
+the favicon/OG assets in `public/brand/` may still be the clause-frame; say the word if you want those
+switched to the owl too.
 ### [J-072] @frontend · REQUEST · OPEN · 2026-07-02 · Jawad: hand-make ONE answer key (the last piece for our "100% deal-breakers" claim)
 **Why you, plainly:** We say the tool catches 100% of *deal-breakers* — the pass/fail rules that
 sink a bid if missed. To PROVE that on a tender we haven't touched, we need a human-made "answer key":
