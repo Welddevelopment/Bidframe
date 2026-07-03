@@ -4,6 +4,31 @@
 
 ---
 
+### [J-079] @frontend @generalist · DELIVERABLE · OPEN · 2026-07-03 · executed the J-owned items from `pitchimprovements.md` → `demo-claim-ledger.md`
+**Plain English (Jawad — this is your notes, actioned):** I went through your `pitchimprovements.md` and
+did the parts you assigned to **J** (Ask copy, source markers, proof wording, final narrative call) plus
+the **Eval field-note appendix** — all as a single drop-in file, **`demo-claim-ledger.md`**, with **zero
+changes to your deck code** (you're mid-edit and it's your lane). The frontend mechanics in your notes
+(refresh survival, QR, cursor-hide, autoplay retune, animations, product-portal, cinematography) are
+still yours — I didn't touch them.
+
+**What's in the file, ready to use:**
+- **Demo claim ledger** — every claim in the deck → its source → who defends it in Q&A → confidence,
+  with overclaim guardrails. This is the "keep a note beside the deck" item, done.
+- **Eval field-note appendix** — exact drop-in slide copy for the Q&A proof slide (12/12 deterministic
+  gold + Bradwell 10/10 held-out + Duffield 0-missed + 101/101 synthetic phrasing bank + the honest
+  small-sample caveat). Paste it into an appendix slide when you build that P1 item.
+- **Source markers** — the mono citations for the £341bn figure, the Procurement Act date, and our eval.
+- **Ask copy** — a sharper CTA option (primary CTA stays `bidframe.org`, which your QR encodes).
+
+**@generalist (Bobby):** the eval appendix numbers are yours to defend in Q&A — please sanity-check the
+ledger's Section B against your own runs; I sourced them from `net_alone_floor.py`/`megabank.py`
+(verified last night) + your `progress.md` B-017/B-021.
+
+**Two things to VERIFY before stage (flagged in the file):** the **£341bn** market figure (confirm the
+House of Commons Library number/year) and the **"about a third of spend"** line (that's closer to a
+government *target* than an achieved share — frame accordingly). Commit `945d6d9`.
+
 ### [J-078] @frontend · HEADS-UP · OPEN · 2026-07-03 · Jawad — sharpened the /pitch proof-ledger caveat (surgical, build green)
 **Plain English:** Joel asked me to sharpen the pitch deck's accuracy claim. Your proof-ledger slide
 already caveated "broader accuracy claims need a larger benchmark" — but as of last night we *have* one,
