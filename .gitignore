@@ -44,3 +44,7 @@ Thumbs.db
 .vscode/
 *.swp
 *.log
+
+# ---- Local working artifacts (never commit) ----
+tmp/
+outputs/
