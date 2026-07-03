@@ -4,6 +4,8 @@ import { ApprovalStamp } from "@/components/ApprovalStamp";
 import { GatingHero } from "@/components/GatingHero";
 import { CategoryTag } from "@/components/CategoryTag";
 import { GraphView } from "@/components/GraphView";
+import { FernFrond } from "@/components/landing/art/FernFrond";
+import { PineBranch } from "@/components/landing/art/PineBranch";
 import { motion, useTransform, type MotionValue } from "motion/react";
 import { StageChrome } from "./StageChrome";
 import {
@@ -616,6 +618,49 @@ function CriterionTab({
 
 const LAYER_BASE = "absolute inset-0 flex items-center justify-center will-change-transform";
 
+function StageAmbient({ beat }: { beat: MotionValue<number> }) {
+  const backgroundColor = useTransform(
+    beat,
+    [0, 4, 6, STEPS.length],
+    ["#f6f2e9", "#efe9db", "#dfe4d4", "#1d3a2b"],
+  );
+  return (
+    <motion.div
+      aria-hidden
+      className="absolute inset-4 z-0 rounded-2xl"
+      style={{ backgroundColor }}
+    />
+  );
+}
+
+function StageForestFrame({ beat }: { beat: MotionValue<number> }) {
+  const foliageOpacity = useTransform(beat, [0, STEPS.length], [0.14, 0.32]);
+  const vignetteOpacity = useTransform(beat, [0, STEPS.length], [0.08, 0.36]);
+  return (
+    <>
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute -left-9 bottom-5 z-50 hidden text-forest sm:block"
+        style={{ opacity: foliageOpacity }}
+      >
+        <FernFrond className="h-64 w-auto -rotate-12" />
+      </motion.div>
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute -right-12 top-3 z-50 hidden text-forest md:block"
+        style={{ opacity: foliageOpacity }}
+      >
+        <PineBranch className="h-36 w-auto rotate-12" />
+      </motion.div>
+      <motion.span
+        aria-hidden
+        className="stage-vignette pointer-events-none absolute inset-0 z-50 rounded-2xl"
+        style={{ opacity: vignetteOpacity }}
+      />
+    </>
+  );
+}
+
 // Steps 0–1. Full page at rest; scanned then receding as the register takes
 // over (the 900ms delay hands over exactly as the scan bar finishes its pass).
 function WallLayer({
@@ -874,6 +919,7 @@ export function ScrollyStage({
       aria-hidden
       inert
     >
+      <StageAmbient beat={beat} />
       <ExtractionThread beat={beat} />
       <ExtractionLedger beat={beat} />
       <WallLayer step={step} beat={beat} />
@@ -883,6 +929,7 @@ export function ScrollyStage({
       <AnswerLayer step={step} beat={beat} />
       <GraphLayer beat={beat} />
       <FinaleLayer beat={beat} />
+      <StageForestFrame beat={beat} />
     </div>
   );
 }

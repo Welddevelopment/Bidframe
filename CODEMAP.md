@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `636eece` · 2026-07-03T19:04:46Z
+> Map of commit `05f8388` · 2026-07-03T19:04:58Z
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,7 +12,7 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 170 | 57,510 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **frontend** | 172 | 57,759 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
 | **backend** | 20 | 3,159 | Backend — FastAPI (PDF ingest, extraction, REST API) |
 | **engine** | 71 | 5,908 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 713 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
@@ -133,10 +133,10 @@ graph LR
   n6[DemoView.tsx] --> n60[DemoTitleCard.tsx]
   n6[DemoView.tsx] --> n12[BookDemoButton.tsx]
   n6[DemoView.tsx] --> n61[BotanicalSprig.tsx]
-  n6[DemoView.tsx] --> n62[DrawOn.tsx]
-  n6[DemoView.tsx] --> n63[SiteFooter.tsx]
-  n6[DemoView.tsx] --> n64[FernFrond.tsx]
-  n6[DemoView.tsx] --> n65[TreelineDivider.tsx]
+  n6[DemoView.tsx] --> n62[ClosingArrival.tsx]
+  n6[DemoView.tsx] --> n63[DrawOn.tsx]
+  n6[DemoView.tsx] --> n64[SiteFooter.tsx]
+  n6[DemoView.tsx] --> n65[FernFrond.tsx]
   n6[DemoView.tsx] --> n7[RequirementsContext.tsx]
   n6[DemoView.tsx] --> n19[api.ts]
   n6[DemoView.tsx] --> n53[triage.ts]
@@ -230,23 +230,25 @@ graph LR
   n59[DemoScrolly.tsx] --> n86[useScrollTimeline.ts]
   n59[DemoScrolly.tsx] --> n12[BookDemoButton.tsx]
   n60[DemoTitleCard.tsx] --> n87[sample.ts]
-  n60[DemoTitleCard.tsx] --> n65[TreelineDivider.tsx]
+  n60[DemoTitleCard.tsx] --> n88[TreelineDivider.tsx]
   n83[ScrollyRail.tsx] --> n85[steps.ts]
   n84[ScrollyStage.tsx] --> n75[ApprovalStamp.tsx]
   n84[ScrollyStage.tsx] --> n38[CategoryTag.tsx]
   n84[ScrollyStage.tsx] --> n39[ConfidenceIndicator.tsx]
   n84[ScrollyStage.tsx] --> n56[GatingHero.tsx]
   n84[ScrollyStage.tsx] --> n57[GraphView.tsx]
-  n84[ScrollyStage.tsx] --> n88[StageChrome.tsx]
+  n84[ScrollyStage.tsx] --> n89[StageChrome.tsx]
   n84[ScrollyStage.tsx] --> n87[sample.ts]
   n84[ScrollyStage.tsx] --> n85[steps.ts]
+  n84[ScrollyStage.tsx] --> n65[FernFrond.tsx]
+  n84[ScrollyStage.tsx] --> n90[PineBranch.tsx]
   n87[sample.ts] --> n9[requirement.ts]
-  n89[ClosingArrival.tsx] --> n12[BookDemoButton.tsx]
-  n89[ClosingArrival.tsx] --> n62[DrawOn.tsx]
-  n89[ClosingArrival.tsx] --> n90[Reveal.tsx]
-  n89[ClosingArrival.tsx] --> n91[PineBranch.tsx]
-  n89[ClosingArrival.tsx] --> n92[Seal.tsx]
-  n89[ClosingArrival.tsx] --> n65[TreelineDivider.tsx]
+  n62[ClosingArrival.tsx] --> n12[BookDemoButton.tsx]
+  n62[ClosingArrival.tsx] --> n63[DrawOn.tsx]
+  n62[ClosingArrival.tsx] --> n91[Reveal.tsx]
+  n62[ClosingArrival.tsx] --> n90[PineBranch.tsx]
+  n62[ClosingArrival.tsx] --> n92[Seal.tsx]
+  n62[ClosingArrival.tsx] --> n88[TreelineDivider.tsx]
   n93[ForestHeroLayers.tsx] --> n92[Seal.tsx]
   n94[HeroResolve.tsx] --> n54[ComplianceMatrix.tsx]
   n94[HeroResolve.tsx] --> n56[GatingHero.tsx]
@@ -255,30 +257,30 @@ graph LR
   n21[Landing.tsx] --> n11[BrandLogo.tsx]
   n21[Landing.tsx] --> n39[ConfidenceIndicator.tsx]
   n21[Landing.tsx] --> n12[BookDemoButton.tsx]
-  n21[Landing.tsx] --> n89[ClosingArrival.tsx]
+  n21[Landing.tsx] --> n62[ClosingArrival.tsx]
   n21[Landing.tsx] --> n95[CredibilityBand.tsx]
-  n21[Landing.tsx] --> n62[DrawOn.tsx]
+  n21[Landing.tsx] --> n63[DrawOn.tsx]
   n21[Landing.tsx] --> n93[ForestHeroLayers.tsx]
   n21[Landing.tsx] --> n94[HeroResolve.tsx]
   n21[Landing.tsx] --> n96[HowItWorks.tsx]
   n21[Landing.tsx] --> n97[ProductShots.tsx]
   n21[Landing.tsx] --> n98[ProofScrolly.tsx]
-  n21[Landing.tsx] --> n90[Reveal.tsx]
-  n21[Landing.tsx] --> n63[SiteFooter.tsx]
+  n21[Landing.tsx] --> n91[Reveal.tsx]
+  n21[Landing.tsx] --> n64[SiteFooter.tsx]
   n21[Landing.tsx] --> n99[TrailDescent.tsx]
-  n21[Landing.tsx] --> n91[PineBranch.tsx]
+  n21[Landing.tsx] --> n90[PineBranch.tsx]
   n21[Landing.tsx] --> n100[PressedLeaf.tsx]
   n21[Landing.tsx] --> n92[Seal.tsx]
-  n21[Landing.tsx] --> n65[TreelineDivider.tsx]
+  n21[Landing.tsx] --> n88[TreelineDivider.tsx]
   n97[ProductShots.tsx] --> n75[ApprovalStamp.tsx]
   n98[ProofScrolly.tsx] --> n74[AnimatedNumber.tsx]
   n98[ProofScrolly.tsx] --> n101[ProofNumbers.tsx]
-  n98[ProofScrolly.tsx] --> n90[Reveal.tsx]
-  n63[SiteFooter.tsx] --> n11[BrandLogo.tsx]
-  n63[SiteFooter.tsx] --> n12[BookDemoButton.tsx]
-  n63[SiteFooter.tsx] --> n91[PineBranch.tsx]
-  n63[SiteFooter.tsx] --> n92[Seal.tsx]
-  n63[SiteFooter.tsx] --> n65[TreelineDivider.tsx]
+  n98[ProofScrolly.tsx] --> n91[Reveal.tsx]
+  n64[SiteFooter.tsx] --> n11[BrandLogo.tsx]
+  n64[SiteFooter.tsx] --> n12[BookDemoButton.tsx]
+  n64[SiteFooter.tsx] --> n90[PineBranch.tsx]
+  n64[SiteFooter.tsx] --> n92[Seal.tsx]
+  n64[SiteFooter.tsx] --> n88[TreelineDivider.tsx]
   n92[Seal.tsx] --> n61[BotanicalSprig.tsx]
   n23[PitchDeck.tsx] --> n74[AnimatedNumber.tsx]
   n23[PitchDeck.tsx] --> n35[AnswerCard.tsx]
@@ -294,8 +296,8 @@ graph LR
   n23[PitchDeck.tsx] --> n41[answers.ts]
   n23[PitchDeck.tsx] --> n53[triage.ts]
   n23[PitchDeck.tsx] --> n9[requirement.ts]
-  n102[PitchScene.tsx] --> n64[FernFrond.tsx]
-  n102[PitchScene.tsx] --> n91[PineBranch.tsx]
+  n102[PitchScene.tsx] --> n65[FernFrond.tsx]
+  n102[PitchScene.tsx] --> n90[PineBranch.tsx]
   n102[PitchScene.tsx] --> n92[Seal.tsx]
   n17[AuthContext.tsx] --> n19[api.ts]
   n7[RequirementsContext.tsx] --> n26[mock-requirements.ts]
@@ -427,6 +429,8 @@ graph LR
 - `frontend/package.json`
 - `frontend/postcss.config.mjs`
 - `frontend/public/brand/README.md`
+- `frontend/public/codemap.html`
+- `frontend/public/codemap.html`
 - `frontend/public/codemap.html`
 - `frontend/public/llms.txt`
 - `frontend/public/pdf.worker.min.mjs` — @licstart The following is the entire license notice for the
@@ -1160,4 +1164,4 @@ graph LR
 
 ---
 
-*800 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
+*802 tracked files mapped. Generated by `scripts/gen_codemap.py`.*

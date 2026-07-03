@@ -20,7 +20,17 @@ import { TreelineDivider } from "./art/TreelineDivider";
 
 const CONTAINER = "mx-auto w-full max-w-[1160px] px-4 sm:px-6";
 
-export function ClosingArrival() {
+export function ClosingArrival({
+  kicker = "You've reached the clearing",
+  heading = "See it on a tender you already know",
+  body = "Bring a tender you have already bid. In fifteen minutes, you will see the gates, sources, and answer record resolve in front of you.",
+  ctaLocation = "closing",
+}: {
+  kicker?: string;
+  heading?: string;
+  body?: string;
+  ctaLocation?: string;
+}) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -78,18 +88,16 @@ export function ClosingArrival() {
             <span aria-hidden className="closing-forest__halo" />
             <div className="surface-grain closing-card relative rounded-lg border border-hairline bg-paper-raised p-8 text-center shadow-[var(--depth-sheet)] sm:p-11">
               <p className="mx-auto mb-4 font-mono text-xs uppercase tracking-[0.2em] text-forest/85">
-                You&apos;ve reached the clearing
+                {kicker}
               </p>
               <h2 className="mx-auto max-w-[18ch] text-balance font-serif text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
-                See it on a tender you already know
+                {heading}
               </h2>
               <p className="mx-auto mt-5 max-w-[44ch] text-lg leading-relaxed text-ink-muted">
-                Bring a tender you have already bid. In fifteen minutes, you
-                will see the gates, sources, and answer record resolve in front
-                of you.
+                {body}
               </p>
               <div className="mt-8 flex justify-center">
-                <BookDemoButton location="closing" />
+                <BookDemoButton location={ctaLocation} />
               </div>
             </div>
           </div>

@@ -13,9 +13,9 @@ import { DemoScrolly } from "@/components/demo/DemoScrolly";
 import { DemoTitleCard } from "@/components/demo/DemoTitleCard";
 import { BookDemoButton } from "@/components/landing/BookDemoButton";
 import { BotanicalSprig } from "@/components/landing/BotanicalSprig";
+import { ClosingArrival } from "@/components/landing/ClosingArrival";
 import { DrawOn } from "@/components/landing/DrawOn";
 import { FernFrond } from "@/components/landing/art/FernFrond";
-import { TreelineDivider } from "@/components/landing/art/TreelineDivider";
 import { SiteFooter } from "@/components/landing/SiteFooter";
 import { BrandLogo } from "@/components/BrandLogo";
 
@@ -207,23 +207,12 @@ export function DemoView() {
         />
       )}
 
-      {/* Closing call to action, on a pine band under a treeline — the same
-          woodland close as the landing page. */}
-      <TreelineDivider className="-mb-px block h-14 w-full text-pine sm:h-24" />
-      <section className="bg-pine">
-        <div className="mx-auto max-w-[1160px] px-6 py-16 text-center sm:py-20">
-          <h2 className="font-serif text-2xl font-semibold leading-snug text-paper sm:text-3xl">
-            See it on a tender you already know
-          </h2>
-          <p className="mx-auto mt-3 max-w-[56ch] text-lg leading-relaxed text-paper/70">
-            The quickest way to judge Bidframe is to watch it read a tender you
-            have already bid. Book fifteen minutes and bring one.
-          </p>
-          <div className="mt-7 flex justify-center">
-            <BookDemoButton location="demo-closing" tone="pine" size="lg" />
-          </div>
-        </div>
-      </section>
+      <ClosingArrival
+        kicker="The clearing"
+        heading="See it on a tender you already know"
+        body="The quickest way to judge Bidframe is to watch it read a tender you have already bid. Book fifteen minutes and bring one."
+        ctaLocation="demo-closing"
+      />
 
       {/* Shared site footer (pine, flipped treeline sits under the pine band). */}
       <SiteFooter />
