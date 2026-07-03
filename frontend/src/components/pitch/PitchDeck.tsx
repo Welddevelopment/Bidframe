@@ -21,6 +21,7 @@ import {
   TENDER_STAGES,
   TENDER_STAGE_LABELS,
 } from "@/components/pitch/TenderGlyph";
+import { AnimatedNumber } from "@/components/AnimatedNumber";
 import { GatingHero } from "@/components/GatingHero";
 import { ComplianceMatrix } from "@/components/ComplianceMatrix";
 import { AnswerCard } from "@/components/AnswerCard";
@@ -111,11 +112,38 @@ function ProductShell({
   );
 }
 
-function Metric({ label, value }: { label: string; value: string }) {
+function Metric({
+  label,
+  value,
+  count,
+  suffix,
+  tick,
+}: {
+  label: string;
+  value?: string;
+  // numeric metrics tick up when their slide arrives (tick flips remount the
+  // counter with from=0); string values render as-is
+  count?: number;
+  suffix?: string;
+  tick?: boolean;
+}) {
   return (
     <div className="pitch-metric">
       <span>{label}</span>
-      <strong>{value}</strong>
+      <strong>
+        {count !== undefined ? (
+          <>
+            <AnimatedNumber
+              key={tick ? "tick" : "idle"}
+              value={count}
+              from={tick ? 0 : count}
+            />
+            {suffix ? ` ${suffix}` : null}
+          </>
+        ) : (
+          value
+        )}
+      </strong>
     </div>
   );
 }
@@ -453,9 +481,24 @@ export function PitchDeck() {
                 <h2>The tender becomes a checkable map</h2>
                 <p>Every line shows where it came from.</p>
                 <div className="pitch-mini-metrics">
-                  <Metric label="Worked example" value={`${requirements.length} rows`} />
-                  <Metric label="Deal-breaker hits" value={`${dealBreakers.length} surfaced`} />
-                  <Metric label="Backed drafts" value={`${backedCount} with receipts`} />
+                  <Metric
+                    label="Worked example"
+                    count={requirements.length}
+                    suffix="rows"
+                    tick={activeIndex === 3}
+                  />
+                  <Metric
+                    label="Deal-breaker hits"
+                    count={dealBreakers.length}
+                    suffix="surfaced"
+                    tick={activeIndex === 3}
+                  />
+                  <Metric
+                    label="Backed drafts"
+                    count={backedCount}
+                    suffix="with receipts"
+                    tick={activeIndex === 3}
+                  />
                 </div>
               </div>
               <div className="pitch-product-stack">
@@ -650,10 +693,30 @@ export function PitchDeck() {
               </div>
               <div className="pitch-ledger-grid">
                 <Metric label="Worked example" value={title} />
-                <Metric label="Rows extracted" value={`${requirements.length} requirements`} />
-                <Metric label="Deal-breaker detector" value={`${dealBreakers.length} rows surfaced`} />
-                <Metric label="Answer receipts" value={`${backedCount} backed drafts`} />
-                <Metric label="Human gaps" value={`${openQuestionCount} open prompts`} />
+                <Metric
+                  label="Rows extracted"
+                  count={requirements.length}
+                  suffix="requirements"
+                  tick={activeIndex === 8}
+                />
+                <Metric
+                  label="Deal-breaker detector"
+                  count={dealBreakers.length}
+                  suffix="rows surfaced"
+                  tick={activeIndex === 8}
+                />
+                <Metric
+                  label="Answer receipts"
+                  count={backedCount}
+                  suffix="backed drafts"
+                  tick={activeIndex === 8}
+                />
+                <Metric
+                  label="Human gaps"
+                  count={openQuestionCount}
+                  suffix="open prompts"
+                  tick={activeIndex === 8}
+                />
                 <Metric label="Scope" value="pre-baked real run" />
               </div>
               <p className="pitch-caveat">
@@ -778,9 +841,10 @@ export function PitchDeck() {
         },
       ] satisfies Array<SlideMeta & { body: React.ReactNode }>,
     [
+      activeIndex,
       backedCount,
       collapsedGroups,
-      dealBreakers.length,
+      dealBreakers,
       evidenceReq,
       openQuestionCount,
       requirements,

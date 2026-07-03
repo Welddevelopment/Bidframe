@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { PineBranch } from "@/components/landing/art/PineBranch";
+import { FernFrond } from "@/components/landing/art/FernFrond";
+import { Seal } from "@/components/landing/art/Seal";
 
 // The deck's forest floor: one scene stack at stage level, reusing the landing
 // page's woodland plates (public/landing/forest) so /pitch and / are one
@@ -85,6 +88,16 @@ export function PitchScene({
           <span className="pitch-scene__shade" />
           <span className="pitch-scene__grid" />
           <span className="pitch-scene__floor" />
+          {/* engraved botanicals from the landing's art kit, one per ground */}
+          {name === "night" && (
+            <PineBranch className="pitch-scene__branch" />
+          )}
+          {(name === "moss" || name === "paper") && (
+            <FernFrond className="pitch-scene__frond" />
+          )}
+          {name === "clearing" && (
+            <Seal id={`pitch-seal-${name}`} className="pitch-scene__seal" />
+          )}
         </div>
       ))}
       <span
