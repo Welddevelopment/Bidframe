@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { STEPS, type Step } from "./steps";
 import { BeatVisual, ScrollyStage } from "./ScrollyStage";
+import { MountOnView } from "./MountOnView";
 import { ScrollyRail } from "./ScrollyRail";
 import { useBeatStep, useScrollTimeline } from "./useScrollTimeline";
 import { BookDemoButton } from "@/components/landing/BookDemoButton";
@@ -23,6 +24,7 @@ import { BookDemoButton } from "@/components/landing/BookDemoButton";
 const EASE = "ease-[cubic-bezier(0.22,1,0.36,1)]";
 const FINALE_STEP = STEPS.length;
 const STORY_BEATS = STEPS.length + 1;
+type ScrollyMode = "static" | "mobile" | "scrub";
 
 // The narrative beat: a mono kicker, a Fraunces heading, one or two sentences.
 // In the pinned path the inactive steps dim so the active one reads; in the
@@ -85,6 +87,29 @@ function FinaleCopy() {
   );
 }
 
+function MobileBeatDots({ active }: { active: number }) {
+  return (
+    <div
+      aria-hidden
+      className="sticky top-3 z-20 mx-auto mb-10 flex w-fit items-center gap-3 rounded-full border border-hairline bg-paper-raised/95 px-3 py-2 font-mono text-[10px] uppercase tracking-wide text-ink-muted shadow-[var(--depth-row)] backdrop-blur"
+    >
+      <span className="tabular-nums">
+        {String(active + 1).padStart(2, "0")} / {String(STEPS.length).padStart(2, "0")}
+      </span>
+      <span className="flex items-center gap-1.5">
+        {STEPS.map((step, i) => (
+          <span
+            key={step.id}
+            className={`h-1.5 w-1.5 rounded-full transition-colors ${
+              i === active ? "bg-forest" : "bg-hairline"
+            }`}
+          />
+        ))}
+      </span>
+    </div>
+  );
+}
+
 // `intro` is the page's opening copy, owned by the page and passed in so the
 // scrolly can fold it into the layout: in the enhanced path it becomes the
 // first block of the narrative column (so the pinned stage is on screen from
@@ -93,7 +118,7 @@ function FinaleCopy() {
 // a [data-step], so the observer and the rail ignore it.
 export function DemoScrolly({ intro }: { intro?: React.ReactNode }) {
   const [activeStep, setActiveStep] = useState(0);
-  const [enhanced, setEnhanced] = useState(false);
+  const [mode, setMode] = useState<ScrollyMode>("static");
   const narrativeRef = useRef<HTMLDivElement>(null);
   const { beat } = useScrollTimeline(narrativeRef, STORY_BEATS);
 
@@ -103,7 +128,10 @@ export function DemoScrolly({ intro }: { intro?: React.ReactNode }) {
   useEffect(() => {
     const wide = window.matchMedia("(min-width: 1024px)");
     const motion = window.matchMedia("(prefers-reduced-motion: no-preference)");
-    const sync = () => setEnhanced(wide.matches && motion.matches);
+    const sync = () => {
+      if (!motion.matches) setMode("static");
+      else setMode(wide.matches ? "scrub" : "mobile");
+    };
     sync();
     wide.addEventListener("change", sync);
     motion.addEventListener("change", sync);
@@ -116,22 +144,49 @@ export function DemoScrolly({ intro }: { intro?: React.ReactNode }) {
   // The continuous beat drives the stage. The rounded beat still powers the
   // rail and the existing one-shot details, so the old CSS choreography remains
   // useful without controlling the film.
-  useBeatStep(beat, enhanced, STORY_BEATS, setActiveStep);
+  const scrub = mode === "scrub";
+  const mobile = mode === "mobile";
+
+  useBeatStep(beat, scrub, STORY_BEATS, setActiveStep);
+
+  useEffect(() => {
+    if (!mobile) return;
+    const root = narrativeRef.current;
+    if (!root) return;
+    const steps = Array.from(
+      root.querySelectorAll<HTMLElement>("[data-mobile-step]"),
+    );
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveStep(Number((entry.target as HTMLElement).dataset.mobileStep ?? "0"));
+          }
+        }
+      },
+      { rootMargin: "-42% 0px -42% 0px", threshold: 0 },
+    );
+    steps.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [mobile]);
 
   // Fallback (default / mobile / reduced motion): steps in normal flow, each
   // followed by its own beat visual in its composed final state. No pinning,
   // no observer, reads perfectly with zero motion.
-  if (!enhanced) {
+  if (!scrub) {
     return (
-      <div className="mx-auto max-w-[40rem] px-6 py-8">
+      <div ref={narrativeRef} className="mx-auto max-w-[40rem] px-6 py-8">
+        {mobile ? <MobileBeatDots active={activeStep} /> : null}
         {intro ? <div className="mb-16">{intro}</div> : null}
         <ol className="flex flex-col gap-16">
           {STEPS.map((step, i) => (
-            <li key={step.id}>
+            <li key={step.id} data-mobile-step={i}>
               <StepCopy step={step} active />
-              <div className="mt-6 flex justify-center" aria-hidden inert>
-                <BeatVisual step={i} />
-              </div>
+              <MountOnView enabled={mobile} minHeight={300}>
+                <div className="mt-6 flex justify-center" aria-hidden inert>
+                  <BeatVisual step={i} animate={mobile} />
+                </div>
+              </MountOnView>
             </li>
           ))}
         </ol>

@@ -863,12 +863,22 @@ function FinaleLayer({ beat }: { beat: MotionValue<number> }) {
 // The composed FINAL state of one beat, for the stacked fallback (SSR, no-JS,
 // reduced motion, mobile): found line lit, rows in, beads shown, stamp static
 // (default settle, no emphasis), wires drawn. No choreography ever runs here.
-export function BeatVisual({ step }: { step: number }) {
+export function BeatVisual({
+  step,
+  animate = false,
+}: {
+  step: number;
+  animate?: boolean;
+}) {
   switch (STEPS[step]?.stage) {
     case "wall":
-      return <WallDocument phase="composed" />;
+      return <WallDocument phase={animate ? "resolving" : "composed"} />;
     case "rows":
-      return <RegisterSheet step={step} composed />;
+      return animate ? (
+        <RegisterSheet step={1} />
+      ) : (
+        <RegisterSheet step={step} composed />
+      );
     case "dealbreaker":
       return (
         <div className="w-full max-w-[34rem]">
@@ -876,7 +886,11 @@ export function BeatVisual({ step }: { step: number }) {
         </div>
       );
     case "honesty":
-      return <RegisterSheet step={step} composed composedBeads />;
+      return animate ? (
+        <RegisterSheet step={3} />
+      ) : (
+        <RegisterSheet step={step} composed composedBeads />
+      );
     case "answer":
       return <AnswerCard withStamp={false} />;
     case "approval":
