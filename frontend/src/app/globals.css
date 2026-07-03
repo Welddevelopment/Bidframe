@@ -2838,7 +2838,7 @@ body {
 /* The step forward: on every advance the active plate settles from a deeper
    zoom, so navigation reads as walking rather than flipping. */
 @media (prefers-reduced-motion: no-preference) {
-  .pitch-scene.is-active.is-stepping .pitch-scene__art {
+  .pitch-scene.is-active .pitch-scene__art {
     animation: pitch-scene-step 1000ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 }
@@ -3428,11 +3428,13 @@ body {
 }
 
 .pitch-metric {
+  min-width: 0;
   border: 1px solid rgba(33, 29, 23, 0.18);
   background: rgba(251, 248, 241, 0.84);
   padding: clamp(0.72rem, 0.9vw, 0.95rem);
   color: var(--color-ink);
   box-shadow: var(--depth-row);
+  overflow: hidden;
 }
 
 .pitch-metric span {
@@ -3446,11 +3448,18 @@ body {
 
 .pitch-metric strong {
   display: block;
+  max-width: 100%;
   margin-top: 0.35rem;
   font-family: var(--font-head), Georgia, serif;
   font-size: clamp(1.35rem, 2.5vw, 2.8rem);
   font-weight: 650;
   line-height: 1;
+  overflow-wrap: anywhere;
+}
+
+.pitch-mini-metrics .pitch-metric strong {
+  font-size: clamp(1.45rem, 2.1vw, 2.45rem);
+  line-height: 1.04;
 }
 
 .pitch-product-shell {

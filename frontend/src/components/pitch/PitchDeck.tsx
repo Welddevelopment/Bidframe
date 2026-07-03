@@ -482,21 +482,18 @@ export function PitchDeck() {
                 <p>Every line shows where it came from.</p>
                 <div className="pitch-mini-metrics">
                   <Metric
-                    label="Worked example"
+                    label="Worked example rows"
                     count={requirements.length}
-                    suffix="rows"
                     tick={activeIndex === 3}
                   />
                   <Metric
-                    label="Deal-breaker hits"
+                    label="Deal-breakers surfaced"
                     count={dealBreakers.length}
-                    suffix="surfaced"
                     tick={activeIndex === 3}
                   />
                   <Metric
-                    label="Backed drafts"
+                    label="Backed drafts with receipts"
                     count={backedCount}
-                    suffix="with receipts"
                     tick={activeIndex === 3}
                   />
                 </div>

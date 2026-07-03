@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { PineBranch } from "@/components/landing/art/PineBranch";
 import { FernFrond } from "@/components/landing/art/FernFrond";
 import { Seal } from "@/components/landing/art/Seal";
@@ -56,14 +56,6 @@ export function PitchScene({
   // advancing reads as walking forward even when the zone doesn't change.
   step: number;
 }) {
-  const [stepping, setStepping] = useState(false);
-
-  useEffect(() => {
-    setStepping(true);
-    const timeout = window.setTimeout(() => setStepping(false), 1000);
-    return () => window.clearTimeout(timeout);
-  }, [step]);
-
   // Decode every plate up front so the first advance into each zone
   // crossfades instead of popping.
   useEffect(() => {
@@ -82,9 +74,12 @@ export function PitchScene({
           key={name}
           className={`pitch-scene pitch-scene--${name} ${
             name === zone ? "is-active" : ""
-          } ${name === zone && stepping ? "is-stepping" : ""}`}
+          }`}
         >
-          <span className="pitch-scene__art" />
+          <span
+            key={name === zone ? `${name}-${step}` : name}
+            className="pitch-scene__art"
+          />
           <span className="pitch-scene__shade" />
           <span className="pitch-scene__grid" />
           <span className="pitch-scene__floor" />
