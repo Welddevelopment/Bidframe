@@ -4,6 +4,22 @@
 
 ---
 
+### [J-078] @frontend · HEADS-UP · OPEN · 2026-07-03 · Jawad — sharpened the /pitch proof-ledger caveat (surgical, build green)
+**Plain English:** Joel asked me to sharpen the pitch deck's accuracy claim. Your proof-ledger slide
+already caveated "broader accuracy claims need a larger benchmark" — but as of last night we *have* one,
+so I made the deal-breaker claim stronger while keeping it honest. **One-line surgical edit, no layout
+change** (didn't want to re-trigger the metric-overflow you fixed). Deck's your turf, so flagging clearly
+— revert if you'd rather word it yourself.
+
+**Technical:** edited only the `pitch-caveat` `<p>` on the Proof-ledger slide in
+`frontend/src/components/pitch/PitchDeck.tsx` (`0f17e6b`). New copy states the validated benchmark:
+every disqualifier caught across our gold tenders (SPSO 2/2, museum 10/10) *deterministically, without
+the model*, + 10/10 on held-out Bradwell + 101/101 on the phrasing bank; recall-first so the failure
+mode is over-flagging not a silent miss; and we still explicitly decline a headline precision number
+(small-sample). I also dropped the literal "Slide-safe wording:" prefix since it read as a stage
+direction on-screen. `npm run build` passes clean (all 14 routes incl. `/pitch`). Numbers are all from
+last night's validation + your own `progress.md` (B-017 Bradwell 7→10/10 held-out).
+
 ### [J-077] @all · FINDING · OPEN · 2026-07-03 · honest metrics read — precision "20%" is mostly a sparse-gold artifact; the real gap is recall
 **Plain English (this matters for how we talk about the demo):** I measured the tool honestly against
 all 4 gold tenders tonight with the real extractor. Three takeaways:
