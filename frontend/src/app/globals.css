@@ -1463,18 +1463,22 @@ body {
   mask-image: linear-gradient(to bottom, black 0%, black 82%, transparent 100%);
 }
 /* A flat sheet of paper light over the reading zone — no spotlight ellipse.
-   The wash holds one near-uniform strength across the headline band, eases
-   off through the middle, and hands over to the pine ground at the foot. */
+   The wash holds one near-uniform strength across the headline band, then
+   hands over to the forest QUICKLY below the fold: green tints start at ~46%
+   and deepen to real pine, so the product sheet stands in woodland rather
+   than floating in a bleached fog. */
 .forest-hero__scrim {
   z-index: 1;
   background:
     linear-gradient(
       to bottom,
       rgba(246, 242, 233, 0.9) 0%,
-      rgba(246, 242, 233, 0.88) 38%,
-      rgba(242, 238, 227, 0.62) 54%,
-      rgba(234, 231, 218, 0.28) 68%,
-      rgba(22, 48, 31, 0.3) 100%
+      rgba(246, 242, 233, 0.87) 32%,
+      rgba(238, 236, 222, 0.52) 42%,
+      rgba(205, 213, 189, 0.22) 50%,
+      rgba(44, 86, 64, 0.26) 58%,
+      rgba(29, 58, 43, 0.44) 74%,
+      rgba(22, 48, 31, 0.55) 100%
     ),
     linear-gradient(
       90deg,
