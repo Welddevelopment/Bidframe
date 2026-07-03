@@ -69,9 +69,7 @@ export function ForestHeroLayers() {
   const botanicalsY = useTransform(scrollYProgress, [0, 1], [0, -64]);
   const woodlandX = useTransform(mx, (v) => v * 6);
   const leafX = useTransform(mx, (v) => v * 8);
-  // The foreground's resting CSS transform is translateX(-50%); the inline
-  // motion transform replaces it, so the centring is folded in here.
-  const foregroundX = useTransform(mx, (v) => `calc(-50% + ${v * -10}px)`);
+  const foregroundX = useTransform(mx, (v) => v * -10);
   const botanicalsX = useTransform(mx, (v) => v * -12);
 
   return (
@@ -102,6 +100,15 @@ export function ForestHeroLayers() {
             className="forest-hero__botanicals absolute inset-x-0 bottom-0 h-[48%] will-change-transform"
             style={{ y: botanicalsY, x: botanicalsX, scale: 1.05 }}
           />
+          <motion.span
+            className="forest-hero__fern forest-hero__fern--l hidden lg:block will-change-transform"
+            style={{ y: botanicalsY, x: botanicalsX }}
+          />
+          {/* mirrored so the two clusters don't read as copies */}
+          <motion.span
+            className="forest-hero__fern forest-hero__fern--r hidden lg:block will-change-transform"
+            style={{ y: botanicalsY, x: foregroundX, scaleX: -1 }}
+          />
         </>
       ) : (
         <>
@@ -111,6 +118,8 @@ export function ForestHeroLayers() {
           <span className="forest-hero__leaf-shadow absolute inset-x-0 top-0 h-[58%]" />
           <span className="forest-hero__foreground absolute inset-x-0 bottom-0 h-[34%]" />
           <span className="forest-hero__botanicals absolute inset-x-0 bottom-0 h-[48%]" />
+          <span className="forest-hero__fern forest-hero__fern--l hidden lg:block" />
+          <span className="forest-hero__fern forest-hero__fern--r hidden -scale-x-100 lg:block" />
         </>
       )}
       <span className="forest-hero__dawn absolute inset-0" />

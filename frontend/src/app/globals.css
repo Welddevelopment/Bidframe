@@ -202,41 +202,6 @@ body {
 .hero-product-halo::after {
   content: none;
 }
-.hero-resolve-scan {
-  position: absolute;
-  inset-inline: -12%;
-  top: 0;
-  z-index: 5;
-  height: 22%;
-  pointer-events: none;
-  background:
-    linear-gradient(
-      to bottom,
-      transparent,
-      rgba(47, 93, 99, 0.08) 42%,
-      rgba(47, 93, 99, 0.24) 50%,
-      rgba(47, 93, 99, 0.08) 58%,
-      transparent
-    );
-  opacity: 0;
-  transform: translateY(-120%);
-}
-/* The catch: an oxblood second face on the beam, faded in only while the beam
-   snaps back and holds over the deal-breaker. */
-.hero-resolve-scan::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(180, 45, 36, 0.1) 42%,
-    rgba(180, 45, 36, 0.26) 50%,
-    rgba(180, 45, 36, 0.1) 58%,
-    transparent
-  );
-}
 .hero-sheet {
   --rx: 5deg;
   --ry: -6deg;
@@ -250,34 +215,28 @@ body {
   border-radius: 0.5rem;
 }
 
-/* === The scan that extracts. HeroResolve's conductor sets data-scan="run" on
-   the sheet (and re-sets it when the sheet re-enters the viewport), after
-   writing each register row's beam-crossing time as --scan-delay. The beam
-   sweeps down over ~1.65s leaving resolved rows behind it, snaps back tinted
-   oxblood, and the deal-breaker settles last under the flash. All raw/hidden
-   states exist only under [data-scan="run"] inside this media block, so SSR,
-   no-JS, and reduced motion always show the composed sheet. */
+/* === The register assembles itself. HeroResolve's conductor sets
+   data-scan="run" on the sheet (and re-sets it only after the sheet has fully
+   left the viewport and returned), after writing each row's --pop-delay and
+   the sheet's --gate-delay. Rows pop in top to bottom with a springy settle,
+   beads snap in a beat behind their row, and the deal-breaker lands last. All
+   hidden states exist only under [data-scan="run"] inside this media block,
+   so SSR, no-JS, and reduced motion always show the composed sheet. */
 @media (prefers-reduced-motion: no-preference) {
   .hero-sheet {
     animation: hero-sheet-file 1.05s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
   }
-  .hero-sheet[data-scan="run"] .hero-resolve-scan {
-    animation: hero-scan-sweep 2.9s cubic-bezier(0.4, 0, 0.2, 1) both;
+  .hero-sheet[data-scan="run"] .hero-pop-item {
+    animation: hero-row-pop 0.4s cubic-bezier(0.34, 1.4, 0.64, 1)
+      var(--pop-delay, 0ms) both;
   }
-  .hero-sheet[data-scan="run"] .hero-resolve-scan::after {
-    animation: hero-scan-catch 2.9s linear both;
-  }
-  .hero-sheet[data-scan="run"] .hero-scan-item {
-    animation: hero-scan-resolve 0.45s cubic-bezier(0.22, 1, 0.36, 1)
-      var(--scan-delay, 0ms) both;
-  }
-  .hero-sheet[data-scan="run"] .hero-scan-item span[role="img"] {
+  .hero-sheet[data-scan="run"] .hero-pop-item span[role="img"] {
     animation: hero-dot-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)
-      calc(var(--scan-delay, 0ms) + 250ms) both;
+      calc(var(--pop-delay, 0ms) + 220ms) both;
   }
   .hero-sheet[data-scan="run"] [data-scan-gate] {
-    animation: hero-gate-settle 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 2.15s
-      both;
+    animation: hero-gate-settle 0.55s cubic-bezier(0.34, 1.56, 0.64, 1)
+      var(--gate-delay, 1100ms) both;
   }
 }
 
@@ -293,61 +252,15 @@ body {
   }
 }
 
-/* 0-55%: the read pass down the sheet. 55-62%: gone. 62-100%: the snap back to
-   the top and the hold over the deal-breaker while it settles. */
-@keyframes hero-scan-sweep {
-  0% {
-    opacity: 0;
-    transform: translateY(-120%);
-  }
-  6%,
-  50% {
-    opacity: 1;
-  }
-  55% {
-    opacity: 0;
-    transform: translateY(470%);
-  }
-  62% {
-    opacity: 0;
-    transform: translateY(-30%);
-  }
-  68%,
-  86% {
-    opacity: 0.9;
-    transform: translateY(-12%);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-12%);
-  }
-}
-
-@keyframes hero-scan-catch {
-  0%,
-  62% {
-    opacity: 0;
-  }
-  70%,
-  84% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-/* A row before the beam reaches it: dim, soft, unstructured. */
-@keyframes hero-scan-resolve {
+/* A row popping into the register: rises a step and overshoots a hair. */
+@keyframes hero-row-pop {
   from {
-    opacity: 0.25;
-    filter: blur(2.5px);
-    transform: translateY(3px);
+    opacity: 0;
+    transform: translateY(9px) scale(0.985);
   }
   to {
     opacity: 1;
-    filter: blur(0);
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -411,11 +324,6 @@ body {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .hero-resolve-scan {
-    display: none;
-  }
-}
 
 /* Calm motion only (SLOP-CHECK bans fade-up-on-everything). One staggered hero
    entrance on load, and the approval-stamp settle. Both reduced-motion safe. */
@@ -1434,31 +1342,26 @@ body {
     url("/landing/forest/hero-woodland-v2.webp") center top / cover no-repeat;
   mask-image: linear-gradient(to bottom, black 0%, black 82%, transparent 100%);
 }
+/* A flat sheet of paper light over the reading zone — no spotlight ellipse.
+   The wash holds one near-uniform strength across the headline band, eases
+   off through the middle, and hands over to the pine ground at the foot. */
 .forest-hero__scrim {
   z-index: 1;
   background:
-    radial-gradient(
-      ellipse at 50% 24%,
-      rgba(246, 242, 233, 0.96) 0%,
-      rgba(246, 242, 233, 0.92) 27%,
-      rgba(246, 242, 233, 0.56) 43%,
-      rgba(246, 242, 233, 0.08) 63%,
-      transparent 78%
+    linear-gradient(
+      to bottom,
+      rgba(246, 242, 233, 0.9) 0%,
+      rgba(246, 242, 233, 0.88) 38%,
+      rgba(242, 238, 227, 0.62) 54%,
+      rgba(234, 231, 218, 0.28) 68%,
+      rgba(22, 48, 31, 0.3) 100%
     ),
     linear-gradient(
       90deg,
-      rgba(6, 18, 11, 0.38) 0%,
-      rgba(232, 235, 221, 0.16) 20%,
-      rgba(246, 242, 233, 0.18) 50%,
-      rgba(232, 235, 221, 0.14) 80%,
-      rgba(6, 18, 11, 0.42) 100%
-    ),
-    linear-gradient(
-      to bottom,
-      rgba(6, 18, 11, 0.12),
-      rgba(246, 242, 233, 0.18) 34%,
-      rgba(226, 233, 215, 0.14) 58%,
-      rgba(22, 48, 31, 0.34) 100%
+      rgba(6, 18, 11, 0.2) 0%,
+      transparent 18%,
+      transparent 82%,
+      rgba(6, 18, 11, 0.22) 100%
     );
 }
 .forest-hero__grid {
@@ -1483,19 +1386,58 @@ body {
     no-repeat;
   mask-image: linear-gradient(to bottom, black 0%, rgba(0, 0, 0, 0.7) 46%, transparent 100%);
 }
+/* No border-radius arch and no elliptical mask edge here — both used to draw
+   a visible curved seam across the ferns at the hero's foot. The layer now
+   fades on a straight vertical, full width. */
 .forest-hero__foreground {
   z-index: 4;
-  left: 50%;
-  right: auto;
-  width: min(126%, 1360px);
   opacity: 0.92;
   background:
     linear-gradient(to top, rgba(6, 18, 11, 0.82), rgba(22, 48, 31, 0.36) 54%, rgba(22, 48, 31, 0)),
     url("/landing/forest/hero-foreground.webp") center bottom / cover no-repeat;
-  border-radius: 52% 52% 0 0 / 42% 42% 0 0;
-  transform: translateX(-50%);
-  mask-image: radial-gradient(ellipse at 50% 100%, black 0 58%, rgba(0, 0, 0, 0.82) 74%, transparent 100%);
+  mask-image: linear-gradient(
+    to top,
+    black 0%,
+    black 58%,
+    rgba(0, 0, 0, 0.55) 80%,
+    transparent 100%
+  );
 }
+/* The framing ferns: two upright clusters standing in the near ground at each
+   side of the headline zone, fronds rising beside the type so it reads as set
+   between the plants. The image's own alpha fades the frond tips; the mask
+   only dissolves each cluster's inner edge toward the centre. The right piece
+   is mirrored in the JSX so the two don't read as copies. */
+.forest-hero__fern {
+  position: absolute;
+  z-index: 5;
+  /* sized against the viewport, not the (much taller) hero, so the frond
+     fringe lands beside the headline zone instead of behind the sheet */
+  width: min(42vw, 600px);
+  height: 48svh;
+  pointer-events: none;
+  opacity: 0.95;
+  background: url("/landing/forest/fern-edge-overlay.webp") center bottom /
+    cover no-repeat;
+  filter: brightness(0.85) saturate(0.95);
+}
+.forest-hero__fern--l,
+.forest-hero__fern--r {
+  /* dissolve the inner edge toward the centre AND soften the box's bottom cut */
+  mask-image:
+    linear-gradient(to right, black 52%, transparent 94%),
+    linear-gradient(to top, transparent 1%, black 16%);
+  mask-composite: intersect;
+}
+.forest-hero__fern--l {
+  left: -11vw;
+  top: 7svh;
+}
+.forest-hero__fern--r {
+  right: -11vw;
+  top: 10svh;
+}
+
 /* The fern understory: a photographic fringe rising from the hero's floor,
    nearer than the foreground arch, so the product sheet stands in the ferns.
    The image's own alpha fades the fronds out at the top; the mask only blends
@@ -1546,17 +1488,18 @@ body {
   max-width: min(100%, 980px);
 }
 .forest-hero-title__headline {
-  font-family: var(--font-hero), Georgia, serif;
-  font-size: clamp(3.85rem, 8.7vw, 7.05rem);
-  font-weight: 400;
-  line-height: 0.98;
+  font-family: var(--font-head), Georgia, serif;
+  font-size: clamp(3.4rem, 7.8vw, 6.35rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.02;
 }
 .forest-hero-title__subline {
-  margin-top: clamp(0.18rem, 0.7vw, 0.55rem);
+  margin-top: clamp(0.85rem, 1.6vw, 1.35rem);
   font-family: var(--font-body), system-ui, sans-serif;
-  font-size: clamp(1.7rem, 3vw, 2.35rem);
+  font-size: clamp(1.55rem, 2.7vw, 2.15rem);
   font-weight: 500;
-  line-height: 1.12;
+  line-height: 1.16;
 }
 .forest-hero-title {
   text-shadow: none;
