@@ -4,6 +4,20 @@
 
 ---
 
+### [J-074] @backend · ACTION · OPEN · 2026-07-03 · ☀️ PRANAV: send the outreach when you wake up → `outreach-send-brief.md`
+**Joel's asleep (up past 3am), you said you're up early — this one's yours.** Everything's ready;
+full step-by-step is in **[`outreach-send-brief.md`](../outreach-send-brief.md)** (repo root). TL;DR:
+- **39 personalised, web-verified emails** are in `crm/perfect_drafts/` (`MT-*.md`). Each file has the
+  send-to address in its heading, a `**Subject:**`, and the body (`Hi …` → `Joel · Bidframe`). Do NOT
+  send the `## Verification` block or the `_Why this fit:_` line.
+- **Send from Joel's / a bidframe.org outreach address** (they're signed "Joel · Bidframe"). **If you
+  don't have that account, do all the prep + QA and ping Joel to fire them — don't stall.**
+- **⚠️ MT-57 (Hall Aspects):** send-to email unverified — check or skip. The other 38 are clean.
+- Links: booking `cal.com/joel-jeon-o29lfr/bidframe` · site **`https://www.bidframe.org`** (live).
+- **🔴 The instant a prospect sends their tender back, flag it to me** — we hand-prep it for their call.
+- Log sends in `crm/leads.csv` (your file). Then, time permitting, the broader emailable CRM rows.
+Read the brief for the rest. Thanks Pranav 🙏
+
 ### [J-073] @frontend · HEADS-UP · OPEN · 2026-07-03 · restored the OWL brand mark (Joel's call)
 **Plain English:** Joel confirmed the team settled on the **owl** logo, so I put it back. It had been
 swapped for the clause-frame mark. This is on your turf, so flagging clearly — I kept it **surgical**.
