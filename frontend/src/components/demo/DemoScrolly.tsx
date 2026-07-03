@@ -21,6 +21,8 @@ import { BookDemoButton } from "@/components/landing/BookDemoButton";
 // is the a11y source of truth.
 
 const EASE = "ease-[cubic-bezier(0.22,1,0.36,1)]";
+const FINALE_STEP = STEPS.length;
+const STORY_BEATS = STEPS.length + 1;
 
 // The narrative beat: a mono kicker, a Fraunces heading, one or two sentences.
 // In the pinned path the inactive steps dim so the active one reads; in the
@@ -63,6 +65,26 @@ function ClosingCta() {
   );
 }
 
+function FinaleCopy() {
+  return (
+    <div className="max-w-[40ch]">
+      <p className="font-mono text-xs uppercase tracking-wide text-forest">
+        Filed
+      </p>
+      <h2 className="mt-3 font-serif text-3xl font-semibold leading-snug tracking-tight text-ink sm:text-4xl">
+        Ready for the real tender
+      </h2>
+      <p className="mt-4 text-lg leading-relaxed text-ink-muted">
+        That is the whole pipeline. Below, the same pipeline runs on a real
+        13-page tender.
+      </p>
+      <div className="mt-5">
+        <BookDemoButton location="demo-scrolly-finale" variant="link" />
+      </div>
+    </div>
+  );
+}
+
 // `intro` is the page's opening copy, owned by the page and passed in so the
 // scrolly can fold it into the layout: in the enhanced path it becomes the
 // first block of the narrative column (so the pinned stage is on screen from
@@ -73,7 +95,7 @@ export function DemoScrolly({ intro }: { intro?: React.ReactNode }) {
   const [activeStep, setActiveStep] = useState(0);
   const [enhanced, setEnhanced] = useState(false);
   const narrativeRef = useRef<HTMLDivElement>(null);
-  const { beat } = useScrollTimeline(narrativeRef, STEPS.length);
+  const { beat } = useScrollTimeline(narrativeRef, STORY_BEATS);
 
   // Decide whether to enhance: wide viewport AND motion allowed. Read on the
   // client only, and keep it live so resizing or toggling reduced motion in
@@ -94,7 +116,7 @@ export function DemoScrolly({ intro }: { intro?: React.ReactNode }) {
   // The continuous beat drives the stage. The rounded beat still powers the
   // rail and the existing one-shot details, so the old CSS choreography remains
   // useful without controlling the film.
-  useBeatStep(beat, enhanced, STEPS.length, setActiveStep);
+  useBeatStep(beat, enhanced, STORY_BEATS, setActiveStep);
 
   // Fallback (default / mobile / reduced motion): steps in normal flow, each
   // followed by its own beat visual in its composed final state. No pinning,
@@ -128,7 +150,7 @@ export function DemoScrolly({ intro }: { intro?: React.ReactNode }) {
       <div className="grid grid-cols-[minmax(18rem,24rem)_1fr] gap-12 xl:grid-cols-[8.5rem_minmax(18rem,22rem)_1fr] xl:gap-16">
         <div className="hidden xl:block">
           <div className="sticky top-0 flex h-screen items-center">
-            <ScrollyRail active={activeStep} />
+            <ScrollyRail active={Math.min(activeStep, STEPS.length - 1)} />
           </div>
         </div>
         <div ref={narrativeRef} className="relative">
@@ -146,6 +168,12 @@ export function DemoScrolly({ intro }: { intro?: React.ReactNode }) {
               <StepCopy step={step} active={i === activeStep} />
             </div>
           ))}
+          <div
+            data-step={FINALE_STEP}
+            className="flex min-h-[90vh] flex-col justify-center py-12"
+          >
+            <FinaleCopy />
+          </div>
         </div>
         <div>
           <div className="sticky top-0 flex h-screen items-center justify-center">
@@ -153,7 +181,6 @@ export function DemoScrolly({ intro }: { intro?: React.ReactNode }) {
           </div>
         </div>
       </div>
-      <ClosingCta />
     </div>
   );
 }

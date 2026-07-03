@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { ConfidenceIndicator } from "@/components/ConfidenceIndicator";
 import { ApprovalStamp } from "@/components/ApprovalStamp";
 import { GatingHero } from "@/components/GatingHero";
@@ -679,11 +680,44 @@ function GraphLayer({
   step: number;
   beat: MotionValue<number>;
 }) {
-  const opacity = useTransform(beat, [5.55, 6], [0, 1]);
-  const y = useTransform(beat, [5.55, 6], [34, 0]);
+  const opacity = useTransform(beat, [5.55, 6, 6.55, 6.85], [0, 1, 1, 0]);
+  const y = useTransform(beat, [5.55, 6, 6.85], [34, 0, -24]);
   return (
     <motion.div className={`${LAYER_BASE} z-20`} style={{ opacity, y }}>
       <GraphVisual drawn={step >= 6} />
+    </motion.div>
+  );
+}
+
+function FinaleLayer({ beat }: { beat: MotionValue<number> }) {
+  const opacity = useTransform(beat, [6.45, 6.85, STEPS.length], [0, 1, 1]);
+  const washOpacity = useTransform(beat, [6.35, STEPS.length], [0, 1]);
+  const stampScale = useTransform(beat, [6.55, STEPS.length], [1.6, 1]);
+  const stampRotate = useTransform(beat, [6.55, STEPS.length], [-8, -3]);
+  const stampY = useTransform(beat, [6.55, STEPS.length], [44, 0]);
+
+  return (
+    <motion.div
+      className="absolute inset-0 z-40 flex items-center justify-center overflow-hidden rounded-2xl"
+      style={{ opacity }}
+    >
+      <motion.div
+        aria-hidden
+        className="absolute inset-0 bg-pine"
+        style={{ opacity: washOpacity }}
+      />
+      <motion.div
+        className="relative z-10 flex aspect-[1.55/1] w-[min(34rem,82%)] items-center justify-center border-4 border-signal-oxblood bg-paper-raised/95 shadow-[var(--depth-sheet)]"
+        style={{
+          rotate: stampRotate,
+          scale: stampScale,
+          y: stampY,
+        }}
+      >
+        <span className="font-mono text-5xl font-semibold uppercase tracking-[0.18em] text-signal-oxblood sm:text-7xl">
+          Approved
+        </span>
+      </motion.div>
     </motion.div>
   );
 }
@@ -727,9 +761,25 @@ export function ScrollyStage({
   step: number;
   beat: MotionValue<number>;
 }) {
+  const [slam, setSlam] = useState(false);
+
+  useEffect(() => {
+    if (step !== STEPS.length) return;
+    let timeout: number | undefined;
+    const frame = requestAnimationFrame(() => {
+      setSlam(true);
+      timeout = window.setTimeout(() => setSlam(false), 280);
+    });
+    return () => {
+      cancelAnimationFrame(frame);
+      if (timeout) window.clearTimeout(timeout);
+    };
+  }, [step]);
+
   return (
     <div
       className="demo-stage-frame relative h-[min(36rem,calc(100vh-6rem))] w-full"
+      data-slam={slam ? "true" : undefined}
       aria-hidden
       inert
     >
@@ -741,6 +791,7 @@ export function ScrollyStage({
       <DealBreakerLayer step={step} beat={beat} />
       <AnswerLayer step={step} beat={beat} />
       <GraphLayer step={step} beat={beat} />
+      <FinaleLayer beat={beat} />
     </div>
   );
 }

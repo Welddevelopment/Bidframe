@@ -10,6 +10,7 @@ import { GatingHero } from "@/components/GatingHero";
 import { GraphView } from "@/components/GraphView";
 import { SourceVerifyOverlay } from "@/components/SourceVerifyOverlay";
 import { DemoScrolly } from "@/components/demo/DemoScrolly";
+import { DemoTitleCard } from "@/components/demo/DemoTitleCard";
 import { BookDemoButton } from "@/components/landing/BookDemoButton";
 import { BotanicalSprig } from "@/components/landing/BotanicalSprig";
 import { DrawOn } from "@/components/landing/DrawOn";
@@ -83,6 +84,7 @@ export function DemoView() {
           copy lives INSIDE the scrolly (via the `intro` prop) as the first
           block of the narrative column, so the pinned stage is beside it from
           the first pixel — no dead viewport between intro and first beat. */}
+      <DemoTitleCard />
       <section aria-label="How Bidframe works, step by step">
         <DemoScrolly
           intro={
