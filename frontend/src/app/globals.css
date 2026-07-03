@@ -1212,12 +1212,13 @@ body {
   background:
     linear-gradient(
       to bottom,
-      rgba(246, 242, 233, 0.98) 0%,
-      rgba(242, 238, 226, 0.96) 46%,
-      rgba(197, 211, 186, 0.84) 78%,
-      rgba(22, 48, 31, 0.34) 100%
+      rgba(8, 24, 15, 0.12) 0%,
+      rgba(246, 242, 233, 0.58) 30%,
+      rgba(239, 235, 222, 0.6) 56%,
+      rgba(18, 48, 30, 0.88) 100%
     ),
-    var(--color-paper);
+    url("/landing/forest/hero-woodland-v2.webp") center top / cover no-repeat,
+    #16301f;
 }
 .forest-hero::before,
 .forest-hero::after {
@@ -1242,40 +1243,54 @@ body {
 }
 .forest-hero::after {
   inset: auto 0 0;
-  height: 34%;
+  height: 42%;
   opacity: 1;
   background: linear-gradient(
     to top,
-    rgba(22, 48, 31, 0.28),
-    rgba(232, 235, 221, 0.46) 46%,
-    rgba(232, 235, 221, 0)
+    rgba(6, 18, 11, 0.72),
+    rgba(22, 48, 31, 0.34) 54%,
+    rgba(22, 48, 31, 0)
   );
 }
 .forest-hero__woodland {
   z-index: 0;
-  opacity: 0.86;
-  background: url("/landing/forest/hero-woodland-v2.webp") center top / cover
-    no-repeat;
-  mask-image: linear-gradient(to bottom, black 0%, black 70%, transparent 96%);
+  opacity: 1;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(6, 18, 11, 0.42),
+      rgba(6, 18, 11, 0.06) 38%,
+      rgba(6, 18, 11, 0.06) 62%,
+      rgba(6, 18, 11, 0.46)
+    ),
+    url("/landing/forest/hero-woodland-v2.webp") center top / cover no-repeat;
+  mask-image: linear-gradient(to bottom, black 0%, black 82%, transparent 100%);
 }
 .forest-hero__scrim {
   z-index: 1;
   background:
+    radial-gradient(
+      ellipse at 50% 24%,
+      rgba(246, 242, 233, 0.96) 0%,
+      rgba(246, 242, 233, 0.92) 27%,
+      rgba(246, 242, 233, 0.56) 43%,
+      rgba(246, 242, 233, 0.08) 63%,
+      transparent 78%
+    ),
     linear-gradient(
       90deg,
-      rgba(22, 48, 31, 0.18) 0%,
-      rgba(232, 235, 221, 0.58) 18%,
-      rgba(246, 242, 233, 0.9) 34%,
-      rgba(246, 242, 233, 0.92) 66%,
-      rgba(232, 235, 221, 0.58) 82%,
-      rgba(22, 48, 31, 0.22) 100%
+      rgba(6, 18, 11, 0.38) 0%,
+      rgba(232, 235, 221, 0.16) 20%,
+      rgba(246, 242, 233, 0.18) 50%,
+      rgba(232, 235, 221, 0.14) 80%,
+      rgba(6, 18, 11, 0.42) 100%
     ),
     linear-gradient(
       to bottom,
-      rgba(232, 235, 221, 0.62),
-      rgba(246, 242, 233, 0.76) 43%,
-      rgba(226, 233, 215, 0.58) 76%,
-      rgba(22, 48, 31, 0.24) 100%
+      rgba(6, 18, 11, 0.12),
+      rgba(246, 242, 233, 0.18) 34%,
+      rgba(226, 233, 215, 0.14) 58%,
+      rgba(22, 48, 31, 0.34) 100%
     );
 }
 .forest-hero__grid {
@@ -1294,20 +1309,20 @@ body {
 }
 .forest-hero__leaf-shadow {
   z-index: 3;
-  opacity: 0.12;
+  opacity: 0.24;
   mix-blend-mode: multiply;
   background: url("/landing/forest/leaf-shadow-overlay.png") center top / cover
     no-repeat;
   mask-image: linear-gradient(to bottom, black 0%, rgba(0, 0, 0, 0.7) 46%, transparent 100%);
 }
 .forest-hero__foreground {
-  z-index: 1;
+  z-index: 4;
   left: 50%;
   right: auto;
-  width: min(118%, 1240px);
-  opacity: 0.58;
+  width: min(126%, 1360px);
+  opacity: 0.92;
   background:
-    linear-gradient(to top, rgba(22, 48, 31, 0.56), rgba(22, 48, 31, 0.08) 54%, rgba(22, 48, 31, 0)),
+    linear-gradient(to top, rgba(6, 18, 11, 0.82), rgba(22, 48, 31, 0.36) 54%, rgba(22, 48, 31, 0)),
     url("/landing/forest/hero-foreground.webp") center bottom / cover no-repeat;
   border-radius: 52% 52% 0 0 / 42% 42% 0 0;
   transform: translateX(-50%);
@@ -1316,19 +1331,21 @@ body {
 .forest-hero-title {
   font-family: var(--font-body), system-ui, sans-serif;
   letter-spacing: 0;
+  margin-inline: auto;
+  max-width: min(100%, 980px);
 }
 .forest-hero-title__headline {
   font-family: var(--font-hero), Georgia, serif;
-  font-size: clamp(5.15rem, 10.8vw, 8rem);
+  font-size: clamp(3.85rem, 8.7vw, 7.05rem);
   font-weight: 400;
-  line-height: 0.93;
+  line-height: 0.98;
 }
 .forest-hero-title__subline {
-  margin-top: clamp(-0.1rem, 0.15vw, 0.12rem);
+  margin-top: clamp(0.18rem, 0.7vw, 0.55rem);
   font-family: var(--font-body), system-ui, sans-serif;
-  font-size: clamp(2.05rem, 3.3vw, 2.65rem);
+  font-size: clamp(1.7rem, 3vw, 2.35rem);
   font-weight: 500;
-  line-height: 1.08;
+  line-height: 1.12;
 }
 .forest-hero-title {
   text-shadow: none;
@@ -1383,36 +1400,38 @@ body {
 
 @media (max-width: 720px) {
   .forest-hero-title__headline {
-    font-size: clamp(4rem, 16.5vw, 5.35rem);
+    font-size: clamp(2.85rem, 12vw, 4.25rem);
   }
   .forest-hero-title__subline {
-    margin-top: 0.28rem;
-    font-size: clamp(1.62rem, 6.4vw, 2.12rem);
+    margin-top: 0.4rem;
+    font-size: clamp(1.34rem, 5.4vw, 1.82rem);
   }
   .forest-hero {
     background:
       linear-gradient(
         to bottom,
-        rgba(246, 242, 233, 0.98) 0%,
-        rgba(242, 238, 226, 0.96) 58%,
-        rgba(22, 48, 31, 0.34) 100%
+        rgba(6, 18, 11, 0.1) 0%,
+        rgba(246, 242, 233, 0.7) 36%,
+        rgba(22, 48, 31, 0.86) 100%
       ),
-      var(--color-paper);
+      url("/landing/forest/hero-woodland-v2.webp") center top / auto 46rem no-repeat,
+      #16301f;
   }
   .forest-hero::after {
-    opacity: 0.75;
+    opacity: 0.96;
   }
   .forest-hero__woodland {
-    opacity: 0.7;
-    background-size: auto 42rem;
+    opacity: 1;
+    background-position: center top;
+    background-size: auto 46rem;
   }
   .forest-hero__scrim {
-    opacity: 0.98;
+    opacity: 1;
   }
   .forest-hero__foreground {
-    height: 26% !important;
-    width: 136%;
-    opacity: 0.48;
+    height: 30% !important;
+    width: 150%;
+    opacity: 0.92;
   }
   .forest-hero-plinth {
     margin-inline: -0.75rem;

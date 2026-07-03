@@ -121,10 +121,10 @@ export function Landing() {
               the product sheet. The one symmetric moment, earned. */}
           <section className={`${CONTAINER} relative z-10 pt-12 pb-4 text-center sm:pt-[4.5rem] sm:pb-6 lg:pt-20`}>
             <h1 className="hero-enter forest-hero-title text-ink">
-              <span className="forest-hero-title__headline block text-balance lg:whitespace-nowrap">
+              <span className="forest-hero-title__headline block text-balance">
                 Never lose a bid
               </span>
-              <span className="forest-hero-title__subline block text-balance lg:whitespace-nowrap">
+              <span className="forest-hero-title__subline block text-balance">
                 to a deal-breaker you missed.
               </span>
             </h1>
