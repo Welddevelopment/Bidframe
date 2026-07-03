@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `dff05af` · 2026-07-03T23:11:28+01:00
+> Map of commit `1578f45` · 2026-07-03T22:11:58Z
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,7 +12,7 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 171 | 57,750 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **frontend** | 174 | 58,024 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
 | **backend** | 20 | 3,159 | Backend — FastAPI (PDF ingest, extraction, REST API) |
 | **engine** | 71 | 5,908 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 713 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
@@ -237,76 +237,77 @@ graph LR
   n84[ScrollyStage.tsx] --> n39[ConfidenceIndicator.tsx]
   n84[ScrollyStage.tsx] --> n56[GatingHero.tsx]
   n84[ScrollyStage.tsx] --> n57[GraphView.tsx]
-  n84[ScrollyStage.tsx] --> n90[StageChrome.tsx]
+  n84[ScrollyStage.tsx] --> n90[GhostCursor.tsx]
+  n84[ScrollyStage.tsx] --> n91[StageChrome.tsx]
   n84[ScrollyStage.tsx] --> n88[sample.ts]
   n84[ScrollyStage.tsx] --> n86[steps.ts]
   n84[ScrollyStage.tsx] --> n65[FernFrond.tsx]
-  n84[ScrollyStage.tsx] --> n91[PineBranch.tsx]
+  n84[ScrollyStage.tsx] --> n92[PineBranch.tsx]
   n85[TrailRail.tsx] --> n86[steps.ts]
   n88[sample.ts] --> n9[requirement.ts]
   n62[ClosingArrival.tsx] --> n12[BookDemoButton.tsx]
   n62[ClosingArrival.tsx] --> n63[DrawOn.tsx]
-  n62[ClosingArrival.tsx] --> n92[Reveal.tsx]
-  n62[ClosingArrival.tsx] --> n91[PineBranch.tsx]
-  n62[ClosingArrival.tsx] --> n93[Seal.tsx]
+  n62[ClosingArrival.tsx] --> n93[Reveal.tsx]
+  n62[ClosingArrival.tsx] --> n92[PineBranch.tsx]
+  n62[ClosingArrival.tsx] --> n94[Seal.tsx]
   n62[ClosingArrival.tsx] --> n89[TreelineDivider.tsx]
-  n94[ForestHeroLayers.tsx] --> n93[Seal.tsx]
-  n95[HeroResolve.tsx] --> n54[ComplianceMatrix.tsx]
-  n95[HeroResolve.tsx] --> n56[GatingHero.tsx]
-  n95[HeroResolve.tsx] --> n7[RequirementsContext.tsx]
-  n95[HeroResolve.tsx] --> n53[triage.ts]
+  n95[ForestHeroLayers.tsx] --> n94[Seal.tsx]
+  n96[HeroResolve.tsx] --> n54[ComplianceMatrix.tsx]
+  n96[HeroResolve.tsx] --> n56[GatingHero.tsx]
+  n96[HeroResolve.tsx] --> n7[RequirementsContext.tsx]
+  n96[HeroResolve.tsx] --> n53[triage.ts]
   n21[Landing.tsx] --> n11[BrandLogo.tsx]
   n21[Landing.tsx] --> n39[ConfidenceIndicator.tsx]
   n21[Landing.tsx] --> n12[BookDemoButton.tsx]
   n21[Landing.tsx] --> n62[ClosingArrival.tsx]
-  n21[Landing.tsx] --> n96[CredibilityBand.tsx]
+  n21[Landing.tsx] --> n97[CredibilityBand.tsx]
   n21[Landing.tsx] --> n63[DrawOn.tsx]
-  n21[Landing.tsx] --> n94[ForestHeroLayers.tsx]
-  n21[Landing.tsx] --> n95[HeroResolve.tsx]
-  n21[Landing.tsx] --> n97[HowItWorks.tsx]
-  n21[Landing.tsx] --> n98[ProductShots.tsx]
-  n21[Landing.tsx] --> n99[ProofScrolly.tsx]
-  n21[Landing.tsx] --> n92[Reveal.tsx]
+  n21[Landing.tsx] --> n95[ForestHeroLayers.tsx]
+  n21[Landing.tsx] --> n96[HeroResolve.tsx]
+  n21[Landing.tsx] --> n98[HowItWorks.tsx]
+  n21[Landing.tsx] --> n99[ProductShots.tsx]
+  n21[Landing.tsx] --> n100[ProofScrolly.tsx]
+  n21[Landing.tsx] --> n93[Reveal.tsx]
   n21[Landing.tsx] --> n64[SiteFooter.tsx]
-  n21[Landing.tsx] --> n100[TrailDescent.tsx]
-  n21[Landing.tsx] --> n91[PineBranch.tsx]
-  n21[Landing.tsx] --> n101[PressedLeaf.tsx]
-  n21[Landing.tsx] --> n93[Seal.tsx]
+  n21[Landing.tsx] --> n101[TrailDescent.tsx]
+  n21[Landing.tsx] --> n92[PineBranch.tsx]
+  n21[Landing.tsx] --> n102[PressedLeaf.tsx]
+  n21[Landing.tsx] --> n94[Seal.tsx]
   n21[Landing.tsx] --> n89[TreelineDivider.tsx]
-  n98[ProductShots.tsx] --> n75[ApprovalStamp.tsx]
-  n99[ProofScrolly.tsx] --> n74[AnimatedNumber.tsx]
-  n99[ProofScrolly.tsx] --> n102[ProofNumbers.tsx]
-  n99[ProofScrolly.tsx] --> n92[Reveal.tsx]
+  n99[ProductShots.tsx] --> n75[ApprovalStamp.tsx]
+  n100[ProofScrolly.tsx] --> n74[AnimatedNumber.tsx]
+  n100[ProofScrolly.tsx] --> n103[ProofNumbers.tsx]
+  n100[ProofScrolly.tsx] --> n93[Reveal.tsx]
   n64[SiteFooter.tsx] --> n11[BrandLogo.tsx]
   n64[SiteFooter.tsx] --> n12[BookDemoButton.tsx]
-  n64[SiteFooter.tsx] --> n91[PineBranch.tsx]
-  n64[SiteFooter.tsx] --> n93[Seal.tsx]
+  n64[SiteFooter.tsx] --> n92[PineBranch.tsx]
+  n64[SiteFooter.tsx] --> n94[Seal.tsx]
   n64[SiteFooter.tsx] --> n89[TreelineDivider.tsx]
-  n93[Seal.tsx] --> n61[BotanicalSprig.tsx]
+  n94[Seal.tsx] --> n61[BotanicalSprig.tsx]
   n23[PitchDeck.tsx] --> n74[AnimatedNumber.tsx]
   n23[PitchDeck.tsx] --> n35[AnswerCard.tsx]
   n23[PitchDeck.tsx] --> n11[BrandLogo.tsx]
   n23[PitchDeck.tsx] --> n54[ComplianceMatrix.tsx]
   n23[PitchDeck.tsx] --> n56[GatingHero.tsx]
   n23[PitchDeck.tsx] --> n57[GraphView.tsx]
-  n23[PitchDeck.tsx] --> n103[PitchScene.tsx]
-  n23[PitchDeck.tsx] --> n104[TenderGlyph.tsx]
-  n23[PitchDeck.tsx] --> n105[TrailMap.tsx]
-  n23[PitchDeck.tsx] --> n106[TrailSteps.tsx]
+  n23[PitchDeck.tsx] --> n104[PitchScene.tsx]
+  n23[PitchDeck.tsx] --> n105[TenderGlyph.tsx]
+  n23[PitchDeck.tsx] --> n106[TrailMap.tsx]
+  n23[PitchDeck.tsx] --> n107[TrailSteps.tsx]
   n23[PitchDeck.tsx] --> n7[RequirementsContext.tsx]
   n23[PitchDeck.tsx] --> n41[answers.ts]
   n23[PitchDeck.tsx] --> n53[triage.ts]
   n23[PitchDeck.tsx] --> n9[requirement.ts]
-  n103[PitchScene.tsx] --> n65[FernFrond.tsx]
-  n103[PitchScene.tsx] --> n91[PineBranch.tsx]
-  n103[PitchScene.tsx] --> n93[Seal.tsx]
+  n104[PitchScene.tsx] --> n65[FernFrond.tsx]
+  n104[PitchScene.tsx] --> n92[PineBranch.tsx]
+  n104[PitchScene.tsx] --> n94[Seal.tsx]
   n17[AuthContext.tsx] --> n19[api.ts]
   n7[RequirementsContext.tsx] --> n26[mock-requirements.ts]
-  n7[RequirementsContext.tsx] --> n107[answer-store.ts]
+  n7[RequirementsContext.tsx] --> n108[answer-store.ts]
   n7[RequirementsContext.tsx] --> n19[api.ts]
   n7[RequirementsContext.tsx] --> n9[requirement.ts]
   n26[mock-requirements.ts] --> n9[requirement.ts]
-  n107[answer-store.ts] --> n9[requirement.ts]
+  n108[answer-store.ts] --> n9[requirement.ts]
   n41[answers.ts] --> n53[triage.ts]
   n41[answers.ts] --> n9[requirement.ts]
   n19[api.ts] --> n9[requirement.ts]
@@ -324,7 +325,7 @@ graph LR
   n52[source-doc.ts] --> n9[requirement.ts]
   n72[structure.ts] --> n9[requirement.ts]
   n53[triage.ts] --> n9[requirement.ts]
-  n108[error.tsx]
+  n109[error.tsx]
 ```
 
 ## Backend + Engine module graph (Python, tests excluded)
@@ -431,6 +432,8 @@ graph LR
 - `frontend/postcss.config.mjs`
 - `frontend/public/brand/README.md`
 - `frontend/public/codemap.html`
+- `frontend/public/codemap.html`
+- `frontend/public/codemap.html`
 - `frontend/public/llms.txt`
 - `frontend/public/pdf.worker.min.mjs` — @licstart The following is the entire license notice for the
 - `frontend/src/app/answers/page.tsx` — exports `metadata`
@@ -494,6 +497,7 @@ graph LR
 - `frontend/src/components/UploadDropzone.tsx` — exports `UploadDropzone`
 - `frontend/src/components/demo/DemoScrolly.tsx` — exports `DemoScrolly`
 - `frontend/src/components/demo/DemoTitleCard.tsx` — exports `DemoTitleCard`
+- `frontend/src/components/demo/GhostCursor.tsx` — exports `GhostCursor`
 - `frontend/src/components/demo/MountOnView.tsx` — exports `MountOnView`
 - `frontend/src/components/demo/ScrollyStage.tsx` — exports `BeatVisual`
 - `frontend/src/components/demo/StageChrome.tsx` — exports `StageChrome`
@@ -1164,4 +1168,4 @@ graph LR
 
 ---
 
-*801 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
+*804 tracked files mapped. Generated by `scripts/gen_codemap.py`.*

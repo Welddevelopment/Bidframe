@@ -7,6 +7,7 @@ import { GraphView } from "@/components/GraphView";
 import { FernFrond } from "@/components/landing/art/FernFrond";
 import { PineBranch } from "@/components/landing/art/PineBranch";
 import { motion, useTransform, type MotionValue } from "motion/react";
+import { GhostCursor } from "./GhostCursor";
 import { StageChrome } from "./StageChrome";
 import {
   SAMPLE,
@@ -944,6 +945,7 @@ export function ScrollyStage({
       <GraphLayer beat={beat} />
       <FinaleLayer beat={beat} />
       <StageForestFrame beat={beat} />
+      <GhostCursor beat={beat} />
     </div>
   );
 }
