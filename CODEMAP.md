@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `099062a` · 2026-07-03T14:04:44Z
+> Map of commit `a756488` · 2026-07-03T15:38:55+01:00
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,7 +12,7 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 145 | 51,354 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **frontend** | 150 | 52,541 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
 | **backend** | 20 | 3,159 | Backend — FastAPI (PDF ingest, extraction, REST API) |
 | **engine** | 71 | 5,908 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 713 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
@@ -222,39 +222,52 @@ graph LR
   n76[ScrollyStage.tsx] --> n78[sample.ts]
   n76[ScrollyStage.tsx] --> n77[steps.ts]
   n78[sample.ts] --> n8[requirement.ts]
-  n79[HeroResolve.tsx] --> n46[ComplianceMatrix.tsx]
-  n79[HeroResolve.tsx] --> n48[GatingHero.tsx]
-  n79[HeroResolve.tsx] --> n7[RequirementsContext.tsx]
-  n79[HeroResolve.tsx] --> n45[triage.ts]
+  n79[ClosingArrival.tsx] --> n52[BookDemoButton.tsx]
+  n79[ClosingArrival.tsx] --> n54[DrawOn.tsx]
+  n79[ClosingArrival.tsx] --> n80[Reveal.tsx]
+  n79[ClosingArrival.tsx] --> n81[PineBranch.tsx]
+  n79[ClosingArrival.tsx] --> n82[Seal.tsx]
+  n79[ClosingArrival.tsx] --> n57[TreelineDivider.tsx]
+  n83[ForestHeroLayers.tsx] --> n82[Seal.tsx]
+  n84[HeroResolve.tsx] --> n46[ComplianceMatrix.tsx]
+  n84[HeroResolve.tsx] --> n48[GatingHero.tsx]
+  n84[HeroResolve.tsx] --> n7[RequirementsContext.tsx]
+  n84[HeroResolve.tsx] --> n45[triage.ts]
   n17[Landing.tsx] --> n14[BrandLogo.tsx]
   n17[Landing.tsx] --> n31[ConfidenceIndicator.tsx]
   n17[Landing.tsx] --> n52[BookDemoButton.tsx]
-  n17[Landing.tsx] --> n80[CredibilityBand.tsx]
+  n17[Landing.tsx] --> n79[ClosingArrival.tsx]
+  n17[Landing.tsx] --> n85[CredibilityBand.tsx]
   n17[Landing.tsx] --> n54[DrawOn.tsx]
-  n17[Landing.tsx] --> n79[HeroResolve.tsx]
-  n17[Landing.tsx] --> n81[HowItWorks.tsx]
-  n17[Landing.tsx] --> n82[ProductShots.tsx]
-  n17[Landing.tsx] --> n83[ProofNumbers.tsx]
-  n17[Landing.tsx] --> n84[Reveal.tsx]
+  n17[Landing.tsx] --> n83[ForestHeroLayers.tsx]
+  n17[Landing.tsx] --> n84[HeroResolve.tsx]
+  n17[Landing.tsx] --> n86[HowItWorks.tsx]
+  n17[Landing.tsx] --> n87[ProductShots.tsx]
+  n17[Landing.tsx] --> n88[ProofScrolly.tsx]
+  n17[Landing.tsx] --> n80[Reveal.tsx]
   n17[Landing.tsx] --> n55[SiteFooter.tsx]
-  n17[Landing.tsx] --> n85[PineBranch.tsx]
-  n17[Landing.tsx] --> n86[PressedLeaf.tsx]
-  n17[Landing.tsx] --> n87[Seal.tsx]
+  n17[Landing.tsx] --> n89[TrailDescent.tsx]
+  n17[Landing.tsx] --> n81[PineBranch.tsx]
+  n17[Landing.tsx] --> n90[PressedLeaf.tsx]
+  n17[Landing.tsx] --> n82[Seal.tsx]
   n17[Landing.tsx] --> n57[TreelineDivider.tsx]
-  n82[ProductShots.tsx] --> n67[ApprovalStamp.tsx]
+  n87[ProductShots.tsx] --> n67[ApprovalStamp.tsx]
+  n88[ProofScrolly.tsx] --> n66[AnimatedNumber.tsx]
+  n88[ProofScrolly.tsx] --> n91[ProofNumbers.tsx]
+  n88[ProofScrolly.tsx] --> n80[Reveal.tsx]
   n55[SiteFooter.tsx] --> n14[BrandLogo.tsx]
   n55[SiteFooter.tsx] --> n52[BookDemoButton.tsx]
-  n55[SiteFooter.tsx] --> n85[PineBranch.tsx]
-  n55[SiteFooter.tsx] --> n87[Seal.tsx]
+  n55[SiteFooter.tsx] --> n81[PineBranch.tsx]
+  n55[SiteFooter.tsx] --> n82[Seal.tsx]
   n55[SiteFooter.tsx] --> n57[TreelineDivider.tsx]
-  n87[Seal.tsx] --> n53[BotanicalSprig.tsx]
+  n82[Seal.tsx] --> n53[BotanicalSprig.tsx]
   n12[AuthContext.tsx] --> n15[api.ts]
   n7[RequirementsContext.tsx] --> n20[mock-requirements.ts]
-  n7[RequirementsContext.tsx] --> n88[answer-store.ts]
+  n7[RequirementsContext.tsx] --> n92[answer-store.ts]
   n7[RequirementsContext.tsx] --> n15[api.ts]
   n7[RequirementsContext.tsx] --> n8[requirement.ts]
   n20[mock-requirements.ts] --> n8[requirement.ts]
-  n88[answer-store.ts] --> n8[requirement.ts]
+  n92[answer-store.ts] --> n8[requirement.ts]
   n33[answers.ts] --> n45[triage.ts]
   n33[answers.ts] --> n8[requirement.ts]
   n15[api.ts] --> n8[requirement.ts]
@@ -272,7 +285,7 @@ graph LR
   n44[source-doc.ts] --> n8[requirement.ts]
   n64[structure.ts] --> n8[requirement.ts]
   n45[triage.ts] --> n8[requirement.ts]
-  n89[error.tsx]
+  n93[error.tsx]
 ```
 
 ## Backend + Engine module graph (Python, tests excluded)
@@ -442,15 +455,19 @@ graph LR
 - `frontend/src/components/demo/steps.ts` — The script for the /demo cinematic scroll. Each step is one narrative beat
 - `frontend/src/components/landing/BookDemoButton.tsx` — exports `BookDemoButton`
 - `frontend/src/components/landing/BotanicalSprig.tsx` — A botanical laurel sprig in line-art, used to frame the hero and the tilted
+- `frontend/src/components/landing/ClosingArrival.tsx` — exports `ClosingArrival`
 - `frontend/src/components/landing/CredibilityBand.tsx` — exports `CredibilityBand`
 - `frontend/src/components/landing/DrawOn.tsx` — exports `DrawOn`
+- `frontend/src/components/landing/ForestHeroLayers.tsx` — exports `ForestHeroLayers`
 - `frontend/src/components/landing/HeroResolve.tsx` — exports `HeroResolve`
 - `frontend/src/components/landing/HowItWorks.tsx` — exports `HowItWorks`
 - `frontend/src/components/landing/Landing.tsx` — exports `Landing`
 - `frontend/src/components/landing/ProductShots.tsx` — Three product shots for the landing page. They use static demo content, but
 - `frontend/src/components/landing/ProofNumbers.tsx` — The proof ledger on the pine band: three poster-scale mono figures, each
+- `frontend/src/components/landing/ProofScrolly.tsx` — exports `ProofScrolly`
 - `frontend/src/components/landing/Reveal.tsx` — exports `Reveal`
 - `frontend/src/components/landing/SiteFooter.tsx` — exports `SiteFooter`
+- `frontend/src/components/landing/TrailDescent.tsx` — exports `TrailDescent`
 - `frontend/src/components/landing/art/FernFrond.tsx` — A large fern frond in the landing's engraving language, drawn to bleed off
 - `frontend/src/components/landing/art/PineBranch.tsx` — A horizontal pine branch in the landing's engraving language, laid along the
 - `frontend/src/components/landing/art/PressedLeaf.tsx` — A small pressed-leaf section mark in the landing's engraving language, sized
@@ -475,7 +492,7 @@ graph LR
 - `frontend/src/types/requirement.ts` — exports `RequirementType`
 - `frontend/tsconfig.json`
 - `frontend/vercel.json`
-- *(+26 binary/asset file(s))*
+- *(+27 binary/asset file(s))*
 
 ### backend — Backend — FastAPI (PDF ingest, extraction, REST API)
 
@@ -1084,4 +1101,4 @@ graph LR
 
 ---
 
-*767 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
+*772 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
