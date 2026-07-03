@@ -9,7 +9,7 @@ I'm building **Bidframe** — it reads the tender in minutes, surfaces those dea
 
 I've a handful of free pilot slots this week and I'd like one to be Rooftec's. Two asks:
 
-1. **Book a slot today** before they go: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Book a slot today** — I'm setting this week's pilots up this afternoon, so an early booking gets Rooftec's tender worked up first: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a PCS roofing tender when you book** (public, or an old pack you're happy to share). I'll pre-run it so the call is a worked walkthrough of *your* document.
 
 Joel · Bidframe

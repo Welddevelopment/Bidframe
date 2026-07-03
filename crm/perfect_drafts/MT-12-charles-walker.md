@@ -9,7 +9,7 @@ Being on North Yorkshire Council's housing-repairs contractor list means bidding
 
 I've a handful of free pilot slots this week and I'd like one to be yours. Two asks:
 
-1. **Book a slot today** — they'll go: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Book a slot today** — I'm setting this week's pilots up this afternoon, so getting in now holds your place: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council tender when you book** (public, or an old pack). I'll pre-run it so the call is a worked walkthrough of *your* document — not a demo.
 
 Joel · Bidframe

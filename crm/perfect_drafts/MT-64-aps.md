@@ -9,7 +9,7 @@ I'm building **Bidframe** — it reads the tender in minutes, surfaces those dea
 
 I'm running a few free pilots this week and I'd like APS to have one. Two quick asks:
 
-1. **Grab a slot today** before they go: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today, ideally in the next few hours** — I'm setting the handful up this afternoon, so booking now locks APS's in: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a council/HA damp tender** you're bidding. I'll pre-run it so the call is spent on *your* actual document.
 
 Joel · Bidframe

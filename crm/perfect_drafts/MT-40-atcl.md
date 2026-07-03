@@ -9,7 +9,7 @@ As an MLA-approved commercial locksmith across Essex & East London handling hous
 
 I'm running a few free pilots this week and I'd like ATCL to have one. Two quick asks:
 
-1. **Grab a slot today** before they go: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today** — I'm setting this week's pilots up this afternoon, so booking before the end of the day locks ATCL's in: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a council or HA framework** you're bidding. I'll pre-run it so the call is spent on *your* actual tender, not a demo.
 
 Joel · Bidframe

@@ -9,7 +9,7 @@ I built **Bidframe** to take that risk off the table: it reads the tender in min
 
 I've a few free pilot slots this week and I'd like one to be yours. Two quick asks:
 
-1. **Grab a slot today** — they'll go fast: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today, ideally in the next few hours** — I'm allocating the free pilots this afternoon, so an early booking locks yours in: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send the framework tender when you book** (or a recent pack you're happy to share). I'll pre-run it so the call is a walkthrough of *your* actual re-tender.
 
 Joel · Bidframe

@@ -9,7 +9,7 @@ I built **Bidframe** for exactly this: it reads the tender in minutes, surfaces 
 
 I've a handful of free pilot slots this week and I'd like one to be ISCA's. Two asks:
 
-1. **Grab a slot today** — they'll go fast: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today, ideally in the next few hours** — I'm setting the free pilots up this afternoon, so booking now locks ISCA's in: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council adaptations tender when you book** (public, or an old pack you're happy to share). I'll pre-run it so the call is a walkthrough of *your* actual document.
 
 Joel · Bidframe

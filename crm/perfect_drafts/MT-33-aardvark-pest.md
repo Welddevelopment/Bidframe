@@ -9,7 +9,7 @@ I built **Bidframe** to catch exactly that: it reads the tender in minutes, surf
 
 I've a handful of free pilot slots this week and I'd like Aardvark to have one. Two quick asks:
 
-1. **Grab a slot today** — they'll go fast: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today** — I'm allocating this week's pilots this afternoon, so booking now locks Aardvark's in: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council or NHS pest tender when you book** (public, or an old pack). I'll pre-run it so the call is a walkthrough of *your* actual tender.
 
 Joel · Bidframe

@@ -9,7 +9,7 @@ I'm building **Bidframe** — it reads a public-sector tender in minutes, surfac
 
 I'm running a few free pilots this week and I'd like Top Garden to have one. Two quick asks:
 
-1. **Grab a slot today** before they go: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today** — I'm allocating the handful of pilots this afternoon, so booking before the end of the day locks Top Garden's in: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a grounds tender** you're bidding. I'll pre-run it so the whole call is on *your* actual document.
 
 Joel · Bidframe

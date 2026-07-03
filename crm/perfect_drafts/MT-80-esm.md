@@ -9,7 +9,7 @@ Handling asbestos for Cannock, Dudley and Wolverhampton Councils and Solihull Co
 
 I've a handful of free pilot slots this week and I'd like one to be ESM's. Two asks:
 
-1. **Book a slot today** — they'll go: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Book a slot today** — I'm allocating this week's pilots this afternoon, so getting in now holds ESM's place: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council/HA asbestos tender when you book** (public, or an old pack). I'll pre-run it so the call is a worked walkthrough of *your* document.
 
 Joel · Bidframe

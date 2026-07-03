@@ -27,9 +27,11 @@ Quick one. I'm building **Bidframe** — it reads a UK public-sector tender and,
 exact clause, and drafts answers where there's evidence to cite. It's built for firms like {{Firm}} that
 bid now and then and can't justify a full-time bid writer.
 
-I'm running a **handful of free pilots this week** and I'd like {{Firm}} to have one. Two small asks:
+I'm running a **handful of free pilots this week** and I'd like {{Firm}} to have one. I'm lining up who
+gets them today, so grabbing a slot before the end of the day locks yours in (and I can start prepping
+your tender straight away). Two small asks:
 
-1. **Grab a slot today** — I'm only taking a few and they'll go: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today** — a few slots, going as I set them up: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send me the tender you're eyeing** (or a recent one you're happy to share) when you book. I'll run it
    through Bidframe and **prep it before we talk**, so the call is spent on *your* actual tender —
    deal-breakers, evidence gaps, draft answers — not a generic demo.

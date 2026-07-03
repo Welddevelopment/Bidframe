@@ -9,7 +9,7 @@ I'm building **Bidframe**. It reads a UK public-sector tender and, in minutes, p
 
 I've a handful of free pilot slots this week and I'd like one of them to be yours. Two quick asks:
 
-1. **Grab a slot today** — they'll go fast: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today** — I'm lining up this week's free pilots this afternoon, so booking now locks yours in: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a tender when you book** (a public one, or an old pack you're happy to share). I'll pre-run it through Bidframe so the call is a worked walkthrough of *your* actual tender — deal-breakers, evidence gaps, draft answers — not a generic demo.
 
 Joel · Bidframe

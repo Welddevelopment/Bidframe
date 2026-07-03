@@ -9,7 +9,7 @@ Running the business between the two of you as a rural Devon care provider, read
 
 I'm running a handful of free pilots this week and I'd like DACCS to have one. Two asks:
 
-1. **Book a slot today** before they go: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Book a slot today** — I'm setting this week's pilots up this afternoon, so getting in now holds DACCS's place: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a Devon care tender** you're weighing up. I'll pre-run it so we spend the call on *your* actual document, not a demo.
 
 Joel · Bidframe

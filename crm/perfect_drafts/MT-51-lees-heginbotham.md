@@ -9,7 +9,7 @@ I'm building **Bidframe** — it reads the tender in minutes, surfaces those dea
 
 I'm running a few free pilots this week and I'd like Lees Heginbotham to have one. Two quick asks:
 
-1. **Grab a slot today** before they go: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today, ideally in the next few hours** — I'm setting this week's pilots up this afternoon, so booking now locks Lees Heginbotham's in: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send an HA flooring tender** you're bidding. I'll pre-run it so we spend the call on *your* actual document.
 
 Joel · Bidframe

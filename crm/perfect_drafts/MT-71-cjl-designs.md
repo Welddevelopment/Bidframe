@@ -9,7 +9,7 @@ I built **Bidframe** for the specialist owner-operator who can't lose a workshop
 
 I've a handful of free pilot slots this week and I'd like one to be yours. Two asks:
 
-1. **Grab a slot today** — they'll go: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today** — I'm allocating the free pilots this afternoon, so booking before the end of the day locks yours in: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a heritage window tender when you book** (public, or an old pack). I'll pre-run it so the call is a walkthrough of *your* actual document.
 
 Joel · Bidframe

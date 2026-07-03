@@ -9,7 +9,7 @@ I built **Bidframe** so a husband-and-wife team never loses a bid on a missed ma
 
 I've a handful of free pilot slots this week and I'd like one to be RenderRight's. Two asks:
 
-1. **Grab a slot today** — they'll go fast: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today** — I'm allocating the free pilots this afternoon, so booking before the end of the day gets RenderRight's tender worked up first: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a retrofit framework when you book** (public, or an old pack you're happy to share). I'll pre-run it so the call is a walkthrough of *your* actual document.
 
 Joel · Bidframe

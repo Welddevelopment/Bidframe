@@ -9,7 +9,7 @@ I'm building **Bidframe** — it reads the tender in minutes, surfaces those dea
 
 I've a handful of free pilot slots this week and I'd like one to be Blake's. Two asks:
 
-1. **Book a slot today** — they'll go: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Book a slot today** — I'm lining the handful up before the end of the day, so getting in now holds Blake's place: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a school security tender when you book** (public, or an old pack you're happy to share). I'll pre-run it so the call is a worked walkthrough of *your* document.
 
 Joel · Bidframe

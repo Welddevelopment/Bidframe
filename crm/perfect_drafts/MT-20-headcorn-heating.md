@@ -9,7 +9,7 @@ As Town & Country Housing's contractor for oil and solid-fuel heating, you're bi
 
 I've a handful of free pilot slots this week; I'd like one to be Headcorn's. Two asks:
 
-1. **Book a slot today** — they'll go fast: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Book a slot today** — I'm only running a few this week and setting them up this afternoon, so an early booking gets Headcorn's tender prepped first: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a heating tender when you book** (public, or an old pack you're happy to share). I'll pre-run it so the call is a walkthrough of *your* actual tender.
 
 Joel · Bidframe

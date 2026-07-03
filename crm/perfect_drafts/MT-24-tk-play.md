@@ -9,7 +9,7 @@ I'm building **Bidframe** — it reads the tender in minutes, surfaces those pas
 
 I'm running a handful of free pilots this week and I'd like one to be TK Play's. Two asks:
 
-1. **Book a slot today** before they go: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Book a slot today, ideally in the next few hours** — I'm setting the free pilots up this afternoon, so getting in now holds TK Play's place: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **When you book, send a council play tender** you're eyeing. I'll pre-run it so we spend the call on *your* actual document.
 
 Joel · Bidframe

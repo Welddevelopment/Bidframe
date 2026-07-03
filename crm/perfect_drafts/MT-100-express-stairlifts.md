@@ -9,7 +9,7 @@ I'm building **Bidframe** — it reads the tender in minutes, surfaces those dea
 
 I've a handful of free pilot slots this week and I'd like one to be yours. Two asks:
 
-1. **Book a slot today** — they'll go: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Book a slot today** — I'm only running a few this week and setting them up this afternoon, so booking now gets yours prepped first: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council DFG/stairlift tender when you book** (public, or an old pack). I'll pre-run it so the call is a worked walkthrough of *your* document.
 
 Joel · Bidframe

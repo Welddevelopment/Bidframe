@@ -9,7 +9,7 @@ I built **Bidframe** for exactly the one-person outfit that can't spare a day on
 
 I've a handful of free pilot slots this week and I'd like one to be yours. Two asks:
 
-1. **Grab a slot today** — they'll go fast: https://cal.com/joel-jeon-o29lfr/bidframe
+1. **Grab a slot today** — I'm only running a few this week and lining them up this afternoon, so booking now secures yours: https://cal.com/joel-jeon-o29lfr/bidframe
 2. **Send a council or school fencing tender when you book** (public, or an old pack). I'll pre-run it so the call is a walkthrough of *your* actual document.
 
 Joel · Bidframe
