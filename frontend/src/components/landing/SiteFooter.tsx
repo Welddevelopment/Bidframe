@@ -16,7 +16,7 @@ import { TreelineDivider } from "@/components/landing/art/TreelineDivider";
 const CONTAINER = "mx-auto w-full max-w-[1160px] px-4 sm:px-6";
 
 const linkClass =
-  "rounded-sm text-sm text-paper/70 underline decoration-paper/40 decoration-1 underline-offset-4 transition-colors hover:text-paper hover:decoration-paper focus:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-pine-deep";
+  "link-draw rounded-sm text-sm text-paper/70 transition-colors hover:text-paper focus:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-pine-deep";
 
 export function SiteFooter() {
   return (

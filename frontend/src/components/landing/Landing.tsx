@@ -86,13 +86,13 @@ export function Landing() {
           <div className="flex min-w-0 items-center gap-3 sm:gap-5">
             <Link
               href="/demo"
-              className="hidden rounded-sm text-sm text-ink-muted underline decoration-hairline decoration-1 underline-offset-4 transition-colors hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper sm:inline"
+              className="link-draw hidden rounded-sm text-sm text-ink-muted transition-colors hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper sm:inline"
             >
               See the demo
             </Link>
             <Link
               href="/login"
-              className="hidden rounded-sm text-sm text-ink-muted underline decoration-hairline decoration-1 underline-offset-4 transition-colors hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper sm:inline"
+              className="link-draw hidden rounded-sm text-sm text-ink-muted transition-colors hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper sm:inline"
             >
               Sign in
             </Link>

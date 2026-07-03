@@ -60,7 +60,7 @@ export function BookDemoButton({
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => track("demo_cta_click", { location })}
-        className={`rounded-sm text-sm underline decoration-hairline decoration-1 underline-offset-4 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${linkTone} ${className}`}
+        className={`link-draw rounded-sm text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${linkTone} ${className}`}
       >
         Book a demo
       </a>
@@ -81,7 +81,7 @@ export function BookDemoButton({
       target="_blank"
       rel="noopener noreferrer"
       onClick={() => track("demo_cta_click", { location })}
-      className={`group inline-flex items-center rounded-md font-semibold shadow-[var(--depth-control)] transition-[transform,background-color,box-shadow] duration-150 ease-out hover:-translate-y-1 hover:shadow-[0_11px_24px_-9px_rgba(33,29,23,0.42),0_3px_9px_-4px_rgba(33,29,23,0.26)] active:translate-y-px active:shadow-[var(--depth-pressed)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${sizeCls} ${btnTone} ${className}`}
+      className={`cta-shine group relative inline-flex items-center overflow-hidden rounded-md font-semibold shadow-[var(--depth-control)] transition-[transform,background-color,box-shadow] duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-translate-y-1 hover:shadow-[0_11px_24px_-9px_rgba(33,29,23,0.42),0_3px_9px_-4px_rgba(33,29,23,0.26),0_0_24px_-6px_rgba(44,86,64,0.5)] active:translate-y-px active:rotate-[-0.75deg] active:scale-[0.985] active:shadow-[var(--depth-pressed)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${sizeCls} ${btnTone} ${className}`}
     >
       Book a demo
       <svg
@@ -90,7 +90,7 @@ export function BookDemoButton({
         viewBox="0 0 14 14"
         fill="none"
         aria-hidden="true"
-        className="transition-transform duration-150 ease-out group-hover:translate-x-1 group-active:translate-x-0.5"
+        className="transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:translate-x-1.5 group-active:translate-x-0.5"
       >
         <path
           d="M2.5 7h9M8 3.5 11.5 7 8 10.5"
@@ -124,7 +124,7 @@ export function SeeItRunLink({
     <Link
       href="/demo"
       onClick={() => track("see_it_run_click")}
-      className={`group inline-flex items-center gap-1 rounded-sm ${size === "lg" ? "text-sm" : "text-xs"} transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${t} ${className}`}
+      className={`link-draw group inline-flex items-center gap-1 rounded-sm ${size === "lg" ? "text-sm" : "text-xs"} transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${t} ${className}`}
     >
       See a worked example
       <svg
