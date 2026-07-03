@@ -389,13 +389,13 @@ export function PitchDeck() {
           bucket: "Solution",
           title: "A marked trail through the tender",
           speaker: "Pranav",
-          zone: "pine",
-          light: 0.2,
+          zone: "night",
+          light: 0.12,
           notes: [
-            "Describe the product as a marked trail: extract requirements, classify them, dedupe them, then put the risky ones in front.",
+            "This is the stop-sign in the forest: let the pulse land, pause, then read the clause out loud.",
             "Say it in full: Bidframe turns the tender into a reviewable matrix — deal-breakers first, uncertainty visible, sources attached.",
-            "Point at the real deal-breaker dossier. This is where the room should understand the wedge.",
-            "Avoid claiming universal accuracy. This is a real pre-baked SPSO run.",
+            "The card is a real gating requirement from the SPSO run, with its clause and page. This is where the room should understand the wedge.",
+            "Avoid claiming universal accuracy. This is a real pre-baked run.",
           ],
           body: (
             <div className="pitch-grid pitch-grid--product">
@@ -410,13 +410,22 @@ export function PitchDeck() {
                   <span>Trace</span>
                 </div>
               </div>
-              <ProductShell
-                label={title}
-                title="Deal-breakers surface before the matrix"
-                className="pitch-live-dealbreakers"
-              >
-                <GatingHero requirements={requirements} />
-              </ProductShell>
+              <div className="pitch-stopsign">
+                <span className="pitch-stopsign__blaze" aria-hidden="true" />
+                <p className="pitch-stopsign__caption">
+                  This is the line that would kill the bid
+                </p>
+                {dealBreakers[0] && (
+                  <div className="pitch-stopsign__card">
+                    <span>
+                      {dealBreakers[0].source_clause} · p.
+                      {dealBreakers[0].source_page}
+                    </span>
+                    <strong>{dealBreakers[0].text}</strong>
+                    <em>Caught — surfaced first, before a word is written.</em>
+                  </div>
+                )}
+              </div>
             </div>
           ),
         },
