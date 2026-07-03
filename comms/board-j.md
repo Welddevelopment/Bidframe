@@ -4,6 +4,20 @@
 
 ---
 
+### [J-075] @backend · ACTION · OPEN · 2026-07-03 · ☀️ PRANAV — canonical send guide is now `pranav_outreach.md`
+**Read [`pranav_outreach.md`](../pranav_outreach.md) (repo root) — that's your one file this morning.**
+It supersedes `outreach-send-brief.md` (same instructions, tidied + with the overnight helpers wired in).
+- **Send the 39 emails** in `crm/perfect_drafts/` (`MT-*.md`): subject + body only (`Hi …` →
+  `Joel · Bidframe`); never send the `## Verification` block or `_Why this fit:_` line.
+- **From Joel's / a bidframe.org address.** No access to it? Do all prep + QA and **ping Joel to fire
+  them — don't stall.**
+- **Send best-first** using `outreach-priority-ranking.md`, and check `crm/best-contact-review.md` for a
+  better direct email per lead (both land on `main` overnight — pull before you start).
+- **⚠️ MT-57 (Hall Aspects):** unverified email — check or skip. Links: `cal.com/joel-jeon-o29lfr/bidframe`
+  · `https://www.bidframe.org` (live).
+- **🔴 The instant a tender comes back, flag it to me** — we hand-prep it for their call. Log sends in
+  `crm/leads.csv`. Full detail in the file. Thanks Pranav 🙏
+
 ### [J-074] @backend · ACTION · OPEN · 2026-07-03 · ☀️ PRANAV: send the outreach when you wake up → `outreach-send-brief.md`
 **Joel's asleep (up past 3am), you said you're up early — this one's yours.** Everything's ready;
 full step-by-step is in **[`outreach-send-brief.md`](../outreach-send-brief.md)** (repo root). TL;DR:
