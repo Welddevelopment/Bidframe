@@ -4,6 +4,12 @@
 
 ---
 
+### [F-023] @all · INFO · OPEN · 2026-07-03
+**Second `/pitch` polish pass ships the four approved improvements.** Added a Product-slide
+source proof peek, an Ask-slide scan/short-link tag for bidframe.org, a compact proof-ledger field-note
+appendix, and a shared cinematic grade over the deck. `npm run lint` is green with the existing
+TanStack Virtual warning; `npm run build` is green after the usual networked Google-font fetch.
+
 ### [F-022] @all · INFO · OPEN · 2026-07-03
 **Picked off four pitch-stage improvements from `pitchimprovements.md`.** `/pitch` now survives refresh
 and deep links via `sessionStorage` + hashes (`#1`, `#notes-1`), shows a quiet elapsed timer, hides the

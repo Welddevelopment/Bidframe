@@ -216,6 +216,73 @@ function SourceCard({
   );
 }
 
+function AskScanMark() {
+  const dots = [
+    [1, 1, 5, 5],
+    [23, 1, 5, 5],
+    [1, 23, 5, 5],
+    [8, 2, 2, 1],
+    [12, 2, 1, 1],
+    [16, 2, 2, 1],
+    [9, 5, 1, 2],
+    [13, 5, 3, 1],
+    [18, 5, 1, 3],
+    [7, 8, 1, 2],
+    [11, 8, 3, 1],
+    [16, 9, 2, 1],
+    [20, 9, 1, 2],
+    [3, 10, 1, 1],
+    [8, 11, 2, 1],
+    [12, 11, 1, 3],
+    [15, 12, 3, 1],
+    [21, 12, 2, 1],
+    [6, 14, 1, 3],
+    [9, 14, 1, 1],
+    [11, 15, 2, 1],
+    [16, 15, 1, 2],
+    [19, 15, 4, 1],
+    [8, 17, 1, 2],
+    [13, 18, 3, 1],
+    [18, 18, 1, 3],
+    [21, 19, 2, 1],
+    [7, 21, 2, 1],
+    [11, 21, 1, 2],
+    [15, 22, 2, 1],
+    [19, 23, 1, 2],
+    [23, 23, 1, 1],
+  ];
+
+  return (
+    <svg
+      className="pitch-qr-mark"
+      viewBox="0 0 29 29"
+      aria-hidden="true"
+      shapeRendering="crispEdges"
+    >
+      <rect width="29" height="29" />
+      {dots.map(([x, y, width, height]) => (
+        <rect
+          key={`${x}-${y}-${width}-${height}`}
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+        />
+      ))}
+      {[1, 23, 1].map((x, index) => (
+        <rect
+          key={`finder-${index}`}
+          x={x}
+          y={index === 2 ? 23 : 1}
+          width="5"
+          height="5"
+          className="pitch-qr-mark__finder"
+        />
+      ))}
+    </svg>
+  );
+}
+
 function TeamCard({
   name,
   role,
@@ -287,6 +354,7 @@ export function PitchDeck() {
   const [restored, setRestored] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [cursorHidden, setCursorHidden] = useState(false);
+  const [sourcePeekOpen, setSourcePeekOpen] = useState(false);
   // The stop-sign slide plays in two beats: 0 = the clause alone, 1 = caught.
   const [beat, setBeat] = useState(0);
 
@@ -299,6 +367,14 @@ export function PitchDeck() {
   const evidenceReq = useMemo(
     () => pickEvidenceRequirement(requirements),
     [requirements]
+  );
+  const sourceProofReq = useMemo(
+    () =>
+      dealBreakers.find((req) => req.source_excerpt) ??
+      dealBreakers[0] ??
+      requirements.find((req) => req.source_excerpt) ??
+      requirements[0],
+    [dealBreakers, requirements]
   );
   const backedCount = useMemo(
     () => requirements.filter((req) => isBacked(req)).length,
@@ -722,6 +798,36 @@ export function PitchDeck() {
                 <div className="pitch-sheet__window">
                   <GatingHero requirements={requirements} />
                 </div>
+                {sourceProofReq && (
+                  <div
+                    className={`pitch-source-peek ${
+                      sourcePeekOpen ? "is-open" : ""
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      className="pitch-source-peek__trigger"
+                      aria-expanded={sourcePeekOpen}
+                      onClick={() => setSourcePeekOpen((open) => !open)}
+                    >
+                      <span>Source proof</span>
+                      <strong>
+                        {sourceProofReq.source_clause ?? "Tender source"} · p.
+                        {sourceProofReq.source_page}
+                      </strong>
+                    </button>
+                    <div className="pitch-source-peek__panel">
+                      <p>{sourceProofReq.source_excerpt}</p>
+                      <span>
+                        {sourceProofReq.source_rect_match === "exact"
+                          ? "Exact source match"
+                          : sourceProofReq.source_rect_match === "approx"
+                            ? "Approximate source match"
+                            : "Text source attached"}
+                      </span>
+                    </div>
+                  </div>
+                )}
                 {evidenceReq && (
                   <>
                     <div className="pitch-sheet__caption">
@@ -859,6 +965,18 @@ export function PitchDeck() {
                 <a href="https://bidframe.org">bidframe.org</a>
                 <Link href="/demo">bidframe.org/demo</Link>
               </div>
+              <a
+                className="pitch-ask-tag"
+                href="https://bidframe.org"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <AskScanMark />
+                <span>
+                  <small>Scan or type after the demo</small>
+                  <strong>bidframe.org</strong>
+                </span>
+              </a>
             </div>
           ),
         },
@@ -931,6 +1049,28 @@ export function PitchDeck() {
                   tick={activeIndex === 8}
                 />
                 <Metric label="Scope" value="pre-baked real run" />
+              </div>
+              <div className="pitch-field-note-grid">
+                <div>
+                  <span>Deal-breaker benchmark</span>
+                  <strong>12/12</strong>
+                  <p>SPSO plus museum disqualifiers caught in validated gold.</p>
+                </div>
+                <div>
+                  <span>Held-out check</span>
+                  <strong>10/10</strong>
+                  <p>Bradwell deal-breakers caught outside the hero tender.</p>
+                </div>
+                <div>
+                  <span>Phrasing bank</span>
+                  <strong>101/101</strong>
+                  <p>Worst-case wording variants caught by the safety net.</p>
+                </div>
+                <div>
+                  <span>Still honest</span>
+                  <strong>No headline precision</strong>
+                  <p>Broader requirement recall needs a larger benchmark.</p>
+                </div>
               </div>
               <p className="pitch-caveat">
                 In this worked example the pipeline surfaces the deal-breaker rows
@@ -1068,6 +1208,8 @@ export function PitchDeck() {
       evidenceReq,
       openQuestionCount,
       requirements,
+      sourcePeekOpen,
+      sourceProofReq,
       title,
       triage.groups,
     ]
