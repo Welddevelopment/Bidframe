@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `d1b2a03` · 2026-07-03T16:41:28+01:00
+> Map of commit `2db46eb` · 2026-07-03T16:44:54+01:00
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,7 +12,7 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 160 | 55,301 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **frontend** | 160 | 55,483 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
 | **backend** | 20 | 3,159 | Backend — FastAPI (PDF ingest, extraction, REST API) |
 | **engine** | 71 | 5,908 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 713 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
@@ -264,6 +264,7 @@ graph LR
   n57[SiteFooter.tsx] --> n84[Seal.tsx]
   n57[SiteFooter.tsx] --> n59[TreelineDivider.tsx]
   n84[Seal.tsx] --> n55[BotanicalSprig.tsx]
+  n19[PitchDeck.tsx] --> n68[AnimatedNumber.tsx]
   n19[PitchDeck.tsx] --> n29[AnswerCard.tsx]
   n19[PitchDeck.tsx] --> n14[BrandLogo.tsx]
   n19[PitchDeck.tsx] --> n48[ComplianceMatrix.tsx]
@@ -276,6 +277,9 @@ graph LR
   n19[PitchDeck.tsx] --> n35[answers.ts]
   n19[PitchDeck.tsx] --> n47[triage.ts]
   n19[PitchDeck.tsx] --> n8[requirement.ts]
+  n94[PitchScene.tsx] --> n58[FernFrond.tsx]
+  n94[PitchScene.tsx] --> n83[PineBranch.tsx]
+  n94[PitchScene.tsx] --> n84[Seal.tsx]
   n12[AuthContext.tsx] --> n15[api.ts]
   n7[RequirementsContext.tsx] --> n22[mock-requirements.ts]
   n7[RequirementsContext.tsx] --> n97[answer-store.ts]
