@@ -1451,30 +1451,27 @@ body {
     url("/landing/forest/hero-woodland-v2.webp") center top / cover no-repeat;
   mask-image: linear-gradient(to bottom, black 0%, black 82%, transparent 100%);
 }
-/* A flat sheet of paper light over the reading zone — no spotlight ellipse.
-   The wash holds one near-uniform strength across the headline band, then
-   hands over to the forest QUICKLY below the fold: green tints start at ~46%
-   and deepen to real pine, so the product sheet stands in woodland rather
-   than floating in a bleached fog. */
+/* A flat sheet of paper light over the reading zone. Keep the CTA/product
+   transition clean: the forest starts lower and arrives as one soft horizon
+   instead of a grey-green band through the fern edge. */
 .forest-hero__scrim {
   z-index: 1;
   background:
     linear-gradient(
       to bottom,
-      rgba(246, 242, 233, 0.9) 0%,
-      rgba(246, 242, 233, 0.87) 26%,
-      rgba(238, 236, 222, 0.5) 34%,
-      rgba(160, 178, 148, 0.28) 40%,
-      rgba(44, 86, 64, 0.42) 48%,
-      rgba(29, 58, 43, 0.58) 62%,
-      rgba(22, 48, 31, 0.68) 100%
+      rgba(246, 242, 233, 0.93) 0%,
+      rgba(246, 242, 233, 0.91) 34%,
+      rgba(243, 240, 230, 0.78) 46%,
+      rgba(221, 226, 208, 0.5) 56%,
+      rgba(78, 111, 82, 0.44) 68%,
+      rgba(22, 48, 31, 0.7) 100%
     ),
     linear-gradient(
       90deg,
-      rgba(6, 18, 11, 0.2) 0%,
-      transparent 18%,
-      transparent 82%,
-      rgba(6, 18, 11, 0.22) 100%
+      rgba(6, 18, 11, 0.12) 0%,
+      transparent 22%,
+      transparent 78%,
+      rgba(6, 18, 11, 0.14) 100%
     );
 }
 .forest-hero__grid {
@@ -1516,39 +1513,36 @@ body {
     transparent 100%
   );
 }
-/* The framing ferns: two upright clusters standing in the near ground at each
-   side of the headline zone, fronds rising beside the type so it reads as set
-   between the plants. The image's own alpha fades the frond tips; the mask
-   only dissolves each cluster's inner edge toward the centre. The right piece
-   is mirrored in the JSX so the two don't read as copies. */
+/* The framing ferns: two upright clusters in the near ground. They sit below
+   the CTA line and dissolve upward, so they frame the product sheet without
+   making a hard grass border across the reading band. The right piece is
+   mirrored in the JSX so the two don't read as copies. */
 .forest-hero__fern {
   position: absolute;
   z-index: 5;
-  /* sized against the viewport, not the (much taller) hero, so the frond
-     fringe lands beside the headline zone instead of behind the sheet */
-  width: min(42vw, 600px);
-  height: 48svh;
+  width: min(38vw, 560px);
+  height: 43svh;
   pointer-events: none;
-  opacity: 0.95;
+  opacity: 0.82;
   background: url("/landing/forest/fern-edge-overlay.webp") center bottom /
     cover no-repeat;
-  filter: brightness(0.85) saturate(0.95);
+  filter: brightness(0.9) saturate(0.92);
 }
 .forest-hero__fern--l,
 .forest-hero__fern--r {
-  /* dissolve the inner edge toward the centre AND soften the box's bottom cut */
+  /* dissolve the inner edge toward the centre and the top toward the paper */
   mask-image:
-    linear-gradient(to right, black 52%, transparent 94%),
-    linear-gradient(to top, transparent 1%, black 16%);
+    linear-gradient(to right, black 48%, rgba(0, 0, 0, 0.6) 72%, transparent 94%),
+    linear-gradient(to top, black 0%, black 58%, rgba(0, 0, 0, 0.3) 82%, transparent 100%);
   mask-composite: intersect;
 }
 .forest-hero__fern--l {
-  left: -11vw;
-  top: 7svh;
+  left: -12vw;
+  top: 17svh;
 }
 .forest-hero__fern--r {
-  right: -11vw;
-  top: 10svh;
+  right: -12vw;
+  top: 18svh;
 }
 
 /* The fern understory: a photographic fringe rising from the hero's floor,
@@ -1557,16 +1551,19 @@ body {
    the sides into the vignette. */
 .forest-hero__botanicals {
   z-index: 5;
-  opacity: 0.95;
+  opacity: 0.84;
   background: url("/landing/forest/fern-edge-overlay.webp") center bottom / cover
     no-repeat;
-  mask-image: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.55),
-    black 10%,
-    black 90%,
-    rgba(0, 0, 0, 0.55)
-  );
+  mask-image:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.42),
+      black 12%,
+      black 88%,
+      rgba(0, 0, 0, 0.42)
+    ),
+    linear-gradient(to top, black 0%, black 54%, rgba(0, 0, 0, 0.2) 82%, transparent 100%);
+  mask-composite: intersect;
 }
 /* Dawn: the hero opens a stop darker and the light rises over ~2s. The base
    state is full daylight (opacity 0), so SSR, no-JS, and reduced motion never
