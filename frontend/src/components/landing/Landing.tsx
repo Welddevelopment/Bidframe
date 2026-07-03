@@ -125,7 +125,8 @@ export function Landing() {
                 Never lose a bid
               </span>
               <span className="forest-hero-title__subline block text-balance">
-                to a deal-breaker you missed.
+                to a <span className="hero-dealbreaker">deal-breaker</span> you
+                missed.
               </span>
             </h1>
             <p className="hero-enter-2 forest-hero-lede mx-auto mt-5 max-w-[58ch] text-balance text-lg leading-relaxed text-ink-muted sm:text-xl">
@@ -348,6 +349,7 @@ function ForestThreshold() {
     >
       <span aria-hidden className="forest-threshold__image absolute inset-0" />
       <TreelineDivider className="relative z-10 block h-14 w-full text-pine/55 sm:h-20" />
+      <span aria-hidden className="forest-threshold__mist z-10" />
       <TreelineDivider
         flip
         className="relative z-10 -mt-10 -mb-px block h-[4.5rem] w-full text-pine sm:-mt-14 sm:h-24"

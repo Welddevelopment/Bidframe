@@ -29,6 +29,11 @@ export function SiteFooter() {
       />
       <div className="landing-footer__ground relative bg-pine-deep">
         <span aria-hidden className="landing-footer__canopy absolute inset-0" />
+        <span aria-hidden className="landing-footer__stars absolute inset-0" />
+        <span aria-hidden className="landing-footer__mist" />
+        <span aria-hidden className="landing-footer__mote landing-footer__mote--1" />
+        <span aria-hidden className="landing-footer__mote landing-footer__mote--2" />
+        <span aria-hidden className="landing-footer__mote landing-footer__mote--3" />
         <PineBranch
           className="pointer-events-none absolute -right-16 top-8 hidden h-56 w-auto rotate-[16deg] text-paper/[0.08] lg:block"
         />
@@ -66,6 +71,9 @@ export function SiteFooter() {
             </p>
             <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-paper/[0.45]">
               Public tender worklist
+            </p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-paper/[0.45]">
+              Filed by Bidframe · 2026
             </p>
           </div>
         </div>
