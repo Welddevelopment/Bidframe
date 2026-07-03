@@ -10,6 +10,11 @@ import {
   useState,
 } from "react";
 import { BrandLogo } from "@/components/BrandLogo";
+import {
+  PitchScene,
+  zoneIsDark,
+  type PitchZone,
+} from "@/components/pitch/PitchScene";
 import { GatingHero } from "@/components/GatingHero";
 import { ComplianceMatrix } from "@/components/ComplianceMatrix";
 import { AnswerCard } from "@/components/AnswerCard";
@@ -52,7 +57,10 @@ interface SlideMeta {
   title: string;
   speaker: string;
   notes: string[];
-  tone: "deep" | "paper" | "product" | "appendix";
+  // The walk: which woodland zone the slide stands in, and how much light has
+  // reached it (0 = lost in the dark, 1 = the clearing).
+  zone: PitchZone;
+  light: number;
 }
 
 function pickEvidenceRequirement(requirements: Requirement[]) {
@@ -305,7 +313,8 @@ export function PitchDeck() {
           bucket: "Problem",
           title: "One missed deal-breaker kills the bid",
           speaker: "Jawad",
-          tone: "deep",
+          zone: "night",
+          light: 0.05,
           notes: [
             "Open with the plain-language definition: a tender is the buyer's official request to bid, with pass/fail requirements and evidence asks.",
             "Make the pain concrete: the first read is where teams hunt for disqualifiers.",
@@ -340,7 +349,8 @@ export function PitchDeck() {
           bucket: "Use Case",
           title: "The bid manager's first read",
           speaker: "Bobby",
-          tone: "paper",
+          zone: "pine",
+          light: 0.3,
           notes: [
             "Frame the user: a bid manager opens a public-sector tender and needs a fast, defensible first read.",
             "Use the market size as context, not a top-down TAM claim.",
@@ -382,7 +392,8 @@ export function PitchDeck() {
           bucket: "Solution",
           title: "A marked trail through the tender",
           speaker: "Pranav",
-          tone: "product",
+          zone: "pine",
+          light: 0.2,
           notes: [
             "Describe the product as a marked trail: extract requirements, classify them, dedupe them, then put the risky ones in front.",
             "Point at the real deal-breaker dossier. This is where the room should understand the wedge.",
@@ -418,7 +429,8 @@ export function PitchDeck() {
           bucket: "Product",
           title: "Deal-breakers first. Every line checkable.",
           speaker: "Joel",
-          tone: "product",
+          zone: "moss",
+          light: 0.6,
           notes: [
             "Lead with the product proof: the first screen tells a bid team what can disqualify them.",
             "Then show evidence-backed answer drafting as the second layer, not the first claim.",
@@ -460,7 +472,8 @@ export function PitchDeck() {
           bucket: "Demo Flow",
           title: "PDF to matrix to proof to answer",
           speaker: "Joel lead / Bobby support",
-          tone: "product",
+          zone: "paper",
+          light: 0.75,
           notes: [
             "Keep this as a quick route map for the live demo.",
             "Joel: PDF to matrix and deal-breaker view. Bobby: proof, answer receipts and demo reliability.",
@@ -514,7 +527,8 @@ export function PitchDeck() {
           bucket: "Tech",
           title: "A trust layer, not a PDF chatbot",
           speaker: "Pranav",
-          tone: "product",
+          zone: "pine",
+          light: 0.5,
           notes: [
             "Make the architecture understandable: ingest, extract, reconcile, route, cite and evaluate.",
             "Contrast with a PDF chatbot without naming competitors. Bidframe produces a structured review layer.",
@@ -561,7 +575,8 @@ export function PitchDeck() {
           bucket: "Ask",
           title: "Help us scale the first-read layer",
           speaker: "Jawad",
-          tone: "deep",
+          zone: "clearing",
+          light: 1,
           notes: [
             "Close with confidence and invite a conversation, not a generic fundraising line.",
             "Primary CTA is bidframe.org. Secondary CTA is bidframe.org/demo.",
@@ -592,7 +607,8 @@ export function PitchDeck() {
           bucket: "Appendix",
           title: "Team",
           speaker: "Q&A",
-          tone: "appendix",
+          zone: "paper",
+          light: 0.85,
           notes: [
             "Keep this for Q&A. The main deck only needs names and roles if asked.",
           ],
@@ -617,7 +633,8 @@ export function PitchDeck() {
           bucket: "Appendix",
           title: "Proof ledger",
           speaker: "Q&A",
-          tone: "appendix",
+          zone: "paper",
+          light: 0.85,
           notes: [
             "Use this if asked what is proven versus what is still scoped.",
             "Keep every claim tied to the worked example or repo evidence.",
@@ -649,7 +666,8 @@ export function PitchDeck() {
           bucket: "Appendix",
           title: "Market sources",
           speaker: "Q&A",
-          tone: "appendix",
+          zone: "paper",
+          light: 0.85,
           notes: [
             "Use this only when asked about market size or timing.",
             "The main pitch should stay on workflow pain and product proof.",
@@ -693,7 +711,8 @@ export function PitchDeck() {
           bucket: "Appendix",
           title: "Demo reliability",
           speaker: "Q&A",
-          tone: "appendix",
+          zone: "paper",
+          light: 0.85,
           notes: [
             "This is the answer if someone asks whether the demo is live inference.",
             "Be clear: the stage deck uses a cached real run; the live product route remains available.",
@@ -721,7 +740,8 @@ export function PitchDeck() {
           bucket: "Appendix",
           title: "Competitive wedge",
           speaker: "Q&A",
-          tone: "appendix",
+          zone: "paper",
+          light: 0.85,
           notes: [
             "Use this for positioning questions.",
             "The wedge is before bid-writing: the first-read layer and deal-breaker detection.",
@@ -780,6 +800,8 @@ export function PitchDeck() {
           ref={stageRef}
           aria-label="Bidframe pitch deck"
         >
+          <PitchScene zone={activeSlide.zone} light={activeSlide.light} />
+
           <div className="pitch-stage-progress" aria-hidden="true">
             <span style={{ width: `${mainProgress}%` }} />
           </div>
@@ -802,16 +824,16 @@ export function PitchDeck() {
           {slides.map((slide, index) => (
             <section
               key={`${slide.bucket}-${slide.title}`}
-              className={`pitch-slide pitch-slide--${slide.tone} ${
-                index === activeIndex ? "is-active" : ""
-              }`}
+              className={`pitch-slide pitch-slide--${slide.zone} ${
+                zoneIsDark(slide.zone)
+                  ? "pitch-slide--ondark"
+                  : "pitch-slide--onlight"
+              } ${index === activeIndex ? "is-active" : ""}`}
               aria-hidden={index === activeIndex ? undefined : true}
             >
-              <div className="pitch-forest-bg" aria-hidden="true" />
-              <div className="pitch-slide-shade" aria-hidden="true" />
               <div className="pitch-slide-topline">
                 <BrandLogo
-                  reversed={slide.tone === "deep"}
+                  reversed={zoneIsDark(slide.zone)}
                   className="h-8 w-auto"
                 />
                 <div>
