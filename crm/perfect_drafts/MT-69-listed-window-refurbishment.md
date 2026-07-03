@@ -5,7 +5,7 @@ Hi there,
 
 You've restored windows for Edinburgh City Chambers, Scotland Street School Museum, the High School of Glasgow and Hermiston School — council and heritage work where a conservation spec, an accreditation or an insurance level can be the pass/fail line that voids the bid.
 
-I built **Bidframe** for exactly this: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own past-project and accreditation evidence — a citation on every claim, nothing invented. There's a live demo on a real public-sector tender at https://bidframe.vercel.app if you'd like to watch it lift the deal-breakers out first.
+I built **Bidframe** for exactly this: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own past-project and accreditation evidence — a citation on every claim, nothing invented. There's a live demo on a real public-sector tender at https://www.bidframe.org if you'd like to watch it lift the deal-breakers out first.
 
 I've a few free pilot slots left this week and I'd like one to be yours — they tend to go quickly, so it's worth grabbing one today. Two asks:
 

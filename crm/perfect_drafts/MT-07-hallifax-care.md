@@ -5,7 +5,7 @@ Hi Johanne,
 
 As a Brighton & Hove City Council approved contractor, you're bidding homecare frameworks where a CQC rating threshold, a staffing ratio or a single missing policy can be the pass/fail line that voids everything — and you're reading each one yourself.
 
-I built **Bidframe** for exactly that: it reads the tender in minutes, surfaces the deal-breakers first, ties each to its exact clause, and drafts each answer from your own policies and evidence — a citation on every claim, nothing invented. If a look helps first, https://bidframe.vercel.app has a live demo on a real public-sector tender — the deal-breakers pulled to the top, each linked to its source clause.
+I built **Bidframe** for exactly that: it reads the tender in minutes, surfaces the deal-breakers first, ties each to its exact clause, and drafts each answer from your own policies and evidence — a citation on every claim, nothing invented. If a look helps first, https://www.bidframe.org has a live demo on a real public-sector tender — the deal-breakers pulled to the top, each linked to its source clause.
 
 I've a few free pilot slots left this week and I'd like one to be Hallifax's — they tend to go quickly, so it's worth booking today. Two small asks:
 

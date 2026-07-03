@@ -5,7 +5,7 @@ Hi there,
 
 You've serviced schools, colleges and government sites since 1985 — so you already know a fire-safety ITT can be won or lost on one line: a missing accreditation, a response time you can't evidence, and an otherwise strong bid is thrown out.
 
-I'm building **Bidframe**. It reads a UK public-sector tender and, in minutes, pulls out those pass/fail deal-breakers, links every one back to the exact clause, and drafts answer text only where your own certificates and method statements back it up — nothing invented. If it's easier to see than to describe, there's a live demo at https://bidframe.vercel.app that reads a real public-sector tender and lifts those deal-breakers to the top, each tied to its clause.
+I'm building **Bidframe**. It reads a UK public-sector tender and, in minutes, pulls out those pass/fail deal-breakers, links every one back to the exact clause, and drafts answer text only where your own certificates and method statements back it up — nothing invented. If it's easier to see than to describe, there's a live demo at https://www.bidframe.org that reads a real public-sector tender and lifts those deal-breakers to the top, each tied to its clause.
 
 I've a few free pilot slots left this week and I'd like one of them to be yours — they tend to go quickly, so it's worth booking today. Two quick asks:
 

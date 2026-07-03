@@ -5,7 +5,7 @@ Hi Adrian,
 
 Decorating for Kendal Town Council and Lancaster City Council means bidding council and HA void frameworks where an accreditation, an insurance level or a method statement can be the one line that voids the bid — and as the owner, that reading lands on your desk.
 
-**Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. You can watch it run on a real council tender at https://bidframe.vercel.app — the deal-breakers pulled to the top so nothing hides on page 60.
+**Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. You can watch it run on a real council tender at https://www.bidframe.org — the deal-breakers pulled to the top so nothing hides on page 60.
 
 I've a few free pilot slots left this week and I'd like one to be AJM's — they tend to go fast, so it's worth booking today. Two asks:
 

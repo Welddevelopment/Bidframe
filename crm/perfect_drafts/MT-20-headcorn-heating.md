@@ -5,7 +5,7 @@ Hi Andrew,
 
 As Town & Country Housing's contractor for oil and solid-fuel heating, you're bidding HA work where an OFTEC/Gas Safe scope, an insurance level or a response time can be the pass/fail line that voids the submission — and with three of you on the tools, the paperwork is the squeeze.
 
-**Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own certifications and method docs — a citation on every claim, nothing invented. There's a quick demo on a real public-sector tender at https://bidframe.vercel.app if you want to see it before we grab fifteen minutes.
+**Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own certifications and method docs — a citation on every claim, nothing invented. There's a quick demo on a real public-sector tender at https://www.bidframe.org if you want to see it before we grab fifteen minutes.
 
 I've a few free pilot slots left this week and I'd like one to be Headcorn's — they tend to go quickly, so it's worth booking today. Two asks:
 

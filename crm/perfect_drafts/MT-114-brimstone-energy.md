@@ -5,7 +5,7 @@ Hi Matt,
 
 Delivering the Caxton Village Hall solar+battery job on a £15k South Cambridgeshire District Council grant means that as you bid more council-funded community-building work, one missed pass/fail requirement voids the whole submission.
 
-I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own MCS and method docs, with a citation on every claim. You can see it in action on a real public-sector tender at https://bidframe.vercel.app — a quick look shows how it catches the kind of gate a council-grant pack turns on.
+I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own MCS and method docs, with a citation on every claim. You can see it in action on a real public-sector tender at https://www.bidframe.org — a quick look shows how it catches the kind of gate a council-grant pack turns on.
 
 I've a few free pilot slots left this week and I'd like Brimstone to have one — they tend to go quickly, so it's worth booking today. Two quick asks:
 

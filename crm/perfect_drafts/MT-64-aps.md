@@ -5,7 +5,7 @@ Hi there,
 
 You're trusted by Glasgow, Lanarkshire and Renfrewshire councils and HAs (and NHS Scotland) for building preservation — and post-Awaab the damp & mould tenders are coming fast, each with pass/fail lines that void the bid if missed.
 
-I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own PCA surveys and method docs, with a citation on every claim. You can see it in action on a real public-sector tender at https://bidframe.vercel.app before the next damp & mould pack lands on your desk.
+I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own PCA surveys and method docs, with a citation on every claim. You can see it in action on a real public-sector tender at https://www.bidframe.org before the next damp & mould pack lands on your desk.
 
 I've a few free pilot slots left this week and I'd like APS to have one — they tend to go quickly, so it's worth booking today. Two quick asks:
 

@@ -5,7 +5,7 @@ Hi Tony,
 
 Installing solar for schools like Middleton and Walton High, plus parish councils, means bidding public-sector work where an MCS scope, a safeguarding clause or an insurance level can be the pass/fail line that voids the whole submission.
 
-I built **Bidframe** for the owner-operator who can't spare a day on a tender: it reads the pack in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own MCS and method docs — a citation on every claim, nothing invented. If you'd rather see it than take my word for it, https://bidframe.vercel.app runs the tool on a real public-sector tender, deal-breakers lifted to the top.
+I built **Bidframe** for the owner-operator who can't spare a day on a tender: it reads the pack in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own MCS and method docs — a citation on every claim, nothing invented. If you'd rather see it than take my word for it, https://www.bidframe.org runs the tool on a real public-sector tender, deal-breakers lifted to the top.
 
 I've a few free pilot slots left this week and I'd like one to be Solar Partner's — they tend to fill up fast, so it's worth booking today. Two asks:
 

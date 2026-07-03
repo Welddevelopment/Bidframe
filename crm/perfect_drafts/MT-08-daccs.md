@@ -5,7 +5,7 @@ Hi Pauline and Samantha,
 
 Running the business between the two of you as a rural Devon care provider, reading every domiciliary tender by hand for the pass/fail traps is the slow, high-stakes bit — and one missed line voids the whole bid however good your CQC record.
 
-**Bidframe** does that reading for you: it surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own policies and CQC evidence — every claim cited, nothing invented. You can see it running on a real public-sector tender at https://bidframe.vercel.app — a minute there shows the idea better than I can here.
+**Bidframe** does that reading for you: it surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own policies and CQC evidence — every claim cited, nothing invented. You can see it running on a real public-sector tender at https://www.bidframe.org — a minute there shows the idea better than I can here.
 
 I've a few free pilot slots left this week and I'd like DACCS to have one — they tend to go quickly, so it's worth booking today. Two asks:
 

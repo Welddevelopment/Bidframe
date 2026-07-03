@@ -5,7 +5,7 @@ Hi there,
 
 You name Wigan Council and the NHS as clients — so you're bidding public-sector pest work where a BPCA scope, a response KPI or an insurance level can be the pass/fail line that voids the whole submission.
 
-I built **Bidframe** to catch exactly that: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. There's a live demo on a real public-sector tender at https://bidframe.vercel.app if you'd rather see it flag the pass/fail lines than read me describe them.
+I built **Bidframe** to catch exactly that: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. There's a live demo on a real public-sector tender at https://www.bidframe.org if you'd rather see it flag the pass/fail lines than read me describe them.
 
 I've a few free pilot slots left this week and I'd like Aardvark to have one — they tend to go quickly, so it's worth booking today. Two quick asks:
 

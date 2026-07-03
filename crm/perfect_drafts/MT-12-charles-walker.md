@@ -5,7 +5,7 @@ Hi Andrew,
 
 Being on North Yorkshire Council's housing-repairs contractor list means bidding minor-works packs where an insurance level, an accreditation or a method statement can be the one line that voids a strong bid — and with a six-person firm that reading lands on you.
 
-**Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. If seeing it helps, https://bidframe.vercel.app has a live demo on a real council tender — the deal-breakers surfaced first, each linked to its clause.
+**Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. If seeing it helps, https://www.bidframe.org has a live demo on a real council tender — the deal-breakers surfaced first, each linked to its clause.
 
 I've a few free pilot slots left this week and I'd like one to be yours — they tend to go quickly, so it's worth booking today. Two asks:
 

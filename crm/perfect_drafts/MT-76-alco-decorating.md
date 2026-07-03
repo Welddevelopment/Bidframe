@@ -5,7 +5,7 @@ Hi Tom,
 
 Winning decorating work at Godalming College, Queen Eleanor's, Glenthorne High and on social-housing voids means bidding school/MAT and council tenders where one missed pass/fail line voids the whole submission.
 
-I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs, with a citation on every claim, so a missed mandatory never sinks a strong bid. There's a live demo on a real public-sector tender at https://bidframe.vercel.app if you'd like to see it catch those before we speak.
+I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs, with a citation on every claim, so a missed mandatory never sinks a strong bid. There's a live demo on a real public-sector tender at https://www.bidframe.org if you'd like to see it catch those before we speak.
 
 I've a few free pilot slots left this week and I'd like ALCo to have one — they tend to go quickly, so it's worth booking today. Two quick asks:
 

@@ -5,7 +5,7 @@ Hi there,
 
 You've tendered grounds-maintenance for Norfolk CC, Suffolk CC and East Cambs DC for 15+ years — so you know a single missed line (a method statement, a SafeContractor cert, a response window) can void the whole thing.
 
-I'm building **Bidframe** — it reads a public-sector tender in minutes, surfaces those pass/fail deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method statements, every claim cited. You can watch it read a real council tender at https://bidframe.vercel.app — the same kind of grounds pack you tender, with the pass/fail lines pulled to the top.
+I'm building **Bidframe** — it reads a public-sector tender in minutes, surfaces those pass/fail deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method statements, every claim cited. You can watch it read a real council tender at https://www.bidframe.org — the same kind of grounds pack you tender, with the pass/fail lines pulled to the top.
 
 I've a few free pilot slots left this week and I'd like Top Garden to have one — they tend to go quickly, so it's worth booking today. Two quick asks:
 

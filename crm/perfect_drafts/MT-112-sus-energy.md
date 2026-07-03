@@ -5,7 +5,7 @@ Hi Stephen and Haley,
 
 Delivering solar for North East schools and community centres — Cragside, Dame Dorothy, Darlington College, Alnwick Community Centre — means bidding public-sector work where an MCS scope, a DBS/safeguarding clause or an insurance level can be the pass/fail line that voids the whole submission.
 
-I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own MCS and method docs, with a citation on every claim. There's a live demo on a real public-sector tender at https://bidframe.vercel.app if you and Haley want to see it flag the deal-breakers first.
+I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own MCS and method docs, with a citation on every claim. There's a live demo on a real public-sector tender at https://www.bidframe.org if you and Haley want to see it flag the deal-breakers first.
 
 I've a few free pilot slots left this week and I'd like one to be SUS Energy's — they tend to go quickly, so it's worth booking today. Two asks:
 

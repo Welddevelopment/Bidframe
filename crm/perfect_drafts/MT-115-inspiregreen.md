@@ -5,7 +5,7 @@ Hi there,
 
 You've delivered solar for Newport City Council (the Kingsway Solar Car Park) — so you're bidding public-sector solar+storage work where one missed pass/fail requirement voids the whole submission.
 
-I built **Bidframe** for exactly this: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own MCS and method docs — a citation on every claim, nothing invented. There's a live demo on a real public-sector tender at https://bidframe.vercel.app if you'd like to watch it turn one into a source-linked checklist first.
+I built **Bidframe** for exactly this: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own MCS and method docs — a citation on every claim, nothing invented. There's a live demo on a real public-sector tender at https://www.bidframe.org if you'd like to watch it turn one into a source-linked checklist first.
 
 I've a few free pilot slots left this week and I'd like one to be InspireGreen's — they tend to go fast, so it's worth booking today. Two asks:
 

@@ -5,7 +5,7 @@ Hi Anna and Tristan,
 
 Holding contracts with Pembrokeshire County Council and Ateb means bidding council and HA planned-works and adaptations where one missed pass/fail requirement voids the whole submission — and between the two of you, the paperwork is the pinch point.
 
-**Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. There's a live demo on a real public-sector tender at https://bidframe.vercel.app if the two of you want to see it before booking a slot.
+**Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. There's a live demo on a real public-sector tender at https://www.bidframe.org if the two of you want to see it before booking a slot.
 
 I've a few free pilot slots left this week and I'd like one to be yours — they tend to go quickly, so it's worth booking today. Two asks:
 

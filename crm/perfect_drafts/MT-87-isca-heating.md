@@ -5,7 +5,7 @@ Hi Lewis,
 
 Fitting DFG wet rooms for Teignbridge, East Devon and Mid-Devon councils means bidding adaptation work where an OT-spec detail, a DBS clause or an insurance level can be the pass/fail line that voids the whole submission.
 
-I built **Bidframe** for exactly this: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. If you'd like to see it first, https://bidframe.vercel.app has a live demo on a real council tender — deal-breakers pulled to the top, each linked to its clause.
+I built **Bidframe** for exactly this: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs — a citation on every claim, nothing invented. If you'd like to see it first, https://www.bidframe.org has a live demo on a real council tender — deal-breakers pulled to the top, each linked to its clause.
 
 I've a few free pilot slots left this week and I'd like one to be ISCA's — they tend to go fast, so it's worth booking today. Two asks:
 

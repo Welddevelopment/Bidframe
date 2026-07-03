@@ -5,7 +5,7 @@ Hi Phil,
 
 With Awaab's Law driving a wave of damp & mould tenders, and Cornwall Housing among your clients, one missed pass/fail requirement can void an otherwise strong bid — and as a CSRT surveyor you're doing the tender reading yourself.
 
-**Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own CSRT surveys and method docs — a citation on every claim, nothing invented. If you'd rather see it than take my word, https://bidframe.vercel.app runs the tool on a real public-sector tender, deal-breakers pulled to the top.
+**Bidframe** reads the tender and surfaces those deal-breakers first, each linked to its exact clause, then drafts each answer from your own CSRT surveys and method docs — a citation on every claim, nothing invented. If you'd rather see it than take my word, https://www.bidframe.org runs the tool on a real public-sector tender, deal-breakers pulled to the top.
 
 I've a few free pilot slots left this week and I'd like one to be Newseal's — they tend to go quickly, so it's worth booking today. Two asks:
 

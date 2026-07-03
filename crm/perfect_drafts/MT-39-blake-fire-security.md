@@ -5,7 +5,7 @@ Hi Ian,
 
 Securing Essex schools like Wethersfield and Chalkwell means bidding school and MAT work where a safeguarding clause, a DBS requirement or an accreditation can be the pass/fail line that voids the whole submission.
 
-I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and project record, with a citation on every claim. You can watch it run on a real public-sector tender at https://bidframe.vercel.app — the deal-breakers pulled to the top, the same kind a school-security ITT hides.
+I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and project record, with a citation on every claim. You can watch it run on a real public-sector tender at https://www.bidframe.org — the deal-breakers pulled to the top, the same kind a school-security ITT hides.
 
 I've a few free pilot slots left this week and I'd like one to be Blake's — they tend to go fast, so it's worth booking today. Two asks:
 

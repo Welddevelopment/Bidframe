@@ -5,7 +5,7 @@ Hi there,
 
 You've maintained grounds and gritted for Uttoxeter Town Council, plus hospitals and schools, since 2001 — so you know a single missed line (a method statement, a SafeContractor cert, a response window) can void the whole tender however well you actually do the work.
 
-I'm building **Bidframe** — it reads a public-sector tender and, in minutes, surfaces those pass/fail deal-breakers first, ties each one to its exact clause, and drafts answers only where your own accreditations and method statements support the claim. You can watch it do exactly that on a real council tender at https://bidframe.vercel.app — the deal-breakers surface first, every one linked back to its clause.
+I'm building **Bidframe** — it reads a public-sector tender and, in minutes, surfaces those pass/fail deal-breakers first, ties each one to its exact clause, and drafts answers only where your own accreditations and method statements support the claim. You can watch it do exactly that on a real council tender at https://www.bidframe.org — the deal-breakers surface first, every one linked back to its clause.
 
 I've a few free pilot slots left this week and I'd like Cropper to have one — they tend to go quickly, so it's worth booking today. Two small asks:
 

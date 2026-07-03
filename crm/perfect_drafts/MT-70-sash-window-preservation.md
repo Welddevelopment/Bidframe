@@ -5,7 +5,7 @@ Hi there,
 
 You've delivered for Cromer Town Council, Gresham's School and the Norfolk & Norwich Hospital — so you're bidding council and school glazing where one missed pass/fail requirement voids the whole submission.
 
-I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own past-project evidence, with a citation on every claim. You can see it read a real council tender at https://bidframe.vercel.app — the pass/fail lines pulled to the top, each tied to its clause.
+I'm building **Bidframe** — it reads the tender in minutes, surfaces those deal-breakers first, links each to its exact clause, and drafts each answer from your own past-project evidence, with a citation on every claim. You can see it read a real council tender at https://www.bidframe.org — the pass/fail lines pulled to the top, each tied to its clause.
 
 I've a few free pilot slots left this week and I'd like one to be yours — they tend to go fast, so it's worth booking today. Two quick asks:
 

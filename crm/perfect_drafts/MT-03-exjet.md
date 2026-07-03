@@ -5,7 +5,7 @@ Hi Robin,
 
 Bidding council and MoD drainage and civils work means wading through compliance-heavy packs, where one buried pass/fail requirement can sink an otherwise strong submission — and as a second-generation family firm you're doing that reading yourself, evenings included.
 
-That's the job I built **Bidframe** for: it reads the tender in minutes, flags every pass/fail deal-breaker first, links each to the exact clause it came from, and drafts answers straight from your own accreditation and method docs — a citation on each, so you approve in minutes. There's a live demo at https://bidframe.vercel.app if you'd rather see it than read about it — it runs the whole thing on a real public-sector pack, deal-breakers first.
+That's the job I built **Bidframe** for: it reads the tender in minutes, flags every pass/fail deal-breaker first, links each to the exact clause it came from, and drafts answers straight from your own accreditation and method docs — a citation on each, so you approve in minutes. There's a live demo at https://www.bidframe.org if you'd rather see it than read about it — it runs the whole thing on a real public-sector pack, deal-breakers first.
 
 I've a few free pilot slots left this week and I'd like one to be Exjet's — they tend to go fast, so it's worth booking today. Two asks:
 

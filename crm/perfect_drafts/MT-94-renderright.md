@@ -5,7 +5,7 @@ Hi Johnny and Jenna,
 
 Winning retrofit work for Barking & Dagenham, Ashford and Leicester City means bidding SHDF and Warm Homes frameworks where a PAS 2035 role, a TrustMark scope or an insurance level can be the pass/fail line that voids the whole submission.
 
-I built **Bidframe** so a husband-and-wife team never loses a bid on a missed mandatory: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs — a citation on every claim. You can see it run on a real public-sector tender at https://bidframe.vercel.app — the deal-breakers pulled straight to the top, each tied to its clause.
+I built **Bidframe** so a husband-and-wife team never loses a bid on a missed mandatory: it reads the tender in minutes, surfaces the deal-breakers first, links each to its exact clause, and drafts each answer from your own accreditations and method docs — a citation on every claim. You can see it run on a real public-sector tender at https://www.bidframe.org — the deal-breakers pulled straight to the top, each tied to its clause.
 
 I've a few free pilot slots left this week and I'd like one to be RenderRight's — they tend to go fast, so it's worth booking today. Two asks:
 
