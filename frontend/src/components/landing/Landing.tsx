@@ -14,6 +14,7 @@ import {
   ProductGalleryFrame,
 } from "./ProductShots";
 import { ProofScrolly } from "./ProofScrolly";
+import { TrailDescent } from "./TrailDescent";
 import { CredibilityBand } from "./CredibilityBand";
 import { HowItWorks } from "./HowItWorks";
 import { SiteFooter } from "./SiteFooter";
@@ -135,6 +136,10 @@ export function Landing() {
           </section>
         </div>
 
+        {/* The trail: the five feature bands and the ledger walk down one
+            engraved gutter path with waypoint blazes, while an ambient dusk
+            deepens with scroll (TrailDescent — decorative, desktop-only). */}
+        <TrailDescent>
         <FeatureSection
           title={
             <>
@@ -244,6 +249,7 @@ export function Landing() {
         <Band space="tight" className="credibility-band">
           <CredibilityBand />
         </Band>
+        </TrailDescent>
 
         {/* The forest threshold: the paper page descends through moss and two
             pine ridges before the proof band, so the dark proof ground feels
