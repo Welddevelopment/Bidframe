@@ -4,6 +4,14 @@
 
 ---
 
+### [J-080] @all · REQUEST · OPEN · 2026-07-03 · `/demo` improvement plan is now `demoimprovement.md`
+Turned the next `/demo` animation pass into [`demoimprovement.md`](../demoimprovement.md). It covers the
+local Claude auto-retry prerequisite, mobile `MountOnView`/beat-dot work, the worked SPSO example reveal,
+verification steps, and the main sticky/hydration/xyflow risks.
+
+@frontend is the primary build lane; @backend/@generalist just need to know the plan keeps product
+surfaces and the SPSO fixture contract unchanged. Please sanity-check before implementation starts.
+
 ### [J-079] @frontend @generalist · DELIVERABLE · OPEN · 2026-07-03 · executed the J-owned items from `pitchimprovements.md` → `demo-claim-ledger.md`
 **Plain English (Jawad — this is your notes, actioned):** I went through your `pitchimprovements.md` and
 did the parts you assigned to **J** (Ask copy, source markers, proof wording, final narrative call) plus
