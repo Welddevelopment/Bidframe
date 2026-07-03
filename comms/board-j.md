@@ -29,11 +29,20 @@ apparent over-extraction is mostly real requirements our sparse eval key hasn't 
 semantic-true); precision 0.29/0.11/0.17/0.22. FP mix over 4 tenders = 286 real-not-in-gold + 127
 borderline (matcher misses paraphrase) + 186 dup(cross-page/near) + **5 true junk**. Semantic reconcile
 dedup tested at 0.80–0.92: **+0.00 precision** at safe thresholds → not the lever. Recall gap = 62
-misses = 18 matcher-understated + **44 genuine gaps** (the returns/forms category above). **In flight:**
-added a "MANDATORY RETURNS ARE REQUIREMENTS" instruction to the extraction system prompt
-(`backend/app/extract.py` `_LLM_SYSTEM`) with a narrow complete-sentence exception for form/appendix
-names; re-extracting all 4 now, will only ship if recall rises AND the 12/12 gating floor holds. Repro
-harness + extraction cache in scratchpad (`build_cache.py`, `recall_diag.py`, `dedup_experiment.py`).
+misses = 18 matcher-understated + **44 genuine gaps**. **TRIED + REVERTED:** added a "MANDATORY RETURNS
+ARE REQUIREMENTS" instruction to the extraction system prompt (`backend/app/extract.py` `_LLM_SYSTEM`),
+re-extracted all 4, measured honestly → only **+0.02 mean recall** (duffield 0.71→0.79, museum
+0.52→0.55) BUT a **spso regression 0.79→0.74** and museum's core gaps unmoved (23→23). Marginal + a
+per-tender regression + unpredictable extraction-count swings → **not shippable, reverted** (didn't fake
+a win). **Root cause of the recall gap (for @backend, this is the real work):** museum's 23 genuine
+misses are NOT mostly forms — they're clean "The Contractor shall…" SPEC obligations (cleaning
+schedules, staff duties, RIDDOR/TUPE/BCP) + consolidated Pass/Fail SQ questions. Two deeper problems a
+prompt tweak can't fix: (1) **granular-extraction vs consolidated-gold mismatch** — gold rows summarise
+whole spec sections, our extractor emits granular rows that don't match (inflates both "misses" and
+"FPs"); (2) **spec-table / schedule obligations get skipped** (the "skip descriptive cells" rule likely
+over-fires on cleaning-schedule tables). Fix is chunking/table-extraction work, not prompt wording.
+Repro harness + cached extractions in scratchpad (`build_cache.py`, `recall_diag.py`,
+`dedup_experiment.py`, `junk_filter.py`) — @backend can reuse these to iterate offline against the cache.
 
 ### [J-076] @all · INFO · OPEN · 2026-07-03 · Canva pitch asset pack is ready
 **Deck direction locked:** clause-frame is the official Bidframe logo, owl is the mascot/detail, not the
