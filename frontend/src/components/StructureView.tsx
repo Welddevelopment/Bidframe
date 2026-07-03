@@ -22,8 +22,8 @@ import { NoTenderLoaded } from "./NoTenderLoaded";
 // longer ejects you to the matrix — its full detail slides in as a drawer over
 // the workspace, so you never lose your place. A prominent segmented control
 // (Split · Ledger · Map) replaces the old whisper-quiet text toggle, and a
-// filter bar (search, deal-breakers, to-check, category) narrows both panes at
-// once. See design-language.md, "The linked workspace" (a named departure).
+// filter select narrows both panes at once. See design-language.md, "The linked
+// workspace" (a named departure).
 
 type Layout = "split" | "ledger" | "map";
 
@@ -54,8 +54,8 @@ export function StructureView() {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [selectedCrit, setSelectedCrit] = useState<string | null>(null);
 
-  // The filter bar. Both panes receive the same predicate, so they always show
-  // the same slice of the tender.
+  // The filter controls. Both panes receive the same predicate, so they always
+  // show the same slice of the tender.
   const [query, setQuery] = useState("");
   const [gatingOnly, setGatingOnly] = useState(false);
   const [reviewOnly, setReviewOnly] = useState(false);
@@ -73,15 +73,6 @@ export function StructureView() {
       ),
     [requirements]
   );
-
-  const toggleCat = useCallback((c: string) => {
-    setActiveCats((prev) => {
-      const next = new Set(prev);
-      if (next.has(c)) next.delete(c);
-      else next.add(c);
-      return next;
-    });
-  }, []);
 
   const filter = useCallback(
     (r: Requirement): boolean => {
@@ -118,6 +109,28 @@ export function StructureView() {
     setReviewOnly(false);
     setActiveCats(new Set());
   }, []);
+  const filterValue =
+    gatingOnly
+      ? "deal-breakers"
+      : reviewOnly
+        ? "to-check"
+        : activeCats.size === 1
+          ? `category:${Array.from(activeCats)[0]}`
+          : activeCats.size > 1
+            ? "category:mixed"
+            : "all";
+  const selectFilter = useCallback((next: string) => {
+    setGatingOnly(false);
+    setReviewOnly(false);
+    setActiveCats(new Set());
+    if (next === "deal-breakers") {
+      setGatingOnly(true);
+    } else if (next === "to-check") {
+      setReviewOnly(true);
+    } else if (next.startsWith("category:")) {
+      setActiveCats(new Set([next.slice("category:".length)]));
+    }
+  }, []);
 
   if (isApiEnabled() && !tenderId) {
     return (
@@ -140,8 +153,7 @@ export function StructureView() {
 
   return (
     <div>
-      {/* Toolbar: the switcher, then the filter bar. This is the control the old
-          surface was missing — unmistakably a switch, not a line of prose. */}
+      {/* Toolbar: the switcher, search, and one compact filter select. */}
       <div className="mb-6 flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <Segmented
@@ -153,29 +165,11 @@ export function StructureView() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <FilterChip
-            active={gatingOnly}
-            onClick={() => setGatingOnly((v) => !v)}
-            tone="oxblood"
-          >
-            Deal-breakers
-          </FilterChip>
-          <FilterChip
-            active={reviewOnly}
-            onClick={() => setReviewOnly((v) => !v)}
-          >
-            To check
-          </FilterChip>
-          <span aria-hidden className="mx-1 h-4 w-px bg-hairline" />
-          {categories.map((c) => (
-            <FilterChip
-              key={c}
-              active={activeCats.has(c)}
-              onClick={() => toggleCat(c)}
-            >
-              {c}
-            </FilterChip>
-          ))}
+          <WorkspaceFilterSelect
+            value={filterValue}
+            categories={categories}
+            onChange={selectFilter}
+          />
           {filtersActive && (
             <button
               type="button"
@@ -218,6 +212,64 @@ export function StructureView() {
         onClose={() => setSelectedId(null)}
       />
     </div>
+  );
+}
+
+function WorkspaceFilterSelect({
+  value,
+  categories,
+  onChange,
+}: {
+  value: string;
+  categories: string[];
+  onChange: (value: string) => void;
+}) {
+  return (
+    <label className="inline-flex items-center gap-1.5 font-mono text-[11px] text-ink-muted">
+      <FilterIcon />
+      <select
+        value={value}
+        aria-label="Filter structure view"
+        onChange={(event) => onChange(event.target.value)}
+        className="rounded border border-hairline bg-paper px-1.5 py-0.5 text-[11px] text-ink outline-none transition-colors focus:border-forest focus:ring-1 focus:ring-forest"
+      >
+        <option value="all">All requirements</option>
+        <option value="deal-breakers">Deal-breakers</option>
+        <option value="to-check">To check</option>
+        {value === "category:mixed" && (
+          <option value="category:mixed" disabled>
+            Multiple categories
+          </option>
+        )}
+        {categories.length > 0 && (
+          <option value="category-heading" disabled>
+            Categories
+          </option>
+        )}
+        {categories.map((category) => (
+          <option key={category} value={`category:${category}`}>
+            {category}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function FilterIcon() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 24 24"
+      className="h-3.5 w-3.5 text-ink-muted"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M4 5h16l-6.5 7.5v5L10.5 19v-6.5L4 5z" />
+    </svg>
   );
 }
 
@@ -302,41 +354,5 @@ function SearchField({
         className="w-56 rounded-md border border-hairline bg-paper-raised py-1.5 pl-8 pr-3 text-sm text-ink placeholder:text-ink-muted/70 focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest"
       />
     </label>
-  );
-}
-
-function FilterChip({
-  active,
-  onClick,
-  tone = "neutral",
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  tone?: "neutral" | "oxblood";
-  children: React.ReactNode;
-}) {
-  const dot =
-    tone === "oxblood"
-      ? active
-        ? "bg-signal-oxblood"
-        : "border border-signal-oxblood/50"
-      : active
-        ? "bg-forest"
-        : "border border-hairline";
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[11px] tracking-wide transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-1 focus-visible:ring-offset-paper ${
-        active
-          ? "border-hairline bg-paper-raised text-ink shadow-[var(--depth-row)]"
-          : "border-hairline text-ink-muted hover:bg-paper-raised hover:text-ink"
-      }`}
-    >
-      <span className={`h-2 w-2 shrink-0 rounded-full ${dot}`} aria-hidden />
-      {children}
-    </button>
   );
 }

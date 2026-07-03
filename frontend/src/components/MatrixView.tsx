@@ -156,9 +156,8 @@ export function MatrixView({ title }: { title: string }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<GroupKey | null>(null);
   // Category filter (empty set = all categories shown) and the row sort order.
-  // Held here so the matrix, the header chips (a following step), and the split
-  // spine all read one source. The visible chip/menu UI is the next step; this
-  // step wires the state and threads it through.
+  // Held here so the matrix, the header dropdown, command palette, and split
+  // spine all read one source.
   const [activeCategories, setActiveCategories] = useState<Set<string>>(
     () => new Set<string>()
   );
@@ -169,6 +168,9 @@ export function MatrixView({ title }: { title: string }) {
       else next.add(category);
       return next;
     });
+  }, []);
+  const setCategoryFilter = useCallback((category: string | null) => {
+    setActiveCategories(category ? new Set([category]) : new Set());
   }, []);
   const [sortBy, setSortBy] = useState<SortKey>("confidence");
   // Row density for the matrix: comfortable by default, compact for a longer
@@ -380,9 +382,8 @@ export function MatrixView({ title }: { title: string }) {
     },
     [selectedList, flagMany, undoAction, clearSelection]
   );
-  // The distinct categories present, sorted by label, for the header's category
-  // filter (the chip UI lands in the next step). Cheap to derive each render,
-  // like triage above.
+  // The distinct categories present, sorted by label, for the header dropdown.
+  // Cheap to derive each render, like triage above.
   const availableCategories = Array.from(
     new Set(requirements.map((req) => req.category))
   ).sort((a, b) => a.localeCompare(b));
@@ -564,10 +565,9 @@ export function MatrixView({ title }: { title: string }) {
           nextLabel: priorityId ? "Next" : "Export response",
           categories: availableCategories,
           activeCategories,
-          onToggleCategory: toggleCategory,
+          onSetCategory: setCategoryFilter,
           sortBy,
           onSortChange: setSortBy,
-          counterKey: revealSeed,
         }}
       />
 

@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import type { GroupKey, SortKey } from "@/lib/triage";
+import { GROUP_LABELS, type GroupKey, type SortKey } from "@/lib/triage";
 import { categoryStyle } from "@/lib/categoryStyle";
 import { useRequirements } from "@/context/RequirementsContext";
 import { AccountMenu } from "./AccountMenu";
-import { AnimatedNumber } from "./AnimatedNumber";
 import { BrandLogo } from "./BrandLogo";
 import { SectionNav } from "./SectionNav";
 
@@ -14,8 +13,8 @@ import { SectionNav } from "./SectionNav";
 // running head "BIDFRAME", the section switcher, the tender title in Fraunces,
 // and a reference line in mono drawn from real tender metadata (the requirement
 // count, and the tender id when a live tender is loaded, never an invented
-// reference). Centre is the triage line: three in-page filters for the worklist
-// groups. Right is exactly one primary action, Next. Beneath the whole header
+// reference). Centre is the section switcher. Right is exactly one primary
+// action, Next. Beneath the whole header
 // sits the one 2px ink rule (--rule-strong). On views without a worklist
 // (answers, graph) only the title zone renders.
 
@@ -27,20 +26,14 @@ interface TriageHeader {
   nextLabel: string;
   // Category filter + sort contract. All optional and backward-compatible, so
   // the hero embed, the demo, and the frozen worked-example keep rendering
-  // unchanged. This step only holds the contract; the chip / sort UI is built in
-  // the following step. `categories` is the distinct category list to offer,
+  // unchanged. `categories` is the distinct category list to offer,
   // `activeCategories` is the current selection (empty = all), and `sortBy` /
   // `onSortChange` drive the row order.
   categories?: string[];
   activeCategories?: Set<string>;
-  onToggleCategory?: (category: string) => void;
+  onSetCategory?: (category: string | null) => void;
   sortBy?: SortKey;
   onSortChange?: (sort: SortKey) => void;
-  // When present, the triage counts render as spring-ticking AnimatedNumbers,
-  // keyed by this value: they tick 0 → real once per tender (the staged
-  // reveal) and then tick between values as decisions land. Omitted (the hero
-  // embed, the demo, the frozen example) = plain static numbers, unchanged.
-  counterKey?: string;
 }
 
 export function DocumentHeader({
@@ -109,140 +102,97 @@ export function DocumentHeader({
           </div>
         </div>
 
-        {/* The triage line: the worklist filters, a contextual sub-bar centred
-            under the masthead. Only the matrix passes triage. */}
+        {/* Matrix controls: one filter select instead of a row of chip toggles,
+            with the existing sort beside it. */}
         {triage && (
-          <nav
-            aria-label="Filter the worklist"
-            className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm"
-          >
-            <TriageFilter
-              count={triage.counts["needs-you"]}
-              label="need your input"
-              groupKey="needs-you"
-              activeFilter={triage.activeFilter}
-              onFilter={triage.onFilter}
-              counterKey={triage.counterKey}
-            />
-            <span aria-hidden className="text-ink-muted">
-              ·
-            </span>
-            <TriageFilter
-              count={triage.counts["to-verify"]}
-              label="to verify"
-              groupKey="to-verify"
-              activeFilter={triage.activeFilter}
-              onFilter={triage.onFilter}
-              counterKey={triage.counterKey}
-            />
-            <span aria-hidden className="text-ink-muted">
-              ·
-            </span>
-            <TriageFilter
-              count={triage.counts.ready}
-              label="ready to approve"
-              groupKey="ready"
-              activeFilter={triage.activeFilter}
-              onFilter={triage.onFilter}
-              counterKey={triage.counterKey}
-            />
-            <span aria-hidden className="text-ink-muted">
-              ·
-            </span>
-            <TriageFilter
-              count={triage.counts.decided}
-              label="decided"
-              groupKey="decided"
-              activeFilter={triage.activeFilter}
-              onFilter={triage.onFilter}
-              counterKey={triage.counterKey}
-            />
-          </nav>
+          <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+            <MatrixFilterControl triage={triage} />
+            {triage.sortBy && triage.onSortChange && (
+              <SortControl
+                sortBy={triage.sortBy}
+                onSortChange={triage.onSortChange}
+              />
+            )}
+          </div>
         )}
-
-        {/* The content sub-line: colour-coded category filter chips (a tinted
-            pill per category, filled when selected, outlined when resting) with
-            a quiet sort control alongside. Category colours are CONTENT colours
-            (categoryStyle), kept clear of the brand and status hues. Both are
-            optional, so the hero, demo, and frozen example render without this
-            row. */}
-        {triage &&
-          ((triage.categories && triage.categories.length > 0) ||
-            (triage.sortBy && triage.onSortChange)) && (
-            <div className="mt-2.5 flex flex-wrap items-center justify-center gap-x-2 gap-y-1.5">
-              {triage.categories?.map((category) => (
-                <CategoryChip
-                  key={category}
-                  category={category}
-                  active={triage.activeCategories?.has(category) ?? false}
-                  onToggle={triage.onToggleCategory}
-                />
-              ))}
-              {triage.sortBy && triage.onSortChange && (
-                <>
-                  {triage.categories && triage.categories.length > 0 && (
-                    <span
-                      aria-hidden
-                      className="mx-0.5 h-3 w-px bg-hairline"
-                    />
-                  )}
-                  <SortControl
-                    sortBy={triage.sortBy}
-                    onSortChange={triage.onSortChange}
-                  />
-                </>
-              )}
-            </div>
-          )}
       </div>
     </header>
   );
 }
 
-// A category filter chip: the CategoryTag look worn as a toggle. Resting it is an
-// outline in the category hue; selected it fills with the same tint and darkens
-// its label toward ink, so the on state reads without leaning on colour alone.
-function CategoryChip({
-  category,
-  active,
-  onToggle,
-}: {
-  category: string;
-  active: boolean;
-  onToggle?: (category: string) => void;
-}) {
-  const { label, hex } = categoryStyle(category);
+function MatrixFilterControl({ triage }: { triage: TriageHeader }) {
+  const activeCategoryCount = triage.activeCategories?.size ?? 0;
+  const activeCategory =
+    activeCategoryCount === 1
+      ? Array.from(triage.activeCategories ?? [])[0]
+      : null;
+  const value = triage.activeFilter
+    ? `flow:${triage.activeFilter}`
+    : activeCategory
+      ? `category:${activeCategory}`
+      : activeCategoryCount > 1
+        ? "category:mixed"
+        : "all";
+
+  function onChange(next: string) {
+    if (next === "all") {
+      triage.onFilter(null);
+      triage.onSetCategory?.(null);
+      return;
+    }
+    if (next.startsWith("flow:")) {
+      triage.onFilter(next.slice("flow:".length) as GroupKey);
+      triage.onSetCategory?.(null);
+      return;
+    }
+    if (next.startsWith("category:")) {
+      triage.onFilter(null);
+      triage.onSetCategory?.(next.slice("category:".length));
+    }
+  }
+
   return (
-    <button
-      type="button"
-      aria-pressed={active}
-      onClick={() => onToggle?.(category)}
-      className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.08em] transition-colors"
-      style={
-        active
-          ? {
-              color: `color-mix(in oklab, ${hex} 62%, var(--color-ink))`,
-              backgroundColor: `color-mix(in oklab, ${hex} 16%, var(--color-paper-raised))`,
-              boxShadow: `inset 0 0 0 1px color-mix(in oklab, ${hex} 42%, transparent)`,
-            }
-          : {
-              color: "var(--color-ink-muted)",
-              backgroundColor: "transparent",
-              boxShadow: `inset 0 0 0 1px color-mix(in oklab, ${hex} 28%, var(--color-hairline))`,
-            }
-      }
-    >
-      <span
-        className="h-1.5 w-1.5 rounded-full"
-        style={{
-          backgroundColor: active
-            ? hex
-            : `color-mix(in oklab, ${hex} 55%, var(--color-ink-muted))`,
-        }}
-        aria-hidden
-      />
-      {label}
-    </button>
+    <label className="inline-flex items-center gap-1.5 font-mono text-[11px] text-ink-muted">
+      <FilterIcon />
+      <select
+        value={value}
+        aria-label="Filter matrix"
+        onChange={(event) => onChange(event.target.value)}
+        className="rounded border border-hairline bg-paper px-1.5 py-0.5 text-[11px] text-ink outline-none transition-colors focus:border-forest focus:ring-1 focus:ring-forest"
+      >
+        <option value="all">All requirements</option>
+        <option value="flow:needs-you">
+          {GROUP_LABELS["needs-you"]} ({triage.counts["needs-you"]})
+        </option>
+        <option value="flow:to-verify">
+          {GROUP_LABELS["to-verify"]} ({triage.counts["to-verify"]})
+        </option>
+        <option value="flow:ready">
+          {GROUP_LABELS.ready} ({triage.counts.ready})
+        </option>
+        <option value="flow:decided">
+          {GROUP_LABELS.decided} ({triage.counts.decided})
+        </option>
+        {activeCategoryCount > 1 && (
+          <option value="category:mixed" disabled>
+            Multiple categories
+          </option>
+        )}
+        {triage.categories && triage.categories.length > 0 && (
+          <option value="category-heading" disabled>
+            Categories
+          </option>
+        )}
+        {triage.categories?.map((category) => {
+          const { label } = categoryStyle(category);
+          return (
+            <option key={category} value={`category:${category}`}>
+              {label}
+            </option>
+          );
+        })}
+      </select>
+    </label>
   );
 }
 
@@ -272,42 +222,19 @@ function SortControl({
   );
 }
 
-function TriageFilter({
-  count,
-  label,
-  groupKey,
-  activeFilter,
-  onFilter,
-  counterKey,
-}: {
-  count: number;
-  label: string;
-  groupKey: GroupKey;
-  activeFilter: GroupKey | null;
-  onFilter: (key: GroupKey | null) => void;
-  counterKey?: string;
-}) {
-  const isActive = activeFilter === groupKey;
+function FilterIcon() {
   return (
-    <button
-      type="button"
-      aria-pressed={isActive}
-      onClick={() => onFilter(isActive ? null : groupKey)}
-      className={`whitespace-nowrap transition-colors ${
-        isActive
-          ? "font-semibold text-ink underline decoration-1 underline-offset-4"
-          : "text-ink-muted hover:text-ink"
-      }`}
+    <svg
+      aria-hidden
+      viewBox="0 0 24 24"
+      className="h-3.5 w-3.5 text-ink-muted"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
-      {counterKey !== undefined ? (
-        // Keyed by the tender identity: the count ticks up from 0 exactly once
-        // per tender, then springs between values as decisions land. Reduced
-        // motion (inside AnimatedNumber) jumps straight to the value.
-        <AnimatedNumber key={counterKey} value={count} from={0} />
-      ) : (
-        count
-      )}{" "}
-      {label}
-    </button>
+      <path d="M4 5h16l-6.5 7.5v5L10.5 19v-6.5L4 5z" />
+    </svg>
   );
 }

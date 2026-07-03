@@ -52,15 +52,6 @@ export function AnswersBody() {
     );
   }
 
-  function toggleFilter(key: AnswerFilterKey) {
-    setActive((prev) => {
-      const next = new Set(prev);
-      if (next.has(key)) next.delete(key);
-      else next.add(key);
-      return next;
-    });
-  }
-
   function selectFilter(key: AnswerFilterKey | null) {
     setActive(key ? new Set([key]) : new Set());
   }
@@ -90,7 +81,7 @@ export function AnswersBody() {
           capabilityDocs={capabilityDocs}
           tenderTitle={title}
           active={active}
-          onToggle={toggleFilter}
+          onSelect={selectFilter}
           weakestFirst={weakestFirst}
           onToggleSort={setWeakestFirst}
         />

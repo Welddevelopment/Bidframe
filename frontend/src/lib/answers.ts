@@ -93,7 +93,7 @@ export function deriveReadiness(reqs: Requirement[]): ReadinessCounts {
   return counts;
 }
 
-// --- filter chips (multi-select OR; empty set = show all) ---
+// --- answer filters (empty set = show all; the UI selects one at a time) ---
 
 export type AnswerFilterKey = "deal-breakers" | "needs-input" | "unbacked";
 
