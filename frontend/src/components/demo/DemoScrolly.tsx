@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { STEPS, type Step } from "./steps";
 import { BeatVisual, ScrollyStage } from "./ScrollyStage";
 import { MountOnView } from "./MountOnView";
-import { ScrollyRail } from "./ScrollyRail";
+import { TrailRail } from "./TrailRail";
 import { useBeatStep, useScrollTimeline } from "./useScrollTimeline";
 import { BookDemoButton } from "@/components/landing/BookDemoButton";
 
@@ -197,15 +197,18 @@ export function DemoScrolly({ intro }: { intro?: React.ReactNode }) {
 
   // Enhanced (wide + motion): a split layout. Tall narrative steps scroll in
   // the middle; the stage stays pinned and centred on the right, transforming
-  // as the active step changes. At xl a third, leftmost column appears: the
-  // progress rail, pinned like the stage. Below xl the rail is display:none,
-  // so the grid collapses back to the two-column split.
+  // as the active step changes. At lg a third, leftmost column appears: a
+  // trail rail, pinned like the stage. Below lg the rail is display:none, so
+  // the grid collapses back to the two-column split.
   return (
     <div className="mx-auto max-w-[1160px] px-6">
-      <div className="grid grid-cols-[minmax(18rem,24rem)_1fr] gap-12 xl:grid-cols-[8.5rem_minmax(18rem,22rem)_1fr] xl:gap-16">
-        <div className="hidden xl:block">
+      <div className="grid grid-cols-[minmax(18rem,24rem)_1fr] gap-12 lg:grid-cols-[7.5rem_minmax(17rem,22rem)_1fr] lg:gap-8 xl:grid-cols-[8.5rem_minmax(18rem,22rem)_1fr] xl:gap-16">
+        <div className="hidden lg:block">
           <div className="sticky top-0 flex h-screen items-center">
-            <ScrollyRail active={Math.min(activeStep, STEPS.length - 1)} />
+            <TrailRail
+              active={Math.min(activeStep, STEPS.length - 1)}
+              beat={beat}
+            />
           </div>
         </div>
         <div ref={narrativeRef} className="relative">
