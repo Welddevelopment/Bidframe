@@ -153,13 +153,36 @@ def semantic_gating_recall(gold: dict, output: dict, embed_index, threshold: flo
                 pairs.append((c, gi, ri))
     pairs.sort(key=lambda p: (-p[0], p[1], p[2]))  # deterministic: cosine desc, then indices
 
-    credit: dict[int, tuple[float, int]] = {}
-    used_r: set[int] = set()
-    for c, gi, ri in pairs:
-        if gi in credit or ri in used_r:
-            continue
-        credit[gi] = (c, ri)
-        used_r.add(ri)
+    # Maximum bipartite matching (Kuhn augmenting paths), NOT greedy. Greedy (take highest-cosine
+    # pairs first) can leave a gold gate uncredited even when an eligible surfaced req exists for it,
+    # because a higher-cosine pair stole that req — an UNDER-count that grows with the candidate pool
+    # (the generous net triggered exactly this: net-alone 10/10 but 9/10 once extraction reqs joined
+    # the pool). A max matching credits every gold that CAN be matched one-to-one, so it never
+    # under-counts; it stays strictly one-to-one, so no single req credits two gold rows (the
+    # granularity guard still holds). Adjacency is cosine-desc ordered so results are deterministic.
+    from collections import defaultdict
+    adj: dict[int, list[int]] = defaultdict(list)
+    cos_of: dict[tuple[int, int], float] = {}
+    for c, gi, ri in pairs:  # already filtered to threshold + region
+        adj[gi].append(ri)
+        cos_of.setdefault((gi, ri), c)
+
+    match_r: dict[int, int] = {}  # surfaced-req index -> gold index
+
+    def _augment(gi: int, seen: set[int]) -> bool:
+        for ri in adj[gi]:
+            if ri in seen:
+                continue
+            seen.add(ri)
+            if ri not in match_r or _augment(match_r[ri], seen):
+                match_r[ri] = gi
+                return True
+        return False
+
+    for gi in range(len(gold_gating)):
+        _augment(gi, set())
+
+    credit: dict[int, tuple[float, int]] = { gi: (cos_of[(gi, ri)], ri) for ri, gi in match_r.items() }
 
     audit = []
     for gi, g in enumerate(gold_gating):

@@ -40,6 +40,22 @@ def test_credits_genuine_same_page_catch():
     assert r["audit"][0]["caught"] is True and r["audit"][0]["cosine"] == 0.7
 
 
+def test_max_matching_never_undercounts_vs_greedy():
+    """Both g1 and g2 are catchable one-to-one, but GREEDY would take g1<-r1 (0.90) first and leave
+    g2 uncredited (its only >=threshold req is r1) -> 1/2. Maximum matching assigns g1<-r2, g2<-r1
+    -> 2/2. This is the artifact the generous net triggered (net-alone 10/10 but 9/10 with more
+    candidates); the fix must still be one-to-one (no req credits two golds)."""
+    gold = _gold([("g1", "G1", 1, True), ("g2", "G2", 1, True)])
+    out = _out([("r1", "R1", 1, True), ("r2", "R2", 1, True)])
+    idx = _FakeIndex({
+        frozenset({"G1", "R1"}): 0.90,
+        frozenset({"G1", "R2"}): 0.72,
+        frozenset({"G2", "R1"}): 0.80,
+    })
+    r = semantic_gating_recall(gold, out, idx)
+    assert r["caught"] == 2 and r["recall"] == 1.0   # greedy would have scored 1/2
+
+
 def test_cross_page_high_cosine_never_credits():
     # A wrong-region coincidence must NOT false-credit, however high the cosine.
     gold = _gold([("g1", "A", 6, True)])
