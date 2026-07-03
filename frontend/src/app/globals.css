@@ -1741,6 +1741,55 @@ body {
     text-shadow 360ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* === Proof scrolly (ProofScrolly.tsx). The page-tick strip: one tally mark
+   per hand-checked requirement, the flagged one taller and amber. The beat
+   entrance, the "Every" type-on (audit-type reuse), and the "0" stamp
+   (stamp-settle-lg reuse) are armed motion-safe; the static strip and the
+   stacked fallback render composed. */
+.proof-tick {
+  display: inline-block;
+  width: 4px;
+  height: 1.05rem;
+  background: rgba(246, 242, 233, 0.85);
+}
+.proof-tick--flag {
+  height: 1.35rem;
+  background: var(--color-signal-amber);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .proof-beat {
+    animation: proof-beat-enter 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .proof-type-on {
+    animation: audit-type 0.7s steps(10, end) 0.15s both;
+  }
+  .proof-stamp-on {
+    animation: stamp-settle-lg 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s
+      both;
+  }
+  .proof-ticks--animate .proof-tick {
+    animation: tick-light 0.3s ease calc(180ms + var(--i) * 45ms) both;
+  }
+}
+@keyframes proof-beat-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes tick-light {
+  from {
+    opacity: 0.18;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .forest-threshold {
   background: #dfe6d2;
 }

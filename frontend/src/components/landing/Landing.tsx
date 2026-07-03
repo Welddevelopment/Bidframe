@@ -13,7 +13,7 @@ import {
   AnswerCard,
   ProductGalleryFrame,
 } from "./ProductShots";
-import { ProofNumbers } from "./ProofNumbers";
+import { ProofScrolly } from "./ProofScrolly";
 import { CredibilityBand } from "./CredibilityBand";
 import { HowItWorks } from "./HowItWorks";
 import { SiteFooter } from "./SiteFooter";
@@ -253,7 +253,9 @@ export function Landing() {
         {/* Pine band 1: the proof is the page's ceremonial register. The seal,
             rules, low treeline and branch previews echo the footer before it
             arrives, so the close reads as a destination already promised. */}
-        <section className="proof-band relative isolate overflow-hidden bg-pine text-paper">
+        {/* overflow-x-clip, not overflow-hidden: ProofScrolly pins a sticky
+            stage inside this section, and overflow-hidden would kill it. */}
+        <section className="proof-band relative isolate overflow-x-clip bg-pine text-paper">
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
             <span className="proof-band__image absolute inset-0" />
             <span className="proof-band__leaf-shadow absolute inset-0" />
@@ -267,21 +269,7 @@ export function Landing() {
             <PineBranch className="h-56 w-auto rotate-[11deg] text-paper/[0.08]" />
           </DrawOn>
           <div className={`${CONTAINER} relative z-10 py-28 sm:py-36`}>
-            <Reveal className="proof-band__intro mx-auto max-w-[900px] border-y border-paper/20 py-10 text-center">
-              <Head tone="dark" size="poster" align="center" singleLine>
-                Measured on a real tender
-              </Head>
-              <p className="mx-auto mt-5 max-w-[58ch] text-balance text-lg leading-relaxed text-paper/[0.72] sm:text-xl">
-                We ran Bidframe on a live public-sector cleaning contract and
-                checked every line against the source.
-              </p>
-              <p className="mx-auto mt-5 max-w-[58ch] font-mono text-xs uppercase tracking-[0.14em] text-paper/[0.52]">
-                Source-checked against the tender record
-              </p>
-            </Reveal>
-            <Reveal className="reveal-proof mt-12 sm:mt-16">
-              <ProofNumbers />
-            </Reveal>
+            <ProofScrolly />
           </div>
         </section>
       </main>
