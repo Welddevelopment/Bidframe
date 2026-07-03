@@ -1,7 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Bidframe">
   <title>Bidframe</title>
-  <circle cx="32" cy="32" r="29.5" fill="#f6f2e9"></circle>
-  <circle cx="32" cy="32" r="29.5" fill="none" stroke="#211d17" stroke-width="2.2"></circle>
-  <path d="M19 28V19H29M35 19H45V29M19 36V45H29M45 36V45H35" fill="none" stroke="#211d17" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"></path>
-  <path d="M23 31H34M23 37H39" fill="none" stroke="#211d17" stroke-width="2.5" stroke-linecap="square"></path>
+  <rect x="7" y="7" width="50" height="50" fill="none" stroke="#211d17" stroke-width="6" stroke-linejoin="miter"></rect>
+  <path d="M18 27H44M18 38H48" fill="none" stroke="#211d17" stroke-width="5" stroke-linecap="square"></path>
 </svg>

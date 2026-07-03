@@ -1,6 +1,5 @@
 <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bidframe">
   <title>Bidframe</title>
-  <circle cx="32" cy="32" r="31" fill="#f6f2e9" />
-  <path d="M18 28V18H29M35 18H46V29M18 36V46H29M46 36V46H35" stroke="#211d17" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter" />
-  <path d="M23 31H35M23 38H41" stroke="#211d17" stroke-width="3" stroke-linecap="square" />
+  <rect x="7" y="7" width="50" height="50" stroke="#211d17" stroke-width="6" stroke-linejoin="miter" />
+  <path d="M18 27H44M18 38H48" stroke="#211d17" stroke-width="5" stroke-linecap="square" />
 </svg>
