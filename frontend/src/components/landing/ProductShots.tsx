@@ -4,6 +4,36 @@
 
 import { ApprovalStamp } from "@/components/ApprovalStamp";
 
+export function ProductGalleryFrame({
+  children,
+  label,
+  tone = "default",
+}: {
+  children: React.ReactNode;
+  label: string;
+  tone?: "default" | "alert" | "source" | "answer";
+}) {
+  const toneClass =
+    tone === "alert"
+      ? "forest-product-object-alert"
+      : tone === "source"
+        ? "forest-product-object-source"
+        : tone === "answer"
+          ? "forest-product-object-answer"
+          : "";
+
+  return (
+    <div className={`forest-product-object ${toneClass}`}>
+      <span className="forest-product-object__plate" aria-hidden />
+      <div className="forest-product-object__label">
+        <span>{label}</span>
+        <span>live UI</span>
+      </div>
+      <div className="forest-product-object__card">{children}</div>
+    </div>
+  );
+}
+
 // The deal-breaker: a priority panel with one selected gate lifted above the
 // normal requirements, so "first" is visible before the prose explains it.
 export function DealBreakerCard() {

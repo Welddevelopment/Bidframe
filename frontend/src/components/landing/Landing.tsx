@@ -5,12 +5,16 @@ import { Reveal } from "./Reveal";
 import { DrawOn } from "./DrawOn";
 import { ConfidenceIndicator } from "@/components/ConfidenceIndicator";
 import { BrandLogo } from "@/components/BrandLogo";
-import { DealBreakerCard, ClauseCard, AnswerCard } from "./ProductShots";
+import {
+  DealBreakerCard,
+  ClauseCard,
+  AnswerCard,
+  ProductGalleryFrame,
+} from "./ProductShots";
 import { ProofNumbers } from "./ProofNumbers";
 import { CredibilityBand } from "./CredibilityBand";
 import { HowItWorks } from "./HowItWorks";
 import { SiteFooter } from "./SiteFooter";
-import { FernFrond } from "./art/FernFrond";
 import { PineBranch } from "./art/PineBranch";
 import { PressedLeaf } from "./art/PressedLeaf";
 import { TreelineDivider } from "./art/TreelineDivider";
@@ -95,67 +99,51 @@ export function Landing() {
       </header>
 
       <main>
-        {/* The hero fold: an immersive forest record. The real product sheet
-            stays central and legible while the pine/fern engravings, faint seal
-            and low ridge make the first viewport feel discovered inside the
-            forest rather than merely decorated by it. */}
+        {/* The hero fold: a forest-tinted record backdrop, with the real product
+            demo kept as the foreground sheet below the headline. */}
         <div className="forest-hero relative overflow-hidden">
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-            <TreelineDivider className="hero-ridge absolute inset-x-0 bottom-0 h-24 w-full text-moss sm:h-32" />
-            <TreelineDivider
-              flip
-              className="hero-canopy absolute -top-10 inset-x-0 hidden h-28 w-full rotate-180 text-forest/[0.1] md:block lg:h-32"
-            />
-            <FernFrond className="art-draw absolute -right-28 top-24 hidden h-[430px] w-auto rotate-[7deg] text-forest/[0.2] md:block lg:-right-20 lg:top-14 lg:h-[620px] lg:text-forest/[0.28]" />
-            <FernFrond className="art-draw absolute -left-32 top-28 hidden h-[420px] w-auto origin-center -scale-x-100 -rotate-[6deg] text-forest/[0.16] md:block lg:-left-24 lg:top-20 lg:h-[600px] lg:text-forest/[0.22]" />
-            <FernFrond className="art-draw absolute -right-10 top-[360px] hidden h-[360px] w-auto rotate-[18deg] text-pine/[0.1] xl:block" />
-            <FernFrond className="art-draw absolute -right-20 top-[315px] h-[260px] w-auto rotate-[13deg] text-forest/[0.16] md:hidden" />
-            <PineBranch className="art-draw absolute -left-24 bottom-24 hidden h-48 w-auto -rotate-[5deg] text-forest/[0.18] md:block lg:-left-20 lg:h-64 lg:text-forest/[0.24]" />
-            <PineBranch className="art-draw absolute left-8 top-28 hidden h-36 w-auto rotate-[9deg] text-pine/[0.1] xl:block" />
-            <PineBranch className="art-draw absolute -left-24 top-32 h-36 w-auto -rotate-[9deg] text-forest/[0.14] md:hidden" />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-0"
+          >
+            <span className="forest-hero__woodland absolute inset-0" />
+            <span className="forest-hero__scrim absolute inset-0" />
+            <span className="forest-hero__grid absolute inset-0" />
+            <span className="forest-hero__leaf-shadow absolute inset-x-0 top-0 h-[58%]" />
+            <span className="forest-hero__foreground absolute inset-x-0 bottom-0 h-[34%]" />
             <Seal
               id="seal-hero"
-              className="absolute left-[5%] top-[48%] hidden h-32 w-32 -translate-y-1/2 -rotate-[8deg] text-forest/[0.055] md:block lg:left-[7%] lg:top-[44%] lg:h-40 lg:w-40 lg:text-forest/[0.075]"
+              className="absolute left-[6%] top-[43%] hidden h-32 w-32 -translate-y-1/2 -rotate-[8deg] text-paper/[0.14] md:block lg:h-44 lg:w-44"
             />
           </div>
 
           {/* Hero: a centred two-line headline, a single supporting line, then
               the product sheet. The one symmetric moment, earned. */}
           <section className={`${CONTAINER} relative z-10 pt-12 pb-4 text-center sm:pt-[4.5rem] sm:pb-6 lg:pt-20`}>
-            <h1 className="hero-enter font-serif font-semibold tracking-tight text-ink">
-              <span className="block text-balance text-6xl leading-[0.98] sm:whitespace-nowrap sm:text-7xl md:text-[5.75rem] lg:text-[7rem] xl:text-[8rem]">
+            <h1 className="hero-enter forest-hero-title text-ink">
+              <span className="forest-hero-title__headline block text-balance lg:whitespace-nowrap">
                 Never lose a bid
               </span>
-              <span className="mt-3 block text-balance text-2xl font-medium leading-[1.12] sm:whitespace-nowrap sm:text-3xl md:text-4xl">
+              <span className="forest-hero-title__subline block text-balance lg:whitespace-nowrap">
                 to a deal-breaker you missed.
               </span>
             </h1>
-            <p className="hero-enter-2 mx-auto mt-6 max-w-[58ch] text-balance text-lg leading-relaxed text-ink-muted sm:text-xl">
+            <p className="hero-enter-2 forest-hero-lede mx-auto mt-5 max-w-[58ch] text-balance text-lg leading-relaxed text-ink-muted sm:text-xl">
               Bidframe reads the tender, catches disqualifying requirements, and
               links every flag to its exact clause.
             </p>
-            <div className="hero-enter-3 mt-10 flex flex-wrap items-center justify-center gap-x-7 gap-y-4">
+            <div className="hero-enter-3 mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-4">
               <BookDemoButton location="hero" size="lg" />
               <SeeItRunLink size="lg" />
             </div>
           </section>
 
           <section className={`${CONTAINER} relative z-10 -mt-4 pb-28 sm:-mt-8 sm:pb-36`}>
-            <HeroResolve />
+            <div className="forest-hero-plinth">
+              <HeroResolve />
+            </div>
           </section>
         </div>
-
-        {/* The before: calm opener before the repeated centred product panels. */}
-        <Band>
-          <Head align="center">
-            Three weeks of reading, and one missed line voids it
-          </Head>
-          <p className="mx-auto mt-5 max-w-[58ch] text-center text-lg leading-relaxed text-ink-muted">
-            A bid writer spends weeks reading a public-sector tender by hand. The
-            requirements are scattered across a hundred pages, and the ones that
-            disqualify you look just like the ones that do not.
-          </p>
-        </Band>
 
         <FeatureSection
           title={
@@ -165,7 +153,11 @@ export function Landing() {
             </>
           }
           copy="Public tenders have hard pass or fail gates. Bidframe puts the deal-breakers at the top, not buried on page 61."
-          panel={<DealBreakerCard />}
+          panel={
+            <ProductGalleryFrame label="Priority register" tone="alert">
+              <DealBreakerCard />
+            </ProductGalleryFrame>
+          }
           size="poster-snug"
           tilt="right"
         />
@@ -174,9 +166,11 @@ export function Landing() {
           title="Three steps, and you stay in control"
           copy="Upload the tender, review the worklist, then approve the answers. Nothing leaves the record without you."
           panel={
-            <div className="surface-grain rounded-lg border border-hairline bg-paper-raised p-6 shadow-[var(--depth-sheet)] sm:p-7">
-              <HowItWorks />
-            </div>
+            <ProductGalleryFrame label="Method register">
+              <div className="landing-product-card surface-grain rounded-lg border border-hairline bg-paper-raised p-6 shadow-[var(--depth-sheet)] sm:p-7">
+                <HowItWorks />
+              </div>
+            </ProductGalleryFrame>
           }
           tilt="left"
           maxWidth="max-w-[1040px]"
@@ -185,7 +179,11 @@ export function Landing() {
         <FeatureSection
           title="Every line, back to its clause"
           copy="One click shows the exact sentence on the exact page, so you never have to take our word for it."
-          panel={<ClauseCard />}
+          panel={
+            <ProductGalleryFrame label="Source trace" tone="source">
+              <ClauseCard />
+            </ProductGalleryFrame>
+          }
           surface="recessed"
           tilt="right"
         />
@@ -193,7 +191,11 @@ export function Landing() {
         <FeatureSection
           title="It tells you when it is not sure"
           copy="Where the tool is unsure, it says so and flags it for you to check. It does not guess."
-          panel={<ConfidenceDocket />}
+          panel={
+            <ProductGalleryFrame label="Evidence check" tone="source">
+              <ConfidenceDocket />
+            </ProductGalleryFrame>
+          }
           surface="moss"
           tilt="left"
           maxWidth="max-w-[860px]"
@@ -202,42 +204,54 @@ export function Landing() {
         <FeatureSection
           title="Answers, with receipts"
           copy="Bidframe drafts from your own documents and shows which one each line came from. You approve every line."
-          panel={<AnswerCard />}
+          panel={
+            <ProductGalleryFrame label="Answer workspace" tone="answer">
+              <AnswerCard />
+            </ProductGalleryFrame>
+          }
           tilt="right"
         />
 
         {/* Before and after: a ruled ledger, full width, the table is the
             visual. The payoff column stands on moss behind a full-strength
             forest rule, so the ledger carries a visible verdict. */}
-        <Band space="air">
-          <Head align="center">
-            Before, and with Bidframe
-          </Head>
-          <div className="mt-9 overflow-x-auto">
-            <table className="comparison-table mx-auto w-full max-w-[980px] border-collapse text-left">
-              <thead>
-                <tr>
-                  <th className="w-[18%] border-b border-ink py-4 pr-6" />
-                  <th className="w-[38%] border-b border-ink py-4 pr-6 text-base font-medium text-ink-muted">
-                    Before
-                  </th>
-                  <th className="border-b border-ink py-4 pl-6 text-base font-semibold text-forest">
-                    With Bidframe
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {COMPARISON_ROWS.map((row) => (
-                  <Row key={row.label} {...row} />
-                ))}
-              </tbody>
-            </table>
+        <Band space="air" className="comparison-band">
+          <div className="comparison-shell mx-auto max-w-[1120px]">
+            <div className="comparison-shell__head text-center">
+              <Head align="center">Before, and with Bidframe</Head>
+              <p className="mx-auto mt-4 max-w-[54ch] text-lg leading-relaxed text-ink-muted">
+                The same tender record, before and after the gates, sources, and
+                answer trail are made visible.
+              </p>
+            </div>
+            <div className="comparison-table-wrap">
+              <div className="overflow-x-auto">
+                <table className="comparison-table w-full border-collapse text-left">
+                  <thead>
+                    <tr>
+                      <th className="w-[18%] border-b border-ink py-4 pr-6" />
+                      <th className="w-[38%] border-b border-ink py-4 pr-6 text-base font-medium text-ink-muted">
+                        Before
+                      </th>
+                      <th className="border-b border-ink py-4 pl-6 text-base font-semibold text-forest">
+                        With Bidframe
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {COMPARISON_ROWS.map((row) => (
+                      <Row key={row.label} {...row} />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </Band>
 
         {/* Credibility: where the counts come from, in plain provisional terms.
             Sits just before the proof it explains. */}
-        <Band space="tight">
+        <Band space="tight" className="credibility-band">
           <CredibilityBand />
         </Band>
 
@@ -251,6 +265,8 @@ export function Landing() {
             arrives, so the close reads as a destination already promised. */}
         <section className="proof-band relative isolate overflow-hidden bg-pine text-paper">
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+            <span className="proof-band__image absolute inset-0" />
+            <span className="proof-band__leaf-shadow absolute inset-0" />
             <Seal
               id="seal-proof-watermark"
               className="absolute right-[7%] top-24 hidden h-64 w-64 rotate-[8deg] text-paper/[0.06] lg:block"
@@ -261,22 +277,19 @@ export function Landing() {
             <PineBranch className="h-56 w-auto rotate-[11deg] text-paper/[0.08]" />
           </DrawOn>
           <div className={`${CONTAINER} relative z-10 py-28 sm:py-36`}>
-            <div className="grid gap-10 border-y border-paper/20 py-10 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.35fr)] lg:items-end lg:gap-16">
-              <div className="max-w-[48ch] lg:max-w-none">
-                <Head tone="dark" size="poster" singleLine>
-                  Measured on a real tender
-                </Head>
-                <p className="mt-5 text-lg leading-relaxed text-paper/70">
-                  We ran Bidframe on a live public-sector cleaning contract and
-                  checked every line against the source.
-                </p>
-              </div>
-              <p className="max-w-[34ch] text-lg leading-relaxed text-paper/60 lg:justify-self-end lg:text-right">
-                Source-checked against a public-sector cleaning contract and
-                kept tied to the tender record.
+            <Reveal className="proof-band__intro mx-auto max-w-[900px] border-y border-paper/20 py-10 text-center">
+              <Head tone="dark" size="poster" align="center" singleLine>
+                Measured on a real tender
+              </Head>
+              <p className="mx-auto mt-5 max-w-[58ch] text-balance text-lg leading-relaxed text-paper/[0.72] sm:text-xl">
+                We ran Bidframe on a live public-sector cleaning contract and
+                checked every line against the source.
               </p>
-            </div>
-            <Reveal className="mt-12 sm:mt-16">
+              <p className="mx-auto mt-5 max-w-[58ch] font-mono text-xs uppercase tracking-[0.14em] text-paper/[0.52]">
+                Source-checked against the tender record
+              </p>
+            </Reveal>
+            <Reveal className="reveal-proof mt-12 sm:mt-16">
               <ProofNumbers />
             </Reveal>
           </div>
@@ -288,7 +301,9 @@ export function Landing() {
           draws in at the top-left corner and the civic seal sits asymmetrically
           beside the card, so the destination belongs to the same forest the
           treeline promised. */}
-      <section className="relative overflow-hidden border-t border-paper/10 bg-pine">
+      <section className="closing-forest relative overflow-hidden border-t border-paper/10 bg-pine">
+        <span aria-hidden className="closing-forest__image absolute inset-0" />
+        <span aria-hidden className="closing-forest__shadow absolute inset-0" />
         <TreelineDivider
           flip
           className="absolute inset-x-0 top-0 h-16 w-full text-pine-deep/25 sm:h-24"
@@ -296,22 +311,24 @@ export function Landing() {
         <DrawOn className="pointer-events-none absolute -left-12 -top-8">
           <PineBranch className="h-44 w-auto text-paper/[0.11]" />
         </DrawOn>
-        <div className={`${CONTAINER} relative py-24 sm:py-32`}>
+        <div className={`${CONTAINER} relative z-10 py-24 sm:py-32`}>
           <Seal
             id="seal-closing"
             className="absolute right-[6%] top-1/2 hidden h-52 w-52 -translate-y-1/2 rotate-[7deg] text-paper/25 lg:block"
           />
           <Reveal>
-            <div className="surface-grain closing-card relative z-10 mx-auto max-w-[600px] rounded-lg border border-hairline bg-paper-raised p-8 text-center shadow-[var(--depth-sheet)] sm:p-10">
-              <h2 className="mx-auto max-w-[20ch] text-balance font-serif text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl">
-                See it on a tender you already know
-              </h2>
-              <p className="mx-auto mt-4 max-w-[46ch] leading-relaxed text-ink-muted">
-                The quickest way to judge Bidframe is to watch it read a tender you
-                have already bid. Book fifteen minutes and bring one.
-              </p>
-              <div className="mt-7 flex justify-center">
-                <BookDemoButton location="closing" />
+            <div className="closing-card-frame relative z-10 mx-auto max-w-[720px]">
+              <div className="surface-grain closing-card relative rounded-lg border border-hairline bg-paper-raised p-8 text-center shadow-[var(--depth-sheet)] sm:p-11">
+                <h2 className="mx-auto max-w-[18ch] text-balance font-serif text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
+                  See it on a tender you already know
+                </h2>
+                <p className="mx-auto mt-5 max-w-[44ch] text-lg leading-relaxed text-ink-muted">
+                  Bring a tender you have already bid. In fifteen minutes, you will
+                  see the gates, sources, and answer record resolve in front of you.
+                </p>
+                <div className="mt-8 flex justify-center">
+                  <BookDemoButton location="closing" />
+                </div>
               </div>
             </div>
           </Reveal>
@@ -325,41 +342,17 @@ export function Landing() {
 
 function ForestThreshold() {
   return (
-    <section className="relative overflow-hidden border-t border-moss-line bg-moss">
-      <div className={`${CONTAINER} relative z-10 py-12 sm:py-16`}>
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,0.62fr)_minmax(0,1fr)] lg:items-end">
-          <p className="max-w-[46ch] text-lg leading-relaxed text-ink-muted">
-            The proof comes after the reading: hard gates, requirements, and
-            source checks, held together in one record.
-          </p>
-          <div className="grid gap-2 sm:grid-cols-4">
-            <TrailStep label="Gate found" detail="ISO 9001" />
-            <TrailStep label="Clause traced" detail="4.2.1 / p.14" />
-            <TrailStep label="Source checked" detail="answer key" />
-            <TrailStep label="Answer approved" detail="14:32" />
-          </div>
-        </div>
-      </div>
-      <DrawOn className="pointer-events-none absolute -right-10 top-2 hidden sm:block">
-        <PineBranch className="h-40 w-auto rotate-[8deg] text-forest/[0.14]" />
-      </DrawOn>
-      <TreelineDivider className="block h-16 w-full text-pine/55 sm:h-24" />
+    <section
+      aria-hidden="true"
+      className="forest-threshold forest-threshold--compact relative overflow-hidden border-t border-moss-line bg-moss"
+    >
+      <span aria-hidden className="forest-threshold__image absolute inset-0" />
+      <TreelineDivider className="relative z-10 block h-14 w-full text-pine/55 sm:h-20" />
       <TreelineDivider
         flip
-        className="-mt-12 -mb-px block h-20 w-full text-pine sm:-mt-16 sm:h-28"
+        className="relative z-10 -mt-10 -mb-px block h-[4.5rem] w-full text-pine sm:-mt-14 sm:h-24"
       />
     </section>
-  );
-}
-
-function TrailStep({ label, detail }: { label: string; detail: string }) {
-  return (
-    <div className="border-l border-moss-line bg-paper/35 px-3 py-2">
-      <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-forest">
-        {label}
-      </p>
-      <p className="mt-1 text-sm text-ink-muted">{detail}</p>
-    </div>
   );
 }
 
@@ -373,10 +366,12 @@ function Band({
   children,
   surface = "paper",
   space = "normal",
+  className = "",
 }: {
   children: React.ReactNode;
   surface?: "paper" | "recessed" | "moss";
   space?: "tight" | "normal" | "air";
+  className?: string;
 }) {
   const pad =
     space === "tight"
@@ -391,7 +386,7 @@ function Band({
         ? "border-moss-line bg-moss"
         : "border-rule-section";
   return (
-    <section className={`border-t ${ground}`}>
+    <section className={`border-t ${ground} ${className}`}>
       <div className={`${CONTAINER} ${pad}`}>{children}</div>
     </section>
   );

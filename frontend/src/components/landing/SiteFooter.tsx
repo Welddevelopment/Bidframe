@@ -20,49 +20,54 @@ const linkClass =
 
 export function SiteFooter() {
   return (
-    <footer className="relative overflow-hidden text-paper">
+    <footer className="landing-footer relative overflow-hidden text-paper">
       {/* the divider's own background paints the pine of the closing band
           above, so the pine-deep trees read as a nearer ridge in front of it */}
       <TreelineDivider
         flip
         className="-mb-px block h-14 w-full bg-pine text-pine-deep sm:h-24"
       />
-      <div className="relative bg-pine-deep">
+      <div className="landing-footer__ground relative bg-pine-deep">
+        <span aria-hidden className="landing-footer__canopy absolute inset-0" />
         <PineBranch
-          className="pointer-events-none absolute -right-16 top-8 hidden h-56 w-auto rotate-[16deg] text-paper/[0.07] lg:block"
+          className="pointer-events-none absolute -right-16 top-8 hidden h-56 w-auto rotate-[16deg] text-paper/[0.08] lg:block"
         />
         <Seal
           id="seal-footer-watermark"
           className="pointer-events-none absolute left-[7%] bottom-8 hidden h-44 w-44 -rotate-[9deg] text-paper/[0.05] lg:block"
         />
-        <div className={`${CONTAINER} relative py-14 sm:py-16`}>
-          <div className="flex flex-wrap items-start justify-between gap-x-12 gap-y-10">
-            <div>
+        <div className={`${CONTAINER} landing-footer__content relative py-12 sm:py-16`}>
+          <div className="landing-footer__panel">
+            <div className="landing-footer__brand">
               <BrandLogo reversed className="h-10 w-auto sm:h-12" />
-              <p className="mt-4 max-w-[34ch] text-sm text-paper/70">
+              <p className="mt-4 max-w-[34ch] text-sm leading-relaxed text-paper/70">
                 For SME bidders and small bid-writing consultancies.
               </p>
-              <nav
-                aria-label="Footer"
-                className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3"
-              >
-                <Link href="/demo" className={linkClass}>
-                  See the demo
-                </Link>
-                <Link href="/login" className={linkClass}>
-                  Sign in
-                </Link>
-                <BookDemoButton variant="link" tone="pine" location="footer" />
-              </nav>
             </div>
-            <Seal
-              id="seal-footer"
-              className="relative h-28 w-28 text-paper/75 sm:h-32 sm:w-32"
-            />
+            <nav aria-label="Footer" className="landing-footer__nav">
+              <Link href="/demo" className={linkClass}>
+                See the demo
+              </Link>
+              <Link href="/login" className={linkClass}>
+                Sign in
+              </Link>
+              <BookDemoButton variant="link" tone="pine" location="footer" />
+            </nav>
+            <div className="landing-footer__seal">
+              <Seal
+                id="seal-footer"
+                className="relative h-24 w-24 text-paper/[0.72] sm:h-28 sm:w-28"
+              />
+            </div>
           </div>
-          <p className="mt-12 border-t border-paper/15 pt-6 font-mono text-xs tracking-[0.2em] text-paper/60">
-            BIDFRAME
-          </p>
+          <div className="landing-footer__bottom">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-paper/60">
+              BIDFRAME
+            </p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-paper/[0.45]">
+              Public tender worklist
+            </p>
+          </div>
         </div>
       </div>
     </footer>

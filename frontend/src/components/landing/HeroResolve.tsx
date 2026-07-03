@@ -11,8 +11,7 @@ import { GatingHero } from "@/components/GatingHero";
 // faked graphic, presented as a tilted sheet filed into the register (the
 // supabase-style product tilt, on our warm paper). The actual GatingHero and
 // ComplianceMatrix render over the demo tender; the register settles on load and
-// the oxblood deal-breaker settles last and heaviest. The sheet tilts toward the
-// cursor (mouse parallax) when motion is allowed.
+// the oxblood deal-breaker settles last and heaviest.
 //
 // The card is inert (non-interactive, out of the tab order and the a11y tree)
 // with a plain text description for screen readers, because here it is an
@@ -21,53 +20,13 @@ import { GatingHero } from "@/components/GatingHero";
 
 const noop = () => {};
 
-// How far the cursor tips the sheet from its resting angle, in degrees.
-const TILT_RANGE = 3;
-
 export function HeroResolve() {
   const { requirements } = useRequirements();
   const cardRef = useRef<HTMLDivElement>(null);
-  const stageRef = useRef<HTMLElement>(null);
 
   // Remove the illustration from the tab order and the a11y tree once mounted.
   useEffect(() => {
     if (cardRef.current) cardRef.current.inert = true;
-  }, []);
-
-  // Mouse parallax: nudge --rx/--ry around the resting tilt. Pointer-fine only,
-  // and disabled under reduced motion, so touch and motion-sensitive users keep
-  // the static composed angle.
-  useEffect(() => {
-    const stage = stageRef.current;
-    const card = cardRef.current;
-    if (!stage || !card) return;
-    const fine = window.matchMedia("(pointer: fine)");
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (!fine.matches || still.matches) return;
-
-    let frame = 0;
-    const onMove = (e: PointerEvent) => {
-      const r = stage.getBoundingClientRect();
-      const px = (e.clientX - r.left) / r.width - 0.5;
-      const py = (e.clientY - r.top) / r.height - 0.5;
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        card.style.setProperty("--rx", `${5 - py * TILT_RANGE}deg`);
-        card.style.setProperty("--ry", `${-6 + px * TILT_RANGE}deg`);
-      });
-    };
-    const onLeave = () => {
-      cancelAnimationFrame(frame);
-      card.style.removeProperty("--rx");
-      card.style.removeProperty("--ry");
-    };
-    stage.addEventListener("pointermove", onMove);
-    stage.addEventListener("pointerleave", onLeave);
-    return () => {
-      cancelAnimationFrame(frame);
-      stage.removeEventListener("pointermove", onMove);
-      stage.removeEventListener("pointerleave", onLeave);
-    };
   }, []);
 
   const triage = deriveTriage(requirements);
@@ -78,7 +37,7 @@ export function HeroResolve() {
     .filter((g) => g.items.length > 0);
 
   return (
-    <figure ref={stageRef} className="hero-stage relative m-0">
+    <figure className="hero-stage relative m-0">
       <span className="sr-only">
         A public-sector tender resolving into a checklist of requirements, with
         the disqualifying deal-breaker settled at the top.
@@ -90,12 +49,12 @@ export function HeroResolve() {
       <Link
         href="/demo"
         aria-label="Open the worked example on the demo tender"
-        className="hero-product-halo group relative isolate block [perspective:1600px] rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-paper"
+        className="hero-product-halo relative isolate block [perspective:1600px] rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-paper"
       >
         <div
           ref={cardRef}
           aria-hidden="true"
-          className="hero-sheet surface-grain relative mx-auto max-w-[1100px] overflow-hidden rounded-xl border border-forest/55 bg-paper-raised p-5 shadow-[var(--depth-hero-sheet)] transition-shadow group-hover:shadow-[0_30px_70px_-30px_rgba(22,48,31,0.54)] sm:p-7 lg:p-8"
+          className="hero-sheet surface-grain relative mx-auto max-w-[1100px] overflow-hidden rounded-xl border border-forest/55 bg-paper-raised p-5 shadow-[var(--depth-hero-sheet)] sm:p-7 lg:p-8"
         >
           <span aria-hidden="true" className="hero-resolve-scan" />
           {/* The deal-breaker callout sits on top but settles last (longer delay). */}
@@ -118,27 +77,6 @@ export function HeroResolve() {
             </div>
           </div>
         </div>
-        <span className="mt-5 flex justify-center">
-          <span className="inline-flex items-center gap-1.5 rounded-md border border-forest/15 bg-paper/75 px-3.5 py-1.5 text-xs font-medium text-ink-muted shadow-[0_1px_2px_rgba(33,29,23,0.08)] backdrop-blur-sm transition-colors group-hover:border-forest/35 group-hover:text-forest">
-            Open the worked example
-            <svg
-              width="13"
-              height="13"
-              viewBox="0 0 14 14"
-              fill="none"
-              aria-hidden="true"
-              className="transition-transform group-hover:translate-x-0.5"
-            >
-              <path
-                d="M2.5 7h9M8 3.5 11.5 7 8 10.5"
-                stroke="currentColor"
-                strokeWidth="1.7"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-        </span>
       </Link>
     </figure>
   );
