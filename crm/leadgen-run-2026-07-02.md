@@ -57,3 +57,25 @@ Restart plan:
    - Use at most 2 subagents on restart: one surveying/building-survey seam, one SEND/education supplier seam. Main agent verifies and writes.
 
 Batch B restart also follows `codex-leadgen-handoff.md`: retry transient failures, switch seams when one goes dry, skip any action needing Joel's approval while he is asleep, and keep the overnight loop to find -> verify -> dedupe -> personalise -> commit.
+
+## Batch B outcome
+
+Added `L-0413` through `L-0418` after the low-hit-rate re-plan.
+
+- Mix: 2 access/inclusive-design consultancies, 2 building/measured-survey practices, 1 commercial blinds/glazing firm, 1 signage/wayfinding firm.
+- Conversion split: 4 High, 2 Medium; all 6 verified.
+- Kept the batch small because the subagents found good leads but both advised against padding with weaker rows.
+- Skipped RedboxVR, Barker Associates, Sun-X, Norsign, isGroup and Court Catering for this batch because size or public-sector proof was weaker than the top candidates.
+- Closed both Batch B research subagents after collecting results.
+
+## Batch C - 2026-07-03 demo-day expansion
+
+Continued from `codex-continue-2026-07-03.md` with IDs `L-0419+`.
+
+- Seam: sports surfaces, playgrounds and school/council outdoor estate suppliers.
+- Added `L-0419` through `L-0424` to `crm/leads.csv`.
+- Created same-day free-pilot drafts in `crm/drafts/L-0419.md` through `L-0424.md`.
+- Mix: 2 sports-surface/MUGA firms, 1 sports-turf drainage firm, 3 playground/surfacing/outdoor-learning firms.
+- Conversion split: 2 High, 4 Medium; all 6 verified.
+- PERFECT label held back deliberately. `L-0420` and `L-0422` are the strongest fits, but the batch is logged as High/Medium rather than inflated because most firms are not clearly tiny owner-operator shops.
+- Dedupe checked against `crm/leads.csv`, `crm/perfect_leads.md` and `outreach-micro-targets.md` before adding.
