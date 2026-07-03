@@ -1437,14 +1437,17 @@ body {
     42px 42px;
   mask-image: linear-gradient(to bottom, black 0%, black 66%, transparent 100%);
 }
+/* The forest floor: reaches well up behind the product sheet so the register
+   stands on dark ground, not fog. */
 .forest-hero::after {
   inset: auto 0 0;
-  height: 42%;
+  height: 72%;
   opacity: 1;
   background: linear-gradient(
     to top,
-    rgba(6, 18, 11, 0.72),
-    rgba(22, 48, 31, 0.34) 54%,
+    rgba(6, 18, 11, 0.8),
+    rgba(22, 48, 31, 0.55) 42%,
+    rgba(29, 58, 43, 0.3) 76%,
     rgba(22, 48, 31, 0)
   );
 }
@@ -1473,12 +1476,12 @@ body {
     linear-gradient(
       to bottom,
       rgba(246, 242, 233, 0.9) 0%,
-      rgba(246, 242, 233, 0.87) 32%,
-      rgba(238, 236, 222, 0.52) 42%,
-      rgba(205, 213, 189, 0.22) 50%,
-      rgba(44, 86, 64, 0.26) 58%,
-      rgba(29, 58, 43, 0.44) 74%,
-      rgba(22, 48, 31, 0.55) 100%
+      rgba(246, 242, 233, 0.87) 26%,
+      rgba(238, 236, 222, 0.5) 34%,
+      rgba(160, 178, 148, 0.28) 40%,
+      rgba(44, 86, 64, 0.42) 48%,
+      rgba(29, 58, 43, 0.58) 62%,
+      rgba(22, 48, 31, 0.68) 100%
     ),
     linear-gradient(
       90deg,
@@ -1568,15 +1571,15 @@ body {
    the sides into the vignette. */
 .forest-hero__botanicals {
   z-index: 5;
-  opacity: 0.9;
+  opacity: 0.95;
   background: url("/landing/forest/fern-edge-overlay.webp") center bottom / cover
     no-repeat;
   mask-image: linear-gradient(
     90deg,
-    transparent,
+    rgba(0, 0, 0, 0.55),
     black 10%,
     black 90%,
-    transparent
+    rgba(0, 0, 0, 0.55)
   );
 }
 /* Dawn: the hero opens a stop darker and the light rises over ~2s. The base

@@ -97,7 +97,7 @@ export function ForestHeroLayers() {
             style={{ x: foregroundX, y: foregroundY, scale: 1.08 }}
           />
           <motion.span
-            className="forest-hero__botanicals absolute inset-x-0 bottom-0 h-[48%] will-change-transform"
+            className="forest-hero__botanicals absolute inset-x-0 bottom-0 h-[58%] will-change-transform"
             style={{ y: botanicalsY, x: botanicalsX, scale: 1.05 }}
           />
           <motion.span
@@ -117,7 +117,7 @@ export function ForestHeroLayers() {
           <span className="forest-hero__grid absolute inset-0" />
           <span className="forest-hero__leaf-shadow absolute inset-x-0 top-0 h-[58%]" />
           <span className="forest-hero__foreground absolute inset-x-0 bottom-0 h-[34%]" />
-          <span className="forest-hero__botanicals absolute inset-x-0 bottom-0 h-[48%]" />
+          <span className="forest-hero__botanicals absolute inset-x-0 bottom-0 h-[58%]" />
           <span className="forest-hero__fern forest-hero__fern--l hidden lg:block" />
           <span className="forest-hero__fern forest-hero__fern--r hidden -scale-x-100 lg:block" />
         </>
