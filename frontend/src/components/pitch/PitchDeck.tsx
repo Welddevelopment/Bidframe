@@ -802,7 +802,11 @@ export function PitchDeck() {
           ref={stageRef}
           aria-label="Bidframe pitch deck"
         >
-          <PitchScene zone={activeSlide.zone} light={activeSlide.light} />
+          <PitchScene
+            zone={activeSlide.zone}
+            light={activeSlide.light}
+            step={activeIndex}
+          />
 
           <button
             type="button"

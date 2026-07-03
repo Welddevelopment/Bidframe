@@ -2723,11 +2723,13 @@ body {
   /* clear the trail band */
   padding-bottom: 3.9rem;
   opacity: 0;
-  transform: translateX(2.4rem) scale(0.992);
+  /* the next slide waits a step ahead: slightly smaller and lower, it rises
+     and settles as the walk reaches it */
+  transform: translateY(1.3rem) scale(0.986);
   pointer-events: none;
   transition:
-    opacity 360ms ease,
-    transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 420ms ease,
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .pitch-slide.is-active {
@@ -2771,6 +2773,23 @@ body {
 
 .pitch-scene.is-active .pitch-scene__art {
   transform: scale(1.01);
+}
+
+/* The step forward: on every advance the active plate settles from a deeper
+   zoom, so navigation reads as walking rather than flipping. */
+@media (prefers-reduced-motion: no-preference) {
+  .pitch-scene.is-active.is-stepping .pitch-scene__art {
+    animation: pitch-scene-step 1000ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@keyframes pitch-scene-step {
+  from {
+    transform: scale(1.05);
+  }
+  to {
+    transform: scale(1.01);
+  }
 }
 
 .pitch-scene-dusk {

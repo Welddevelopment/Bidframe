@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // The deck's forest floor: one scene stack at stage level, reusing the landing
 // page's woodland plates (public/landing/forest) so /pitch and / are one
@@ -44,10 +44,23 @@ const DUSK_CEILING = 0.42;
 export function PitchScene({
   zone,
   light,
+  step,
 }: {
   zone: PitchZone;
   light: number;
+  // Any change here (the active slide index) makes the ground take a step:
+  // the active plate eases from a slightly deeper zoom back to rest, so
+  // advancing reads as walking forward even when the zone doesn't change.
+  step: number;
 }) {
+  const [stepping, setStepping] = useState(false);
+
+  useEffect(() => {
+    setStepping(true);
+    const timeout = window.setTimeout(() => setStepping(false), 1000);
+    return () => window.clearTimeout(timeout);
+  }, [step]);
+
   // Decode every plate up front so the first advance into each zone
   // crossfades instead of popping.
   useEffect(() => {
@@ -66,7 +79,7 @@ export function PitchScene({
           key={name}
           className={`pitch-scene pitch-scene--${name} ${
             name === zone ? "is-active" : ""
-          }`}
+          } ${name === zone && stepping ? "is-stepping" : ""}`}
         >
           <span className="pitch-scene__art" />
           <span className="pitch-scene__shade" />
