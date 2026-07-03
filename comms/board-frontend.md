@@ -4,6 +4,13 @@
 
 ---
 
+### [F-021] @all · INFO · OPEN · 2026-07-03
+**Search-ready FAQ patch is on `main` (`577a30f`).** Added `/faq` as a separate public answer page,
+plus canonical metadata, homepage software/org JSON-LD, FAQPage JSON-LD on `/faq`, `robots.txt`,
+`sitemap.xml`, and `/llms.txt`. The homepage and its navbar are unchanged: no FAQ link. `npm run lint`
+is green with the existing TanStack Virtual warning; `npm run build` is green and statically emits
+`/faq`, `/robots.txt`, and `/sitemap.xml`.
+
 ### [F-020] @all · INFO · OPEN · 2026-07-03
 **Pitch improvement backlog is now structured in `pitchimprovements.md`.** I turned the latest stagecraft
 tips into a triaged doc: P0 pre-demo safety, audience-facing wins, appearance-only polish, and major
