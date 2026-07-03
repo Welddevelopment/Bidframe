@@ -2683,6 +2683,11 @@ body {
   border-radius: 0;
 }
 
+.pitch-stage.is-cursor-hidden,
+.pitch-stage.is-cursor-hidden * {
+  cursor: none !important;
+}
+
 /* --- The trail map: navigation as the walk itself. A dark forest-floor band
    across the foot of the stage; the route draws forward blaze by blaze, the
    walker dot carries a lantern glow, and the appendix branches off-trail. */
@@ -4037,6 +4042,29 @@ body {
   font-size: 0.68rem;
   letter-spacing: 0.08em;
   white-space: nowrap;
+}
+
+.pitch-timer {
+  display: grid;
+  min-width: 3.9rem;
+  border-left: 1px solid rgba(246, 242, 233, 0.16);
+  padding: 0 0.55rem;
+  font-family: var(--font-mono-ibm), monospace;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+.pitch-timer span {
+  font-size: 0.5rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.56;
+}
+
+.pitch-timer strong {
+  margin-top: 0.12rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
 }
 
 .pitch-click-zone {

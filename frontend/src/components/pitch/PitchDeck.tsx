@@ -33,11 +33,21 @@ import { deriveTriage } from "@/lib/triage";
 import type { Requirement } from "@/types/requirement";
 
 const MAIN_SLIDE_COUNT = 7;
+const APPENDIX_SLIDE_COUNT = 4;
+const TOTAL_SLIDE_COUNT = MAIN_SLIDE_COUNT + APPENDIX_SLIDE_COUNT;
 // The Solution slide (0-based): the deck's two-beat dramatic moment.
 const STOPSIGN_INDEX = 2;
 const AUTOPLAY_SECONDS = [20, 22, 23, 33, 34, 30, 18] as const;
+const PITCH_STATE_KEY = "bidframe.pitch.state.v1";
 const CTA =
   "Talk to us if you would like to help Bidframe scale the first-read layer for public-sector bids.";
+
+interface PitchStoredState {
+  activeIndex: number;
+  beat: number;
+  notesOpen: boolean;
+  elapsedSeconds: number;
+}
 
 const TEAM = [
   {
@@ -83,6 +93,69 @@ function pickEvidenceRequirement(requirements: Requirement[]) {
     requirements.find((req) => (req.answer?.evidence_refs.length ?? 0) > 0) ??
     requirements[0]
   );
+}
+
+function clampSlideIndex(index: number) {
+  return Math.min(Math.max(index, 0), TOTAL_SLIDE_COUNT - 1);
+}
+
+function parsePitchHash(hash: string) {
+  const cleaned = hash.replace(/^#/, "").trim().toLowerCase();
+  if (!cleaned) return null;
+
+  const noteMatch = /^notes?-(\d+)$/.exec(cleaned);
+  if (noteMatch) {
+    const noteIndex = Number(noteMatch[1]) - 1;
+    if (noteIndex >= 0 && noteIndex < APPENDIX_SLIDE_COUNT) {
+      return MAIN_SLIDE_COUNT + noteIndex;
+    }
+  }
+
+  const slideMatch = /^(?:slide-)?(\d+)$/.exec(cleaned);
+  if (!slideMatch) return null;
+
+  const index = Number(slideMatch[1]) - 1;
+  if (!Number.isInteger(index) || index < 0 || index >= TOTAL_SLIDE_COUNT) {
+    return null;
+  }
+  return index;
+}
+
+function hashForIndex(index: number) {
+  if (index >= MAIN_SLIDE_COUNT) {
+    return `#notes-${index - MAIN_SLIDE_COUNT + 1}`;
+  }
+  return `#${index + 1}`;
+}
+
+function formatElapsed(seconds: number) {
+  const minutes = Math.floor(seconds / 60);
+  const remaining = seconds % 60;
+  return `${minutes}:${remaining.toString().padStart(2, "0")}`;
+}
+
+function readStoredPitchState(): PitchStoredState | null {
+  try {
+    const raw = window.sessionStorage.getItem(PITCH_STATE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<PitchStoredState>;
+    const activeIndex = parsed.activeIndex;
+    const elapsedSeconds = parsed.elapsedSeconds;
+    if (typeof activeIndex !== "number" || !Number.isInteger(activeIndex)) {
+      return null;
+    }
+    return {
+      activeIndex: clampSlideIndex(activeIndex),
+      beat: parsed.beat === 1 ? 1 : 0,
+      notesOpen: parsed.notesOpen === true,
+      elapsedSeconds:
+        typeof elapsedSeconds === "number" && Number.isInteger(elapsedSeconds)
+          ? Math.max(0, elapsedSeconds)
+          : 0,
+    };
+  } catch {
+    return null;
+  }
 }
 
 function Metric({
@@ -205,11 +278,15 @@ function IconFullscreen() {
 
 export function PitchDeck() {
   const stageRef = useRef<HTMLDivElement | null>(null);
+  const cursorTimerRef = useRef<number | null>(null);
   const { requirements, title } = useRequirements();
   const [activeIndex, setActiveIndex] = useState(0);
   const [notesOpen, setNotesOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
+  const [restored, setRestored] = useState(false);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [cursorHidden, setCursorHidden] = useState(false);
   // The stop-sign slide plays in two beats: 0 = the clause alone, 1 = caught.
   const [beat, setBeat] = useState(0);
 
@@ -246,7 +323,7 @@ export function PitchDeck() {
       return;
     }
     setBeat(0);
-    setActiveIndex((current) => Math.min(current + 1, 11));
+    setActiveIndex((current) => Math.min(current + 1, TOTAL_SLIDE_COUNT - 1));
   }, [activeIndex, beat]);
 
   const previous = useCallback(() => {
@@ -264,8 +341,22 @@ export function PitchDeck() {
   // Direct jumps (trail map, number keys) land on the finished state.
   const goTo = useCallback((index: number) => {
     setAutoplay(false);
-    setBeat(index === STOPSIGN_INDEX ? 1 : 0);
-    setActiveIndex(index);
+    const target = clampSlideIndex(index);
+    setBeat(target === STOPSIGN_INDEX ? 1 : 0);
+    setActiveIndex(target);
+  }, []);
+
+  const resetToStart = useCallback(() => {
+    setAutoplay(false);
+    setBeat(0);
+    setElapsedSeconds(0);
+    setActiveIndex(0);
+  }, []);
+
+  const jumpToAsk = useCallback(() => {
+    setAutoplay(false);
+    setBeat(0);
+    setActiveIndex(MAIN_SLIDE_COUNT - 1);
   }, []);
 
   const toggleAutoplay = useCallback(() => {
@@ -322,14 +413,120 @@ export function PitchDeck() {
       } else if (event.key === "?") {
         event.preventDefault();
         setHelpOpen((open) => !open);
+      } else if (event.key === "Home") {
+        event.preventDefault();
+        resetToStart();
+      } else if (event.key === "End") {
+        event.preventDefault();
+        jumpToAsk();
       } else if (event.key === "Escape") {
         setHelpOpen(false);
+        setNotesOpen(false);
       }
     }
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [next, previous, goTo, toggleAutoplay, toggleFullscreen]);
+  }, [
+    next,
+    previous,
+    goTo,
+    resetToStart,
+    jumpToAsk,
+    toggleAutoplay,
+    toggleFullscreen,
+  ]);
+
+  useEffect(() => {
+    const restoreFrame = window.requestAnimationFrame(() => {
+      const hashIndex = parsePitchHash(window.location.hash);
+      const stored = readStoredPitchState();
+      const targetIndex = hashIndex ?? stored?.activeIndex ?? 0;
+      const restoredBeat =
+        hashIndex !== null
+          ? targetIndex === STOPSIGN_INDEX
+            ? 1
+            : 0
+          : stored?.beat ?? 0;
+
+      setActiveIndex(clampSlideIndex(targetIndex));
+      setBeat(restoredBeat);
+      setNotesOpen(hashIndex !== null ? false : stored?.notesOpen ?? false);
+      setElapsedSeconds(stored?.elapsedSeconds ?? 0);
+      setRestored(true);
+    });
+
+    return () => window.cancelAnimationFrame(restoreFrame);
+  }, []);
+
+  useEffect(() => {
+    if (!restored) return;
+    const state: PitchStoredState = {
+      activeIndex,
+      beat,
+      notesOpen,
+      elapsedSeconds,
+    };
+    window.sessionStorage.setItem(PITCH_STATE_KEY, JSON.stringify(state));
+
+    const nextHash = hashForIndex(activeIndex);
+    if (window.location.hash !== nextHash) {
+      window.history.replaceState(
+        null,
+        "",
+        `${window.location.pathname}${window.location.search}${nextHash}`
+      );
+    }
+  }, [activeIndex, beat, elapsedSeconds, notesOpen, restored]);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setElapsedSeconds((seconds) => seconds + 1);
+    }, 1000);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    function clearCursorTimer() {
+      if (cursorTimerRef.current !== null) {
+        window.clearTimeout(cursorTimerRef.current);
+        cursorTimerRef.current = null;
+      }
+    }
+
+    function showCursorThenHide() {
+      setCursorHidden(false);
+      clearCursorTimer();
+      cursorTimerRef.current = window.setTimeout(() => {
+        if (document.fullscreenElement === stage) {
+          setCursorHidden(true);
+        }
+      }, 2000);
+    }
+
+    function onFullscreenChange() {
+      if (document.fullscreenElement === stage) {
+        showCursorThenHide();
+      } else {
+        clearCursorTimer();
+        setCursorHidden(false);
+      }
+    }
+
+    stage.addEventListener("mousemove", showCursorThenHide);
+    stage.addEventListener("mousedown", showCursorThenHide);
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+
+    return () => {
+      clearCursorTimer();
+      stage.removeEventListener("mousemove", showCursorThenHide);
+      stage.removeEventListener("mousedown", showCursorThenHide);
+      document.removeEventListener("fullscreenchange", onFullscreenChange);
+    };
+  }, []);
 
   useEffect(() => {
     if (!autoplay) return;
@@ -424,7 +621,18 @@ export function PitchDeck() {
                 ]}
               />
               <div className="pitch-journey__stat">
-                <span className="pitch-journey__figure">£341bn</span>
+                <span
+                  className="pitch-journey__figure"
+                  aria-label="341 billion pounds"
+                >
+                  £
+                  <AnimatedNumber
+                    key={activeIndex === 1 ? "gbp-active" : "gbp-idle"}
+                    value={341}
+                    from={activeIndex === 1 ? 0 : 341}
+                  />
+                  bn
+                </span>
                 <span className="pitch-journey__note">
                   UK public procurement, 2023/24 · about a third of public
                   spend · new rules live since 24 Feb 2025
@@ -876,7 +1084,7 @@ export function PitchDeck() {
     <main className="pitch-scope">
       <div className="pitch-shell">
         <div
-          className="pitch-stage"
+          className={`pitch-stage ${cursorHidden ? "is-cursor-hidden" : ""}`}
           ref={stageRef}
           aria-label="Bidframe pitch deck"
         >
@@ -960,6 +1168,13 @@ export function PitchDeck() {
                   : `${activeIndex + 1} / ${MAIN_SLIDE_COUNT}`}
               </strong>
             </div>
+            <div
+              className="pitch-timer"
+              aria-label={`Elapsed time ${formatElapsed(elapsedSeconds)}`}
+            >
+              <span>Time</span>
+              <strong>{formatElapsed(elapsedSeconds)}</strong>
+            </div>
             <button
               type="button"
               onClick={next}
@@ -1015,6 +1230,9 @@ export function PitchDeck() {
                 </li>
                 <li>
                   <kbd>?</kbd> toggle this card · <kbd>Esc</kbd> close
+                </li>
+                <li>
+                  <kbd>Home</kbd> restart timer · <kbd>End</kbd> jump to ask
                 </li>
               </ul>
             </aside>

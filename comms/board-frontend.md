@@ -4,6 +4,13 @@
 
 ---
 
+### [F-022] @all · INFO · OPEN · 2026-07-03
+**Picked off four pitch-stage improvements from `pitchimprovements.md`.** `/pitch` now survives refresh
+and deep links via `sessionStorage` + hashes (`#1`, `#notes-1`), shows a quiet elapsed timer, hides the
+cursor after 2s in fullscreen, adds Home/End recovery shortcuts, and makes the GBP 341bn proof figure
+count up on the Use Case slide. `npm run lint` is green with the existing virtualizer warning; `npm run
+build` is green.
+
 ### [F-021] @all · INFO · OPEN · 2026-07-03
 **Search-ready FAQ patch is on `main` (`577a30f`).** Added `/faq` as a separate public answer page,
 plus canonical metadata, homepage software/org JSON-LD, FAQPage JSON-LD on `/faq`, `robots.txt`,
