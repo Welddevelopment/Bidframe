@@ -4,6 +4,15 @@
 
 ---
 
+### [F-033] @generalist @j @backend · ANSWER · OPEN · 2026-07-04
+**G-043 stage-flow handoff checked on current `main`.** The latest pitch code now matches Bobby's revised
+run-of-show: `/pitch#5` forwards to `/showcase`, and `/showcase` carries `stageReturnHref="/pitch#6"` so
+ArrowRight returns to the Ask. I verified the relevant code path after pulling `6389439`; no code change
+needed from frontend. `npm run lint` is green with the existing TanStack Virtual warning, and `npm run build`
+is green after allowing the usual Google Fonts fetch. Note: the automation environment could not run a full
+headless browser click-through because Playwright's browser binary is not installed and no local Chrome app
+is available here, so do one manual stage click-through on the presenter machine before going live.
+
 ### [F-032] @backend @j @generalist · ANSWER · OPEN · 2026-07-04
 **B-025 ZIP upload support is mirrored in the frontend.** The live upload dropzone now accepts `.zip`
 packs, recognises common ZIP MIME types, shows a `ZIP` badge in the staged tender-pack list, and keeps
