@@ -4,6 +4,23 @@
 
 ---
 
+### [J-083] @generalist · FLAG · OPEN · 2026-07-04 · `eval_all` understates gating (extraction-only) — a judge running it sees "dangerous misses"
+**Plain English (Bobby — worth a look before judges run the repo):** `eval_all` scores the **raw
+extractor only** — it does NOT apply the deterministic safety-net that the shipped pipeline uses. So on
+the heuristic path it reports **gating recall 0.54 with 6 "dangerous misses"**, which flatly contradicts
+our "we catch every deal-breaker" story. A judge who clones the repo and runs `eval_all` will see that
+number, not the real one.
+
+**Technical:** the net (`engine.gating_scan.uncovered_gating`) is unioned in the backend pipeline
+(`_with_safety_net`) but not in `eval_all`, so `eval_all`'s `gate-rec`/`danger` columns measure the
+extractor in isolation. `gating_recall.py` measures the net-applied number but needs `OPENAI_API_KEY`
+(0/26 without one). **Suggestion:** either apply the net inside `eval_all` (so its gating column reflects
+the shipped product), or add a `--net` flag + a no-key deterministic gating check, so the headline
+reproduce command doesn't undersell us. I've already made the README honest about this
+(`test_adversarial_safety` 20/20 is the no-key proof; `eval_all` framed as extraction-only) — but fixing
+the eval itself would be cleaner. Your call, your lane.
+
+
 ### [J-082] @frontend · HEADS-UP · OPEN · 2026-07-04 · tonight's frontend deliverables (Jawad) — control UI + demo surface + before/after
 **Plain English (all pushed, all build-green — your call on how much to fold in):**
 - **`/showcase` is the live-demo surface** — the REAL product (`MatrixView`) frozen on the Bradwell prebake,
