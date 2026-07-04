@@ -1,140 +1,230 @@
-# Bidframe
+<p align="center">
+  <a href="https://www.bidframe.org/showcase">
+    <img src="frontend/public/brand/bidframe-logo-horizontal.svg" width="360" alt="Bidframe" />
+  </a>
+</p>
 
-**Bidframe turns a 150-page public-sector tender into a verified, source-linked compliance checklist in
-hours, not weeks — and keeps the expert at the wheel the whole way.** It catches the requirement that
-would have disqualified the bid, flags what it's unsure of instead of guessing, and drafts each response
-from your own evidence. **The human approves every call.**
+<p align="center">
+  <a href="https://www.bidframe.org/showcase"><img alt="Judge route: open the showcase" src="https://img.shields.io/badge/start-/showcase-8A2D2A?style=for-the-badge" /></a>
+  <img alt="Conduct Make Legacy Move" src="https://img.shields.io/badge/Conduct-Make%20Legacy%20Move-315C47?style=for-the-badge" />
+  <img alt="Next.js 16" src="https://img.shields.io/badge/Next.js-16-211D17?style=for-the-badge" />
+  <img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-real%20pipeline-4D6F5A?style=for-the-badge" />
+  <img alt="Human in control" src="https://img.shields.io/badge/human-in%20control-F0C66E?style=for-the-badge" />
+</p>
 
-Built for the **Conduct "Make Legacy Move"** hackathon. Niche: **UK public-sector procurement**, for the
-**SME bidders and small bid consultancies** that enterprise tools price out.
+<p align="center">
+  <strong>Bidframe turns a public-sector tender into a checkable compliance matrix.</strong><br />
+  Deal-breakers first. Every line tied to its source. Draft answers only where there is evidence.
+</p>
 
-> **The track's thesis is "don't replace the expert — make them 10× faster while they stay at the
-> wheel."** That's exactly Bidframe. The AI reads and drafts; **it never decides.** Every deal-breaker
-> needs your explicit sign-off, every answer is drafted only from *your* evidence, it asks when it can't,
-> and nothing is approved or submitted until you say so.
+<p align="center">
+  <a href="https://www.bidframe.org/showcase"><strong>Open the worked example</strong></a>
+  |
+  <a href="https://www.bidframe.org/demo">guided demo</a>
+  |
+  <a href="https://www.bidframe.org/pitch">pitch deck</a>
+  |
+  <a href="https://www.bidframe.org/codemap.html">code map</a>
+</p>
 
-## What it does — in 90 seconds
+![Bidframe landing hero with product matrix](pitch-assets/canva/screenshots/landing-hero.png)
 
-1. **Reads the whole tender** through a real pipeline (ingest → chunk → extract → reconcile) — not a chat
-   wrapper around one prompt.
-2. **Surfaces the deal-breakers first** — the pass/fail rules that disqualify a bid even when everything
-   else is perfect — each traced to the **exact clause and page** it came from.
-3. **Drafts answers from your evidence** — every claim cited back to your own capability docs; where there
-   is no evidence, it raises an **open question** instead of inventing one.
-4. **Keeps you in control** — approve / edit / flag every line; approving a deal-breaker takes an explicit
-   confirm; confidence is shown visually, never as a raw number you have to trust.
+## Judges: Start Here
 
-Try it: **`/showcase`** runs the real product on a frozen real tender (no login, no key). **`/demo`** is a
-guided walkthrough. **`/review`** is the live tool.
+If you have one minute, open **[`/showcase`](https://www.bidframe.org/showcase)**. It is the real product surface, frozen on a pre-baked Bradwell grounds-maintenance tender so it works without login, backend, or API key.
 
-## Why it's different (the wedge)
+What you will see:
 
-The incumbents are either **generative** ("AI writes your bid", enterprise-priced) or **answer libraries**
-you maintain. Both treat *reading the tender* as a black box. Bidframe makes that step **auditable and
-human-controlled**:
+| In the worked example | What it proves |
+|---|---|
+| **50 requirements found** | Bidframe reads the tender into a reviewable register. |
+| **12 deal-breakers flagged** | Pass/fail rules are lifted out before the bid team writes a word. |
+| **4 answers drafted from evidence** | Drafts are built from capability documents, not invented. |
+| **1 open question left for the user** | When evidence is missing, it asks instead of guessing. |
+| **Every row links back to page and clause** | The bid manager can check the source before approving. |
 
-1. **Human in control** — the expert stays at the wheel: approve / edit / flag every requirement, an
-   explicit confirm before any deal-breaker is signed off, and a live record of every decision.
-2. **Traceability** — every requirement links to the exact clause/page it came from; one click opens the
-   real PDF at that line.
-3. **The disqualifier catch** — hard pass/fail gates surfaced loudly, not buried in a flat list.
-4. **Measured completeness** — we tell you what we caught and flag what we're unsure of, instead of a list
-   you just *hope* is complete.
-5. **Auditable autofill** — drafts each answer from *your* capability docs, every claim traceable, and
-   asks you only what it genuinely can't answer. We draft; we never ghost-write a black box.
+For the full story:
 
-**The Conduct bridge:** Conduct captures the *context of an expert's decisions* so legacy knowledge moves
-with the work. Bidframe does that for the bid manager — every approve/edit/flag and every answered gap
-becomes reusable context that **compounds across future bids**. The matrix is the surface; the captured
-decisions are the moat.
+| Route | Use it for |
+|---|---|
+| [`/showcase`](https://www.bidframe.org/showcase) | The interactive judge walkthrough. Same matrix as the live tool, seeded with a real tender run. |
+| [`/demo`](https://www.bidframe.org/demo) | A guided scroll-through for the product story. |
+| [`/pitch`](https://www.bidframe.org/pitch) | The five-minute stage deck. |
+| [`/review`](https://www.bidframe.org/review) | The live compliance matrix route. Demo-safe unless a backend URL is configured. |
+| [`/answers`](https://www.bidframe.org/answers) | Draft answers, evidence receipts, and open questions. |
+| [`/graph`](https://www.bidframe.org/graph) | Requirement relationships and where the marks live. |
 
-## Measured accuracy — reproduce it yourself
+## The Product
 
-We measure our output against hand-labelled gold sets across four real public-sector tenders (cleaning,
-grounds-maintenance, arboriculture), deterministically — no LLM-as-judge.
+Public-sector tenders are full of pass/fail rules: insurance limits, submission instructions, pricing declarations, exclusion clauses, and award criteria. Missing one can waste days of bid work.
 
-**Catching deal-breakers is the number that matters, and it's engineered, not hoped for.** A generous
-*deterministic* net (recall-first) surfaces every candidate disqualifier, then a model filter removes the
-false flags. The net's robustness is provable **with no key at all**:
+Bidframe does the first read:
 
-```bash
-pytest engine/tests/test_adversarial_safety.py   # 20/20 — disqualifiers in adversarial phrasings still caught
+1. **Reads the tender pack** through an ingest, chunk, extract, and reconcile pipeline.
+2. **Finds requirements** and keeps the exact source page, clause, and excerpt.
+3. **Flags deal-breakers** so the bid team reviews bid-killers first.
+4. **Drafts answers from the bidder's own evidence** where it can cite a capability document.
+5. **Raises open questions** where evidence is missing.
+6. **Keeps the bid manager in control** with approve, edit, and flag decisions on every line.
+
+The AI reads and drafts. It never decides, approves, or submits.
+
+## Why It Fits The Track
+
+Conduct's Make Legacy Move thesis is not "replace the expert." It is "make the expert faster while their judgement stays in the work."
+
+Bidframe captures the bid manager's review as structured context:
+
+| Human action | Context Bidframe keeps |
+|---|---|
+| Approve a requirement | This clause is acceptable for this bidder. |
+| Edit a draft answer | The bidder's preferred wording and evidence trail. |
+| Flag a row | A risk, dependency, or colleague follow-up. |
+| Answer a gap | New reusable knowledge for future bids. |
+
+The matrix is the surface. The captured decisions are the compounding layer.
+
+## Product Screens
+
+| Deal-breakers first | Source proof beside the tender |
+|---|---|
+| ![Deal-breaker matrix in Bidframe](pitch-assets/canva/screenshots/demo-matrix-dealbreaker.png) | ![Source proof overlay with tender PDF](pitch-assets/canva/screenshots/demo-source-proof.png) |
+
+| Drafts with receipts | Requirement structure |
+|---|---|
+| ![Evidence-backed draft answer card](pitch-assets/canva/screenshots/answers-receipts-card.png) | ![Requirement graph and marks view](pitch-assets/canva/screenshots/graph-marks.png) |
+
+## How It Works
+
+```mermaid
+flowchart LR
+  tender["Tender PDFs"] --> ingest["Ingest text and OCR fallback"]
+  ingest --> extract["Extract candidate requirements"]
+  extract --> reconcile["Reconcile duplicates and route confidence"]
+  reconcile --> matrix["Compliance matrix"]
+  matrix --> review["Human review: approve, edit, flag"]
+
+  evidence["Capability documents"] --> draft["Draft answers from evidence"]
+  draft --> matrix
+
+  gold["Gold sets"] --> eval["Deterministic eval harness"]
+  eval --> proof["Measured claims"]
+
+  classDef paper fill:#F6F2E9,stroke:#211D17,color:#211D17;
+  classDef danger fill:#8A2D2A,stroke:#8A2D2A,color:#FFFFFF;
+  classDef forest fill:#315C47,stroke:#315C47,color:#FFFFFF;
+  classDef amber fill:#F0C66E,stroke:#A06B1A,color:#211D17;
+  class tender,evidence,gold paper;
+  class extract,reconcile,draft forest;
+  class matrix,review amber;
+  class proof danger;
 ```
 
-On our gold sets the shipped pipeline (net + extraction) catches every deal-breaker, including on a
-**held-out tender the system had never seen**. Reproduce the net-applied gating number with
-`python -m engine.scripts.gating_recall` (needs `OPENAI_API_KEY` for the embedding match). One honest
-caveat: plain `eval_all` scores *raw extraction without the net*, so its gating figure looks lower — the
-net is precisely the safety layer that closes that gap. That two-stage design is the point.
+Core pieces:
 
-**General requirement recall** — run it yourself:
+| Area | What lives there |
+|---|---|
+| [`frontend/`](frontend) | Next.js 16, React 19, Tailwind. Compliance matrix, source panel, answer workspace, graph, showcase, pitch. |
+| [`backend/`](backend) | FastAPI. Uploads, PDF ingest, extraction jobs, auth, persistence, REST API. |
+| [`engine/`](engine) | Reconcile, dedupe, eval harness, deal-breaker safety net, answer drafting, groundedness checks. |
+| [`prompts/`](prompts) | Extraction, classification, answer, and gap-interview prompt specs. |
+| [`gold-set/`](gold-set) | Hand-labelled tenders used for reproducible measurement. |
 
-```bash
-python -m engine.scripts.eval_all     # recall ~0.52 with the built-in heuristic (no key) · ~0.7 with the OpenAI extractor
-```
+The whole repo map is generated at [`CODEMAP.md`](CODEMAP.md), with an interactive version at [`/codemap.html`](https://www.bidframe.org/codemap.html).
 
-We catch the majority and, crucially, **flag what we're unsure of** rather than guessing. Early numbers on
-a small gold set, broadening as we label more — but real numbers on real documents. We deliberately
-**don't headline a precision figure**: the gold sets are sparse, so much of the apparent over-extraction is
-real requirements the key hasn't caught up to.
+## Proof We Can Defend
 
-## Real engineering (not a wrapper around a prompt)
+Bidframe is built around the risk that matters most: **do not miss a deal-breaker**.
 
-- **Two-stage deal-breaker engine** — a generous *deterministic* keyword net (recall-first) guarantees the
-  floor, then a model precision-filter with full-page context removes false flags. The guarantee comes
-  from code, not the model's mood.
-- **Eval harness** — `engine/eval.py` + `engine/scripts/eval_all.py` score output against gold sets
-  deterministically. **225 passing tests** in the engine suite alone (`pytest engine/tests`) — across the
-  extractor, reconcile/dedupe, the gating net and the eval.
-- **Real ingest pipeline** — `POST /tenders/upload` → background extraction job → live progress → error
-  handling; pluggable extractor (heuristic with **no key**, OpenAI when a key is set).
-- **Handles messy inputs, not just clean ones** — multi-parser fallback (PyMuPDF → pdfplumber for
-  tables/form pages → pypdf), and **scanned / image-only PDFs are OCR'd via gpt-4o vision** (verified
-  end-to-end: an image-only page with a zero-char text layer is recovered to full text). Bounded to 15
-  vision pages/doc to control cost; long tenders are split into overlapping chunks and a chunk that fails
-  after retries is skipped, never crashing the run; pages that still can't be read are flagged, not
-  silently dropped.
-- **Traceability to the line** — `source_rect` bounding boxes highlight the exact line in the source PDF;
-  two-sided evidence links tie each drafted answer to the capability doc that backs it.
+What we can safely say:
 
-## For reviewers — run it
+- The deal-breaker safety net is deterministic and tested against real gold sets and held-out tenders.
+- The answer drafting path is evidence-first: if there is no citation, the product asks a question.
+- The eval harness is deterministic. It does not use an LLM as the judge.
+- Broader all-requirement recall is still small-sample, so we do not headline a single overall accuracy percentage.
+
+Useful checks:
 
 ```bash
-# Frontend (the product UI — mock/demo data by default, no backend needed)
-cd frontend && npm install && npm run dev          # http://localhost:3000  → /showcase
+# Deal-breaker safety and trust invariants
+python -m pytest engine/tests/test_adversarial_safety.py
 
-# Backend (the real pipeline + REST API)
-cd backend && python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-cp .env.example .env                                # optional: add OPENAI_API_KEY for the LLM extractor
-uvicorn app.main:app --reload                       # http://localhost:8000 · API docs at /docs
-
-# Reproduce the measured accuracy
+# Aggregate extraction evaluation across labelled tenders
 python -m engine.scripts.eval_all
+
+# Deal-breaker recall with the safety net applied
+python -m engine.scripts.gating_recall
 ```
 
-The frontend runs entirely on demo data with **no backend and no key** — `/showcase` is the fastest look.
+Note: `eval_all` scores the raw extraction path. The deal-breaker safety net is measured separately because it is deliberately a second layer.
 
-## Repo layout
+## Run It Locally
 
+The fastest local path is the frontend. It uses frozen demo data by default, so no backend or key is needed.
+
+```bash
+cd frontend
+npm install
+npm run dev
 ```
-/frontend   Next.js 16 + React 19 + Tailwind — compliance matrix, source panel, gating hero, graph, upload
-/backend    Python + FastAPI — ingest → chunk → extract → SQLite → REST API (pluggable LLM / heuristic)
-/engine     Python — reconcile/dedupe + the eval harness (the measured-accuracy machine)
-/prompts    Extraction · classification · answer-generation · gap-interview prompts + the schema contract
-/gold-set   Hand-labelled gold requirements per tender (what the eval scores against)
+
+Open `http://localhost:3000/showcase`.
+
+To run the backend pipeline:
+
+```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
 ```
 
-The many `*.md` files at the repo root are our **working docs** (planning, status, comms, outreach) — a
-7-day, four-person build in the open. If you're reviewing, start with this README and the code above.
+Optional: add `OPENAI_API_KEY` in `backend/.env` for the OpenAI extractor. Without a key, the heuristic path still runs for plumbing and local development.
 
----
+To connect the frontend to the backend:
 
-### Contributing / for the team & agents
+```bash
+cd frontend
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8000 npm run dev
+```
 
-The **requirement schema is locked** ([AGENTS.md](AGENTS.md)) — frontend builds against mock data in that
-exact shape, backend produces it for real; don't change it without team agreement. For current state see
-[STATUS.md](STATUS.md); for the whole-repo map (auto-updated on every push) see [CODEMAP.md](CODEMAP.md);
-the git workflow + agent comms protocol are in [AGENTS.md](AGENTS.md).
+## API Surface
 
-*Built at the Conduct "Make Legacy Move" hackathon, 2026.*
+| Method | Path | Purpose |
+|---|---|---|
+| `GET` | `/health` | Health check and active extractor. |
+| `GET` | `/tenders` | List uploaded tenders for the signed-in user. |
+| `POST` | `/tenders/upload` | Upload one or more PDFs and start extraction. |
+| `GET` | `/tenders/{id}/requirements` | Return the tender in the locked requirement schema. |
+| `POST` | `/tenders/{id}/draft` | Draft evidence-backed answers from uploaded capability documents. |
+| `PATCH` | `/requirements/{id}` | Save approve, edit, or flag decisions. |
+
+Full backend details are in [`backend/README.md`](backend/README.md).
+
+## Data Contract
+
+Every requirement follows the locked schema in [`AGENTS.md`](AGENTS.md): text, source page, source clause, source excerpt, type, gating flag, category, confidence, status, decision, answer, evidence refs, and open questions.
+
+The frontend builds against the same shape as the backend returns. That is why `/showcase` can use a frozen real tender run and the live product can swap to the API without changing the UI.
+
+## Team Notes
+
+This is a seven-day Conduct hackathon build by a four-person team:
+
+| Role | Owns |
+|---|---|
+| Frontend | Compliance matrix, source panel, answer workspace, graph, demo, visual system. |
+| Backend | PDF ingest, chunking, extraction, auth, persistence, REST API. |
+| Generalist | Reconcile, dedupe, eval harness, answer drafting, safety tests. |
+| J | Prompts, orchestration, narrative, pitch, traction, glue. |
+
+Working docs:
+
+- [`START-HERE.md`](START-HERE.md) for orientation.
+- [`STATUS.md`](STATUS.md) for live project state.
+- [`comms/`](comms) for the agent message boards.
+- [`frontend/copywriting.md`](frontend/copywriting.md) for the product voice.
+- [`demo-claim-ledger.md`](demo-claim-ledger.md) for pitch claims and safe wording.
+
+Built for Conduct "Make Legacy Move", 2026.
