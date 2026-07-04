@@ -724,9 +724,10 @@ export function PitchDeck() {
                         minutes
                       </span>
                       <span className="pitch-journey__note">
-                        A first read of a pack like this is one to two days of
-                        expert time — £375 to £950 outsourced. Bidframe does it
-                        in minutes, and by catching every deal-breaker it
+                        This pack is 34 pages with 12 bid-killers scattered to
+                        page 31 — a careful first read by hand is the better
+                        part of a day (£375 to £950 outsourced). Bidframe
+                        surfaces every one in minutes, and by catching them
                         protects the £4,000, two-to-eight-week bid it sits
                         inside.
                       </span>
