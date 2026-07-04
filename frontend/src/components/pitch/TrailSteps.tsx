@@ -6,13 +6,27 @@
 
 export function TrailSteps({
   steps,
+  active,
 }: {
   steps: readonly { title: string; copy: string }[];
+  // The station the talk has reached; earlier stations read as walked.
+  active?: number;
 }) {
   return (
     <ol className="pitch-trailsteps">
       {steps.map((step, i) => (
-        <li key={step.title} className="pitch-trailsteps__step">
+        <li
+          key={step.title}
+          className={`pitch-trailsteps__step ${
+            active === undefined
+              ? ""
+              : i === active
+                ? "is-here"
+                : i < active
+                  ? "is-walked"
+                  : "is-ahead"
+          }`}
+        >
           <span className="pitch-trailsteps__marker" aria-hidden="true">
             <i className="pitch-trailsteps__blaze" />
           </span>

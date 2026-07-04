@@ -3615,7 +3615,8 @@ body {
 /* The journey: headline, the trail with steps, one giant proof figure. */
 .pitch-journey {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  /* head, register, then the exhibit zone takes the remaining height */
+  grid-template-rows: auto auto minmax(0, 1fr);
   gap: clamp(0.4rem, 0.9vw, 0.9rem);
   height: 100%;
   min-height: 0;
@@ -4695,11 +4696,33 @@ body {
 }
 
 .pitch-counter {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   padding: 0 0.5rem;
   font-family: var(--font-mono-ibm), monospace;
   font-size: 0.68rem;
   letter-spacing: 0.08em;
   white-space: nowrap;
+}
+
+/* Beat dots: how many NEXT presses this slide still holds. */
+.pitch-counter__beats {
+  display: inline-flex;
+  gap: 0.22rem;
+}
+
+.pitch-counter__beats i {
+  width: 0.3rem;
+  height: 0.3rem;
+  rotate: 45deg;
+  border: 1px solid rgba(246, 242, 233, 0.55);
+  background: transparent;
+}
+
+.pitch-counter__beats i.is-done {
+  border-color: var(--color-signal-amber);
+  background: var(--color-signal-amber);
 }
 
 .pitch-timer {
@@ -5164,44 +5187,54 @@ body {
   }
 }
 
-/* Journey exhibit: the route register keeps the front plane; two mockup
-   cards flank it from the outer thirds as depth dressing. They sit under
-   an ink tint (::after) instead of extra transparency so the stage grain
-   doesn't muddy the paper cards. */
-.pitch-exhibit--journey {
-  position: relative;
-  height: 100%;
+/* Journey exhibit: the zone under the route register where the talk's
+   current proof lives — the £341bn stat on the first beat, then one tilted
+   product card per station as the speaker walks the register. Each card
+   remounts on its beat, so it settles in fresh. */
+.pitch-journey__exhibit {
   min-height: 0;
+  display: grid;
+  place-items: center;
 }
 
-.pitch-exhibit--journey .pitch-journey {
-  position: relative;
-  z-index: 1;
-  height: 100%;
+.pitch-journey__proof {
+  width: min(26rem, 38vw);
+  max-height: 100%;
+  overflow: hidden;
 }
 
-.pitch-exhibit__satellite {
-  position: absolute;
-  z-index: 0;
-  top: 50%;
-  width: clamp(15rem, 21vw, 20rem);
-  margin-top: calc(-0.5 * clamp(11rem, 15vw, 14rem));
-  pointer-events: none;
+/* Register stations track the talk: walked stations dim their blaze to
+   paper, the current one burns amber, the road ahead waits. */
+.pitch-trailsteps__step.is-walked .pitch-trailsteps__blaze {
+  border-color: rgba(246, 242, 233, 0.75);
+  background: rgba(246, 242, 233, 0.85);
+  box-shadow: none;
 }
 
-.pitch-exhibit__satellite::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(6, 18, 11, 0.32);
+.pitch-trailsteps__step.is-here .pitch-trailsteps__blaze {
+  scale: 1.35;
+  box-shadow: 0 0 12px rgba(210, 164, 53, 0.75);
 }
 
-.pitch-exhibit__satellite--left {
-  left: -1.5%;
+.pitch-trailsteps__step.is-ahead {
+  opacity: 0.5;
 }
 
-.pitch-exhibit__satellite--right {
-  right: -1.5%;
+.pitch-trailsteps__step.is-ahead .pitch-trailsteps__blaze {
+  background: rgba(6, 18, 11, 0.6);
+  box-shadow: none;
+}
+
+.pitch-trailsteps__step {
+  transition: opacity 360ms ease;
+}
+
+.pitch-trailsteps__blaze {
+  transition:
+    background 360ms ease,
+    border-color 360ms ease,
+    scale 360ms ease,
+    box-shadow 360ms ease;
 }
 
 /* Product exhibit: three planes — dimmed compact matrix behind, the live
@@ -5274,7 +5307,6 @@ body {
     animation: none;
   }
 
-  .pitch-exhibit__satellite,
   .pitch-sheet-stack__matrix,
   .pitch-sheet-stack__answer {
     display: none;
@@ -5527,7 +5559,6 @@ body {
     animation: none !important;
   }
 
-  .pitch-exhibit__satellite,
   .pitch-sheet-stack__matrix,
   .pitch-sheet-stack__answer {
     display: none !important;

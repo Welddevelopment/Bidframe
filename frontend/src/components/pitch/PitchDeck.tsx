@@ -42,18 +42,25 @@ import { deriveTriage } from "@/lib/triage";
 const MAIN_SLIDE_COUNT = 5;
 const APPENDIX_SLIDE_COUNT = 6;
 const TOTAL_SLIDE_COUNT = MAIN_SLIDE_COUNT + APPENDIX_SLIDE_COUNT;
-// The Solution slide (0-based): the deck's two-beat dramatic moment.
-const STOPSIGN_INDEX = 2;
 // The Product slide: where the walk-into-the-product portal opens.
 const PRODUCT_INDEX = 3;
+// Beats per main slide: NEXT walks a slide's internal beats before moving on.
+// Use Case paces four register stations (each swaps in a product proof);
+// the stop-sign keeps its two-beat reveal.
+const SLIDE_BEATS = [1, 4, 2, 1, 1] as const;
+
+function beatsAt(index: number) {
+  return SLIDE_BEATS[index] ?? 1;
+}
+
 // Sums to 170s — ten seconds of handoff slack inside the 3:00 window.
 const AUTOPLAY_SECONDS = [24, 30, 40, 46, 30] as const;
 // Where the clock *should* be when each main slide starts (pace ghost).
 const PACE_STARTS = AUTOPLAY_SECONDS.map((_, i) =>
   AUTOPLAY_SECONDS.slice(0, i).reduce((sum, s) => sum + s, 0)
 );
-// v2: slide indices changed when the deck went from 7 to 5 main slides.
-const PITCH_STATE_KEY = "bidframe.pitch.state.v2";
+// v3: beat semantics generalized to per-slide beat counts.
+const PITCH_STATE_KEY = "bidframe.pitch.state.v3";
 const CTA =
   "Talk to us if you would like to help Bidframe scale the first-read layer for public-sector bids.";
 
@@ -136,9 +143,13 @@ function readStoredPitchState(): PitchStoredState | null {
     if (typeof activeIndex !== "number" || !Number.isInteger(activeIndex)) {
       return null;
     }
+    const index = clampSlideIndex(activeIndex);
     return {
-      activeIndex: clampSlideIndex(activeIndex),
-      beat: parsed.beat === 1 ? 1 : 0,
+      activeIndex: index,
+      beat:
+        typeof parsed.beat === "number" && Number.isInteger(parsed.beat)
+          ? Math.min(Math.max(parsed.beat, 0), beatsAt(index) - 1)
+          : 0,
       notesOpen: parsed.notesOpen === true,
       elapsedSeconds:
         typeof elapsedSeconds === "number" && Number.isInteger(elapsedSeconds)
@@ -333,8 +344,9 @@ export function PitchDeck() {
 
   const next = useCallback(() => {
     setAutoplay(false);
-    if (activeIndex === STOPSIGN_INDEX && beat === 0) {
-      setBeat(1);
+    // Walk this slide's internal beats before leaving it.
+    if (beat < beatsAt(activeIndex) - 1) {
+      setBeat(beat + 1);
       return;
     }
     // Advancing past the Ask hands the stage to the live demo: straight to
@@ -350,13 +362,13 @@ export function PitchDeck() {
 
   const previous = useCallback(() => {
     setAutoplay(false);
-    if (activeIndex === STOPSIGN_INDEX && beat === 1) {
-      setBeat(0);
+    if (beat > 0) {
+      setBeat(beat - 1);
       return;
     }
     const target = Math.max(activeIndex - 1, 0);
-    // walking backwards re-enters the stop-sign already resolved
-    setBeat(target === STOPSIGN_INDEX ? 1 : 0);
+    // walking backwards re-enters a beated slide already resolved
+    setBeat(beatsAt(target) - 1);
     setSlideSeconds(0);
     setActiveIndex(target);
   }, [activeIndex, beat]);
@@ -365,7 +377,7 @@ export function PitchDeck() {
   const goTo = useCallback((index: number) => {
     setAutoplay(false);
     const target = clampSlideIndex(index);
-    setBeat(target === STOPSIGN_INDEX ? 1 : 0);
+    setBeat(beatsAt(target) - 1);
     setSlideSeconds(0);
     setActiveIndex(target);
   }, []);
@@ -511,11 +523,11 @@ export function PitchDeck() {
       const hashIndex = parsePitchHash(window.location.hash);
       const stored = readStoredPitchState();
       const targetIndex = hashIndex ?? stored?.activeIndex ?? 0;
+      // Deep links land on a slide's finished state; stored state resumes
+      // mid-beat exactly where the presenter left off.
       const restoredBeat =
         hashIndex !== null
-          ? targetIndex === STOPSIGN_INDEX
-            ? 1
-            : 0
+          ? beatsAt(clampSlideIndex(targetIndex)) - 1
           : stored?.beat ?? 0;
 
       setActiveIndex(clampSlideIndex(targetIndex));
@@ -607,14 +619,12 @@ export function PitchDeck() {
     if (!autoplay) return;
     if (activeIndex >= MAIN_SLIDE_COUNT) return;
 
-    // Autoplay fires the stop-sign's second beat partway through the slide.
-    const beatTimeout =
-      activeIndex === STOPSIGN_INDEX
-        ? window.setTimeout(
-            () => setBeat(1),
-            AUTOPLAY_SECONDS[STOPSIGN_INDEX] * 450
-          )
-        : null;
+    // Autoplay walks a slide's beats evenly across its budget.
+    const beats = beatsAt(activeIndex);
+    const budgetMs = AUTOPLAY_SECONDS[activeIndex] * 1000;
+    const beatTimeouts = Array.from({ length: beats - 1 }, (_, k) =>
+      window.setTimeout(() => setBeat(k + 1), ((k + 1) * budgetMs) / beats)
+    );
 
     const timeout = window.setTimeout(() => {
       if (activeIndex === MAIN_SLIDE_COUNT - 1) {
@@ -624,10 +634,10 @@ export function PitchDeck() {
         setSlideSeconds(0);
         setActiveIndex((current) => Math.min(current + 1, MAIN_SLIDE_COUNT - 1));
       }
-    }, AUTOPLAY_SECONDS[activeIndex] * 1000);
+    }, budgetMs);
 
     return () => {
-      if (beatTimeout !== null) window.clearTimeout(beatTimeout);
+      beatTimeouts.forEach((id) => window.clearTimeout(id));
       window.clearTimeout(timeout);
     };
   }, [activeIndex, autoplay]);
@@ -673,47 +683,19 @@ export function PitchDeck() {
           light: 0.3,
           glyph: "read",
           notes: [
-            "Frame the user: a bid manager opens a public-sector tender and needs a fast, defensible first read.",
+            "FOUR BEATS — each NEXT lights the next station and swaps the proof below.",
+            "Beat 1 (Open tender): frame the user over the £341bn figure — a bid manager needs a fast, defensible first read.",
+            "Beat 2 (Find risks): deal-breaker register appears. Beat 3 (Build matrix): source trace. Beat 4 (Draft safely): evidence-backed answer.",
             "Say it in full: the first job is not writing — it is finding the pass/fail clauses and the proof needed to answer safely.",
-            "Use the market size as context, not a top-down TAM claim.",
-            "Make the journey feel operational: read, sort, prove, decide.",
           ],
           body: (
-            <div className="pitch-exhibit pitch-exhibit--journey">
-              <aside
-                className="pitch-exhibit__satellite pitch-exhibit__satellite--left pitch-exhibit__plane"
-                aria-hidden="true"
-                style={
-                  {
-                    "--tilt-y": "9deg",
-                    "--plane-z": "-90px",
-                    "--plane-scale": "0.72",
-                    "--plane-delay": "140ms",
-                  } as React.CSSProperties
-                }
-              >
-                <ClauseCard />
-              </aside>
-              <aside
-                className="pitch-exhibit__satellite pitch-exhibit__satellite--right pitch-exhibit__plane"
-                aria-hidden="true"
-                style={
-                  {
-                    "--tilt-y": "-9deg",
-                    "--plane-z": "-90px",
-                    "--plane-scale": "0.72",
-                    "--plane-delay": "220ms",
-                  } as React.CSSProperties
-                }
-              >
-                <DealBreakerCard />
-              </aside>
-              <div className="pitch-journey">
+            <div className="pitch-journey">
               <div className="pitch-journey__head">
                 <p className="pitch-kicker">The use case</p>
                 <h2>The first read decides what happens next</h2>
               </div>
               <TrailSteps
+                active={activeIndex === 1 ? beat : 3}
                 steps={[
                   {
                     title: "Open tender",
@@ -727,44 +709,68 @@ export function PitchDeck() {
                   },
                 ]}
               />
-              <div className="pitch-journey__stats">
-                <div className="pitch-journey__stat pitch-journey__stat--impact">
-                  <span
-                    className="pitch-journey__figure"
-                    aria-label="Days to minutes"
+              <div className="pitch-journey__exhibit pitch-exhibit">
+                {(activeIndex === 1 ? beat : 3) === 0 ? (
+                  <div className="pitch-journey__stats">
+                    <div className="pitch-journey__stat pitch-journey__stat--impact">
+                      <span
+                        className="pitch-journey__figure"
+                        aria-label="Days to minutes"
+                      >
+                        Days
+                        <span className="pitch-journey__arrow" aria-hidden="true">
+                          →
+                        </span>
+                        minutes
+                      </span>
+                      <span className="pitch-journey__note">
+                        A first read of a pack like this is one to two days of
+                        expert time — £375 to £950 outsourced. Bidframe does it
+                        in minutes, and by catching every deal-breaker it
+                        protects the £4,000, two-to-eight-week bid it sits
+                        inside.
+                      </span>
+                    </div>
+                    <div className="pitch-journey__stat pitch-journey__stat--context">
+                      <span
+                        className="pitch-journey__figure pitch-journey__figure--sm"
+                        aria-label="341 billion pounds"
+                      >
+                        £
+                        <AnimatedNumber
+                          key={activeIndex === 1 ? "gbp-active" : "gbp-idle"}
+                          value={341}
+                          from={activeIndex === 1 ? 0 : 341}
+                        />
+                        bn
+                      </span>
+                      <span className="pitch-journey__note">
+                        UK public procurement, 2023/24 · about a third of
+                        public spend
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    key={activeIndex === 1 ? beat : 3}
+                    className="pitch-journey__proof pitch-exhibit__plane"
+                    style={
+                      {
+                        "--tilt-y":
+                          (activeIndex === 1 ? beat : 3) % 2 ? "-5deg" : "5deg",
+                        "--plane-z": "-30px",
+                      } as React.CSSProperties
+                    }
                   >
-                    Days
-                    <span className="pitch-journey__arrow" aria-hidden="true">
-                      →
-                    </span>
-                    minutes
-                  </span>
-                  <span className="pitch-journey__note">
-                    A first read of a pack like this is one to two days of
-                    expert time — £375 to £950 outsourced. Bidframe does it in
-                    minutes, and by catching every deal-breaker it protects the
-                    £4,000, two-to-eight-week bid it sits inside.
-                  </span>
-                </div>
-                <div className="pitch-journey__stat pitch-journey__stat--context">
-                  <span
-                    className="pitch-journey__figure pitch-journey__figure--sm"
-                    aria-label="341 billion pounds"
-                  >
-                    £
-                    <AnimatedNumber
-                      key={activeIndex === 1 ? "gbp-active" : "gbp-idle"}
-                      value={341}
-                      from={activeIndex === 1 ? 0 : 341}
-                    />
-                    bn
-                  </span>
-                  <span className="pitch-journey__note">
-                    UK public procurement, 2023/24 · about a third of public
-                    spend
-                  </span>
-                </div>
-              </div>
+                    {(activeIndex === 1 ? beat : 3) === 1 ? (
+                      <DealBreakerCard />
+                    ) : (activeIndex === 1 ? beat : 3) === 2 ? (
+                      <ClauseCard />
+                    ) : (
+                      <AnswerCardShot />
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           ),
@@ -1401,6 +1407,13 @@ export function PitchDeck() {
                     }`
                   : `${activeIndex + 1} / ${MAIN_SLIDE_COUNT}`}
               </strong>
+              {!inAppendix && beatsAt(activeIndex) > 1 && (
+                <span className="pitch-counter__beats" aria-hidden="true">
+                  {Array.from({ length: beatsAt(activeIndex) }, (_, i) => (
+                    <i key={i} className={i <= beat ? "is-done" : ""} />
+                  ))}
+                </span>
+              )}
             </div>
             <div
               className="pitch-timer"
