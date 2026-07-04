@@ -34,12 +34,14 @@ in the last column rather than guess.
 that's what a bid can't afford to miss, and we've proven it on gold and unseen tenders. Broader
 requirement recall is promising but still small-sample, so we don't put a headline percentage on it."*
 
-## C. Market claims — VERIFY before stage (these are NOT our measured numbers)
-| Claim | Source in deck | Status |
-|---|---|---|
-| UK public procurement ≈ £341bn | House of Commons Library (deck cites CBP-9317) | **VERIFY exact figure + year vs the source.** If unsure live, say "hundreds of billions a year." |
-| SMEs get "about a third of spend" | — | This is closer to a **government target (~33%)** than an achieved figure. Frame as a *goal* the policy is pushing, not a current share. |
-| New rules live since 24 Feb 2025 (Procurement Act 2023) | gov.uk | **HIGH** — the Act went live 24 Feb 2025. Safe to state. |
+## C. Market claims — VERIFIED (checked 2026-07-04 against the House of Commons Library)
+| Claim | Status |
+|---|---|
+| UK public procurement ≈ **£341bn** | ✅ **VERIFIED — but say the year: that's the 2023/24 figure** (HoC Library CBP-9317, updated 28 Jul 2025). The **latest is £434bn (2024/25)** — either is fine on stage, but state the year so a judge who knows the newer number doesn't catch you. Safe fallback: "over £340 billion a year." |
+| Procurement is **"about a third of spend"** | ✅ **VERIFIED** — "procurement accounts for about a third of public-sector spending" (HoC Library CBP-9317). *(Note: this is procurement's share of public spending — NOT the SME share. Don't conflate it with the SME-participation target.)* |
+| New rules live since **24 Feb 2025** (Procurement Act 2023) | ✅ **VERIFIED** — the Act went live 24 Feb 2025 (gov.uk). Safe to state. |
+
+Source: [HoC Library — Procurement statistics: a short guide (CBP-9317)](https://commonslibrary.parliament.uk/research-briefings/cbp-9317/).
 
 ---
 
