@@ -4160,6 +4160,112 @@ body {
   filter: saturate(0.78) contrast(1) brightness(0.8);
 }
 
+/* --- Layered document: the real scanned page holds beat 0; on reveal the
+   scan bar sweeps it, then the crisp facsimile resolves on top with its
+   oxblood marks. Highlights live on the facsimile, never pixel-guessed
+   onto the scan. */
+.pitch-before-after__document--layered .pitch-before-after__image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.pitch-before-after__document--layered .pitch-facsimile {
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 480ms ease 420ms;
+}
+
+.pitch-before-after.is-revealed .pitch-before-after__document--layered .pitch-facsimile {
+  opacity: 1;
+}
+
+.pitch-before-after__scan {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 16%;
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(180, 45, 36, 0.32) 45%,
+    rgba(246, 242, 233, 0.22) 55%,
+    transparent
+  );
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pitch-before-after.is-revealed .pitch-before-after__scan {
+    animation:
+      wall-scan 0.9s cubic-bezier(0.4, 0, 0.2, 1) both,
+      pitch-scan-fade 0.9s linear both;
+  }
+}
+
+@keyframes pitch-scan-fade {
+  0%,
+  82% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Hard cut under reduced motion: no sweep, facsimile + marks land at once. */
+@media (prefers-reduced-motion: reduce) {
+  .pitch-before-after__scan {
+    display: none;
+  }
+
+  .pitch-before-after__document--layered .pitch-facsimile {
+    transition: none;
+  }
+}
+
+/* The contrast subline swaps copy on reveal: "None of them obvious." gives
+   way to the days→minutes headline. Both spans share one grid cell. */
+.pitch-before-after__contrast {
+  margin: 0;
+  display: grid;
+  justify-items: center;
+  font-family: var(--font-mono-ibm), monospace;
+  font-size: clamp(0.62rem, 0.85vw, 0.88rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(246, 242, 233, 0.6);
+}
+
+.pitch-before-after__contrast-line {
+  grid-area: 1 / 1;
+  transition: opacity 420ms ease;
+}
+
+.pitch-before-after__contrast-line--after {
+  opacity: 0;
+  color: rgba(246, 242, 233, 0.78);
+}
+
+.pitch-before-after.is-revealed .pitch-before-after__contrast-line--before {
+  opacity: 0;
+}
+
+.pitch-before-after.is-revealed .pitch-before-after__contrast-line--after {
+  opacity: 1;
+  transition-delay: 260ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pitch-before-after__contrast-line {
+    transition: none;
+  }
+}
+
 .pitch-before-after__clause {
   position: absolute;
   left: clamp(0.55rem, 0.9vw, 0.85rem);
@@ -5618,5 +5724,31 @@ body {
   .pitch-before-after__image {
     filter: none !important;
     object-position: center top !important;
+  }
+
+  /* The leave-behind prints the readable facsimile with marks lit; the
+     layered scan page and sweep bar are stage-only. */
+  .pitch-before-after__document--layered .pitch-before-after__image,
+  .pitch-before-after__scan {
+    display: none !important;
+  }
+
+  .pitch-before-after__document--layered .pitch-facsimile {
+    opacity: 1 !important;
+  }
+
+  .pitch-facsimile.is-highlighted .pitch-facsimile__clauses li,
+  .pitch-facsimile__clauses li {
+    border-left-color: var(--color-signal-oxblood) !important;
+    background: rgba(180, 45, 36, 0.13) !important;
+  }
+
+  .pitch-before-after__contrast-line--before {
+    display: none !important;
+  }
+
+  .pitch-before-after__contrast-line--after {
+    opacity: 1 !important;
+    color: #000000 !important;
   }
 }

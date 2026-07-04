@@ -50,8 +50,9 @@ export function TenderPageFacsimile({ highlighted }: { highlighted: boolean }) {
         tenderer:
       </p>
       <ol className="pitch-facsimile__clauses">
+        {/* Base delay clears the scan sweep + crossfade before marks land. */}
         {REJECTION_ITEMS.map((item, i) => (
-          <li key={item} style={{ transitionDelay: `${180 + i * 160}ms` }}>
+          <li key={item} style={{ transitionDelay: `${560 + i * 160}ms` }}>
             <span>({String.fromCharCode(97 + i)})</span>
             <em>{item}</em>
           </li>

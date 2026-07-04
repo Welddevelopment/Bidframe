@@ -799,6 +799,15 @@ export function PitchDeck() {
               <div className="pitch-before-after__copy">
                 <p className="pitch-kicker">The solution</p>
                 <h2>One clause. Five ways to lose the bid.</h2>
+                <p className="pitch-before-after__contrast">
+                  <span className="pitch-before-after__contrast-line pitch-before-after__contrast-line--before">
+                    None of them obvious.
+                  </span>
+                  <span className="pitch-before-after__contrast-line pitch-before-after__contrast-line--after">
+                    Days of expert reading, one miss = a binned bid&ensp;→&ensp;
+                    minutes, every deal-breaker caught, every line traceable.
+                  </span>
+                </p>
               </div>
               <div className="pitch-before-after__stage">
                 <figure
@@ -813,7 +822,19 @@ export function PitchDeck() {
                   <figcaption className="pitch-before-after__label">
                     <span>The tender. 34 pages.</span>
                   </figcaption>
-                  <div className="pitch-before-after__document">
+                  <div className="pitch-before-after__document pitch-before-after__document--layered">
+                    {/* The real scanned Bradwell page holds the frame until the
+                        reveal, when the facsimile resolves over it with the
+                        disqualifiers marked — highlights stay crisp instead of
+                        being pixel-guessed onto the scan. */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/pitch/before-tender-p7.png"
+                      alt=""
+                      aria-hidden="true"
+                      className="pitch-before-after__image"
+                    />
+                    <div className="pitch-before-after__scan" aria-hidden="true" />
                     <TenderPageFacsimile highlighted={beat > 0} />
                   </div>
                 </figure>
@@ -822,7 +843,7 @@ export function PitchDeck() {
                   aria-hidden={beat === 0 ? true : undefined}
                 >
                   <div className="pitch-before-after__label">
-                    <span>Bidframe. Deal-breakers first.</span>
+                    <span>Bidframe. Deal-breakers first. Every line back to its clause.</span>
                   </div>
                   <div className="pitch-before-after__summary">
                     <span>{dealBreakers.length}</span>
