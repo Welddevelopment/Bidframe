@@ -1,8 +1,9 @@
-# Bobby Script — Slides 3 and 4
+# Bobby Script — Slides 3, 4 and 5
 
-> Bobby owns the middle of the deck: slide 3 (Solution) and slide 4 (Product). Jawad sets up the
-> tender/problem on slides 1-2, then hands here. After slide 4, hand to Joe at the laptop and Pranav
-> on narration for the live `/showcase` demo.
+> Bobby owns the middle of the deck: slide 3 (Solution), slide 4 (Product) and slide 5 (the
+> competitor register). Jawad sets up the tender/problem on slides 1-2, then hands here. After
+> slide 5, hand to Joe at the laptop and Pranav on narration for the live `/showcase` demo —
+> NEXT on slide 5 cuts the stage straight to `/showcase`.
 
 ## Slide 3 — Solution (Bobby · 40s · TWO beats)
 
@@ -39,8 +40,24 @@ into the pause, ~18s:)*
 > requirement. Every approval, edit, and flag is the legacy move: context captured while the work
 > happens."
 
-**Handoff to demo:**
+**NEXT → slide 5 (the competitor register).**
+
+## Slide 5 — Competitors (Bobby · 25s · TWO beats)
+
+*(Beat 1 — the register lands with only Bidframe's column lit: the bar. ~10s:)*
+> "Before Joe drives it live: this is the bar. Every requirement source-linked to its clause, a
+> deterministic deal-breaker floor — twelve out of twelve caught without trusting the model — and
+> every human decision recorded."
+
+*(NEXT — the rest of the field resolves in, gaps in oxblood, and the price line lands. ~15s:)*
+> "And this is the rest of the market. AI bid writers generate prose but don't prove the first read —
+> enterprise-priced, demo-gated. Answer libraries reuse yesterday's bid. A PDF chatbot summarises
+> without ever being accountable for a miss. We're the affordable first read; nobody else is even
+> playing that game."
+
+**Handoff to demo (NEXT on this slide cuts the stage to `/showcase`):**
 > "Now Joe is going to drive the product live, and Pranav will talk us through what his clicks mean.
 > I will do the brave engineering thing and stop touching the keyboard."
 
-**Hand to Joe at the laptop and Pranav on narration. Switch to `/showcase`.**
+**Hand to Joe at the laptop and Pranav on narration. NEXT switches to `/showcase`; when the demo
+wraps, one more right arrow brings the deck back on the Ask for Jawad.**

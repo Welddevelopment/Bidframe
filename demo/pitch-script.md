@@ -50,11 +50,13 @@ Hand to Bobby:
 
 > "Bobby, show them the bit in the tender where the danger is hiding."
 
-**Bobby's lines for slides 3-4 are in `bobbyscript.md`.**
+**Bobby's lines for slides 3-5 are in `bobbyscript.md`.**
 
-**After Bobby's slide 4, Joe + Pranav run the live `/showcase` demo. Jawad comes back for slide 5.**
+**After Bobby's slide 5 (the competitor register), Joe + Pranav run the live `/showcase` demo.
+Jawad comes back for slide 6, the Ask. Stage navigation is two right-arrow presses: NEXT on slide 5
+cuts to `/showcase`; right arrow there returns to `/pitch#6`.**
 
-## Ask + Exact Closer - Jawad, Final Slide, 4:25-5:00
+## Ask + Exact Closer - Jawad, Final Slide (6), 4:30-5:00
 
 > "Conduct's thesis is that legacy moves when the context of expert decisions moves with the work.
 > That is exactly what Bidframe captures: every approve, every edit, every flag, every gap answer,

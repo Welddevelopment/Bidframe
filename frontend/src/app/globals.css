@@ -5973,3 +5973,190 @@ body {
     color: #000000 !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Pitch: the competitor register (s5). An official comparison schedule in the
+   civic-record voice: mono is the record, hairline rules, oxblood only on the
+   gaps, forest on Bidframe. Two beats: the bar (Bidframe row) first, then the
+   competitors' gaps and the price line land together. */
+
+.pitch-register {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(0.7rem, 1.4vw, 1.2rem);
+  max-height: 100%;
+  min-height: 0;
+}
+
+/* A dense register slide: the schedule is the message, so the headline
+   steps down from the poster scale to give the table the room. */
+.pitch-register__copy h2 {
+  max-width: 30ch;
+  font-size: clamp(1.4rem, 2.6vw, 2.7rem);
+}
+
+.pitch-register__copy p {
+  margin-top: clamp(0.4rem, 0.8vw, 0.65rem);
+  font-size: clamp(0.85rem, 1.15vw, 1.15rem);
+}
+
+.pitch-register__copy .pitch-kicker {
+  margin-bottom: 0.5rem;
+}
+
+.pitch-register__sheet {
+  min-height: 0;
+  overflow: auto;
+  border: 1px solid rgba(33, 29, 23, 0.16);
+  background: var(--color-paper-raised);
+  color: var(--color-ink);
+  padding: clamp(0.9rem, 1.5vw, 1.5rem);
+  box-shadow: var(--depth-sheet);
+}
+
+.pitch-register__table {
+  width: 100%;
+  border-collapse: collapse;
+  border-top: var(--rule-strong);
+}
+
+.pitch-register__table th,
+.pitch-register__table td {
+  padding: clamp(0.45rem, 0.9vw, 0.8rem) clamp(0.5rem, 1vw, 0.9rem);
+  border-bottom: var(--rule-hair);
+  text-align: left;
+  vertical-align: top;
+}
+
+.pitch-register__table thead th {
+  font-family: var(--font-mono-ibm), monospace;
+  font-size: clamp(0.58rem, 0.72vw, 0.78rem);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: currentColor;
+  opacity: 0.65;
+}
+
+.pitch-register__table tbody th {
+  white-space: nowrap;
+}
+
+.pitch-register__table tbody th strong {
+  display: block;
+  font-family: var(--font-mono-ibm), monospace;
+  font-size: clamp(0.78rem, 1.05vw, 1.05rem);
+  font-weight: 600;
+}
+
+.pitch-register__table tbody th em {
+  display: block;
+  margin-top: 0.15rem;
+  font-style: normal;
+  font-size: clamp(0.62rem, 0.8vw, 0.82rem);
+  opacity: 0.6;
+}
+
+.pitch-register__table td {
+  font-family: var(--font-mono-ibm), monospace;
+}
+
+.pitch-register__table td span {
+  display: inline-block;
+  min-width: 1.1em;
+  font-size: clamp(0.85rem, 1.15vw, 1.2rem);
+  font-weight: 700;
+}
+
+.pitch-register__table td em {
+  display: block;
+  margin-top: 0.1rem;
+  font-style: normal;
+  font-size: clamp(0.6rem, 0.78vw, 0.8rem);
+  line-height: 1.3;
+  opacity: 0.75;
+}
+
+.pitch-register__table td[data-mark="yes"] span {
+  color: var(--color-forest);
+}
+
+.pitch-register__table td[data-mark="no"] span {
+  color: var(--color-signal-oxblood);
+}
+
+.pitch-register__table td[data-mark="part"] span {
+  opacity: 0.7;
+}
+
+/* Bidframe's row is the focal point: a tinted band, competitors stay flat. */
+.pitch-register__row--us {
+  background: var(--color-accent-soft);
+}
+
+.pitch-register__row--us th,
+.pitch-register__row--us td {
+  border-bottom: var(--rule-strong);
+}
+
+/* Beat 0 holds the bar; beat 1 resolves the field and the price line. */
+.pitch-register__row--them,
+.pitch-register__price,
+.pitch-register__source {
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 420ms ease,
+    transform 420ms ease;
+}
+
+.pitch-register.is-revealed .pitch-register__row--them,
+.pitch-register.is-revealed .pitch-register__price,
+.pitch-register.is-revealed .pitch-register__source {
+  opacity: 1;
+  transform: none;
+}
+
+.pitch-register.is-revealed .pitch-register__row--them:nth-child(3) {
+  transition-delay: 90ms;
+}
+
+.pitch-register.is-revealed .pitch-register__row--them:nth-child(4) {
+  transition-delay: 180ms;
+}
+
+.pitch-register.is-revealed .pitch-register__price {
+  transition-delay: 260ms;
+}
+
+.pitch-register.is-revealed .pitch-register__source {
+  transition-delay: 340ms;
+}
+
+.pitch-register__price {
+  margin: 0;
+  max-width: 62ch;
+  font-size: clamp(0.85rem, 1.2vw, 1.2rem);
+  line-height: 1.4;
+}
+
+.pitch-register__price strong {
+  color: var(--color-signal-oxblood);
+}
+
+.pitch-register__source {
+  margin: 0;
+  font-family: var(--font-mono-ibm), monospace;
+  font-size: clamp(0.55rem, 0.68vw, 0.72rem);
+  letter-spacing: 0.04em;
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pitch-register__row--them,
+  .pitch-register__price,
+  .pitch-register__source {
+    transition: none;
+  }
+}

@@ -11,7 +11,8 @@ import bradwellPrebake from "@/data/bradwell-prebake.json";
 // the results are already computed. This is the stage walkthrough surface. No AuthGate so the
 // demo opens instantly.
 const demoTender = bradwellPrebake as unknown as Tender;
-const DEFAULT_STAGE_RETURN_HREF = "/pitch#5";
+// Right arrow on stage returns to the deck's Ask slide (s6) for the close.
+const DEFAULT_STAGE_RETURN_HREF = "/pitch#6";
 
 export const metadata: Metadata = {
   title: "Bidframe — tender walkthrough",

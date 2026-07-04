@@ -35,17 +35,18 @@ import {
 import { useRequirements } from "@/context/RequirementsContext";
 import { deriveTriage } from "@/lib/triage";
 
-// The 3-minute deck: five slides, two speakers (Jawad opens and closes,
-// Pranav owns Solution + Product). Joel takes the mic after the Product
-// slide for the 2-minute live demo.
-const MAIN_SLIDE_COUNT = 5;
+// The 5-minute show (J-089 split): six deck slides, Bobby + Jawad on the
+// deck, Joel + Pranav on the live /showcase walkthrough. The Competitors
+// slide (s5) hands the stage to /showcase; right arrow there returns to
+// the Ask (s6) for the close.
+const MAIN_SLIDE_COUNT = 6;
 const TOTAL_SLIDE_COUNT = MAIN_SLIDE_COUNT;
 // The Product slide: where the walk-into-the-product portal opens.
 const PRODUCT_INDEX = 3;
 // Beats per main slide: NEXT walks a slide's internal beats before moving on.
 // Use Case paces four register stations (each swaps in a product proof);
-// the stop-sign keeps its two-beat reveal.
-const SLIDE_BEATS = [1, 4, 2, 1, 1] as const;
+// the stop-sign and the competitor register keep their two-beat reveals.
+const SLIDE_BEATS = [1, 4, 2, 1, 2, 1] as const;
 
 function beatsAt(index: number) {
   return SLIDE_BEATS[index] ?? 1;
@@ -90,20 +91,89 @@ const PDF_REEL_SHADE_STYLE = {
     "linear-gradient(180deg, rgba(6, 18, 11, 0.08), rgba(6, 18, 11, 0.32)), radial-gradient(circle at center, transparent 46%, rgba(6, 18, 11, 0.45))",
 } as React.CSSProperties;
 
-// Sums to 170s — ten seconds of handoff slack inside the 3:00 window.
-const AUTOPLAY_SECONDS = [24, 30, 40, 46, 30] as const;
+// Deck talk: 25/30/40/45/25/30 = 195s. The ~1:45 /showcase walkthrough sits
+// between the Competitors slide and the Ask, outside this clock (5:00 show).
+const AUTOPLAY_SECONDS = [25, 30, 40, 45, 25, 30] as const;
 // Where the clock *should* be when each main slide starts (pace ghost).
 const PACE_STARTS = AUTOPLAY_SECONDS.map((_, i) =>
   AUTOPLAY_SECONDS.slice(0, i).reduce((sum, s) => sum + s, 0)
 );
-// v4: appendix and presenter notes removed — five main slides only.
-const PITCH_STATE_KEY = "bidframe.pitch.state.v4";
+// v5: six main slides — the Competitors register sits before the Ask.
+const PITCH_STATE_KEY = "bidframe.pitch.state.v5";
 const ASK_SLIDE_INDEX = MAIN_SLIDE_COUNT - 1;
 const SHOWCASE_HANDOFF_SLIDE_INDEX = ASK_SLIDE_INDEX - 1;
 const PITCH_RETURN_HREF = `/pitch#${ASK_SLIDE_INDEX + 1}`;
 const SHOWCASE_HANDOFF_HREF = `/showcase?returnTo=${encodeURIComponent(
   PITCH_RETURN_HREF
 )}`;
+
+// The competitor register (s5): four axes of measured trust, four camps.
+// Competitor cells state their own published positioning (checked 4 Jul 2026);
+// Bidframe cells carry claim-ledger numbers only. Every mark is a glyph AND a
+// word, never colour alone (greyscale-safe, per the confidence-bead rule).
+type RegisterMark = "yes" | "part" | "no";
+
+const REGISTER_AXES = [
+  "Source-linked matrix",
+  "Deal-breaker floor",
+  "Decision record",
+  "SME self-serve",
+] as const;
+
+const REGISTER_GLYPHS: Record<RegisterMark, string> = {
+  yes: "✓",
+  part: "~",
+  no: "✗",
+};
+
+const REGISTER_ROWS: Array<{
+  name: string;
+  detail: string;
+  us?: boolean;
+  cells: Array<{ mark: RegisterMark; note: string }>;
+}> = [
+  {
+    name: "Bidframe",
+    detail: "the first read, proven",
+    us: true,
+    cells: [
+      { mark: "yes", note: "every row to its clause" },
+      { mark: "yes", note: "12/12, deterministic" },
+      { mark: "yes", note: "approve / edit / flag kept" },
+      { mark: "yes", note: "built for the first read" },
+    ],
+  },
+  {
+    name: "AI bid writers",
+    detail: "AutogenAI · mytender.io",
+    cells: [
+      { mark: "part", note: "extract without proof" },
+      { mark: "no", note: "no pass/fail catch" },
+      { mark: "no", note: "prose out, no trail" },
+      { mark: "no", note: "demo-gated pricing" },
+    ],
+  },
+  {
+    name: "RFP answer libraries",
+    detail: "Loopio · Responsive",
+    cells: [
+      { mark: "no", note: "reuses past answers" },
+      { mark: "no", note: "no tender read" },
+      { mark: "part", note: "content approvals" },
+      { mark: "no", note: "enterprise contracts" },
+    ],
+  },
+  {
+    name: "PDF chat",
+    detail: "NotebookLM · ChatGPT",
+    cells: [
+      { mark: "no", note: "summary, no proof" },
+      { mark: "no", note: "nothing surfaced" },
+      { mark: "no", note: "nothing recorded" },
+      { mark: "part", note: "free, unmeasured" },
+    ],
+  },
+];
 
 interface PitchStoredState {
   activeIndex: number;
@@ -131,7 +201,11 @@ function clampSlideIndex(index: number) {
 }
 
 function parsePitchHash(hash: string) {
-  const cleaned = hash.replace(/^#/, "").trim().toLowerCase();
+  // Client-side hops between /pitch and /showcase can stack fragments
+  // ("#5#6" seen in the wild) — the last segment is the intended slide.
+  const cleaned = (hash.split("#").filter(Boolean).pop() ?? "")
+    .trim()
+    .toLowerCase();
   if (!cleaned) return null;
 
   const slideMatch = /^(?:slide-)?(\d+)$/.exec(cleaned);
@@ -329,8 +403,9 @@ export function PitchDeck() {
       setBeat(beat + 1);
       return;
     }
-    // The live walkthrough now sits before the final Ask. Product hands the
-    // stage to /showcase, which returns to #5 for the close.
+    // The live walkthrough sits between Competitors and the final Ask. The
+    // Competitors slide hands the stage to /showcase, which returns to the
+    // Ask hash for the close.
     if (activeIndex === SHOWCASE_HANDOFF_SLIDE_INDEX) {
       router.push(SHOWCASE_HANDOFF_HREF);
       return;
@@ -454,7 +529,7 @@ export function PitchDeck() {
       } else if (event.key.toLowerCase() === "f") {
         event.preventDefault();
         toggleFullscreen();
-      } else if (event.key >= "1" && event.key <= "5") {
+      } else if (event.key >= "1" && event.key <= "6") {
         event.preventDefault();
         goTo(Number(event.key) - 1);
       } else if (event.key === "?") {
@@ -508,6 +583,17 @@ export function PitchDeck() {
     return () => window.cancelAnimationFrame(restoreFrame);
   }, []);
 
+  // Follow hash changes after mount — the /showcase return lands on /pitch#6
+  // whether the deck remounts or Next reuses the mounted page.
+  useEffect(() => {
+    function onHashChange() {
+      const index = parsePitchHash(window.location.hash);
+      if (index !== null) goTo(index);
+    }
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, [goTo]);
+
   useEffect(() => {
     if (!restored) return;
     const state: PitchStoredState = {
@@ -527,7 +613,7 @@ export function PitchDeck() {
     }
   }, [activeIndex, beat, elapsedSeconds, restored]);
 
-  // The Product slide's NEXT press cuts to the live demo — have /showcase ready.
+  // The Competitors slide's NEXT press cuts to the live demo — have /showcase ready.
   useEffect(() => {
     router.prefetch(SHOWCASE_HANDOFF_HREF);
   }, [router]);
@@ -693,7 +779,7 @@ export function PitchDeck() {
         {
           bucket: "Solution",
           title: "The tender becomes a deal-breaker view",
-          speaker: "Pranav",
+          speaker: "Bobby",
           zone: "night",
           light: 0.12,
           glyph: "clause",
@@ -784,11 +870,10 @@ export function PitchDeck() {
         {
           bucket: "Product",
           title: "Deal-breakers first. Every line checkable.",
-          speaker: "Pranav",
+          speaker: "Bobby",
           zone: "moss",
           light: 0.6,
           glyph: "matrix",
-          nextUp: "Joel · demo",
           body: (
             <div className="pitch-spread">
               <div className="pitch-copy">
@@ -880,6 +965,81 @@ export function PitchDeck() {
                   </div>
                 )}
                 </div>
+              </div>
+            </div>
+          ),
+        },
+        {
+          bucket: "Competitors",
+          title: "Everyone else writes bids. We make sure you're allowed to.",
+          speaker: "Bobby",
+          zone: "moss",
+          light: 0.75,
+          glyph: "matrix",
+          nextUp: "Joe + Pranav · demo",
+          body: (
+            <div className={`pitch-register ${beat > 0 ? "is-revealed" : ""}`}>
+              <div className="pitch-copy pitch-register__copy">
+                <p className="pitch-kicker">The competition</p>
+                <h2>
+                  Everyone else writes bids. We make sure you&rsquo;re allowed
+                  to.
+                </h2>
+                <p>
+                  Chatbots summarise. Writing tools draft. Neither proves the
+                  first read.
+                </p>
+              </div>
+              <div className="pitch-register__sheet">
+                <table className="pitch-register__table">
+                  <thead>
+                    <tr>
+                      <th scope="col">
+                        <span className="sr-only">Tool</span>
+                      </th>
+                      {REGISTER_AXES.map((axis) => (
+                        <th key={axis} scope="col">
+                          {axis}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {REGISTER_ROWS.map((row) => (
+                      <tr
+                        key={row.name}
+                        className={
+                          row.us
+                            ? "pitch-register__row--us"
+                            : "pitch-register__row--them"
+                        }
+                      >
+                        <th scope="row">
+                          <strong>{row.name}</strong>
+                          <em>{row.detail}</em>
+                        </th>
+                        {row.cells.map((cell, cellIndex) => (
+                          <td key={REGISTER_AXES[cellIndex]} data-mark={cell.mark}>
+                            <span aria-hidden="true">
+                              {REGISTER_GLYPHS[cell.mark]}
+                            </span>
+                            <em>{cell.note}</em>
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <p className="pitch-register__price">
+                  An in-house bid writer runs £35-50k a year; an outsourced
+                  review from £950 a tender. The incumbents do not publish a
+                  price. Bidframe is the first read an SME can afford.
+                </p>
+                <p className="pitch-register__source">
+                  Competitor cells: their own published positioning, checked 4
+                  Jul 2026 · Bidframe cells measured: 12/12 deterministic,
+                  42/42 citations, 0 fabrications (demo-claim-ledger.md)
+                </p>
               </div>
             </div>
           ),
@@ -1112,7 +1272,7 @@ export function PitchDeck() {
                   <kbd>→</kbd> / <kbd>Space</kbd> next · <kbd>←</kbd> back
                 </li>
                 <li>
-                  <kbd>1</kbd>–<kbd>5</kbd> jump to slide
+                  <kbd>1</kbd>–<kbd>6</kbd> jump to slide
                 </li>
                 <li>
                   <kbd>P</kbd> step inside the product · <kbd>Esc</kbd> walk
