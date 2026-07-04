@@ -130,3 +130,21 @@ def test_share_requires_owner_and_a_real_account(team):
     owner.post(f"/tenders/{tid}/share", json={"email": "member@bidframe.co.uk"})
     # a member (not the owner) cannot re-share
     assert member.post(f"/tenders/{tid}/share", json={"email": "outsider@bidframe.co.uk"}).status_code == 404
+
+
+def test_owner_can_remove_member_and_member_loses_access(team):
+    owner, member, _outsider, tid, _ = team
+    owner.post(f"/tenders/{tid}/share", json={"email": "member@bidframe.co.uk"})
+    assert member.get(f"/tenders/{tid}/requirements").status_code == 200
+
+    r = owner.request("DELETE", f"/tenders/{tid}/share", json={"email": "member@bidframe.co.uk"})
+    assert r.status_code == 200, r.text
+    assert [m["email"] for m in r.json()["members"]] == ["owner@bidframe.co.uk"]
+    assert member.get(f"/tenders/{tid}/requirements").status_code == 404
+
+
+def test_only_owner_can_remove_members(team):
+    owner, member, _outsider, tid, _ = team
+    owner.post(f"/tenders/{tid}/share", json={"email": "member@bidframe.co.uk"})
+    r = member.request("DELETE", f"/tenders/{tid}/share", json={"email": "owner@bidframe.co.uk"})
+    assert r.status_code == 404

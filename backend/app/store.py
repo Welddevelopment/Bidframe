@@ -261,6 +261,16 @@ def add_member(tender_id: str, user_id: str, added_at: str) -> None:
         )
 
 
+def remove_member(tender_id: str, user_id: str) -> int:
+    """Remove a user's shared access to a tender. Returns number of rows removed."""
+    with _conn() as c:
+        cur = c.execute(
+            "DELETE FROM tender_members WHERE tender_id = ? AND user_id = ?",
+            (tender_id, user_id),
+        )
+        return cur.rowcount
+
+
 def is_member(tender_id: str, user_id: str) -> bool:
     with _conn() as c:
         row = c.execute(

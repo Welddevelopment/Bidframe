@@ -399,6 +399,20 @@ def share_tender(tender_id: str, body: ShareRequest, user: dict = Depends(curren
     return {"members": store.list_members(tender_id)}
 
 
+@app.delete("/tenders/{tender_id}/share")
+def unshare_tender(tender_id: str, body: ShareRequest, user: dict = Depends(current_user)):
+    """Remove a registered user's shared access to this tender (owner-only)."""
+    if store.get_tender_owner(tender_id) != user["id"]:
+        raise HTTPException(status_code=404, detail="Tender not found.")
+    target = store.get_user_by_email(body.email)
+    if target is None:
+        raise HTTPException(status_code=404, detail=f"No Bidframe account for {body.email}.")
+    if target["id"] == user["id"]:
+        raise HTTPException(status_code=400, detail="You cannot remove the tender owner.")
+    store.remove_member(tender_id, target["id"])
+    return {"members": store.list_members(tender_id)}
+
+
 @app.get("/tenders/{tender_id}/pdf")
 def get_tender_pdf(
     tender_id: str,
