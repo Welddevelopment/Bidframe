@@ -1,0 +1,12 @@
+id,text,type,is_gating,source_page,source_clause,notes
+# GOLD LABEL - synthetic mixed-pack fixtures (fixtures/mixed-pack)
+# VERIFIED 2026-07-04 from fixtures/mixed-pack/README.md. Synthetic, committed-safe.
+mp-docx-1,Tenders must be received no later than 12:00 noon on 30 Sept 2025; late tenders will be rejected.,mandatory,true,1,DOCX paragraph 5,deadline gate in sample-return-forms.docx
+mp-docx-2,"The tenderer must hold Employer's Liability insurance of at least Ł5,000,000. This is assessed on a Pass/Fail basis; a Fail eliminates the bid.",mandatory,true,1,DOCX paragraph 7,insurance pass/fail in sample-return-forms.docx
+mp-docx-3,"The tenderer must hold Public Liability insurance of at least Ł10,000,000 (Pass/Fail).",mandatory,true,1,DOCX paragraph 8,insurance pass/fail in sample-return-forms.docx
+mp-docx-4,The Form of Tender must be completed signed and returned; failure will disqualify the tender.,mandatory,true,1,DOCX paragraph 10,mandatory return gate in sample-return-forms.docx
+mp-docx-5,Two client references should be provided for scoring.,optional,false,1,DOCX paragraph 11,optional scored item in sample-return-forms.docx
+mp-xlsx-1,All pricing rows must be completed and returned; omitting a price or altering the schedule will reject the tender.,mandatory,true,1,Pricing!A6,pricing schedule rejection gate
+mp-xlsx-2,The priced schedule must be submitted by the deadline; late or incomplete schedules will be excluded.,mandatory,true,1,Pricing!A7,pricing deadline gate
+mp-csv-1,A signed anti-collusion certificate is required; failure results in exclusion.,mandatory,true,1,CSV row 2,CSV exclusion gate
+mp-csv-2,Social-value initiatives may be provided for scoring.,optional,false,1,CSV row 3,optional CSV item

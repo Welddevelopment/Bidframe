@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `997774e` · 2026-07-04T19:44:36+01:00
+> Map of commit `e72b0b4` · 2026-07-04T19:49:43+01:00
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,13 +12,13 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 197 | 72,636 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
-| **backend** | 22 | 3,768 | Backend — FastAPI (PDF ingest, extraction, REST API) |
-| **engine** | 82 | 7,140 | Engine — reconcile / eval / answer-draft pipeline + tests |
+| **frontend** | 195 | 72,186 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **backend** | 22 | 3,841 | Backend — FastAPI (PDF ingest, extraction, REST API) |
+| **engine** | 84 | 7,315 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 713 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
-| **gold** | 7 | 363 | Eval gold-set — hand-labelled requirements for accuracy measurement |
+| **gold** | 8 | 375 | Eval gold-set — hand-labelled requirements for accuracy measurement |
 | **data** | 17 | 0 | Data — tender source PDFs (not parsed here) |
-| **comms** | 5 | 2,723 | Comms — async agent message boards |
+| **comms** | 5 | 2,747 | Comms — async agent message boards |
 | **docs** | 3 | 1,663 | Docs — plans & specs |
 | **ci** | 1 | 57 | CI — GitHub Actions |
 | **tooling** | 1 | 516 | Tooling — repo scripts (incl. this map generator) |
@@ -446,15 +446,17 @@ graph LR
   n28[gating_recall.py] --> n15[gating_scan.py]
   n28[gating_recall.py] --> n16[reconcile.py]
   n28[gating_recall.py] --> n26[run_tender.py]
-  n29[mixed_pack_smoke.py] --> n3[ingest.py]
-  n29[mixed_pack_smoke.py] --> n10[main.py]
-  n29[mixed_pack_smoke.py] --> n15[gating_scan.py]
-  n30[net_floor.py] --> n15[gating_scan.py]
-  n31[precision_report.py] --> n21[_io.py]
-  n31[precision_report.py] --> n20[eval.py]
-  n31[precision_report.py] --> n16[reconcile.py]
-  n31[precision_report.py] --> n26[run_tender.py]
-  n31[precision_report.py] --> n19[similarity.py]
+  n29[mixed_pack_gold.py] --> n20[eval.py]
+  n29[mixed_pack_gold.py] --> n15[gating_scan.py]
+  n30[mixed_pack_smoke.py] --> n3[ingest.py]
+  n30[mixed_pack_smoke.py] --> n10[main.py]
+  n30[mixed_pack_smoke.py] --> n15[gating_scan.py]
+  n31[net_floor.py] --> n15[gating_scan.py]
+  n32[precision_report.py] --> n21[_io.py]
+  n32[precision_report.py] --> n20[eval.py]
+  n32[precision_report.py] --> n16[reconcile.py]
+  n32[precision_report.py] --> n26[run_tender.py]
+  n32[precision_report.py] --> n19[similarity.py]
   n26[run_tender.py] --> n2[chunk.py]
   n26[run_tender.py] --> n4[extract.py]
   n26[run_tender.py] --> n3[ingest.py]
@@ -462,8 +464,8 @@ graph LR
   n26[run_tender.py] --> n13[embeddings.py]
   n26[run_tender.py] --> n20[eval.py]
   n26[run_tender.py] --> n16[reconcile.py]
-  n32[parse_check.py]
-  n33[stress_test.py]
+  n33[parse_check.py]
+  n34[stress_test.py]
 ```
 
 ## Files by area
@@ -565,8 +567,6 @@ graph LR
 - `frontend/src/components/ShareControl.tsx` — exports `ShareControl`
 - `frontend/src/components/SheetSourceView.tsx` — exports `SheetSourceView`
 - `frontend/src/components/SiteHeader.tsx` — exports `SiteHeader`
-- `frontend/src/components/SourceVerifyOverlay.tsx` — exports `SourceVerifyOverlay`
-- `frontend/src/components/SourceVerifyOverlay.tsx` — exports `SourceVerifyOverlay`
 - `frontend/src/components/SourceVerifyOverlay.tsx` — exports `SourceVerifyOverlay`
 - `frontend/src/components/StructureView.tsx` — exports `StructureView`
 - `frontend/src/components/TendersList.tsx` — exports `TendersList`
@@ -690,6 +690,7 @@ graph LR
 - `engine/scripts/eval_all.py` — aggregate accuracy across every labelled tender.
 - `engine/scripts/gating_coverage.py` — gate-FAMILY coverage diagnostic for the public-sector safety-net.
 - `engine/scripts/gating_recall.py` — the TRUE gating-recall number (semantic + auditable).
+- `engine/scripts/mixed_pack_gold.py` — Score the deterministic net against the synthetic mixed-pack gold set.
 - `engine/scripts/mixed_pack_smoke.py` — one-command release gate for the mixed-pack sprint (lane 04 / J).
 - `engine/scripts/net_floor.py` — the deterministic deal-breaker floor, offline and reproducible.
 - `engine/scripts/precision_report.py` — categorise extraction false-positives vs a gold set.
@@ -730,6 +731,7 @@ graph LR
 - `engine/tests/test_match_score.py` — Eval matcher: paraphrase/granularity tolerance without embeddings.
 - `engine/tests/test_merge.py`
 - `engine/tests/test_mixed_pack_engine.py` — Mixed-pack engine/eval lane (generalist, ops/mixed-pack-02-engine-eval.md).
+- `engine/tests/test_mixed_pack_gold.py` — Mixed-pack gold scorer: the planted DOCX/XLSX/CSV gates stay measurable.
 - `engine/tests/test_net_floor.py` — Regression lock for the deterministic deal-breaker floor (the demo's headline proof).
 - `engine/tests/test_pipeline_wiring.py` — Integration: the backend pipeline now uses the generalist engine for reconcile + routing.
 - `engine/tests/test_real_data_robustness.py` — Robustness against real extractor output (regression for the SPSO run).
@@ -759,6 +761,7 @@ graph LR
 - `gold-set/duffield-grounds.labels.csv`
 - `gold-set/eval-manifest.json`
 - `gold-set/labelling-guide.md`
+- `gold-set/mixed-pack.labels.csv`
 - `gold-set/museum-cleaning.labels.csv`
 - `gold-set/spso-cleaning.labels.csv`
 - `gold-set/wlwa-acton.labels.csv`
@@ -1365,4 +1368,4 @@ graph LR
 
 ---
 
-*944 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
+*945 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
