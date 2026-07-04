@@ -3458,6 +3458,37 @@ body {
   max-width: 15ch;
 }
 
+/* Headlines hold to one line on the projector; sizes are tuned so the
+   longest string fits a 16:9 stage. Narrow screens fall back to wrapping. */
+.pitch-poster--center h1,
+.pitch-poster--center h2 {
+  max-width: none;
+  white-space: nowrap;
+}
+
+.pitch-poster--center h1 {
+  font-size: clamp(1.9rem, 4.4vw, 4.6rem);
+}
+
+.pitch-poster--center h2 {
+  font-size: clamp(1.8rem, 4.1vw, 4.3rem);
+}
+
+.pitch-spread .pitch-copy h2 {
+  max-width: none;
+  white-space: nowrap;
+  font-size: clamp(1.8rem, 3.4vw, 3.6rem);
+}
+
+@media (max-width: 760px) {
+  .pitch-poster--center h1,
+  .pitch-poster--center h2,
+  .pitch-spread .pitch-copy h2,
+  .pitch-before-after__copy h2 {
+    white-space: normal;
+  }
+}
+
 .pitch-poster__line {
   margin: clamp(1rem, 1.9vw, 1.7rem) 0 0;
   font-size: clamp(1.05rem, 1.6vw, 1.65rem);
@@ -4042,18 +4073,15 @@ body {
   gap: 0.35rem;
 }
 
+/* One line, both beats — no size jump on reveal. */
 .pitch-before-after__copy h2 {
   margin: 0;
-  max-width: 18ch;
+  max-width: none;
+  white-space: nowrap;
   font-family: var(--font-head), Georgia, serif;
-  font-size: clamp(2rem, 4.4vw, 4.6rem);
+  font-size: clamp(1.7rem, 3.2vw, 3.4rem);
   font-weight: 650;
   line-height: 1;
-}
-
-.pitch-before-after.is-revealed .pitch-before-after__copy h2 {
-  font-size: clamp(1.55rem, 3vw, 3.15rem);
-  max-width: 24ch;
 }
 
 .pitch-before-after__stage {
@@ -4144,30 +4172,49 @@ body {
     radial-gradient(circle at center, transparent 48%, rgba(6, 18, 11, 0.5));
 }
 
-.pitch-before-after__image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 22%;
-  filter: saturate(0.72) contrast(0.98) brightness(0.72);
-  transition:
-    filter 520ms ease,
-    object-position 520ms ease;
-}
 
-.pitch-before-after.is-revealed .pitch-before-after__image {
-  object-position: center 18%;
-  filter: saturate(0.78) contrast(1) brightness(0.8);
-}
-
-/* --- Layered document: the real scanned page holds beat 0; on reveal the
-   scan bar sweeps it, then the crisp facsimile resolves on top with its
-   oxblood marks. Highlights live on the facsimile, never pixel-guessed
-   onto the scan. */
-.pitch-before-after__document--layered .pitch-before-after__image {
+/* --- Layered document: a slow endless scroll of real scanned pages holds
+   beat 0 — the length itself is the pain. On reveal the scan bar sweeps it,
+   then the crisp facsimile resolves on top with its oxblood marks.
+   Highlights live on the facsimile, never pixel-guessed onto the scan. */
+.pitch-before-after__reel {
   position: absolute;
   inset: 0;
   z-index: 0;
+  overflow: hidden;
+}
+
+.pitch-before-after__reel-track,
+.pitch-before-after__reel-half {
+  display: grid;
+  gap: 4px;
+}
+
+.pitch-before-after__reel-half img {
+  display: block;
+  width: 100%;
+  filter: saturate(0.72) contrast(0.98) brightness(0.72);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pitch-before-after__reel-track {
+    animation: pitch-reel-scroll 30s linear infinite;
+  }
+
+  .pitch-before-after.is-revealed .pitch-before-after__reel-track {
+    animation-play-state: paused;
+  }
+}
+
+/* Two identical halves in the track: travelling one half-height (plus half
+   the track gap) then restarting reads as an endless document. */
+@keyframes pitch-reel-scroll {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-50% - 2px));
+  }
 }
 
 .pitch-before-after__document--layered .pitch-facsimile {
@@ -4217,13 +4264,127 @@ body {
   }
 }
 
-/* Hard cut under reduced motion: no sweep, facsimile + marks land at once. */
+/* --- The manual-process chaos: paper scraps stuck over the scanned page at
+   beat 0, each drifting slightly out of phase — the reveal sweeps them away
+   before the facsimile resolves. */
+.pitch-before-after__chaos {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.pitch-before-after__chaos li {
+  --r: 0deg;
+  position: absolute;
+  max-width: 16ch;
+  padding: 0.32em 0.6em;
+  background: #f3ecdb;
+  color: #2a251d;
+  border: 1px solid rgba(42, 37, 29, 0.22);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  font-family: var(--font-mono-ibm), monospace;
+  font-size: clamp(0.62rem, 0.82vw, 0.9rem);
+  line-height: 1.3;
+  transform: rotate(var(--r));
+  transition:
+    opacity 300ms ease,
+    transform 300ms ease;
+}
+
+.pitch-before-after__chaos li:nth-child(1) {
+  --r: -5deg;
+  top: 5%;
+  left: 3%;
+}
+
+.pitch-before-after__chaos li:nth-child(2) {
+  --r: 3deg;
+  top: 12%;
+  right: 8%;
+}
+
+.pitch-before-after__chaos li:nth-child(3) {
+  --r: -2.5deg;
+  top: 36%;
+  left: 2%;
+}
+
+.pitch-before-after__chaos li:nth-child(4) {
+  --r: 4deg;
+  top: 47%;
+  right: 7%;
+}
+
+.pitch-before-after__chaos li:nth-child(5) {
+  --r: 2deg;
+  bottom: 27%;
+  left: 5%;
+}
+
+.pitch-before-after__chaos li:nth-child(6) {
+  --r: -3.5deg;
+  bottom: 13%;
+  right: 9%;
+}
+
+/* The stakes note reads like a marker scrawl, not another admin scrap. */
+.pitch-before-after__chaos li:nth-child(7) {
+  --r: -1.5deg;
+  bottom: 3%;
+  left: 28%;
+  background: var(--color-signal-oxblood);
+  border-color: transparent;
+  color: #f6f2e9;
+}
+
+@keyframes pitch-chaos-drift {
+  0%,
+  100% {
+    transform: rotate(var(--r)) translateY(0);
+  }
+  50% {
+    transform: rotate(var(--r)) translateY(-7px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pitch-before-after__chaos li {
+    animation: pitch-chaos-drift 5.2s ease-in-out infinite;
+  }
+
+  .pitch-before-after__chaos li:nth-child(2n) {
+    animation-duration: 6.4s;
+    animation-delay: -2.1s;
+  }
+
+  .pitch-before-after__chaos li:nth-child(3n) {
+    animation-duration: 4.6s;
+    animation-delay: -3.4s;
+  }
+}
+
+.pitch-before-after.is-revealed .pitch-before-after__chaos li {
+  opacity: 0;
+  transform: rotate(var(--r)) translateY(14px) scale(0.92);
+  animation: none;
+}
+
+/* Hard cut under reduced motion: no sweep, no drift; facsimile + marks land
+   at once and the chaos scraps vanish with them. */
 @media (prefers-reduced-motion: reduce) {
   .pitch-before-after__scan {
     display: none;
   }
 
   .pitch-before-after__document--layered .pitch-facsimile {
+    transition: none;
+  }
+
+  .pitch-before-after__chaos li {
     transition: none;
   }
 }
@@ -4291,6 +4452,63 @@ body {
   border-left: 4px solid var(--color-signal-oxblood);
   background: rgba(180, 45, 36, 0.18);
   padding: clamp(0.65rem, 0.95vw, 0.9rem);
+}
+
+/* The after lands hard: the deal-breaker count slams in once the panel has
+   arrived, then the rows cascade beneath it. */
+@media (prefers-reduced-motion: no-preference) {
+  .pitch-before-after__summary {
+    opacity: 0;
+  }
+
+  .pitch-before-after.is-revealed .pitch-before-after__summary {
+    animation: pitch-summary-slam 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.62s
+      both;
+  }
+
+  .pitch-before-after__rows li {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 340ms ease,
+      transform 340ms ease;
+  }
+
+  .pitch-before-after.is-revealed .pitch-before-after__rows li {
+    opacity: 1;
+    transform: none;
+  }
+
+  .pitch-before-after.is-revealed .pitch-before-after__rows li:nth-child(1) {
+    transition-delay: 0.85s;
+  }
+
+  .pitch-before-after.is-revealed .pitch-before-after__rows li:nth-child(2) {
+    transition-delay: 0.97s;
+  }
+
+  .pitch-before-after.is-revealed .pitch-before-after__rows li:nth-child(3) {
+    transition-delay: 1.09s;
+  }
+
+  .pitch-before-after.is-revealed .pitch-before-after__rows li:nth-child(4) {
+    transition-delay: 1.21s;
+  }
+
+  .pitch-before-after.is-revealed .pitch-before-after__rows li:nth-child(5) {
+    transition-delay: 1.33s;
+  }
+}
+
+@keyframes pitch-summary-slam {
+  from {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .pitch-before-after__summary > span {
@@ -5721,16 +5939,21 @@ body {
     display: none !important;
   }
 
-  .pitch-before-after__image {
-    filter: none !important;
-    object-position: center top !important;
-  }
 
   /* The leave-behind prints the readable facsimile with marks lit; the
-     layered scan page and sweep bar are stage-only. */
-  .pitch-before-after__document--layered .pitch-before-after__image,
-  .pitch-before-after__scan {
+     scrolling reel, sweep bar, and chaos scraps are stage-only. */
+  .pitch-before-after__reel,
+  .pitch-before-after__scan,
+  .pitch-before-after__chaos {
     display: none !important;
+  }
+
+  .pitch-before-after__summary,
+  .pitch-before-after__rows li {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
   }
 
   .pitch-before-after__document--layered .pitch-facsimile {

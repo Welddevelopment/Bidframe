@@ -26,7 +26,6 @@ import { TenderPageFacsimile } from "@/components/pitch/TenderPageFacsimile";
 import { AnimatedNumber } from "@/components/AnimatedNumber";
 import { ComplianceMatrix } from "@/components/ComplianceMatrix";
 import { GatingHero } from "@/components/GatingHero";
-import { GraphView } from "@/components/GraphView";
 import { MatrixView } from "@/components/MatrixView";
 import {
   AnswerCard as AnswerCardShot,
@@ -34,15 +33,13 @@ import {
   DealBreakerCard,
 } from "@/components/landing/ProductShots";
 import { useRequirements } from "@/context/RequirementsContext";
-import { isBacked } from "@/lib/answers";
 import { deriveTriage } from "@/lib/triage";
 
 // The 3-minute deck: five slides, two speakers (Jawad opens and closes,
 // Pranav owns Solution + Product). Joel takes the mic after the Product
 // slide for the 2-minute live demo.
 const MAIN_SLIDE_COUNT = 5;
-const APPENDIX_SLIDE_COUNT = 6;
-const TOTAL_SLIDE_COUNT = MAIN_SLIDE_COUNT + APPENDIX_SLIDE_COUNT;
+const TOTAL_SLIDE_COUNT = MAIN_SLIDE_COUNT;
 // The Product slide: where the walk-into-the-product portal opens.
 const PRODUCT_INDEX = 3;
 // Beats per main slide: NEXT walks a slide's internal beats before moving on.
@@ -54,36 +51,38 @@ function beatsAt(index: number) {
   return SLIDE_BEATS[index] ?? 1;
 }
 
+// The manual process, stuck to the tender page at beat 0: the scraps a bid
+// manager actually juggles. Grounded in the Bradwell pack (insurance limits,
+// pricing statements, the Clovers Lane deadline) — swept away on reveal.
+const CHAOS_NOTES = [
+  "34 pages — third read-through",
+  "reqs_tracker_v12_FINAL(2).xlsx",
+  "£5m PL or £10m EL — which goes where?",
+  "did legal see clause 4.6?",
+  "pricing statement… p.31?!",
+  "hard copy to Clovers Lane by Thu 17:00",
+  "one missed clause = binned bid",
+] as const;
+
 // Sums to 170s — ten seconds of handoff slack inside the 3:00 window.
 const AUTOPLAY_SECONDS = [24, 30, 40, 46, 30] as const;
 // Where the clock *should* be when each main slide starts (pace ghost).
 const PACE_STARTS = AUTOPLAY_SECONDS.map((_, i) =>
   AUTOPLAY_SECONDS.slice(0, i).reduce((sum, s) => sum + s, 0)
 );
-// v3: beat semantics generalized to per-slide beat counts.
-const PITCH_STATE_KEY = "bidframe.pitch.state.v3";
-const CTA =
-  "Talk to us if you would like to help Bidframe scale the first-read layer for public-sector bids.";
+// v4: appendix and presenter notes removed — five main slides only.
+const PITCH_STATE_KEY = "bidframe.pitch.state.v4";
 
 interface PitchStoredState {
   activeIndex: number;
   beat: number;
-  notesOpen: boolean;
   elapsedSeconds: number;
 }
-
-const TEAM = [
-  { name: "Jawad Jalal", role: "Frontend" },
-  { name: "Bobby Choi", role: "Generalist" },
-  { name: "Pranav Bonagiri", role: "Backend" },
-  { name: "Joel Jeon", role: "GTM, outreach, planning" },
-] as const;
 
 interface SlideMeta {
   bucket: string;
   title: string;
   speaker: string;
-  notes: string[];
   // The walk: which woodland zone the slide stands in, and how much light has
   // reached it (0 = lost in the dark, 1 = the clearing).
   zone: PitchZone;
@@ -103,14 +102,6 @@ function parsePitchHash(hash: string) {
   const cleaned = hash.replace(/^#/, "").trim().toLowerCase();
   if (!cleaned) return null;
 
-  const noteMatch = /^notes?-(\d+)$/.exec(cleaned);
-  if (noteMatch) {
-    const noteIndex = Number(noteMatch[1]) - 1;
-    if (noteIndex >= 0 && noteIndex < APPENDIX_SLIDE_COUNT) {
-      return MAIN_SLIDE_COUNT + noteIndex;
-    }
-  }
-
   const slideMatch = /^(?:slide-)?(\d+)$/.exec(cleaned);
   if (!slideMatch) return null;
 
@@ -122,9 +113,6 @@ function parsePitchHash(hash: string) {
 }
 
 function hashForIndex(index: number) {
-  if (index >= MAIN_SLIDE_COUNT) {
-    return `#notes-${index - MAIN_SLIDE_COUNT + 1}`;
-  }
   return `#${index + 1}`;
 }
 
@@ -151,7 +139,6 @@ function readStoredPitchState(): PitchStoredState | null {
         typeof parsed.beat === "number" && Number.isInteger(parsed.beat)
           ? Math.min(Math.max(parsed.beat, 0), beatsAt(index) - 1)
           : 0,
-      notesOpen: parsed.notesOpen === true,
       elapsedSeconds:
         typeof elapsedSeconds === "number" && Number.isInteger(elapsedSeconds)
           ? Math.max(0, elapsedSeconds)
@@ -194,46 +181,6 @@ function Metric({
           value
         )}
       </strong>
-    </div>
-  );
-}
-
-function SourceCard({
-  title,
-  href,
-  children,
-}: {
-  title: string;
-  href: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <a
-      href={href}
-      className="pitch-source-card"
-      target="_blank"
-      rel="noreferrer"
-    >
-      <span>{title}</span>
-      <p>{children}</p>
-    </a>
-  );
-}
-
-function TeamCard({ name, role }: { name: string; role: string }) {
-  const initials = name
-    .split(" ")
-    .map((part) => part[0])
-    .join("");
-  return (
-    <div className="pitch-team-card">
-      <span className="pitch-team-card__monogram" aria-hidden="true">
-        {initials}
-      </span>
-      <div>
-        <strong>{name}</strong>
-        <span>{role}</span>
-      </div>
     </div>
   );
 }
@@ -284,7 +231,6 @@ export function PitchDeck() {
   const cursorTimerRef = useRef<number | null>(null);
   const { requirements, title } = useRequirements();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [notesOpen, setNotesOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
   const [restored, setRestored] = useState(false);
@@ -327,22 +273,6 @@ export function PitchDeck() {
       requirements[0],
     [dealBreakers, requirements]
   );
-  const backedCount = useMemo(
-    () => requirements.filter((req) => isBacked(req)).length,
-    [requirements]
-  );
-  const openQuestionCount = useMemo(
-    () =>
-      requirements.reduce(
-        (sum, req) =>
-          sum +
-          (req.open_questions ?? []).filter((question) => question.answer === null)
-            .length,
-        0
-      ),
-    [requirements]
-  );
-
   const next = useCallback(() => {
     setAutoplay(false);
     // Walk this slide's internal beats before leaving it.
@@ -351,7 +281,7 @@ export function PitchDeck() {
       return;
     }
     // Advancing past the Ask hands the stage to the live demo: straight to
-    // /showcase. The appendix stays reachable via Q or the trail's side path.
+    // /showcase.
     if (activeIndex === MAIN_SLIDE_COUNT - 1) {
       router.push("/showcase");
       return;
@@ -400,10 +330,7 @@ export function PitchDeck() {
 
   const toggleAutoplay = useCallback(() => {
     setAutoplay((current) => !current);
-    if (!autoplay) {
-      setActiveIndex((index) => (index >= MAIN_SLIDE_COUNT ? 0 : index));
-    }
-  }, [autoplay]);
+  }, []);
 
   const toggleFullscreen = useCallback(() => {
     const stage = stageRef.current;
@@ -429,7 +356,6 @@ export function PitchDeck() {
     setRehearsal(enabled);
     setAutoplay(enabled);
     if (enabled) {
-      setActiveIndex((index) => (index >= MAIN_SLIDE_COUNT ? 0 : index));
       setElapsedSeconds(0);
       setSlideSeconds(0);
     }
@@ -476,18 +402,12 @@ export function PitchDeck() {
       } else if (event.key.toLowerCase() === "r") {
         event.preventDefault();
         toggleRehearsal();
-      } else if (event.key.toLowerCase() === "n") {
-        event.preventDefault();
-        setNotesOpen((open) => !open);
       } else if (event.key.toLowerCase() === "f") {
         event.preventDefault();
         toggleFullscreen();
       } else if (event.key >= "1" && event.key <= "5") {
         event.preventDefault();
         goTo(Number(event.key) - 1);
-      } else if (event.key.toLowerCase() === "q") {
-        event.preventDefault();
-        goTo(MAIN_SLIDE_COUNT);
       } else if (event.key === "?") {
         event.preventDefault();
         setHelpOpen((open) => !open);
@@ -499,7 +419,6 @@ export function PitchDeck() {
         jumpToAsk();
       } else if (event.key === "Escape") {
         setHelpOpen(false);
-        setNotesOpen(false);
       }
     }
 
@@ -533,7 +452,6 @@ export function PitchDeck() {
 
       setActiveIndex(clampSlideIndex(targetIndex));
       setBeat(restoredBeat);
-      setNotesOpen(hashIndex !== null ? false : stored?.notesOpen ?? false);
       setElapsedSeconds(stored?.elapsedSeconds ?? 0);
       setRestored(true);
     });
@@ -546,7 +464,6 @@ export function PitchDeck() {
     const state: PitchStoredState = {
       activeIndex,
       beat,
-      notesOpen,
       elapsedSeconds,
     };
     window.sessionStorage.setItem(PITCH_STATE_KEY, JSON.stringify(state));
@@ -559,7 +476,7 @@ export function PitchDeck() {
         `${window.location.pathname}${window.location.search}${nextHash}`
       );
     }
-  }, [activeIndex, beat, elapsedSeconds, notesOpen, restored]);
+  }, [activeIndex, beat, elapsedSeconds, restored]);
 
   // The Ask's NEXT press cuts to the live demo — have /showcase ready.
   useEffect(() => {
@@ -618,7 +535,6 @@ export function PitchDeck() {
 
   useEffect(() => {
     if (!autoplay) return;
-    if (activeIndex >= MAIN_SLIDE_COUNT) return;
 
     // Autoplay walks a slide's beats evenly across its budget.
     const beats = beatsAt(activeIndex);
@@ -653,25 +569,12 @@ export function PitchDeck() {
           zone: "night",
           light: 0.05,
           glyph: "pdf",
-          notes: [
-            "Open with the plain-language definition: a tender is the buyer's official request to bid, with pass/fail requirements and evidence asks.",
-            "Say the full thought out loud: hidden inside are pass/fail clauses, scored requirements and evidence asks — miss one gate and the answer is no.",
-            "Make the pain concrete: the first read is where teams hunt for disqualifiers.",
-            "Keep the mic: roll straight into the use case, not a feature list.",
-          ],
           body: (
             <div className="pitch-poster pitch-poster--center">
               <p className="pitch-kicker">A tender, in plain English</p>
-              <h1>
-                One missed deal&#8209;breaker
-                <br />
-                kills the bid
-              </h1>
+              <h1>One missed deal&#8209;breaker kills the bid</h1>
               <p className="pitch-poster__line">
                 Somewhere in the pack is a clause that ends it.
-              </p>
-              <p className="pitch-poster__terms">
-                Requirement · Evidence · Compliance matrix · Deal-breaker
               </p>
             </div>
           ),
@@ -683,12 +586,6 @@ export function PitchDeck() {
           zone: "pine",
           light: 0.3,
           glyph: "read",
-          notes: [
-            "FOUR BEATS — each NEXT lights the next station and swaps the proof below.",
-            "Beat 1 (Open tender): frame the user over the £341bn figure — a bid manager needs a fast, defensible first read.",
-            "Beat 2 (Find risks): deal-breaker register appears. Beat 3 (Build matrix): source trace. Beat 4 (Draft safely): evidence-backed answer.",
-            "Say it in full: the first job is not writing — it is finding the pass/fail clauses and the proof needed to answer safely.",
-          ],
           body: (
             <div className="pitch-journey">
               <div className="pitch-journey__head">
@@ -725,12 +622,9 @@ export function PitchDeck() {
                         minutes
                       </span>
                       <span className="pitch-journey__note">
-                        This pack is 34 pages with 12 bid-killers scattered to
-                        page 31 — a careful first read by hand is the better
-                        part of a day (£375 to £950 outsourced). Bidframe
-                        surfaces every one in minutes, and by catching them
-                        protects the £4,000, two-to-eight-week bid it sits
-                        inside.
+                        A careful first read of this 34-page pack is the better
+                        part of a day. Bidframe surfaces all 12 bid-killers in
+                        minutes.
                       </span>
                     </div>
                     <div className="pitch-journey__stat pitch-journey__stat--context">
@@ -784,12 +678,6 @@ export function PitchDeck() {
           zone: "night",
           light: 0.12,
           glyph: "clause",
-          notes: [
-            "Two beats: first hold on the typeset clause 4.6 page. It should feel dense and easy to miss.",
-            "The NEXT keypress marks the five buried disqualifiers and resolves to the split: page left, Bidframe deal-breaker view right.",
-            "Say it in full: this is the same tender turned into a reviewable matrix, with deal-breakers first and sources attached.",
-            "Avoid claiming universal accuracy. This is a real pre-baked Bradwell run.",
-          ],
           body: (
             <div
               className={`pitch-before-after ${
@@ -801,7 +689,7 @@ export function PitchDeck() {
                 <h2>One clause. Five ways to lose the bid.</h2>
                 <p className="pitch-before-after__contrast">
                   <span className="pitch-before-after__contrast-line pitch-before-after__contrast-line--before">
-                    None of them obvious.
+                    A full day of reading. Miss one, the bid is binned.
                   </span>
                   <span className="pitch-before-after__contrast-line pitch-before-after__contrast-line--after">
                     Days of expert reading, one miss = a binned bid&ensp;→&ensp;
@@ -823,18 +711,36 @@ export function PitchDeck() {
                     <span>The tender. 34 pages.</span>
                   </figcaption>
                   <div className="pitch-before-after__document pitch-before-after__document--layered">
-                    {/* The real scanned Bradwell page holds the frame until the
-                        reveal, when the facsimile resolves over it with the
-                        disqualifiers marked — highlights stay crisp instead of
-                        being pixel-guessed onto the scan. */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/pitch/before-tender-p7.png"
-                      alt=""
-                      aria-hidden="true"
-                      className="pitch-before-after__image"
-                    />
+                    {/* An endless scroll of real scanned Bradwell pages holds
+                        beat 0 — the sheer length is the pain. On reveal the
+                        facsimile resolves over it with the disqualifiers
+                        marked, crisp instead of pixel-guessed onto the scan.
+                        Two identical halves make the loop seamless. */}
+                    <div className="pitch-before-after__reel" aria-hidden="true">
+                      <div className="pitch-before-after__reel-track">
+                        {[0, 1].map((half) => (
+                          <div
+                            className="pitch-before-after__reel-half"
+                            key={half}
+                          >
+                            {["before-tender-p7.png", "before-tender-p31.png"].map(
+                              (page) => (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img key={page} src={`/pitch/${page}`} alt="" />
+                              )
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                     <div className="pitch-before-after__scan" aria-hidden="true" />
+                    {/* The manual-process chaos stuck to the page at beat 0 —
+                        swept away with the scan when Bidframe takes over. */}
+                    <ul className="pitch-before-after__chaos" aria-hidden="true">
+                      {CHAOS_NOTES.map((note) => (
+                        <li key={note}>{note}</li>
+                      ))}
+                    </ul>
                     <TenderPageFacsimile highlighted={beat > 0} />
                   </div>
                 </figure>
@@ -868,9 +774,6 @@ export function PitchDeck() {
                       </li>
                     ))}
                   </ul>
-                  <p className="pitch-before-after__receipt">
-                    Every row keeps the page and clause attached.
-                  </p>
                 </section>
               </div>
             </div>
@@ -884,24 +787,13 @@ export function PitchDeck() {
           light: 0.6,
           glyph: "matrix",
           nextUp: "Joel · demo",
-          notes: [
-            "Lead with the product proof: the first screen tells a bid team what can disqualify them.",
-            "One click on Source proof shows the receipt — every line traceable to page and clause.",
-            "Press Enter (or P) to step INSIDE the real product if the room wants a peek — Esc walks back.",
-            "Then hand the mic to Joel for the 2-minute live walkthrough on /showcase.",
-          ],
           body: (
             <div className="pitch-spread">
               <div className="pitch-copy">
                 <p className="pitch-kicker">The product</p>
-                <h2>The tender becomes a checkable map</h2>
+                <h2>The tender, mapped.</h2>
                 <p>Every line shows where it came from.</p>
                 <div className="pitch-mini-metrics">
-                  <Metric
-                    label="Worked example rows"
-                    count={requirements.length}
-                    tick={activeIndex === PRODUCT_INDEX}
-                  />
                   <Metric
                     label="Deal-breakers surfaced"
                     count={dealBreakers.length}
@@ -925,7 +817,7 @@ export function PitchDeck() {
                     {
                       "--tilt-y": "6deg",
                       "--plane-z": "-140px",
-                      "--plane-dim": "0.55",
+                      "--plane-dim": "0.4",
                       "--plane-scale": "0.92",
                     } as React.CSSProperties
                   }
@@ -987,20 +879,6 @@ export function PitchDeck() {
                   </div>
                 )}
                 </div>
-                <aside
-                  className="pitch-sheet-stack__answer pitch-exhibit__plane"
-                  aria-hidden="true"
-                  style={
-                    {
-                      "--tilt-y": "-9deg",
-                      "--plane-z": "50px",
-                      "--plane-scale": "0.6",
-                      "--plane-delay": "180ms",
-                    } as React.CSSProperties
-                  }
-                >
-                  <AnswerCardShot />
-                </aside>
               </div>
             </div>
           ),
@@ -1012,290 +890,17 @@ export function PitchDeck() {
           zone: "clearing",
           light: 1,
           glyph: "seal",
-          notes: [
-            "Close with the thesis: 10× faster, expert at the wheel.",
-            `Say it in full: ${CTA}`,
-            "Primary CTA is bidframe.org. Secondary CTA is bidframe.org/demo.",
-            "Pressing NEXT here cuts straight to /showcase for Joel's demo. Appendix stays on Q.",
-          ],
           body: (
             <div className="pitch-poster pitch-poster--center">
               <p className="pitch-kicker">The ask</p>
               <h2>Help us scale the first&#8209;read layer</h2>
               <p className="pitch-poster__line">
                 The slowest, highest-stakes step of a public-sector bid, made
-                fast — with the expert in control the whole way. Invest, advise,
-                or introduce us.
+                fast. Invest, advise, or introduce us.
               </p>
               <div className="pitch-cta-row">
                 <a href="https://bidframe.org">bidframe.org</a>
-                <Link href="/demo">bidframe.org/demo</Link>
-              </div>
-            </div>
-          ),
-        },
-        {
-          bucket: "Appendix",
-          title: "Team",
-          speaker: "Q&A",
-          zone: "paper",
-          light: 0.85,
-          glyph: "seal",
-          notes: [
-            "Keep this for Q&A. The main deck only needs names and roles if asked.",
-          ],
-          body: (
-            <div className="pitch-appendix">
-              <div className="pitch-copy">
-                <p className="pitch-kicker">Team</p>
-                <h2>Built by a small team with clear lanes</h2>
-                <p>
-                  Primary roles, with everyone pitching in across the product.
-                </p>
-              </div>
-              <div className="pitch-team-grid">
-                {TEAM.map((member) => (
-                  <TeamCard key={member.name} {...member} />
-                ))}
-              </div>
-            </div>
-          ),
-        },
-        {
-          bucket: "Appendix",
-          title: "Proof ledger",
-          speaker: "Q&A",
-          zone: "paper",
-          light: 0.85,
-          glyph: "seal",
-          notes: [
-            "Use this if asked what is proven versus what is still scoped.",
-            "Keep every claim tied to the worked example or repo evidence.",
-          ],
-          body: (
-            <div className="pitch-appendix pitch-appendix--ledger">
-              <div className="pitch-copy">
-                <p className="pitch-kicker">Proof ledger</p>
-                <h2>What we can safely claim today</h2>
-              </div>
-              <div className="pitch-ledger-grid">
-                <Metric label="Worked example" value={title} />
-                <Metric
-                  label="Rows extracted"
-                  count={requirements.length}
-                  suffix="requirements"
-                  tick={activeIndex === 6}
-                />
-                <Metric
-                  label="Deal-breaker detector"
-                  count={dealBreakers.length}
-                  suffix="rows surfaced"
-                  tick={activeIndex === 6}
-                />
-                <Metric
-                  label="Answer receipts"
-                  count={backedCount}
-                  suffix="backed drafts"
-                  tick={activeIndex === 6}
-                />
-                <Metric
-                  label="Human gaps"
-                  count={openQuestionCount}
-                  suffix="open prompts"
-                  tick={activeIndex === 6}
-                />
-                <Metric label="Scope" value="pre-baked real run" />
-              </div>
-              <div className="pitch-field-note-grid">
-                <div>
-                  <span>Deal-breaker benchmark</span>
-                  <strong>12/12</strong>
-                  <p>SPSO plus museum disqualifiers caught in validated gold.</p>
-                </div>
-                <div>
-                  <span>Held-out check</span>
-                  <strong>10/10</strong>
-                  <p>Bradwell deal-breakers caught outside the hero tender.</p>
-                </div>
-                <div>
-                  <span>Phrasing bank</span>
-                  <strong>101/101</strong>
-                  <p>Worst-case wording variants caught by the safety net.</p>
-                </div>
-                <div>
-                  <span>Still honest</span>
-                  <strong>No headline precision</strong>
-                  <p>Broader requirement recall needs a larger benchmark.</p>
-                </div>
-              </div>
-              <p className="pitch-caveat">
-                In this worked example the pipeline surfaces the deal-breaker rows
-                first and keeps each line traceable to its source. And the
-                deal-breaker detector is validated beyond it: every disqualifier
-                caught across our gold tenders (SPSO 2/2, museum 10/10)
-                deterministically, without the model — guaranteed, not luck — plus
-                10/10 on the held-out Bradwell tender and 101/101 on a worst-case
-                phrasing bank. It is tuned recall-first, so the failure mode is
-                over-flagging, never a silent miss. We do not put a headline
-                precision number on stage — broader accuracy across every
-                requirement type is still small-sample, and we say so.
-              </p>
-            </div>
-          ),
-        },
-        {
-          bucket: "Appendix",
-          title: "Market sources",
-          speaker: "Q&A",
-          zone: "paper",
-          light: 0.85,
-          glyph: "seal",
-          notes: [
-            "Use this only when asked about market size or timing.",
-            "The main pitch should stay on workflow pain and product proof.",
-          ],
-          body: (
-            <div className="pitch-appendix">
-              <div className="pitch-copy">
-                <p className="pitch-kicker">Market sources</p>
-                <h2>Procurement is large, regulated and paperwork-heavy</h2>
-              </div>
-              <div className="pitch-source-grid">
-                <SourceCard
-                  title="House of Commons Library"
-                  href="https://commonslibrary.parliament.uk/research-briefings/cbp-9317/"
-                >
-                  Latest Whole of Government Accounts data cited GBP341bn spent
-                  on procurement in 2023/24, about a third of public-sector
-                  spending.
-                </SourceCard>
-                <SourceCard
-                  title="House of Commons Library"
-                  href="https://commonslibrary.parliament.uk/research-briefings/cbp-9317/"
-                >
-                  SME procurement data is useful but caveated: the last central
-                  government SME edition cited 26.5 percent in 2021/22 and warns
-                  methods changed over time.
-                </SourceCard>
-                <SourceCard
-                  title="GOV.UK"
-                  href="https://www.gov.uk/government/publications/national-procurement-policy-statement"
-                >
-                  The National Procurement Policy Statement came into effect on
-                  24 February 2025 alongside introduction of the Procurement Act
-                  2023.
-                </SourceCard>
-              </div>
-            </div>
-          ),
-        },
-        {
-          bucket: "Appendix",
-          title: "Demo reliability",
-          speaker: "Q&A",
-          zone: "paper",
-          light: 0.85,
-          glyph: "seal",
-          notes: [
-            "This is the answer if someone asks whether the demo is live inference.",
-            "Be clear: the stage deck uses a cached real run; the live product route remains available.",
-          ],
-          body: (
-            <div className="pitch-appendix pitch-appendix--split">
-              <div className="pitch-copy">
-                <p className="pitch-kicker">Demo reliability</p>
-                <h2>Stage-safe without pretending</h2>
-                <p>
-                  /pitch and /demo use cached Bradwell output from a real
-                  pipeline run. The live route remains available after the pitch.
-                </p>
-              </div>
-              <div className="pitch-reliability-list">
-                <span>Primary pitch: /pitch (portal opens the product in-stage)</span>
-                <span>Live walkthrough: /showcase (Joel&apos;s 2-minute demo)</span>
-                <span>Guided backup: /demo · Answer workspace: /answers</span>
-                <span>Fallback: browser PDF and screenshots in outputs</span>
-              </div>
-            </div>
-          ),
-        },
-        {
-          bucket: "Appendix",
-          title: "Competitive wedge",
-          speaker: "Q&A",
-          zone: "paper",
-          light: 0.85,
-          glyph: "seal",
-          notes: [
-            "Use this for positioning questions.",
-            "The wedge is before bid-writing: the first-read layer and deal-breaker detection.",
-          ],
-          body: (
-            <div className="pitch-appendix pitch-appendix--wedge">
-              <div className="pitch-copy">
-                <p className="pitch-kicker">Competitive wedge</p>
-                <h2>Before writing, the bid needs a first read</h2>
-                <p>
-                  Bidframe starts where bid tools usually skip: the
-                  source-checkable review layer before bid-writing.
-                </p>
-              </div>
-              <div className="pitch-wedge-grid">
-                <div>
-                  <strong>Not a document chat</strong>
-                  <span>Structured rows, sources, categories and decisions.</span>
-                </div>
-                <div>
-                  <strong>Not a writing toy</strong>
-                  <span>Deal-breaker detection before generation.</span>
-                </div>
-                <div>
-                  <strong>Not a static spreadsheet</strong>
-                  <span>Evidence-backed answers and human gaps.</span>
-                </div>
-              </div>
-            </div>
-          ),
-        },
-        {
-          bucket: "Appendix",
-          title: "Architecture",
-          speaker: "Q&A",
-          zone: "paper",
-          light: 0.85,
-          glyph: "graph",
-          notes: [
-            "Use this if asked how it works under the hood.",
-            "Say it in full: it creates structured records — extracted requirements, conservative reconciliation, source citations and answer receipts.",
-            "Contrast with a PDF chatbot without naming competitors. Bidframe produces a structured review layer.",
-            "Point at the graph as traceability and dependency structure.",
-          ],
-          body: (
-            <div className="pitch-spread">
-              <div className="pitch-copy">
-                <p className="pitch-kicker">Architecture</p>
-                <h2>A trust layer, not a PDF chatbot</h2>
-                <p>Structured records, with receipts.</p>
-                <p className="pitch-poster__terms">
-                  FastAPI · Python engine · Next.js · Eval harness
-                </p>
-              </div>
-              <div className="pitch-sheet pitch-sheet--tech">
-                <div className="pitch-pipeline">
-                  {[
-                    "PDF ingest",
-                    "Requirement extraction",
-                    "Dedupe and routing",
-                    "Deal-breaker detection",
-                    "Source matrix",
-                    "Answer receipts",
-                  ].map((step) => (
-                    <span key={step}>{step}</span>
-                  ))}
-                </div>
-                <div className="pitch-sheet__window pitch-sheet__window--fill">
-                  <GraphView interactive={false} embedded />
-                </div>
+                <Link href="/demo">Help us scale</Link>
               </div>
             </div>
           ),
@@ -1304,30 +909,25 @@ export function PitchDeck() {
     [
       activeIndex,
       beat,
-      backedCount,
       dealBreakers,
       exhibitGroups,
       openPortal,
-      openQuestionCount,
       requirements,
       sourcePeekOpen,
       sourceProofReq,
       splitDealBreakers,
-      title,
     ]
   );
 
   const activeSlide = slides[activeIndex];
-  const inAppendix = activeIndex >= MAIN_SLIDE_COUNT;
   const trailLabels = useMemo(
-    () => slides.slice(0, MAIN_SLIDE_COUNT).map((slide) => slide.bucket),
+    () => slides.map((slide) => slide.bucket),
     [slides]
   );
 
   // Pace ghost: where the clock stands against the rehearsed slide budget.
-  // Positive = running behind; negative = ahead. Only meaningful on the trail.
-  const paceDelta =
-    elapsedSeconds - PACE_STARTS[Math.min(activeIndex, MAIN_SLIDE_COUNT - 1)];
+  // Positive = running behind; negative = ahead.
+  const paceDelta = elapsedSeconds - PACE_STARTS[activeIndex];
 
   // The handoff cue: who takes over after this slide. An explicit override
   // (Joel's live demo) wins; otherwise derive from the next slide's speaker.
@@ -1339,7 +939,7 @@ export function PitchDeck() {
       ? nextMainSlide.speaker
       : null);
 
-  const slideBudget = inAppendix ? null : AUTOPLAY_SECONDS[activeIndex];
+  const slideBudget = AUTOPLAY_SECONDS[activeIndex] ?? null;
   const rehearsalRemaining =
     slideBudget === null ? null : Math.max(0, slideBudget - slideSeconds);
 
@@ -1398,8 +998,8 @@ export function PitchDeck() {
           {/* the story object: one tender page carried through the walk */}
           <div
             className={`pitch-story no-print ${
-              inAppendix ? "is-hidden" : ""
-            } ${zoneIsDark(activeSlide.zone) ? "" : "pitch-story--ink"}`}
+              zoneIsDark(activeSlide.zone) ? "" : "pitch-story--ink"
+            }`}
             aria-hidden="true"
           >
             <TenderGlyph stage={activeSlide.glyph} />
@@ -1409,7 +1009,7 @@ export function PitchDeck() {
           <TrailMap
             labels={trailLabels}
             activeIndex={activeIndex}
-            offTrail={inAppendix}
+            offTrail={false}
             onSelect={goTo}
           />
 
@@ -1423,14 +1023,8 @@ export function PitchDeck() {
               <IconPrevious />
             </button>
             <div className="pitch-counter">
-              <strong>
-                {inAppendix
-                  ? `Notes ${activeIndex - MAIN_SLIDE_COUNT + 1}/${
-                      slides.length - MAIN_SLIDE_COUNT
-                    }`
-                  : `${activeIndex + 1} / ${MAIN_SLIDE_COUNT}`}
-              </strong>
-              {!inAppendix && beatsAt(activeIndex) > 1 && (
+              <strong>{`${activeIndex + 1} / ${MAIN_SLIDE_COUNT}`}</strong>
+              {beatsAt(activeIndex) > 1 && (
                 <span className="pitch-counter__beats" aria-hidden="true">
                   {Array.from({ length: beatsAt(activeIndex) }, (_, i) => (
                     <i key={i} className={i <= beat ? "is-done" : ""} />
@@ -1445,7 +1039,7 @@ export function PitchDeck() {
               <span>Time</span>
               <strong>
                 {formatElapsed(elapsedSeconds)}
-                {!inAppendix && elapsedSeconds > 0 && (
+                {elapsedSeconds > 0 && (
                   <em
                     className={`pitch-pace ${
                       paceDelta > 5 ? "pitch-pace--over" : ""
@@ -1460,7 +1054,7 @@ export function PitchDeck() {
                 )}
               </strong>
             </div>
-            {handoffTo && !inAppendix && (
+            {handoffTo && (
               <div className="pitch-handoff" aria-label={`Next up ${handoffTo}`}>
                 <span>next</span>
                 <strong>{handoffTo}</strong>
@@ -1482,15 +1076,6 @@ export function PitchDeck() {
               className={autoplay ? "is-active" : ""}
             >
               {autoplay ? <IconPause /> : <IconPlay />}
-            </button>
-            <button
-              type="button"
-              onClick={() => setNotesOpen((open) => !open)}
-              aria-pressed={notesOpen}
-              aria-label="Toggle presenter notes"
-              className={notesOpen ? "is-active" : ""}
-            >
-              <span aria-hidden="true">N</span>
             </button>
             <button
               type="button"
@@ -1521,8 +1106,7 @@ export function PitchDeck() {
                   <kbd>→</kbd> / <kbd>Space</kbd> next · <kbd>←</kbd> back
                 </li>
                 <li>
-                  <kbd>1</kbd>–<kbd>5</kbd> jump to slide · <kbd>Q</kbd> field
-                  notes
+                  <kbd>1</kbd>–<kbd>5</kbd> jump to slide
                 </li>
                 <li>
                   <kbd>P</kbd> step inside the product · <kbd>Esc</kbd> walk
@@ -1530,7 +1114,7 @@ export function PitchDeck() {
                 </li>
                 <li>
                   <kbd>A</kbd> autoplay · <kbd>R</kbd> rehearsal ·{" "}
-                  <kbd>N</kbd> notes · <kbd>F</kbd> fullscreen
+                  <kbd>F</kbd> fullscreen
                 </li>
                 <li>
                   <kbd>?</kbd> toggle this card · <kbd>Esc</kbd> close
@@ -1542,22 +1126,9 @@ export function PitchDeck() {
             </aside>
           )}
 
-          {notesOpen && (
-            <aside className="pitch-notes no-print">
-              <p>
-                {activeSlide.speaker} - {activeSlide.title}
-              </p>
-              <ul>
-                {activeSlide.notes.map((note) => (
-                  <li key={note}>{note}</li>
-                ))}
-              </ul>
-            </aside>
-          )}
-
           {/* Rehearsal HUD: who's on, how long they have left on this slide,
               and who takes over — big enough to read from across the room. */}
-          {rehearsal && !inAppendix && !portalOpen && (
+          {rehearsal && !portalOpen && (
             <aside className="pitch-rehearsal no-print" aria-hidden="true">
               <span>{activeSlide.speaker}</span>
               {rehearsalRemaining !== null && (
