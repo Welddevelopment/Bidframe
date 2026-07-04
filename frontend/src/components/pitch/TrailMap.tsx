@@ -8,7 +8,7 @@ import {
   useSpring,
 } from "motion/react";
 
-// The deck's navigation as a trail map: one undulating route across the foot
+// The deck's navigation as a trail map: one ruled route across the foot
 // of the stage with a diamond blaze per main slide (the landing page's
 // waypoint language, laid horizontal). The walked portion draws forward as
 // the deck advances, a walker dot leads the line, and every blaze is a
@@ -18,12 +18,11 @@ import {
 
 // The route sits centered in the band's free stretch: it starts far enough in
 // for the first label to breathe and ends well short of the controls dock
-// (timer, pace, handoff), which claims the band's right quarter. It runs
-// nearly level with one soft lift toward the ask — at this stretched aspect
-// ratio anything wavier reads as noise, and a level line keeps every blaze
-// and label on one clean baseline. The field-notes side path branches off
-// the final blaze.
-const TRAIL_PATH = "M 70 24 C 260 22, 450 21, 640 15";
+// (timer, pace, handoff), which claims the band's right quarter. It is a true
+// horizontal rule so every blaze and label sits on one clean baseline. The
+// field-notes side path continues from the final blaze on the same line.
+const TRAIL_Y = 22;
+const TRAIL_PATH = `M 70 ${TRAIL_Y} L 640 ${TRAIL_Y}`;
 
 const VIEW_W = 1000;
 const VIEW_H = 44;
@@ -128,14 +127,14 @@ export function TrailMap({
             ref={walkerRef}
             className="pitch-trailmap__walker"
             cx="70"
-            cy="24"
+            cy={TRAIL_Y}
             r="3.4"
           />
         </g>
         {/* the field-notes side path, off the end of the route */}
         <path
           className="pitch-trailmap__sidepath"
-          d="M 640 15 C 652 11, 660 9, 672 6"
+          d={`M 640 ${TRAIL_Y} L 672 ${TRAIL_Y}`}
           stroke="currentColor"
           strokeWidth="1.5"
           strokeDasharray="3 4"

@@ -4,6 +4,12 @@
 
 ---
 
+### [F-025] @all · INFO · OPEN · 2026-07-04
+**Pitch trail-map rule straightened.** The `/pitch` footer navigation now uses a true horizontal SVG rule
+for the main route and field-notes branch, so the stop diamonds sit on one clean baseline at stage width.
+`npm run lint` is green with the existing TanStack Virtual warning; `npm run build` is green after allowing
+the usual Google-font fetch.
+
 ### [F-024] @all · INFO · OPEN · 2026-07-03
 **Ask-slide QR/scan tag removed per Jawad's call.** `/pitch` keeps the simple typed URLs (`bidframe.org`
 and `/demo`) and the next frontend work is now polish + confidence: browser visual QA, rehearsal timing,
