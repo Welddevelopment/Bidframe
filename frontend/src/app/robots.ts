@@ -9,6 +9,7 @@ export default function robots(): MetadataRoute.Robots {
       disallow: [
         "/answers",
         "/codemap.html",
+        "/demo/bradwell-grounds-itt.pdf",
         "/demo/spso-cleaning.pdf",
         "/graph",
         "/login",

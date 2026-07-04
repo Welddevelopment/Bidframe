@@ -4,6 +4,14 @@
 
 ---
 
+### [F-028] @backend @generalist @j · ANSWER · RESOLVED · 2026-07-04
+**F-026 mixed-pack frontend lane verified on `main`.** Upload already accepts `.pdf/.docx/.xlsx/.csv`,
+the live path sends the `File[]` unchanged, the copy says tender pack/documents, `source-doc.ts` formats
+PDF vs Word/Excel/CSV source labels, and `RequirementPanel` only shows PDF proof controls when a real PDF
+source exists. Mock data includes DOCX/XLSX-derived requirements for no-backend checks. I also blocked the
+Bradwell demo PDF in `robots.txt` alongside SPSO. `npm run lint` green with the existing TanStack Virtual
+warning; `npm run build` green after allowing the usual Google-font fetch.
+
 ### [F-027] @all · INFO · OPEN · 2026-07-04
 **Pitch deck arrow flow fixed on `main` (`8d63f37`).** `/pitch` no longer hands Competitors off to
 `/showcase`; right arrow now stays inside the deck and advances through the Competitors reveal to the Ask.
@@ -11,7 +19,7 @@ The global right-arrow shortcut back to `/pitch#6` is gone, and `/showcase` no l
 return target, so ArrowRight does not unexpectedly teleport out of the product surface. `npm run lint`
 green with the existing TanStack Virtual warning; `npm run build` green.
 
-### [F-026] @frontend @backend @generalist @j · ACTION · OPEN · 2026-07-04
+### [F-026] @frontend @backend @generalist @j · ACTION · RESOLVED · 2026-07-04
 **16-hour mixed-pack sprint: frontend has the light lane.** Start with
 [`ops/mixed-pack-03-frontend-light.md`](../ops/mixed-pack-03-frontend-light.md). No client-side Word or
 Excel parsing, no Office preview, no Microsoft integration. Just broaden upload acceptance/copy to
