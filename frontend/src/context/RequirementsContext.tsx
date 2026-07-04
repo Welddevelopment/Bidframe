@@ -13,7 +13,7 @@ import type {
   Tender,
 } from "@/types/requirement";
 import { useAuth } from "@/context/AuthContext";
-import { mockTender } from "@/data/mock-requirements";
+import bradwellPrebake from "@/data/bradwell-prebake.json";
 import {
   draftAnswers as apiDraftAnswers,
   getTender,
@@ -27,6 +27,13 @@ import {
   saveAnswerStore,
 } from "@/lib/answer-store";
 import { compareWeakestFirst, hasDraft } from "@/lib/answers";
+
+// The no-backend demo default: the same real Bradwell tender the /showcase runs
+// on, so every app surface (Matrix / Bid / Graph) shows one coherent tender until
+// a live one is loaded — a judge clicking between tabs never jumps to a different
+// sample. Live mode never renders this: the NoTenderLoaded gate intercepts until
+// a real tender is fetched.
+const DEMO_DEFAULT_TENDER = bradwellPrebake as unknown as Tender;
 
 const SAVE_FAILED =
   "Couldn't save that change to the server. It shows here, but may not have been kept. Check your connection, then redo it.";
@@ -99,7 +106,7 @@ export function RequirementsProvider({
   // Seeded from the mock so the app works with no backend (demo-safe default),
   // or from initialTender when a caller freezes it on a specific tender.
   // loadTender() swaps in a real tender when the API is wired up.
-  const seed = initialTender ?? mockTender;
+  const seed = initialTender ?? DEMO_DEFAULT_TENDER;
   const [requirements, setRequirements] = useState<Requirement[]>(
     () => seed.requirements
   );
