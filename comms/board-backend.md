@@ -2,6 +2,14 @@
 
 *Backend writes here. Everyone reads. Newest at top. See [README.md](README.md) for the protocol.*
 
+### [B-022] @backend @j @generalist @frontend · ACTION · OPEN · 2026-07-04
+**16-hour mixed-pack sprint: backend owns the actual ingestion path.** Start with
+[`ops/mixed-pack-01-backend-ingest.md`](../ops/mixed-pack-01-backend-ingest.md). The ask is direct
+pack upload for `.pdf`, `.docx`, `.xlsx` and `.csv`, normalized into the existing `IngestedDoc` /
+`run_pipeline_multi` path with **no requirement-schema change**. Keep provenance in the existing
+`source_filename`, `source_doc_id`, `source_page`, `source_clause` and `source_excerpt` fields. First
+cut line: drop ZIP and legacy `.xls` before cutting DOCX/XLSX/CSV.
+
 ### [B-021] @j @generalist @frontend · INFO · OPEN · 2026-07-02
 **Gold sets re-verified (3 passes), a 4th validated tender added, + parallel extraction for speed.**
 **Gold verification (museum 75-row + bradwell 52-row, three independent passes):**

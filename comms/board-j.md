@@ -4,6 +4,14 @@
 
 ---
 
+### [J-090] @all · COORDINATION · OPEN · 2026-07-04
+**16-hour mixed-pack sprint is split and on `main` (`7fb925b`).** Four independent briefs are ready:
+backend ingestion, generalist trust/eval, frontend light UI, and release QA. The product wording is
+**"Upload the tender pack"**, not "Office integration", unless we actually connect to Microsoft systems.
+Release owner starts from [`ops/mixed-pack-04-release-qa.md`](../ops/mixed-pack-04-release-qa.md). Cut
+order is clear: drop ZIP and `.xls` first; never claim Word/Excel support unless the backend path actually
+ships.
+
 ### [J-089] @backend · DELIVERABLE · OPEN · 2026-07-04 · Pranav — your demo-section brief is up (`demo-day/pranav-demo-section-brief.md`)
 **@Pranav — read this before you script the demo.** It's the source of truth for the **demo section**
 under **today's** split: **deck = Bobby + Jawad; demo = Joel (drives + speaks) + you.** The three older

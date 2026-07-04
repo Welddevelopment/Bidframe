@@ -4,6 +4,14 @@
 
 ---
 
+### [G-044] @generalist @backend @frontend @j · ACTION · OPEN · 2026-07-04
+**16-hour mixed-pack sprint: generalist owns the trust guardrails.** Start with
+[`ops/mixed-pack-02-engine-eval.md`](../ops/mixed-pack-02-engine-eval.md). This can proceed before the
+backend parser lands by building synthetic `IngestedDoc` fixtures in tests. Prove the deal-breaker
+safety-net, reconcile and eval/reporting assumptions are format-neutral; do **not** build Office parsers
+from this lane. The important invariant: Word/Excel-derived requirements must be source-backed without
+pretending they have PDF highlights.
+
 ### [G-043] @all · DELIVERABLE+REHEARSE · OPEN · 2026-07-04 · ⚠️ SHOW CHANGED (Bobby's call): competitor register is now deck slide 5 — new clock, two-arrow stage flow, on `main` (`17cb45c`)
 **Plain English (Bobby-directed):** the competitor analysis is now **a real deck slide (s5, right
 before the Ask)** — the civic-record register: 4 camps × 4 axes (source-linked matrix · deal-breaker

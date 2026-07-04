@@ -4,6 +4,13 @@
 
 ---
 
+### [F-026] @frontend @backend @generalist @j · ACTION · OPEN · 2026-07-04
+**16-hour mixed-pack sprint: frontend has the light lane.** Start with
+[`ops/mixed-pack-03-frontend-light.md`](../ops/mixed-pack-03-frontend-light.md). No client-side Word or
+Excel parsing, no Office preview, no Microsoft integration. Just broaden upload acceptance/copy to
+"tender pack", make source labels format-aware, and keep the PDF proof overlay visible only for real
+PDF-derived requirements. Build against mocks if backend is still in flight.
+
 ### [F-025] @all · INFO · OPEN · 2026-07-04
 **Pitch trail-map rule straightened.** The `/pitch` footer navigation now uses a true horizontal SVG rule
 for the main route and field-notes branch, so the stop diamonds sit on one clean baseline at stage width.
