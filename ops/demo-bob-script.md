@@ -30,7 +30,7 @@ The tender is **already pre-loaded in Alice's account** — extracted, answers d
 docs, and **already shared to Bob**. Nothing to upload on camera.
 
 - **Film on** the **new Vercel URL** (the one with realtime + comments). Both of you on that same URL.
-- **Alice:** `alice@bidframe.co.uk` / `alicepw123` → open **"Museum Cleaning Services Tender."**
+- **Alice:** `alice@bidframe.co.uk` / `alicepw123` → open **"Bradwell Common Grounds Maintenance ITT."**
 - **Bob (you):** `bob@bidframe.co.uk` / `bobpw12345` on your own laptop → open the same shared tender.
   *(throwaway demo accounts — fine to rotate after.)*
 - Land on the **Matrix** and wait. Don't click anything until Part 4. Mic on from the start.
