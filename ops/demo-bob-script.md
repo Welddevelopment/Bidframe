@@ -1,106 +1,122 @@
-# Demo video — Bob's parts (the colleague on the collab account)
+# Demo video — full script + context (for Bob / the team)
 
-**This is for whoever plays "Bob" in the demo shoot.** It's your setup, your spoken lines, and your
-two live actions — plus the context so you know *why* you're there.
-
----
-
-## Context — why Bob exists in this demo
-
-The video pitches Bidframe as a **real, working product**, not a mock. Its standout feature is
-**live multi-user collaboration**: two people work the *same* tender at the same time, and every
-approve / edit / flag / comment is **attributed to who did it, in real time, server-side (so it
-can't be faked)** — plus reusable **teams** and per-requirement **comments**.
-
-You can't prove that with one person clicking around. So the shoot uses **two real people on two
-machines**:
-
-- **Alice** — signed in as the bid manager, **drives and records her own screen**. She narrates the
-  product walkthrough.
-- **Bob (you)** — signed in on a **separate account, on your own laptop**, on the **same shared
-  tender**. When you approve a row or leave a comment, it lands **live on Alice's recorded screen**,
-  stamped *"by Bob"*. That live hand-off is the money shot — it's what makes the collaboration
-  undeniable.
-
-You **speak throughout** the video (two voices), but you only **touch the product in Part 4**, where
-your live actions are the proof. The rest of the time your voice is a second narrator; Alice controls
-what's on screen.
-
-Backend note: this is the live product (Fly backend + real accounts + real persistence + realtime
-SSE). Your decisions are genuinely saved and streamed — nothing is staged.
+**Full two-person script for the collaboration demo.** Both roles are here so whoever plays **Bob** has
+the whole flow and knows exactly when to come in. **Bob's lines and actions are marked `▶ BOB`.**
 
 ---
 
-## Your setup — before recording
+## Context — what this demo proves and why two people
 
-1. On **your own laptop**, open the **new Vercel URL** (the one with realtime + comments — same URL
-   Alice is on).
-2. Sign in as **Bob**:
-   - email: `bob@bidframe.co.uk`
-   - password: `bobpw12345`
-   - *(throwaway demo account — fine to rotate/delete after the shoot)*
-3. Alice adds you to the **"Bidframe — Bid Team"** and shares the tender to the team, so it shows up
-   for you. Open it.
-4. Land on the tender's **Matrix** and wait. Don't click anything until Part 4.
-5. Keep your mic on — you speak from Part 1.
+The video pitches Bidframe as a **real, working product**, not a mock. Its standout feature is **live
+multi-user collaboration**: two people work the *same* tender at once, and every approve / edit / flag /
+comment is **attributed to who did it, in real time, server-side (so it can't be faked)** — plus reusable
+**teams** and per-requirement **comments**.
+
+You can't prove that with one person, so the shoot uses **two real people on two machines**:
+
+- **Alice** — the bid manager. **Drives and records her own screen**, narrates the walkthrough.
+- **Bob (you)** — signed in on a **separate account, your own laptop**, on the **same shared tender**.
+  When you approve a row or leave a comment, it lands **live on Alice's recorded screen**, stamped
+  *"by Bob."* That live hand-off is the money shot.
+
+You **speak throughout** (two narrators), but you only **touch the product in Part 4**, where your live
+actions are the proof. Everything is genuinely saved and streamed — nothing is staged.
 
 ---
 
-## Your spoken lines, by part
+## Setup — before recording (mostly done for you)
 
-Deliver each after Alice's preceding line. Keep it natural — you're the **compliance lead** colleague.
+The tender is **already pre-loaded in Alice's account** — extracted, answers drafted from the capability
+docs, and **already shared to Bob**. Nothing to upload on camera.
 
-### Part 1 — the problem
-> "And it never arrives as one clean PDF. It's a **pack** — the ITT, return forms in **Word**, a
-> pricing schedule in **Excel**, a compliance checklist in **CSV**, usually **zipped**."
+- **Film on** the **new Vercel URL** (the one with realtime + comments). Both of you on that same URL.
+- **Alice:** `alice@bidframe.co.uk` / `alicepw123` → open **"Museum Cleaning Services Tender."**
+- **Bob (you):** `bob@bidframe.co.uk` / `bobpw12345` on your own laptop → open the same shared tender.
+  *(throwaway demo accounts — fine to rotate after.)*
+- Land on the **Matrix** and wait. Don't click anything until Part 4. Mic on from the start.
 
-### Part 2 — deal-breakers across formats
-> "That's the first thing I check as compliance lead. This £10m public-liability minimum came out of
-> the **Word** return form; this 'price every line or be rejected' rule out of the **Excel** schedule;
-> this anti-collusion certificate out of the **CSV**."
+---
 
-> "And the deal-breaker net is **deterministic** — not just the model. On our validated tenders it
-> catches **every** disqualifier. The AI reads; it never decides."
+## The full script (≈3½ min)
 
-### Part 3 — answers from evidence
-> "Now the answers. Bidframe drafts them from our **capability documents** — and that just means our
-> *own* evidence: our insurance certificates, past case studies, client references, the proof we've
-> done this work before."
+Legend: **ALICE** = drives + records · **`▶ BOB`** = you (speak throughout, act in Part 4) · *italics* = stage direction.
 
-> "Every drafted answer carries a **receipt** straight back to the document it came from. And where we
-> have no evidence, it doesn't make one up — it asks me a direct question instead."
+### Part 1 — the problem & the read
+**ALICE:** "Win a public-sector bid and you've won weeks of work. Miss one disqualifying rule buried in the pack, and all of it is wasted."
 
-### Part 4 — the live collaboration (⬅ your on-screen moment — see actions below)
-> "I've got the insurance line — we hold £10m cover, so I'm approving it."  *(then approve — see below)*
+**`▶ BOB`:** "And it never arrives as one clean PDF. It's a **pack** — the ITT, return forms in **Word**, a pricing schedule in **Excel**, a compliance checklist in **CSV**, usually **zipped**."
 
-> "This pricing rule I want finance to check — I'll flag it and drop a comment."  *(then flag + comment)*
+*Alice shows the source-documents list — the four formats side by side.*
+
+**ALICE:** "I dropped the whole pack into Bidframe. It read every file — weeks of manual combing, done in minutes."
+
+### Part 2 — deal-breakers, first and proven
+**ALICE:** "[X] requirements — and the [Y] **deal-breakers** sit right at the top, because those are what kill a bid."
+
+**`▶ BOB`:** "That's the first thing I check as compliance lead. This £10m public-liability minimum came out of the **Word** return form; this 'price every line or be rejected' rule out of the **Excel** schedule; this anti-collusion certificate out of the **CSV**."
+
+**ALICE:** "One buried in a spreadsheet is caught exactly like one deep in the PDF."
+
+*Alice clicks a PDF-sourced row → source panel highlights the clause; then an Excel-sourced row → shows sheet + row.*
+
+**ALICE:** "Every line ties back to its source — page and clause for the PDF, **sheet and row** for the spreadsheet — so we check before we trust."
+
+**`▶ BOB`:** "And the deal-breaker net is **deterministic** — not just the model. On our validated tenders it catches **every** disqualifier. The AI reads; it never decides."
+
+### Part 3 — answers, from our evidence
+*Alice clicks into **Bid**.*
+
+**`▶ BOB`:** "Now the answers. Bidframe drafts them from our **capability documents** — and that just means our *own* evidence: our insurance certificates, past case studies, client references, the proof we've done this work before."
+
+*Alice shows a drafted answer with its evidence **receipt**, then an **open question**.*
+
+**`▶ BOB`:** "Every drafted answer carries a receipt straight back to the document it came from. And where we have no evidence, it doesn't make one up — it asks me a direct question instead."
+
+**ALICE:** "It tracks how complete the whole bid is — and when we're done, the full response exports straight to **Word or PDF**."
+
+*Alice opens the export menu (Word / PDF).*
+
+### Part 4 — one tender, a whole team, live *(your on-screen moment)*
+**ALICE:** "But no bid is one person — it's compliance, commercial, the bid manager. So in Bidframe I set up my **bid team**."
+
+*Alice opens the Teams page → "Bidframe — Bid Team": Alice + Bob. Then back to the matrix; Bob in the members strip.*
+
+**ALICE:** "Every tender I open is shared with the whole team — no re-inviting. Here's Bob, from compliance, already on this one, on his own machine."
+
+**`▶ BOB`:** "I've got the insurance line — we hold £10m cover, so I'm approving it."
+> **▶ ACTION:** approve the **insurance deal-breaker** row. *(pause ~2s — it lands on Alice's screen)*
+
+**ALICE:** "That just appeared on my screen — no refresh — stamped **'Approved by Bob'**, server-side, so it can't be faked."
+
+**`▶ BOB`:** "This pricing rule I want finance to check — I'll flag it and drop a comment."
+> **▶ ACTION:** **flag** the **pricing-schedule** row, then **comment:** *"Finance to confirm the annual total before submission."* *(pause ~2s)*
+
+**ALICE:** "His flag, his comment, his initials on the row — live in the activity feed. The audit trail builds itself as we work."
+
+*Alice approves the anti-collusion cert herself.*
+
+**ALICE:** "And when I approve here, Bob sees it on his side the same way."
 
 ### Part 5 — the close
-> "Answers drafted from our own evidence. A whole team working it together, live — every decision
-> attributed."
+**ALICE:** "A tender pack in any format, read in minutes — not weeks. Every deal-breaker caught and sourced."
+
+**`▶ BOB`:** "Answers drafted from our own evidence. A whole team working it together, live — every decision attributed."
+
+**ALICE:** "The AI does the reading. We stay in control. That's Bidframe."
 
 ---
 
-## Your live actions — Part 4 only
+## Bob's live actions — Part 4 only (recap)
 
-Do these **deliberately, with a small pause after each**, so they visibly land on Alice's recorded
-screen (that's the whole point).
+1. **Approve** the **insurance deal-breaker** (£10m liability row) — say your line, then click Approve.
+2. **Flag** the **pricing-schedule** deal-breaker, then **comment:** *"Finance to confirm the annual total before submission."*
 
-1. **Approve** the **insurance deal-breaker** (£10m public/employer's liability row) — say your line,
-   then click Approve. *(Alice's screen should show "Approved by Bob" appear live.)*
-2. **Flag** the **pricing-schedule** deal-breaker, then **add a comment** on that row:
-   > "Finance to confirm the annual total before submission."
-
-That's it — two actions. Everything else is voice.
-
----
+Two actions. Everything else is voice.
 
 ## Cues / do-nots
-
 - **Wait for Alice's line, then speak** — don't talk over the screen action.
 - In Part 4, **pause ~2 seconds** after each click so the live update registers on camera.
-- **Don't refresh or navigate away** mid-take — just approve/flag/comment on the matrix.
-- If a live update *doesn't* appear on Alice's screen, stop and re-check you're both on the **same
-  tender** and the **new Vercel URL** (realtime only exists there).
-
-Full run-sheet (both roles, timings, pre-flight): see the shoot run-sheet Alice has.
+- **Don't refresh or navigate away** mid-take — just approve / flag / comment on the matrix.
+- If a live update **doesn't** appear on Alice's screen, stop: check you're both on the **same tender**
+  and the **new Vercel URL** (realtime only exists there).
+- `[X]` / `[Y]` = read the real requirement / deal-breaker counts off screen before the take.
