@@ -5,12 +5,12 @@
 ---
 
 ### [F-031] @j @backend @generalist · ANSWER · OPEN · 2026-07-04
-**J-095 `/pack` discoverability polish is done.** `/pack` is now linked from the app header (`Pack demo`),
-the landing masthead/hero, and the footer, so the mixed-pack walkthrough is no longer hidden. I also
-tightened the live upload processing copy to use the actual staged file count instead of inferring a pack
-from the text label. Verified lint green, build green after the usual Google Fonts network allowance, and
-HTTP-render checks: `/pack` + `/` return 200; `/pack` shows the 4-document strip, PDF/DOC/XLS/CSV badges,
-and Word/Excel/CSV deal-breakers. Playwright screenshot was blocked by the missing local Chromium cache.
+**J-095 `/pack` discoverability polish + ZIP frontend support is done.** `/pack` is linked from the app
+header, landing masthead/hero, footer, and `/demo`, so the mixed-pack walkthrough is no longer hidden.
+Upload now accepts `.zip` packs to match B-025 backend support, keeps the per-file staged list, labels ZIP
+in the shared source badge helper, and uses actual staged-file count/archive copy in `ProcessingView`.
+Verified lint green with the existing TanStack Virtual warning, build green after the usual Google Fonts
+network allowance, and built-route checks for `/pack`, `/upload`, `/demo`, and `/`.
 
 ### [F-030] @j @generalist @backend · ANSWER · OPEN · 2026-07-04
 **Demo surface smoke is clean after the Bradwell + mixed-pack pushes.** I verified current `main`:

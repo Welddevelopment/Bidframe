@@ -30,10 +30,12 @@ export function ProcessingView({
   job,
   fileName,
   fileCount = 1,
+  isArchive = false,
 }: {
   job: JobStatus | null;
   fileName: string | null;
   fileCount?: number;
+  isArchive?: boolean;
 }) {
   const stage = job?.stage ?? "queued";
   // "queued" (-1) resolves to 0 so "reading" reads as active straight away; "done"
@@ -43,14 +45,19 @@ export function ProcessingView({
   const progress = Math.max(0, Math.min(1, job?.progress ?? 0.02));
   const found = job?.requirementCount ?? job?.rawCount;
   const dealBreakers = job?.dealBreakerCount;
-  const isPack = fileCount > 1;
+  const isPack = fileCount > 1 || isArchive;
   const documentLabel = `${fileCount} document${fileCount === 1 ? "" : "s"}`;
+  const title = isArchive
+    ? "Reading zipped tender pack"
+    : isPack
+      ? `Reading ${documentLabel}`
+      : "Reading your tender";
 
   return (
     <div className="surface-grain w-full max-w-xl rounded-xl border border-hairline bg-paper-raised p-6 shadow-[var(--depth-sheet)]">
       <div className="flex items-baseline justify-between gap-3">
         <h2 className="text-base font-semibold text-ink">
-          {isPack ? `Reading ${documentLabel}` : "Reading your tender"}
+          {title}
         </h2>
         <span className="font-mono text-xs text-ink-muted">
           {Math.round(progress * 100)}%
@@ -77,7 +84,9 @@ export function ProcessingView({
             <>
               <span className="font-semibold">{found}</span> requirement
               {found === 1 ? "" : "s"} found
-              {isPack ? ` across ${documentLabel}` : ""}
+              {isPack
+                ? ` across ${isArchive ? "the archive" : documentLabel}`
+                : ""}
             </>
           )}
           {dealBreakers != null && dealBreakers > 0 && (

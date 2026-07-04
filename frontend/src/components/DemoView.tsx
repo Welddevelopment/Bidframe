@@ -92,7 +92,15 @@ export function DemoView() {
           >
             <BrandLogo className="h-7 w-auto" />
           </Link>
-          <BookDemoButton location="demo-masthead" variant="link" />
+          <div className="flex items-center gap-4">
+            <Link
+              href="/pack"
+              className="hidden rounded-sm font-mono text-xs text-ink-muted transition-colors hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper sm:inline"
+            >
+              Mixed-pack demo
+            </Link>
+            <BookDemoButton location="demo-masthead" variant="link" />
+          </div>
         </div>
       </header>
 

@@ -14,6 +14,7 @@ const SECTIONS = [
   { href: "/upload", label: "Upload" },
   { href: "/pack", label: "Pack demo" },
   { href: "/review", label: "Matrix" },
+  { href: "/pack", label: "Pack" },
   { href: "/answers", label: "Answers" },
   { href: "/graph", label: "Graph" },
 ];

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   useCallback,
@@ -156,6 +157,7 @@ export function MatrixView({
   const {
     requirements,
     tenderId,
+    sourceDocs,
     approve,
     editRequirement,
     flag,
@@ -410,6 +412,7 @@ export function MatrixView({
   // plate but was never verified, so counting it as verified would over-claim.
   const needInput = triage.counts["needs-you"] + triage.counts["to-verify"];
   const handledCount = requirements.length - needInput;
+  const isMixedPackSurface = sourceDocs.length > 1;
 
   // Live product, no tender loaded yet → show an onboarding empty state rather than
   // the sample data. The mock showcase build (no API) keeps its sample matrix.
@@ -616,6 +619,29 @@ export function MatrixView({
       />
 
       <ControlPanel />
+
+      {isMixedPackSurface && (
+        <section className="border-b border-hairline bg-paper px-6 py-3">
+          <div className="mx-auto flex max-w-6xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="font-mono text-[11px] font-medium uppercase tracking-wide text-forest">
+                Mixed tender pack
+              </p>
+              <p className="mt-0.5 max-w-[68ch] text-sm leading-relaxed text-ink-muted">
+                One matrix across PDF, Word, Excel and CSV sources. PDF rows keep
+                document highlights; Office and CSV rows show extracted text and
+                locators without pretending there is a PDF page.
+              </p>
+            </div>
+            <Link
+              href="/upload"
+              className="w-fit shrink-0 rounded-md border border-hairline bg-paper-raised px-3 py-1.5 font-mono text-xs text-ink shadow-[var(--depth-control)] transition-colors hover:border-forest hover:text-forest"
+            >
+              Upload another pack
+            </Link>
+          </div>
+        </section>
+      )}
 
       {stageReturnHref && (
         <div className="border-b border-hairline bg-paper">

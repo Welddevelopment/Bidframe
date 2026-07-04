@@ -20,12 +20,14 @@ import { RegisterPreview } from "./RegisterPreview";
 
 type UploadStage = "idle" | "extracting" | "done" | "error";
 
-const ACCEPTED_TENDER_EXTENSIONS = [".pdf", ".docx", ".xlsx", ".csv"];
+const ACCEPTED_TENDER_EXTENSIONS = [".pdf", ".docx", ".xlsx", ".csv", ".zip"];
 const ACCEPTED_TENDER_MIME = new Set([
   "application/pdf",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   "text/csv",
+  "application/zip",
+  "application/x-zip-compressed",
 ]);
 
 function isAcceptedTenderFile(file: File): boolean {
@@ -50,6 +52,10 @@ function packLabel(files: File[]): string | null {
 function packDoneLabel(files: File[]): string {
   if (files.length === 1) return files[0].name;
   return `${files.length} documents`;
+}
+
+function isZipPack(file: File | undefined): boolean {
+  return Boolean(file?.name.toLowerCase().endsWith(".zip"));
 }
 
 function fileKey(file: File): string {
@@ -99,7 +105,7 @@ export function UploadDropzone() {
     const unsupported = all.find((file) => !isAcceptedTenderFile(file));
     if (unsupported) {
       setFileName(unsupported.name);
-      setErrorMessage("Use PDF, Word, Excel or CSV tender documents.");
+      setErrorMessage("Use PDF, Word, Excel, CSV or ZIP tender-pack files.");
       setStage("error");
       return;
     }
@@ -214,7 +220,10 @@ export function UploadDropzone() {
           ) : found != null ? (
             <>
               Found <span className="font-medium text-ink">{found}</span>{" "}
-              requirement{found === 1 ? "" : "s"} across{" "}
+              requirement{found === 1 ? "" : "s"}{" "}
+              {stagedFiles.length > 1 || isZipPack(stagedFiles[0])
+                ? "across"
+                : "from"}{" "}
               <span className="font-medium text-ink">
                 {packDoneLabel(stagedFiles)}
               </span>
@@ -295,6 +304,7 @@ export function UploadDropzone() {
           job={job}
           fileName={fileName}
           fileCount={stagedFiles.length}
+          isArchive={isZipPack(stagedFiles[0])}
         />
       );
     }
@@ -382,6 +392,9 @@ export function UploadDropzone() {
             matrix and flag the deal-breakers.
           </p>
         )}
+        <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-muted">
+          PDF · Word · Excel · CSV · ZIP · up to 50MB each
+        </p>
       </div>
 
       {stagedCount > 0 && (
@@ -461,7 +474,7 @@ export function UploadDropzone() {
       <input
         ref={inputRef}
         type="file"
-        accept=".pdf,.docx,.xlsx,.csv,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
+        accept=".pdf,.docx,.xlsx,.csv,.zip,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv,application/zip,application/x-zip-compressed"
         multiple
         className="hidden"
         onChange={(event) => {

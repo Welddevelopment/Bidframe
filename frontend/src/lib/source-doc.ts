@@ -1,7 +1,13 @@
 import type { Requirement } from "@/types/requirement";
 import { sourceDocUrl } from "@/lib/api";
 
-export type SourceDocumentKind = "pdf" | "word" | "excel" | "csv" | "document";
+export type SourceDocumentKind =
+  | "pdf"
+  | "word"
+  | "excel"
+  | "csv"
+  | "zip"
+  | "document";
 
 function sourceExtension(filename: string | null | undefined): string | null {
   if (!filename) return null;
@@ -23,6 +29,7 @@ export function sourceDocumentKindFromFilename(
   if (ext === ".docx") return "word";
   if (ext === ".xlsx") return "excel";
   if (ext === ".csv") return "csv";
+  if (ext === ".zip") return "zip";
   return "document";
 }
 
@@ -40,6 +47,8 @@ export function sourceKindName(kind: SourceDocumentKind): string {
       return "Excel";
     case "csv":
       return "CSV";
+    case "zip":
+      return "ZIP";
     case "document":
       return "Document";
   }
@@ -55,6 +64,8 @@ export function sourceKindShortLabel(kind: SourceDocumentKind): string {
       return "XLS";
     case "csv":
       return "CSV";
+    case "zip":
+      return "ZIP";
     case "document":
       return "DOC";
   }

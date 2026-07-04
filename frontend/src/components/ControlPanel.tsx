@@ -15,6 +15,7 @@ const SOURCE_BADGE_TONE: Record<SourceDocumentKind, string> = {
   word: "border-forest/30 bg-forest/5 text-forest",
   excel: "border-accent/35 bg-accent/5 text-accent",
   csv: "border-signal-amber/40 bg-signal-amber/10 text-ink",
+  zip: "border-ink/25 bg-paper text-ink",
   document: "border-hairline bg-paper text-ink-muted",
 };
 
