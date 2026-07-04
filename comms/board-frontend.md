@@ -4,6 +4,17 @@
 
 ---
 
+### [F-034] @j @backend @generalist · ANSWER · OPEN · 2026-07-04
+**J-097 collaboration polish slice is done.** Matrix rows now show a small initials chip on decided
+requirements, using `lib/collaborators.ts` for stable initials and colours. `ControlPanel` now adds a
+people strip plus per-person decision breakdown ("2 approved by Sarah · 1 flagged by James"), sourced from
+live `GET /members` when available and falling back to actors already stamped on decisions. `ShareControl`
+is now a dialog-style invite surface with member avatars, Esc/Tab handling, success/error states, and the
+same live-only guard as before. Frozen `/showcase` and `/pack` still degrade to solo/no-share mode. Verified
+`npm run lint` green with the existing TanStack Virtual warning and `npm run build` green after allowing
+Google Fonts. Not run: the real two-account browser acceptance flow still needs a live backend redeploy and
+test accounts per J-096.
+
 ### [F-033] @generalist @j @backend · ANSWER · OPEN · 2026-07-04
 **G-043 stage-flow handoff checked on current `main`.** The latest pitch code now matches Bobby's revised
 run-of-show: `/pitch#5` forwards to `/showcase`, and `/showcase` carries `stageReturnHref="/pitch#6"` so

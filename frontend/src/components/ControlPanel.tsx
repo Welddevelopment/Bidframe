@@ -1,7 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRequirements } from "@/context/RequirementsContext";
+import { isApiEnabled, listMembers, type TenderMember } from "@/lib/api";
+import { collaboratorFor, displayName } from "@/lib/collaborators";
 import {
   sourceDocumentKindFromFilename,
   sourceKindName,
@@ -22,7 +24,28 @@ const SOURCE_BADGE_TONE: Record<SourceDocumentKind, string> = {
 // Live decision tally for the demo shell: short enough to sit above the matrix,
 // but still explicit that every approval, edit, and flag is human-owned.
 export function ControlPanel() {
-  const { requirements, sourceDocs } = useRequirements();
+  const { requirements, sourceDocs, tenderId } = useRequirements();
+  const [members, setMembers] = useState<TenderMember[]>([]);
+
+  useEffect(() => {
+    if (!isApiEnabled() || !tenderId) {
+      const frame = window.requestAnimationFrame(() => setMembers([]));
+      return () => window.cancelAnimationFrame(frame);
+    }
+
+    let cancelled = false;
+    listMembers(tenderId)
+      .then((nextMembers) => {
+        if (!cancelled) setMembers(nextMembers);
+      })
+      .catch(() => {
+        if (!cancelled) setMembers([]);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [tenderId]);
 
   const s = useMemo(() => {
     const openQ = requirements.reduce(
@@ -75,6 +98,88 @@ export function ControlPanel() {
     >)
       .map(([kind, count]) => `${count} ${sourceKindName(kind)}`)
       .join(" · ");
+
+    const decisionsByPerson = new Map<
+      string,
+      {
+        actor: NonNullable<(typeof requirements)[number]["decision"]>["actor"];
+        approved: number;
+        edited: number;
+        flagged: number;
+        total: number;
+      }
+    >();
+
+    requirements.forEach((req) => {
+      if (!req.decision) return;
+      const actor = req.decision.actor ?? null;
+      const key = actor?.email || actor?.id || "you";
+      const bucket =
+        decisionsByPerson.get(key) ??
+        {
+          actor,
+          approved: 0,
+          edited: 0,
+          flagged: 0,
+          total: 0,
+        };
+      if (req.decision.action === "approve") bucket.approved += 1;
+      else if (req.decision.action === "edit") bucket.edited += 1;
+      else if (req.decision.action === "flag") bucket.flagged += 1;
+      bucket.total += 1;
+      decisionsByPerson.set(key, bucket);
+    });
+
+    const personBreakdown = Array.from(decisionsByPerson.values())
+      .sort((a, b) => b.total - a.total)
+      .flatMap((person) => {
+        const name = person.actor ? displayName(person.actor) : "you";
+        return [
+          person.approved > 0
+            ? `${person.approved} approved by ${name}`
+            : null,
+          person.edited > 0 ? `${person.edited} edited by ${name}` : null,
+          person.flagged > 0 ? `${person.flagged} flagged by ${name}` : null,
+        ].filter(Boolean) as string[];
+      });
+
+    const people = new Map<
+      string,
+      { key: string; name: string; initials: string; color: string; role?: string }
+    >();
+    members.forEach((member) => {
+      const collaborator = collaboratorFor(member);
+      people.set(collaborator.key, {
+        key: collaborator.key,
+        name: collaborator.name,
+        initials: collaborator.initials,
+        color: collaborator.color,
+        role: member.role,
+      });
+    });
+    Array.from(decisionsByPerson.values()).forEach((person) => {
+      if (!person.actor) {
+        if (!people.has("you")) {
+          people.set("you", {
+            key: "you",
+            name: "You",
+            initials: "Y",
+            color: "var(--color-ink-muted)",
+          });
+        }
+        return;
+      }
+      const collaborator = collaboratorFor(person.actor);
+      if (!people.has(collaborator.key)) {
+        people.set(collaborator.key, {
+          key: collaborator.key,
+          name: collaborator.name,
+          initials: collaborator.initials,
+          color: collaborator.color,
+        });
+      }
+    });
+
     return {
       total: requirements.length,
       dealBreakers: requirements.filter((r) => r.is_gating).length,
@@ -87,8 +192,10 @@ export function ControlPanel() {
       decided: accepted + edited + flagged,
       sourceFiles,
       formatSummary,
+      personBreakdown,
+      people: Array.from(people.values()),
     };
-  }, [requirements, sourceDocs]);
+  }, [members, requirements, sourceDocs]);
 
   return (
     <section
@@ -209,6 +316,41 @@ export function ControlPanel() {
             )}
           </p>
         </aside>
+        {(s.people.length > 0 || s.personBreakdown.length > 0) && (
+          <aside className="mt-3 grid gap-3 rounded-md border border-hairline/90 bg-paper/80 px-4 py-3 shadow-[var(--depth-pressed)] lg:grid-cols-[9rem_minmax(0,1fr)_minmax(14rem,20rem)] lg:items-center">
+            <div className="flex items-baseline justify-between gap-3 border-b border-hairline/70 pb-2 lg:block lg:border-b-0 lg:border-r lg:pb-0 lg:pr-4">
+              <p className="font-mono text-[11px] font-medium uppercase tracking-wide text-ink-muted">
+                People
+              </p>
+              <span className="font-mono text-xs tabular-nums text-ink lg:mt-1 lg:block">
+                {s.people.length}
+              </span>
+            </div>
+            <p className="text-sm leading-relaxed text-ink-muted">
+              {s.personBreakdown.length > 0
+                ? s.personBreakdown.slice(0, 4).join(" · ")
+                : "No team decisions recorded yet."}
+            </p>
+            <div className="flex flex-wrap items-center gap-1.5 lg:justify-end">
+              {s.people.map((person) => (
+                <span
+                  key={person.key}
+                  title={`${person.name}${person.role ? ` · ${person.role}` : ""}`}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-paper-recessed py-1 pl-1 pr-2 text-xs text-ink shadow-[var(--depth-pressed)]"
+                >
+                  <span
+                    aria-hidden
+                    className="inline-flex h-5 w-5 items-center justify-center rounded-full font-mono text-[9px] font-semibold text-paper"
+                    style={{ backgroundColor: person.color }}
+                  >
+                    {person.initials}
+                  </span>
+                  <span className="max-w-[8rem] truncate">{person.name}</span>
+                </span>
+              ))}
+            </div>
+          </aside>
+        )}
       </div>
     </section>
   );

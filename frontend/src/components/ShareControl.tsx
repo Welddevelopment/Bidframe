@@ -4,7 +4,7 @@
 // frozen/mock build where there's no backend to grant access. Owner invites by email; everyone with
 // access is shown as a coloured avatar. The backend enforces owner-only + registered-account.
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { isApiEnabled, listMembers, shareTender, type TenderMember } from "@/lib/api";
 import { useRequirements } from "@/context/RequirementsContext";
 import { collaboratorFor } from "@/lib/collaborators";
@@ -15,14 +15,51 @@ export function ShareControl() {
   const [members, setMembers] = useState<TenderMember[]>([]);
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const enabled = isApiEnabled() && !!tenderId;
 
   useEffect(() => {
-    if (!open || !enabled || !tenderId) return;
+    if (!enabled || !tenderId) return;
     listMembers(tenderId).then(setMembers).catch(() => setMembers([]));
-  }, [open, enabled, tenderId]);
+  }, [enabled, tenderId]);
+
+  useEffect(() => {
+    if (!open) return;
+    const frame = window.requestAnimationFrame(() => inputRef.current?.focus());
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setOpen(false);
+      }
+      if (event.key !== "Tab" || !panelRef.current) return;
+      const focusable = Array.from(
+        panelRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((element) => !element.hasAttribute("disabled"));
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
 
   if (!enabled) return null;
 
@@ -31,9 +68,13 @@ export function ShareControl() {
     if (!tenderId || !email.trim()) return;
     setBusy(true);
     setError(null);
+    setSuccess(null);
     try {
-      setMembers(await shareTender(tenderId, email.trim()));
+      const nextMembers = await shareTender(tenderId, email.trim());
+      const sharedWith = email.trim();
+      setMembers(nextMembers);
       setEmail("");
+      setSuccess(`Shared with ${sharedWith}.`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Couldn't share.");
     } finally {
@@ -42,14 +83,32 @@ export function ShareControl() {
   }
 
   return (
-    <div className="relative">
+    <>
       <button
         type="button"
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => setOpen(true)}
         aria-expanded={open}
-        className="inline-flex items-center gap-2 rounded-md border border-hairline bg-paper-raised px-3 py-1.5 text-sm text-ink transition-colors hover:border-forest hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+        className="inline-flex items-center gap-2 rounded-md border border-hairline bg-paper-raised px-3 py-1.5 text-sm text-ink shadow-[var(--depth-control)] transition-colors hover:border-forest hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
       >
-        <span aria-hidden="true">👥</span>
+        <span className="flex -space-x-1" aria-hidden>
+          {members.slice(0, 3).map((member) => {
+            const c = collaboratorFor(member);
+            return (
+              <span
+                key={member.id}
+                className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-paper font-mono text-[8px] font-semibold text-paper"
+                style={{ backgroundColor: c.color }}
+              >
+                {c.initials}
+              </span>
+            );
+          })}
+          {members.length === 0 && (
+            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-paper bg-ink-muted font-mono text-[8px] font-semibold text-paper">
+              Y
+            </span>
+          )}
+        </span>
         Share
         {members.length > 1 && (
           <span className="font-mono text-xs text-ink-muted">{members.length}</span>
@@ -57,60 +116,111 @@ export function ShareControl() {
       </button>
 
       {open && (
-        <div className="absolute right-0 z-30 mt-2 w-80 rounded-lg border border-hairline bg-paper-raised p-4 shadow-[var(--depth-sheet)]">
-          <p className="mb-2 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
-            People with access
-          </p>
-          <ul className="mb-3 flex flex-col gap-2">
-            {members.map((m) => {
-              const c = collaboratorFor(m);
-              return (
-                <li key={m.id} className="flex items-center gap-2.5 text-sm">
-                  <span
-                    aria-hidden="true"
-                    className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold text-paper"
-                    style={{ backgroundColor: c.color }}
-                  >
-                    {c.initials}
-                  </span>
-                  <span className="min-w-0 truncate text-ink">{c.name}</span>
-                  <span className="ml-auto font-mono text-[10px] uppercase tracking-wide text-ink-muted">
-                    {m.role}
-                  </span>
-                </li>
-              );
-            })}
-            {members.length === 0 && (
-              <li className="text-sm text-ink-muted">Just you, for now.</li>
-            )}
-          </ul>
-          <form onSubmit={submit} className="flex flex-col gap-2">
-            <label className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-muted">
-              Invite by email
-            </label>
-            <div className="flex gap-2">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="colleague@firm.co.uk"
-                className="min-w-0 flex-1 rounded-md border border-hairline bg-paper px-2.5 py-1.5 text-sm text-ink focus:border-forest focus:outline-none"
-              />
+        <div
+          className="fixed inset-0 z-50 flex items-start justify-center bg-ink/18 px-4 pt-24 backdrop-blur-[2px]"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setOpen(false);
+          }}
+        >
+          <div
+            ref={panelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="share-tender-title"
+            className="surface-grain w-full max-w-md rounded-md border border-ink/25 bg-paper-raised p-5 shadow-[var(--depth-sheet)]"
+          >
+            <div className="mb-4 flex items-start justify-between gap-4 border-b border-hairline pb-3">
+              <div>
+                <h2
+                  id="share-tender-title"
+                  className="font-serif text-xl leading-tight text-ink"
+                >
+                  Share this tender
+                </h2>
+                <p className="mt-1 text-sm leading-relaxed text-ink-muted">
+                  Invite a colleague with a Bidframe account. Decisions stay
+                  attributed to each person.
+                </p>
+              </div>
               <button
-                type="submit"
-                disabled={busy || !email.trim()}
-                className="rounded-md bg-forest px-3 py-1.5 text-sm font-semibold text-paper transition-colors hover:bg-forest-hover disabled:opacity-50"
+                type="button"
+                onClick={() => setOpen(false)}
+                className="rounded border border-hairline bg-paper px-2 py-1 font-mono text-xs uppercase tracking-wide text-ink-muted transition-colors hover:border-forest hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
               >
-                {busy ? "…" : "Share"}
+                Close
               </button>
             </div>
-            {error && <p className="text-xs text-signal-oxblood">{error}</p>}
-            <p className="text-[11px] text-ink-muted">
-              They need a Bidframe account. Only the owner can share.
+
+            <p className="mb-2 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
+              People with access
             </p>
-          </form>
+            <ul className="mb-4 flex flex-col gap-2">
+              {members.map((m) => {
+                const c = collaboratorFor(m);
+                return (
+                  <li
+                    key={m.id}
+                    className="flex items-center gap-2.5 rounded-md border border-hairline bg-paper/80 px-2.5 py-2 text-sm"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold text-paper"
+                      style={{ backgroundColor: c.color }}
+                    >
+                      {c.initials}
+                    </span>
+                    <span className="min-w-0 truncate text-ink">{c.name}</span>
+                    <span className="ml-auto font-mono text-[10px] uppercase tracking-wide text-ink-muted">
+                      {m.role}
+                    </span>
+                  </li>
+                );
+              })}
+              {members.length === 0 && (
+                <li className="rounded-md border border-hairline bg-paper/80 px-2.5 py-2 text-sm text-ink-muted">
+                  Just you, for now.
+                </li>
+              )}
+            </ul>
+
+            <form onSubmit={submit} className="flex flex-col gap-2">
+              <label
+                htmlFor="share-email"
+                className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-muted"
+              >
+                Invite by email
+              </label>
+              <div className="flex gap-2">
+                <input
+                  ref={inputRef}
+                  id="share-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setSuccess(null);
+                    setError(null);
+                  }}
+                  placeholder="colleague@firm.co.uk"
+                  className="min-w-0 flex-1 rounded-md border border-hairline bg-paper px-2.5 py-1.5 text-sm text-ink focus:border-forest focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  disabled={busy || !email.trim()}
+                  className="rounded-md bg-forest px-3 py-1.5 text-sm font-semibold text-paper transition-colors hover:bg-forest-hover disabled:opacity-50"
+                >
+                  {busy ? "Sharing" : "Share"}
+                </button>
+              </div>
+              {success && <p className="text-xs text-forest">{success}</p>}
+              {error && <p className="text-xs text-signal-oxblood">{error}</p>}
+              <p className="text-[11px] text-ink-muted">
+                The server grants access and records who made each decision.
+              </p>
+            </form>
+          </div>
         </div>
       )}
-    </div>
+    </>
   );
 }

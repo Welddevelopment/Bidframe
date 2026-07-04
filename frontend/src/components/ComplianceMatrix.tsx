@@ -23,6 +23,7 @@ import {
   type SourceDocumentKind,
   sourceRefLabel,
 } from "@/lib/source-doc";
+import { collaboratorFor, displayName } from "@/lib/collaborators";
 import {
   deriveVisibleGroups,
   type MatrixLens,
@@ -224,6 +225,28 @@ function SourceTypeBadge({ req }: { req: Requirement }) {
   );
 }
 
+function DecisionActorChip({ req }: { req: Requirement }) {
+  if (!req.decision) return null;
+
+  const actor = req.decision.actor;
+  const collaborator = actor ? collaboratorFor(actor) : null;
+  const label = actor ? displayName(actor) : "you";
+  const initial = collaborator?.initials ?? "Y";
+
+  return (
+    <span
+      title={`Decided by ${label}`}
+      aria-label={`Decided by ${label}`}
+      className="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full border border-paper/80 px-1 font-mono text-[9px] font-semibold leading-none text-paper shadow-[var(--depth-pressed)] ring-1 ring-ink/10"
+      style={{
+        backgroundColor: collaborator?.color ?? "var(--color-ink-muted)",
+      }}
+    >
+      {initial}
+    </span>
+  );
+}
+
 function MatrixRow({
   req,
   isSelected,
@@ -326,6 +349,7 @@ function MatrixRow({
           </svg>
         )}
         <SourceTypeBadge req={req} />
+        <DecisionActorChip req={req} />
         {ref}
       </span>
 
