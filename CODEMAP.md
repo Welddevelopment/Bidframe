@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `e72b0b4` · 2026-07-04T19:49:43+01:00
+> Map of commit `51d08e8` · 2026-07-04T19:59:51+01:00
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,13 +12,13 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 195 | 72,186 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
-| **backend** | 22 | 3,841 | Backend — FastAPI (PDF ingest, extraction, REST API) |
-| **engine** | 84 | 7,315 | Engine — reconcile / eval / answer-draft pipeline + tests |
+| **frontend** | 195 | 72,258 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **backend** | 22 | 3,843 | Backend — FastAPI (PDF ingest, extraction, REST API) |
+| **engine** | 84 | 7,364 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 713 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
 | **gold** | 8 | 375 | Eval gold-set — hand-labelled requirements for accuracy measurement |
 | **data** | 17 | 0 | Data — tender source PDFs (not parsed here) |
-| **comms** | 5 | 2,747 | Comms — async agent message boards |
+| **comms** | 5 | 2,777 | Comms — async agent message boards |
 | **docs** | 3 | 1,663 | Docs — plans & specs |
 | **ci** | 1 | 57 | CI — GitHub Actions |
 | **tooling** | 1 | 516 | Tooling — repo scripts (incl. this map generator) |
@@ -90,6 +90,7 @@ graph LR
   n34[AccountMenu.tsx] --> n16[AuthContext.tsx]
   n35[ActivityFeed.tsx] --> n16[AuthContext.tsx]
   n35[ActivityFeed.tsx] --> n4[RequirementsContext.tsx]
+  n35[ActivityFeed.tsx] --> n18[api.ts]
   n35[ActivityFeed.tsx] --> n36[collaborators.ts]
   n37[AnswerCard.tsx] --> n38[AnswerPanel.tsx]
   n37[AnswerCard.tsx] --> n39[CategoryTag.tsx]

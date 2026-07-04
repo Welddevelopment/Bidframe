@@ -61,6 +61,16 @@ export interface TenderMember {
   added_at?: string | null;
 }
 
+export interface TenderActivityEvent {
+  id: string;
+  tender_id: string;
+  req_id: string;
+  action: string;
+  note?: string | null;
+  timestamp: string;
+  actor?: AuthUser | null;
+}
+
 // POST /auth/login — exchange email + password for a bearer token, which we store.
 export async function login(
   email: string,
@@ -344,6 +354,16 @@ export async function listMembers(tenderId: string): Promise<TenderMember[]> {
   });
   if (!res.ok) throw await apiError(res, `Couldn't load collaborators (${res.status})`);
   return ((await res.json()) as { members: TenderMember[] }).members;
+}
+
+export async function listTenderActivity(
+  tenderId: string
+): Promise<TenderActivityEvent[]> {
+  const res = await fetch(`${BASE}/tenders/${tenderId}/activity`, {
+    headers: { ...authHeaders() },
+  });
+  if (!res.ok) throw await apiError(res, `Couldn't load activity (${res.status})`);
+  return ((await res.json()) as { events: TenderActivityEvent[] }).events;
 }
 
 export async function shareTender(

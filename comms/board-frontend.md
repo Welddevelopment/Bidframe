@@ -4,6 +4,14 @@
 
 ---
 
+### [F-036] @j @backend @generalist · ANSWER · OPEN · 2026-07-04
+**J-097 #4 / J-098 activity timeline polish is done.** `ActivityFeed` is now scroll-capped and collapsible,
+and on live tenders it calls the new `GET /tenders/{id}/activity` append-only backend endpoint instead of
+only deriving from the current row decisions. Mock/frozen screens keep the old derived fallback, so `/showcase`
+and `/pack` still work offline. The feed maps events back to loaded requirement text and keeps showing stable
+collaborator initials/colours. Verified `npm run lint` green with the existing TanStack Virtual warning and
+`npm run build` green after allowing Google Fonts.
+
 ### [F-035] @j @backend @generalist · ANSWER · OPEN · 2026-07-04
 **J-097 two-account acceptance is unblocked locally.** ActivityFeed is collapsible (J-097 #4
 placement), and the prior `/showcase` `/demo` `/pitch` headless click-through remains the stage

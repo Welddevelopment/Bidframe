@@ -1,12 +1,13 @@
 "use client";
 
-// Collaboration activity: who did what, newest first, derived from each requirement's recorded
-// decision (actor + action + timestamp). Read-only — the decision already carries the actor once
-// the backend stamps it. On a solo/frozen tender it degrades to a personal action log ("you …").
+// Collaboration activity: who did what, newest first. Live tenders read the backend's
+// append-only activity timeline; mock/frozen tenders derive a small personal log from
+// each requirement's latest decision.
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRequirements } from "@/context/RequirementsContext";
 import { useAuth } from "@/context/AuthContext";
+import { isApiEnabled, listTenderActivity, type TenderActivityEvent } from "@/lib/api";
 import { actorLabel, collaboratorFor } from "@/lib/collaborators";
 
 const VERB: Record<string, string> = {
@@ -28,14 +29,65 @@ function timeAgo(iso: string): string {
 }
 
 export function ActivityFeed() {
-  const { requirements } = useRequirements();
+  const { requirements, tenderId } = useRequirements();
   const { user } = useAuth();
   const [open, setOpen] = useState(true);
+  const [activity, setActivity] = useState<{
+    tenderId: string;
+    events: TenderActivityEvent[];
+  } | null>(null);
 
-  const entries = requirements
+  const requirementsById = useMemo(
+    () => new Map(requirements.map((req) => [req.id, req])),
+    [requirements]
+  );
+  const decisionRefreshKey = requirements
+    .map((req) => `${req.id}:${req.decision?.timestamp ?? ""}`)
+    .join("|");
+
+  useEffect(() => {
+    if (!tenderId || !isApiEnabled()) return;
+    let cancelled = false;
+    const timer = window.setTimeout(() => {
+      listTenderActivity(tenderId)
+        .then((events) => {
+          if (!cancelled) setActivity({ tenderId, events });
+        })
+        .catch(() => {});
+    }, 250);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [tenderId, decisionRefreshKey]);
+
+  const derivedEntries = requirements
     .filter((r) => r.decision)
-    .map((r) => ({ req: r, d: r.decision! }))
-    .sort((a, b) => (a.d.timestamp < b.d.timestamp ? 1 : -1));
+    .map((r) => ({
+      id: r.id,
+      reqId: r.id,
+      text: r.text,
+      action: r.decision!.action,
+      timestamp: r.decision!.timestamp,
+      actor: r.decision!.actor ?? null,
+    }))
+    .sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
+
+  const liveEvents = activity?.tenderId === tenderId ? activity.events : null;
+  const serverEntries =
+    liveEvents?.map((event) => {
+      const req = requirementsById.get(event.req_id);
+      return {
+        id: event.id,
+        reqId: event.req_id,
+        text: req?.text ?? event.req_id,
+        action: event.action,
+        timestamp: event.timestamp,
+        actor: event.actor ?? null,
+      };
+    }) ?? null;
+
+  const entries = serverEntries && serverEntries.length > 0 ? serverEntries : derivedEntries;
 
   if (entries.length === 0) return null;
 
@@ -62,11 +114,11 @@ export function ActivityFeed() {
       </div>
       {open && (
       <ul className="flex max-h-52 flex-col gap-2.5 overflow-y-auto px-4 pb-4">
-        {entries.slice(0, 12).map(({ req, d }) => {
-          const who = actorLabel(d.actor, user?.id);
-          const collab = d.actor ? collaboratorFor(d.actor) : null;
+        {entries.slice(0, 12).map((entry) => {
+          const who = actorLabel(entry.actor, user?.id);
+          const collab = entry.actor ? collaboratorFor(entry.actor) : null;
           return (
-            <li key={req.id} className="flex items-start gap-2.5">
+            <li key={entry.id} className="flex items-start gap-2.5">
               <span
                 aria-hidden="true"
                 className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold text-paper"
@@ -76,11 +128,11 @@ export function ActivityFeed() {
               </span>
               <p className="min-w-0 text-sm leading-snug text-ink">
                 <span className="font-medium">{who}</span>{" "}
-                <span className="text-ink-muted">{VERB[d.action] ?? d.action}</span>{" "}
+                <span className="text-ink-muted">{VERB[entry.action] ?? entry.action}</span>{" "}
                 <span className="italic">
-                  &ldquo;{req.text.length > 64 ? `${req.text.slice(0, 64)}…` : req.text}&rdquo;
+                  &ldquo;{entry.text.length > 64 ? `${entry.text.slice(0, 64)}...` : entry.text}&rdquo;
                 </span>
-                <span className="ml-1 font-mono text-[11px] text-ink-muted">· {timeAgo(d.timestamp)}</span>
+                <span className="ml-1 font-mono text-[11px] text-ink-muted">· {timeAgo(entry.timestamp)}</span>
               </p>
             </li>
           );
