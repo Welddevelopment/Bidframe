@@ -19,8 +19,8 @@ import { SiteHeader } from "./SiteHeader";
 // tender, not global destinations, so they sit in the title row instead of
 // the four-link SectionNav.
 const TENDER_VIEWS = [
-  { href: "/review", label: "Review" },
-  { href: "/answers", label: "Answers" },
+  { href: "/review", label: "Matrix" },
+  { href: "/answers", label: "Bid" },
   { href: "/graph", label: "Graph" },
 ];
 
