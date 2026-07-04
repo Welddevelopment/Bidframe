@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
   useCallback,
   useEffect,
@@ -35,17 +34,15 @@ import {
 import { useRequirements } from "@/context/RequirementsContext";
 import { deriveTriage } from "@/lib/triage";
 
-// The 5-minute show (J-089 split): six deck slides, Bobby + Jawad on the
-// deck, Joel + Pranav on the live /showcase walkthrough. The Competitors
-// slide (s5) hands the stage to /showcase; right arrow there returns to
-// the Ask (s6) for the close.
+// The 5-minute show: six deck slides, with the product portal opened from
+// the Product slide when the presenter wants to step into the real matrix.
 const MAIN_SLIDE_COUNT = 6;
 const TOTAL_SLIDE_COUNT = MAIN_SLIDE_COUNT;
 // The Product slide: where the walk-into-the-product portal opens.
 const PRODUCT_INDEX = 3;
 // Beats per main slide: NEXT walks a slide's internal beats before moving on.
 // Use Case paces four register stations (each swaps in a product proof);
-// the stop-sign and the competitor register keep their two-beat reveals.
+// the stop-sign and competitor register keep their two-beat reveals.
 const SLIDE_BEATS = [1, 4, 2, 1, 2, 1] as const;
 
 function beatsAt(index: number) {
@@ -91,8 +88,7 @@ const PDF_REEL_SHADE_STYLE = {
     "linear-gradient(180deg, rgba(6, 18, 11, 0.08), rgba(6, 18, 11, 0.32)), radial-gradient(circle at center, transparent 46%, rgba(6, 18, 11, 0.45))",
 } as React.CSSProperties;
 
-// Deck talk: 25/30/40/45/25/30 = 195s. The ~1:45 /showcase walkthrough sits
-// between the Competitors slide and the Ask, outside this clock (5:00 show).
+// Deck talk: 25/30/40/45/25/30 = 195s.
 const AUTOPLAY_SECONDS = [25, 30, 40, 45, 25, 30] as const;
 // Where the clock *should* be when each main slide starts (pace ghost).
 const PACE_STARTS = AUTOPLAY_SECONDS.map((_, i) =>
@@ -100,12 +96,6 @@ const PACE_STARTS = AUTOPLAY_SECONDS.map((_, i) =>
 );
 // v5: six main slides — the Competitors register sits before the Ask.
 const PITCH_STATE_KEY = "bidframe.pitch.state.v5";
-const ASK_SLIDE_INDEX = MAIN_SLIDE_COUNT - 1;
-const SHOWCASE_HANDOFF_SLIDE_INDEX = ASK_SLIDE_INDEX - 1;
-const PITCH_RETURN_HREF = `/pitch#${ASK_SLIDE_INDEX + 1}`;
-const SHOWCASE_HANDOFF_HREF = `/showcase?returnTo=${encodeURIComponent(
-  PITCH_RETURN_HREF
-)}`;
 
 // The competitor register (s5): four axes, four camps, glyphs only — the
 // spoken script carries the detail (bobbyscript.md). Marks are shapes, not
@@ -180,8 +170,8 @@ function clampSlideIndex(index: number) {
 }
 
 function parsePitchHash(hash: string) {
-  // Client-side hops between /pitch and /showcase can stack fragments
-  // ("#5#6" seen in the wild) — the last segment is the intended slide.
+  // Client-side hops can stack fragments ("#5#6" seen in the wild) — the
+  // last segment is the intended slide.
   const cleaned = (hash.split("#").filter(Boolean).pop() ?? "")
     .trim()
     .toLowerCase();
@@ -328,7 +318,6 @@ function IconFullscreen() {
 }
 
 export function PitchDeck() {
-  const router = useRouter();
   const stageRef = useRef<HTMLDivElement | null>(null);
   const cursorTimerRef = useRef<number | null>(null);
   const { requirements, title } = useRequirements();
@@ -382,17 +371,10 @@ export function PitchDeck() {
       setBeat(beat + 1);
       return;
     }
-    // The live walkthrough sits between Competitors and the final Ask. The
-    // Competitors slide hands the stage to /showcase, which returns to the
-    // Ask hash for the close.
-    if (activeIndex === SHOWCASE_HANDOFF_SLIDE_INDEX) {
-      router.push(SHOWCASE_HANDOFF_HREF);
-      return;
-    }
     setBeat(0);
     setSlideSeconds(0);
     setActiveIndex((current) => Math.min(current + 1, TOTAL_SLIDE_COUNT - 1));
-  }, [activeIndex, beat, router]);
+  }, [activeIndex, beat]);
 
   const previous = useCallback(() => {
     setAutoplay(false);
@@ -562,8 +544,8 @@ export function PitchDeck() {
     return () => window.cancelAnimationFrame(restoreFrame);
   }, []);
 
-  // Follow hash changes after mount — the /showcase return lands on /pitch#6
-  // whether the deck remounts or Next reuses the mounted page.
+  // Follow hash changes after mount, whether the deck remounts or Next reuses
+  // the mounted page.
   useEffect(() => {
     function onHashChange() {
       const index = parsePitchHash(window.location.hash);
@@ -591,11 +573,6 @@ export function PitchDeck() {
       );
     }
   }, [activeIndex, beat, elapsedSeconds, restored]);
-
-  // The Competitors slide's NEXT press cuts to the live demo — have /showcase ready.
-  useEffect(() => {
-    router.prefetch(SHOWCASE_HANDOFF_HREF);
-  }, [router]);
 
   useEffect(() => {
     const interval = window.setInterval(() => {
@@ -658,10 +635,7 @@ export function PitchDeck() {
     );
 
     const timeout = window.setTimeout(() => {
-      if (activeIndex === SHOWCASE_HANDOFF_SLIDE_INDEX) {
-        setAutoplay(false);
-        router.push(SHOWCASE_HANDOFF_HREF);
-      } else if (activeIndex === MAIN_SLIDE_COUNT - 1) {
+      if (activeIndex === MAIN_SLIDE_COUNT - 1) {
         setAutoplay(false);
       } else {
         setBeat(0);
@@ -674,7 +648,7 @@ export function PitchDeck() {
       beatTimeouts.forEach((id) => window.clearTimeout(id));
       window.clearTimeout(timeout);
     };
-  }, [activeIndex, autoplay, router]);
+  }, [activeIndex, autoplay]);
 
   const slides = useMemo(
     () =>
@@ -946,7 +920,7 @@ export function PitchDeck() {
           zone: "moss",
           light: 0.75,
           glyph: "matrix",
-          nextUp: "Joe + Pranav · demo",
+          nextUp: "Jawad · ask",
           body: (
             <div className={`pitch-register ${beat > 0 ? "is-revealed" : ""}`}>
               <div className="pitch-copy pitch-register__copy">

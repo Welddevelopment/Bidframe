@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, IBM_Plex_Mono, Newsreader } from "next/font/google";
 import localFont from "next/font/local";
-import Script from "next/script";
 import { Toaster } from "sonner";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
@@ -42,8 +41,6 @@ const chillax = localFont({
   display: "swap",
 });
 
-const FINAL_PITCH_SLIDE_HREF = "/pitch#6";
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   applicationName: "Bidframe",
@@ -69,52 +66,6 @@ export default function RootLayout({
         <AuthProvider>
           <RequirementsProvider>{children}</RequirementsProvider>
         </AuthProvider>
-        <Script id="pitch-final-slide-shortcut" strategy="afterInteractive">
-          {`
-            (() => {
-              const finalPitchSlideHref = "${FINAL_PITCH_SLIDE_HREF}";
-
-              function jumpToFinalPitchSlide() {
-                const target = new URL(finalPitchSlideHref, window.location.origin);
-
-                if (window.location.pathname === target.pathname) {
-                  const oldURL = window.location.href;
-                  window.history.pushState(null, "", finalPitchSlideHref);
-                  window.dispatchEvent(
-                    new HashChangeEvent("hashchange", {
-                      oldURL,
-                      newURL: window.location.href,
-                    })
-                  );
-                  return;
-                }
-
-                window.location.assign(finalPitchSlideHref);
-              }
-
-              window.addEventListener(
-                "keydown",
-                (event) => {
-                  if (
-                    event.key !== "ArrowRight" ||
-                    event.altKey ||
-                    event.ctrlKey ||
-                    event.metaKey ||
-                    event.shiftKey ||
-                    event.isComposing
-                  ) {
-                    return;
-                  }
-
-                  event.preventDefault();
-                  event.stopImmediatePropagation();
-                  jumpToFinalPitchSlide();
-                },
-                { capture: true }
-              );
-            })();
-          `}
-        </Script>
         {/* Undo toasts for decisions + save-failure notices, restyled from
             sonner's defaults into the register: raised paper on a hairline
             rule, mono small text; an error carries the oxblood reading edge. */}
