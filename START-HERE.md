@@ -72,7 +72,8 @@ never-fake-a-contact rule), `crm/lead-gen-plan.md` (hit-rate strategy), `crm/lea
   push often. Never force-push `main`; never rewrite shared history.
 - **Never push a broken build.** Frontend: `npm run build` + `npm run lint` from `/frontend` first.
 - **Keep `main` runnable** (it's the live demo branch) and **keep `CODEMAP.md` current** — if you
-  add/move/delete files, run `python scripts/gen_codemap.py` in the *same* commit.
+  add/move/delete files, run `python scripts/gen_codemap.py` in the *same* commit. The GitHub workflow
+  refreshes the map hourly on `main`; it no longer runs on every push.
 - **Stay in your lane** (one folder per role). Don't edit another role's files without coordinating
   via their board.
 - **Never commit** `.env`, secrets, `node_modules/`, `.venv/`, or tender PDFs.

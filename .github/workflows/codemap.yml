@@ -1,17 +1,12 @@
 name: codemap
 
-# Regenerate CODEMAP.md on every push to main — no matter who pushes — so the
-# repo always carries a current map for humans and agents. See scripts/gen_codemap.py.
+# Regenerate CODEMAP.md hourly on main, plus on manual dispatch. This avoids a
+# bot commit on every push while still keeping a current map for humans and agents.
+# See scripts/gen_codemap.py.
 
 on:
-  push:
-    branches: [main]
-    # The bot only commits the two generated map files, so a push that changes
-    # *just* those won't re-trigger this workflow (no loop). Belt-and-braces:
-    # commits made with GITHUB_TOKEN don't trigger workflows anyway.
-    paths-ignore:
-      - "CODEMAP.md"
-      - "frontend/public/codemap.html"
+  schedule:
+    - cron: "0 * * * *"
   workflow_dispatch: {}
 
 # Never run two map-updates on main at once — they'd race on the push.

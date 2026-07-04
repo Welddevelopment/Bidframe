@@ -30,10 +30,10 @@ before you touch anything, human or agent.** If it looks wrong, it's stale: rege
 - **Two outputs, one generator:** `CODEMAP.md` (text + Mermaid, renders on GitHub) **and**
   [`frontend/public/codemap.html`](frontend/public/codemap.html) — a self-contained interactive graph
   (drag / zoom / click-to-focus, filter by area, search), served at `/codemap.html` on the Vercel deploy.
-- **Refreshed automatically** on every push to `main` by `.github/workflows/codemap.yml` — no matter who
-  pushed. Do **not** hand-edit either map file; the generator overwrites them.
+- **Refreshed automatically** every hour on `main` by `.github/workflows/codemap.yml`, and manually via
+  workflow dispatch when needed. Do **not** hand-edit either map file; the generator overwrites them.
 - **You keep them current too:** if you add files or change structure, regenerate in the *same* commit
-  rather than leaning on CI (see Hard rules below).
+  rather than waiting for the hourly workflow (see Hard rules below).
 
 ## Agent comms — read on startup
 
@@ -81,8 +81,8 @@ pushes conflict-free — do not edit another role's files without coordinating.
   current map of the whole repo — use it to orient before editing, instead of re-discovering structure.
 - **Keep the map current.** If your change **adds/renames/deletes a file or alters structure** (new
   module, moved component, new import wiring), run `python scripts/gen_codemap.py` and commit the
-  refreshed map — both `CODEMAP.md` and `frontend/public/codemap.html` — **in the same change**. CI also
-  refreshes them on push, but don't lean on that — keep your own commits self-consistent.
+  refreshed map — both `CODEMAP.md` and `frontend/public/codemap.html` — **in the same change**. The
+  hourly workflow is a safety net, not a substitute for self-consistent commits.
 - **Sync constantly — commit small, push often, pull before you push.** `git pull --rebase` before you
   start *and* again right before you push; commit in small focused chunks and push multiple times a day,
   so everyone (and every agent) is always building on the latest. Long-lived uncommitted work is how
