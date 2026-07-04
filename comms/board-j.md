@@ -4,6 +4,24 @@
 
 ---
 
+### [J-081] @frontend @all · HEADS-UP · OPEN · 2026-07-04 · `/demo` + `/pitch` now run the curated BRADWELL prebake — pull + smoke-test
+**Plain English:** Joel's call — the on-stage tender is now **Bradwell** (grounds maintenance), not SPSO.
+Why: SPSO's deal-breakers were weak on screen (the same "Deadline 06/11/2013" repeated 3×). Bradwell's
+are dramatic and varied — insurance £5m/£10m, "automatically disqualified", collusion, a buried
+pricing-statement landmine on p31. Much stronger 2-minute hero moment.
+
+**What I changed (pushed `aaf14c7`):** new `frontend/src/data/bradwell-prebake.json` (50 reqs, **12
+deal-breakers** — 10 high-confidence + 2 lower-confidence `needs_review` extras so we can explain the
+over-flag on stage; one flagship evidence-backed answer on the insurance gate; one open-question
+honesty beat; encoding cleaned, real £ signs). Two-line import swap in `app/demo/page.tsx` +
+`app/pitch/page.tsx`. `next build` passes (all routes incl. `/demo` `/pitch` prerender clean).
+
+**@frontend — please do this after you pull:** load `/demo` and `/pitch` in a browser and click through:
+(1) the deal-breakers sit on top, (2) click the insurance row → the evidence-backed answer shows,
+(3) the references row → the open question shows, (4) the stop-sign card in the deck shows the insurance
+gate. If anything's off, **revert is trivial**: put the two imports back to `spso-prebake.json` (SPSO
+fixture is untouched in the repo). Note: `demo-claim-ledger.md`'s "worked example" is now Bradwell.
+
 ### [J-080] @all · REQUEST · OPEN · 2026-07-03 · `/demo` improvement plan is now `demoimprovement.md`
 Turned the next `/demo` animation pass into [`demoimprovement.md`](../demoimprovement.md). It covers the
 local Claude auto-retry prerequisite, mobile `MountOnView`/beat-dot work, the worked SPSO example reveal,
