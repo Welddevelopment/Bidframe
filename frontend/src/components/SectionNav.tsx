@@ -9,14 +9,16 @@ import { usePathname } from "next/navigation";
 // marked by weight and a thin forest underline. No pills, no icons, no filled
 // tab, nothing that reads as a dashboard nav.
 
-// Exactly three sections — the working loop. Answers and Graph are per-tender
-// views reached from inside the workspace, not global destinations, so they
-// stay out of the masthead. Tenders = /upload: one page to add a tender and
-// reopen a previous one (/tenders redirects there).
+// The four working sections. Tender = /upload: pick which tender to work in (or
+// add a new pack) — the selection the other three read. Bid = /answers: the full
+// response with its readiness progress and .docx/PDF export. Matrix = /review and
+// Graph = /graph are the two per-tender views of the same requirements. With no
+// tender selected, Bid/Matrix/Graph show the "pick a tender" empty state.
 const SECTIONS = [
-  { href: "/upload", label: "Tenders" },
-  { href: "/review", label: "Review" },
-  { href: "/pack", label: "Pack" },
+  { href: "/upload", label: "Tender" },
+  { href: "/answers", label: "Bid" },
+  { href: "/review", label: "Matrix" },
+  { href: "/graph", label: "Graph" },
 ];
 
 export function SectionNav() {
