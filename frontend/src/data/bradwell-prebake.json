@@ -270,14 +270,14 @@
   },
   {
    "id": "brad-r0011",
-   "text": "The deadline for receipt of clarifications or queries relating to this Tender is 15 August.",
-   "source_page": 4,
-   "source_clause": "2.8",
-   "source_excerpt": "The deadline for receipt of clarifications or queries relating to this Tender is 15 August.",
+   "text": "Tenderers must complete and return all documents required by the Response Pack; an incomplete submission may be rejected.",
+   "source_page": 28,
+   "source_clause": "Response Pack",
+   "source_excerpt": "Tenderers must complete and return all documents required by the Response Pack; an incomplete submission may be rejected.",
    "type": "mandatory",
    "is_gating": true,
-   "category": "submission deadline",
-   "confidence": 0.72,
+   "category": "submission",
+   "confidence": 0.8,
    "status": "pending",
    "needs_review": true,
    "decision": null,
@@ -296,14 +296,14 @@
   },
   {
    "id": "brad-r0012",
-   "text": "All tender documents must be submitted in a sealed envelope, packet or parcel bearing no name, logo or mark indicating the tenderer's identity.",
-   "source_page": 4,
-   "source_clause": "2.7",
-   "source_excerpt": "All tender documents must be submitted in a sealed envelope, packet or parcel bearing no name, logo or mark indicating the tenderer's identity.",
+   "text": "A tender that does not substantially conform to the Instructions to Tenderers may be rejected.",
+   "source_page": 3,
+   "source_clause": "1.1",
+   "source_excerpt": "A tender that does not substantially conform to the Instructions to Tenderers may be rejected.",
    "type": "mandatory",
    "is_gating": true,
-   "category": "submission",
-   "confidence": 0.7,
+   "category": "compliance",
+   "confidence": 0.78,
    "status": "pending",
    "needs_review": true,
    "decision": null,
@@ -581,6 +581,32 @@
   },
   {
    "id": "brad-r0022",
+   "text": "All tender documents are to be submitted in a sealed envelope, packet or parcel, or online to the Clerk’s email address; clerk@bradwell-pc.gov.uk.",
+   "source_page": 3,
+   "source_clause": null,
+   "source_excerpt": "All tender documents are to be submitted in a sealed envelope, packet or parcel, or online to the Clerk’s email address; clerk@bradwell-pc.gov.uk.",
+   "type": "mandatory",
+   "is_gating": false,
+   "category": "submission",
+   "confidence": 1.0,
+   "status": "pending",
+   "needs_review": false,
+   "decision": null,
+   "criteria_ref": null,
+   "depends_on": [],
+   "draft_answer": null,
+   "answer": {
+    "text": "",
+    "state": "empty",
+    "evidence_refs": [],
+    "confidence": 0.0
+   },
+   "open_questions": [],
+   "source_doc_id": "d1",
+   "source_filename": "bradwell-grounds-itt.pdf"
+  },
+  {
+   "id": "brad-r0023",
    "text": "The envelope, packet or parcel shall in no circumstances bear any name, logo or mark indicating the name of the sender.",
    "source_page": 3,
    "source_clause": null,
@@ -606,7 +632,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0023",
+   "id": "brad-r0024",
    "text": "ensure that they can comply with all obligations.",
    "source_page": 3,
    "source_clause": null,
@@ -632,7 +658,33 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0024",
+   "id": "brad-r0025",
+   "text": "Please email: clerk@bradwell-pc.gov.uk to confirm your intention to tender and to ensure tender clarifications are received.",
+   "source_page": 4,
+   "source_clause": null,
+   "source_excerpt": "Please email: clerk@bradwell-pc.gov.uk to confirm your intention to tender and to ensure tender clarifications are received.",
+   "type": "mandatory",
+   "is_gating": false,
+   "category": "other",
+   "confidence": 0.5,
+   "status": "pending",
+   "needs_review": false,
+   "decision": null,
+   "criteria_ref": null,
+   "depends_on": [],
+   "draft_answer": null,
+   "answer": {
+    "text": "",
+    "state": "empty",
+    "evidence_refs": [],
+    "confidence": 0.0
+   },
+   "open_questions": [],
+   "source_doc_id": "d1",
+   "source_filename": "bradwell-grounds-itt.pdf"
+  },
+  {
+   "id": "brad-r0026",
    "text": "Please provide a Method Statement that clearly covers the following points.",
    "source_page": 5,
    "source_clause": null,
@@ -658,7 +710,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0025",
+   "id": "brad-r0027",
    "text": "Ensuring the commission is adequately resourced, including reference to resources and operational facilities.",
    "source_page": 6,
    "source_clause": null,
@@ -684,7 +736,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0026",
+   "id": "brad-r0028",
    "text": "Ensuring appropriate staff qualifications, knowledge and experience for the commission.",
    "source_page": 6,
    "source_clause": null,
@@ -710,7 +762,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0027",
+   "id": "brad-r0029",
    "text": "Tenderers should state on the form (appendix c part 8) if any of the information supplied by them is confidential or commercially sensitive or should not be disclosed in response to a request for information under the act.",
    "source_page": 6,
    "source_clause": null,
@@ -736,7 +788,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0028",
+   "id": "brad-r0030",
    "text": "Suppliers should state why they consider the information to be confidential or commercially sensitive and for how long.",
    "source_page": 6,
    "source_clause": null,
@@ -762,7 +814,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0029",
+   "id": "brad-r0031",
    "text": "Approach and management of Health and Safety related to the contract.",
    "source_page": 6,
    "source_clause": null,
@@ -788,7 +840,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0030",
+   "id": "brad-r0032",
    "text": "The tenderer will have no claim whatsoever against the Council in respect of such matters and in particular (but with no limitation) neither the Council shall make any payments to the tenderer save as expressly provided for in the contract.",
    "source_page": 7,
    "source_clause": null,
@@ -814,7 +866,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0031",
+   "id": "brad-r0033",
    "text": "The documents which constitute the contract and all copies are and will remain the property of the Council and must not be copied or reproduced in whole or in part and must be returned to the Council upon demand.",
    "source_page": 8,
    "source_clause": null,
@@ -840,7 +892,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0032",
+   "id": "brad-r0034",
    "text": "The tenderer warrants and represents that it has completed in all respects with the ITT and the conditions of the Tender.",
    "source_page": 8,
    "source_clause": null,
@@ -866,7 +918,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0033",
+   "id": "brad-r0035",
    "text": "The tenderer warrants and represents that it has made its own investigations and research and has satisfied itself in respect of all matters relating to the Tender, the specification and the Conditions of Contract.",
    "source_page": 8,
    "source_clause": null,
@@ -892,7 +944,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0034",
+   "id": "brad-r0036",
    "text": "The tenderer warrants and represents that it has full power and authority to enter into the contract and will if requested produce evidence of such to the Council.",
    "source_page": 8,
    "source_clause": null,
@@ -918,7 +970,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0035",
+   "id": "brad-r0037",
    "text": "The tenderer warrants and represents that it is of sound financial standing and the tenderer and its partners, officers and employees are not aware of any circumstances which may adversely affect such financial standing in the future.",
    "source_page": 8,
    "source_clause": null,
@@ -944,7 +996,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0036",
+   "id": "brad-r0038",
    "text": "Consideration must be given to all risks associated with the works when planning landscaping maintenance operations.",
    "source_page": 9,
    "source_clause": null,
@@ -970,7 +1022,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0037",
+   "id": "brad-r0039",
    "text": "Operatives must always wear high visibility garments in accordance BSEN 471 Class 1 and wear Personal Protective Equipment (PPE) appropriate to the work task and as identified in the contractor’s risk assessment and method statement.",
    "source_page": 9,
    "source_clause": null,
@@ -996,7 +1048,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0038",
+   "id": "brad-r0040",
    "text": "The standard of maintenance shall be in accordance with good horticultural practice, in line with species recommendations and the recommendations laid down in BS4428:1989 - “Code of Practice for General Landscape Operations”.",
    "source_page": 9,
    "source_clause": null,
@@ -1022,7 +1074,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0039",
+   "id": "brad-r0041",
    "text": "The Contractor shall allow for the removal of all arising’s in connection with landscape maintenance operations.",
    "source_page": 9,
    "source_clause": null,
@@ -1048,7 +1100,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0040",
+   "id": "brad-r0042",
    "text": "The contractor will be responsible for effective weed control on shrub/flower/rose beds, hedge bottoms and hard surfaces as specified.",
    "source_page": 9,
    "source_clause": null,
@@ -1074,7 +1126,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0041",
+   "id": "brad-r0043",
    "text": "They must however conform to current health and safety legislation and industry best practice including the Code of Practice noted below.",
    "source_page": 9,
    "source_clause": null,
@@ -1100,7 +1152,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0042",
+   "id": "brad-r0044",
    "text": "The Contractor shall undertake such maintenance as is necessary on trees.",
    "source_page": 10,
    "source_clause": null,
@@ -1126,7 +1178,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0043",
+   "id": "brad-r0045",
    "text": "Where the requirement is for the stump to be ground out or chemically treated the Contractor shall submit a quote.",
    "source_page": 10,
    "source_clause": null,
@@ -1152,7 +1204,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0044",
+   "id": "brad-r0046",
    "text": "Removal of tree trunks and large branches are to be agreed with the contract administrator (the Clerk).",
    "source_page": 10,
    "source_clause": null,
@@ -1178,7 +1230,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0045",
+   "id": "brad-r0047",
    "text": "Chippings, where agreed with the contract administrator (the Clerk) from the undertaking of tree services may be left on site but must be raked out evenly over the adjoining land.",
    "source_page": 10,
    "source_clause": null,
@@ -1204,7 +1256,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0046",
+   "id": "brad-r0048",
    "text": "The Contractor shall submit a quote where the relevant skills are available and the need can be addressed by tree climbing or simple felling.",
    "source_page": 10,
    "source_clause": null,
@@ -1230,7 +1282,7 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0047",
+   "id": "brad-r0049",
    "text": "The Contractor shall reinstate the land according to its surroundings where a stump is ground out.",
    "source_page": 10,
    "source_clause": null,
@@ -1256,63 +1308,11 @@
    "source_filename": "bradwell-grounds-itt.pdf"
   },
   {
-   "id": "brad-r0048",
+   "id": "brad-r0050",
    "text": "The Contractor shall not delegate any duties or obligations arising under this agreement otherwise than may be expressly permitted under its terms.",
    "source_page": 10,
    "source_clause": null,
    "source_excerpt": "The Contractor shall not delegate any duties or obligations arising under this agreement otherwise than may be expressly permitted under its terms.",
-   "type": "mandatory",
-   "is_gating": false,
-   "category": "Contractor's Responsibilities",
-   "confidence": 1.0,
-   "status": "pending",
-   "needs_review": false,
-   "decision": null,
-   "criteria_ref": null,
-   "depends_on": [],
-   "draft_answer": null,
-   "answer": {
-    "text": "",
-    "state": "empty",
-    "evidence_refs": [],
-    "confidence": 0.0
-   },
-   "open_questions": [],
-   "source_doc_id": "d1",
-   "source_filename": "bradwell-grounds-itt.pdf"
-  },
-  {
-   "id": "brad-r0049",
-   "text": "The Contractor shall indemnify and keep indemnified the Council from and against any and all loss damage or liability suffered and legal fees and cost incurred by the Council resulting from a breach of this agreement by the Contractor.",
-   "source_page": 10,
-   "source_clause": null,
-   "source_excerpt": "The Contractor shall indemnify and keep indemnified the Council from and against any and all loss damage or liability suffered and legal fees and cost incurred by the Council resulting from a breach of this agreement by the Contractor.",
-   "type": "mandatory",
-   "is_gating": false,
-   "category": "Contractor's Responsibilities",
-   "confidence": 1.0,
-   "status": "pending",
-   "needs_review": false,
-   "decision": null,
-   "criteria_ref": null,
-   "depends_on": [],
-   "draft_answer": null,
-   "answer": {
-    "text": "",
-    "state": "empty",
-    "evidence_refs": [],
-    "confidence": 0.0
-   },
-   "open_questions": [],
-   "source_doc_id": "d1",
-   "source_filename": "bradwell-grounds-itt.pdf"
-  },
-  {
-   "id": "brad-r0050",
-   "text": "The Contractor shall comply with the terms of any Notice specifying a breach of the provisions of this agreement and requiring the breach to be remedied.",
-   "source_page": 10,
-   "source_clause": null,
-   "source_excerpt": "The Contractor shall comply with the terms of any Notice specifying a breach of the provisions of this agreement and requiring the breach to be remedied.",
    "type": "mandatory",
    "is_gating": false,
    "category": "Contractor's Responsibilities",
