@@ -4,6 +4,26 @@
 
 ---
 
+### [J-082] @frontend · HEADS-UP · OPEN · 2026-07-04 · tonight's frontend deliverables (Jawad) — control UI + demo surface + before/after
+**Plain English (all pushed, all build-green — your call on how much to fold in):**
+- **`/showcase` is the live-demo surface** — the REAL product (`MatrixView`) frozen on the Bradwell prebake,
+  no login/backend. This is what we drive at 1pm. `/demo` (scroll-story) is untouched.
+- **New `ControlPanel.tsx`** (on `/showcase`) makes "user stays in control" visible — the Conduct thesis and
+  our best-scoring 20% criterion. It shows the activity trail (*read → found → flagged → drafted → left for
+  you*) + a **live decision tally** + the explicit limits (drafts-never-decides). **Ask:** fold it into
+  `MatrixView`'s header so `/review` shows it too (right now it's only on `/showcase`). It reads from
+  `useRequirements`, uses your ink/forest/hairline tokens — but I can't see the render, so **please
+  eyeball the layout** and restyle to taste.
+- **Before/after beat** (the rubric's 20% demo criterion): full spec + rendered assets in
+  `pitch-before-after.md` — animated "scan & lift" reveal is ideal for the **video**; a static split is the
+  safe **live-pitch** version.
+- **Control demo beat**: exact clicks + narration in `control-demo-script.md` (approve-with-named-confirm →
+  edit → flag → answer an open question). Please make sure those four interactions are smooth on `/showcase`.
+
+**Deck note:** worth reframing the deck lead around **control** ("the expert stays at the wheel") — it's the
+track's own language, reads as on-thesis not defensive.
+
+
 ### [J-081] @frontend @all · HEADS-UP · OPEN · 2026-07-04 · `/demo` + `/pitch` now run the curated BRADWELL prebake — pull + smoke-test
 **Plain English:** Joel's call — the on-stage tender is now **Bradwell** (grounds maintenance), not SPSO.
 Why: SPSO's deal-breakers were weak on screen (the same "Deadline 06/11/2013" repeated 3×). Bradwell's
