@@ -632,7 +632,7 @@ export function PitchDeck() {
             "Hand to Bobby on the workflow, not a feature list.",
           ],
           body: (
-            <div className="pitch-poster">
+            <div className="pitch-poster pitch-poster--center">
               <p className="pitch-kicker">A tender, in plain English</p>
               <h1>
                 One missed deal&#8209;breaker
