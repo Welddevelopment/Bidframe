@@ -10,6 +10,7 @@ import bradwellPrebake from "@/data/bradwell-prebake.json";
 // state and swallow the failed PATCH). Identical to using the product on a real tender, but
 // the results are already computed. No AuthGate so the demo opens instantly.
 const demoTender = bradwellPrebake as unknown as Tender;
+const STAGE_RETURN_HREF = "/pitch#6";
 
 export const metadata: Metadata = {
   title: "Bidframe — tender walkthrough",
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
 export default function ShowcasePage() {
   return (
     <RequirementsProvider initialTender={demoTender}>
-      <MatrixView title={demoTender.title} />
+      <MatrixView title={demoTender.title} stageReturnHref={STAGE_RETURN_HREF} />
     </RequirementsProvider>
   );
 }

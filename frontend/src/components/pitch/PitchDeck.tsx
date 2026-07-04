@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   useCallback,
   useEffect,
@@ -40,9 +41,10 @@ const MAIN_SLIDE_COUNT = 6;
 const TOTAL_SLIDE_COUNT = MAIN_SLIDE_COUNT;
 // The Product slide: where the walk-into-the-product portal opens.
 const PRODUCT_INDEX = 3;
-// Beats per main slide: NEXT walks a slide's internal beats before moving on.
+// Beats per main slide: NEXT usually walks a slide's internal beats before moving on.
 // Use Case paces four register stations (each swaps in a product proof);
-// the stop-sign and competitor register keep their two-beat reveals.
+// the stop-sign keeps its two-beat reveal. Competitors keeps a second visual
+// state for autoplay/direct jumps, but manual NEXT is a hard /showcase handoff.
 const SLIDE_BEATS = [1, 4, 2, 1, 2, 1] as const;
 
 function beatsAt(index: number) {
@@ -96,6 +98,9 @@ const PACE_STARTS = AUTOPLAY_SECONDS.map((_, i) =>
 );
 // v5: six main slides — the Competitors register sits before the Ask.
 const PITCH_STATE_KEY = "bidframe.pitch.state.v5";
+const ASK_SLIDE_INDEX = MAIN_SLIDE_COUNT - 1;
+const SHOWCASE_HANDOFF_SLIDE_INDEX = ASK_SLIDE_INDEX - 1;
+const SHOWCASE_HANDOFF_HREF = "/showcase";
 
 // The competitor register (s5): four axes, four camps, glyphs only — the
 // spoken script carries the detail (bobbyscript.md). Marks are shapes, not
@@ -318,6 +323,7 @@ function IconFullscreen() {
 }
 
 export function PitchDeck() {
+  const router = useRouter();
   const stageRef = useRef<HTMLDivElement | null>(null);
   const cursorTimerRef = useRef<number | null>(null);
   const { requirements, title } = useRequirements();
@@ -366,6 +372,12 @@ export function PitchDeck() {
   );
   const next = useCallback(() => {
     setAutoplay(false);
+    // Competitors is the live-walkthrough handoff. Any forward action from
+    // slide 5 opens /showcase instead of consuming another in-deck beat.
+    if (activeIndex === SHOWCASE_HANDOFF_SLIDE_INDEX) {
+      router.push(SHOWCASE_HANDOFF_HREF);
+      return;
+    }
     // Walk this slide's internal beats before leaving it.
     if (beat < beatsAt(activeIndex) - 1) {
       setBeat(beat + 1);
@@ -374,7 +386,7 @@ export function PitchDeck() {
     setBeat(0);
     setSlideSeconds(0);
     setActiveIndex((current) => Math.min(current + 1, TOTAL_SLIDE_COUNT - 1));
-  }, [activeIndex, beat]);
+  }, [activeIndex, beat, router]);
 
   const previous = useCallback(() => {
     setAutoplay(false);
@@ -635,7 +647,10 @@ export function PitchDeck() {
     );
 
     const timeout = window.setTimeout(() => {
-      if (activeIndex === MAIN_SLIDE_COUNT - 1) {
+      if (activeIndex === SHOWCASE_HANDOFF_SLIDE_INDEX) {
+        setAutoplay(false);
+        router.push(SHOWCASE_HANDOFF_HREF);
+      } else if (activeIndex === MAIN_SLIDE_COUNT - 1) {
         setAutoplay(false);
       } else {
         setBeat(0);
@@ -648,7 +663,7 @@ export function PitchDeck() {
       beatTimeouts.forEach((id) => window.clearTimeout(id));
       window.clearTimeout(timeout);
     };
-  }, [activeIndex, autoplay]);
+  }, [activeIndex, autoplay, router]);
 
   const slides = useMemo(
     () =>
