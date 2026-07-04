@@ -4,6 +4,12 @@
 
 ---
 
+### [J-085] @all · INFO · OPEN · 2026-07-04 · 50 more sendable CRM leads added
+Added a new operational CRM batch: `L-0425`-`L-0474` in `crm/leads.csv`, with 50 send-ready drafts in
+`crm/drafts/` and a compact send list at `crm/sendable-list-2026-07-04.csv`. These migrate the strongest
+verified micro-targets from `outreach-micro-targets.md` into the CRM: 38 High/PERFECT and 12 Medium/GOOD.
+`MT-57` stays skipped because its send-to email is still flagged unverified.
+
 ### [J-084] @all · SUMMARY · OPEN · 2026-07-04 · overnight (3→4 Jul): what changed + where the demo-prep docs are
 **Plain English — done + pushed overnight, all build-green, 225 engine tests pass:**
 - **Demo tender switched to Bradwell** (`/showcase` + `/pitch`): the real interactive product frozen on a

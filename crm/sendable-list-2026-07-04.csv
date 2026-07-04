@@ -1,0 +1,51 @@
+id,firm,contact_person,email,conversion_estimate,sub_sector,source,draft_path,mt_id
+L-0425,Midland Fire Ltd,not_found,sales@midland-fire.co.uk,High,"compliance trades / fire, water, drainage and grounds",https://midland-fire.co.uk,crm/drafts/L-0425.md,MT-01
+L-0426,Cropper Grounds Maintenance,not_found,info@grounds-maintenance.com,High,"compliance trades / fire, water, drainage and grounds",https://grounds-maintenance.com,crm/drafts/L-0426.md,MT-02
+L-0427,Exjet,Robin,info@exjet.co.uk,High,"compliance trades / fire, water, drainage and grounds",https://exjet.co.uk/about-us,crm/drafts/L-0427.md,MT-03
+L-0428,H2O Hygiene Ltd,not_found,info@h2ohygiene.co.uk,High,"compliance trades / fire, water, drainage and grounds",https://h2ohygiene.co.uk; https://legionellacontrol.org.uk,crm/drafts/L-0428.md,MT-04
+L-0429,Hallifax Care,Johanne,info@hallifaxcare.co.uk,High,care,https://hallifaxcare.co.uk,crm/drafts/L-0429.md,MT-07
+L-0430,Devon & Cornwall Care Services (DACCS),Pauline and Samantha,info@daccservices.com,High,care,https://daccservices.com/about,crm/drafts/L-0430.md,MT-08
+L-0431,Home Care Wales,not_found,info@homecarewales.com,High,care,https://homecarewales.com,crm/drafts/L-0431.md,MT-09
+L-0432,Charles Walker Construction Ltd,Andrew,hello@charleswalkerconstruction.co.uk,High,"building, grounds and property-care",https://northyorks.gov.uk,crm/drafts/L-0432.md,MT-12
+L-0433,Top Garden Services,not_found,info@topgardenservices.com,High,"building, grounds and property-care",https://topgardenservices.com/tenders,crm/drafts/L-0433.md,MT-13
+L-0434,Headcorn Heating Ltd,Andrew,mail@headcornheating.co.uk,High,"heating, plumbing and electrical",https://tch.org.uk/repairs,crm/drafts/L-0434.md,MT-20
+L-0435,Reids Playground Maintenance Ltd,not_found,rpm@reidsplayground.co.uk,High,"playground inspection, repair and install",https://reidsplaygroundmaintenance.co.uk,crm/drafts/L-0435.md,MT-23
+L-0436,TK Play Ltd,not_found,enquiries@tkplay.co.uk,High,"playground inspection, repair and install",https://tkplay.co.uk/news; https://tkplay.co.uk/projects,crm/drafts/L-0436.md,MT-24
+L-0437,Aardvark Pest Control,not_found,info@aardvarkpest.co.uk,High,pest control,https://aardvarkpest.co.uk,crm/drafts/L-0437.md,MT-33
+L-0438,Blake Fire & Security Systems,Ian,info@blakefire-security.co.uk,High,"security, CCTV and locksmith",https://blakefire-security.co.uk/school-security,crm/drafts/L-0438.md,MT-39
+L-0439,Around The Clock Locks (ATCL),not_found,info@atcl.co.uk,High,"security, CCTV and locksmith",https://atcl.co.uk,crm/drafts/L-0439.md,MT-40
+L-0440,Harrier Fences & Landscaping,not_found,cogramp@gmail.com,High,"fencing, MUGA and sports surfacing",https://harrierfencesandlandscaping.com,crm/drafts/L-0440.md,MT-45
+L-0441,Elvington Floorcraft,Andrew,admin@elvingtonfloorcraft.co.uk,High,flooring and refurbishment,https://elvingtonfloorcraft.co.uk/flooring/local-authorities,crm/drafts/L-0441.md,MT-50
+L-0442,Lees Heginbotham & Sons Ltd,not_found,info@leesheginbotham.co.uk,High,flooring and refurbishment,https://leesheginbotham.co.uk/commercial,crm/drafts/L-0442.md,MT-51
+L-0443,Rooftec (Scotland) Ltd,Mark,info@rooftecscotland.co.uk,High,roofing and scaffolding,https://rooftecscotland.co.uk,crm/drafts/L-0443.md,MT-58
+L-0444,Newseal Ltd,Phil,enquiries@newsealltd.com,High,damp-proofing and damp/mould,https://newsealltd.com,crm/drafts/L-0444.md,MT-63
+L-0445,Advanced Preservation Specialists Ltd (APS),not_found,info@advancedpreservation.co.uk,High,damp-proofing and damp/mould,https://advancedpreservation.co.uk,crm/drafts/L-0445.md,MT-64
+L-0446,Listed Window Refurbishment Ltd,not_found,info@listedwindowrefurbishment.co.uk,High,"windows, doors and heritage restoration",https://listedwindowrefurbishment.co.uk/about,crm/drafts/L-0446.md,MT-69
+L-0447,Sash Window Preservation,not_found,info@sashwindowpreservation.co.uk,High,"windows, doors and heritage restoration",https://sashwindowpreservation.co.uk/case-studies,crm/drafts/L-0447.md,MT-70
+L-0448,CJL Designs,not_found,cjldesigns@macunlimited.net,High,"windows, doors and heritage restoration",https://cjldesigns.co.uk,crm/drafts/L-0448.md,MT-71
+L-0449,AJM Decorating Ltd,Adrian,enquiries@ajmdecorating.co.uk,High,painting and decorating,https://ajmdecorating.co.uk,crm/drafts/L-0449.md,MT-75
+L-0450,ALCo Decorating (ALCo Group),Tom,info@alcoltd.co.uk,High,painting and decorating,https://alcoltd.co.uk/decorating/education,crm/drafts/L-0450.md,MT-76
+L-0451,Environmental Solutions Midlands Ltd,Kevin and Craig,enquiries@esminfo.co.uk,High,asbestos surveying and removal,https://esm-group.co.uk,crm/drafts/L-0451.md,MT-80
+L-0452,ISCA Heating & Plumbing Ltd,Lewis,lewis@iscaheating-plumbing.co.uk,High,"kitchen, bathroom and DFG adaptations",https://iscaheating-plumbing.co.uk/wetrooms/disability-wetrooms,crm/drafts/L-0452.md,MT-87
+L-0453,MIserve (C.G.Y. (MISERVE) Ltd),not_found,office@miserve.co.uk,High,"kitchen, bathroom and DFG adaptations",https://miserve.co.uk/business-clients,crm/drafts/L-0453.md,MT-88
+L-0454,A T Plumbing Services,Anna and Tristan,atplumbing@btinternet.com,High,"kitchen, bathroom and DFG adaptations",https://atplumbing.wales,crm/drafts/L-0454.md,MT-89
+L-0455,RenderRight (Render Right Ltd),Johnny and Jenna,info@rrfl.co.uk,High,"retrofit, insulation and EWI",https://renderright.co.uk,crm/drafts/L-0455.md,MT-94
+L-0456,Express Stairlifts Southwest,not_found,enquiries@expressstairliftssw.co.uk,High,mobility and stairlift installation,https://expressstairliftssw.co.uk/contact,crm/drafts/L-0456.md,MT-100
+L-0457,Dolphin Devon Stairlifts,not_found,info@dolphindevon.co.uk,High,mobility and stairlift installation,https://dolphindevon.co.uk,crm/drafts/L-0457.md,MT-101
+L-0458,B L Fire Risk Limited,Bill,bill@blfirerisk.co.uk,High,fire risk and fire door compliance,https://blfirerisk.co.uk,crm/drafts/L-0458.md,MT-107
+L-0459,Sustainable Energy Engineering (SUS Energy),Stephen and Haley,info@susenergy.co.uk,High,"solar PV, battery and heat pump",https://susenergy.co.uk,crm/drafts/L-0459.md,MT-112
+L-0460,Solar Partner,Tony,tony@solarpartner.uk,High,"solar PV, battery and heat pump",https://solarpartner.uk,crm/drafts/L-0460.md,MT-113
+L-0461,Brimstone Energy UK,Matt,sales@brimstone-energy.uk,High,"solar PV, battery and heat pump",https://brimstone-energy.uk/case-study...caxton-village-hall,crm/drafts/L-0461.md,MT-114
+L-0462,InspireGreen,not_found,hello@inspiregreen.co.uk,High,"solar PV, battery and heat pump",https://inspiregreen.co.uk,crm/drafts/L-0462.md,MT-115
+L-0463,Call2Drain,not_found,info@call2drain.co.uk,Medium,"compliance trades / fire, water, drainage and grounds",https://call2drain.co.uk/about,crm/drafts/L-0463.md,MT-05
+L-0464,Browns Landscape Solutions Ltd,not_found,info@brownslandscapes.com,Medium,"compliance trades / fire, water, drainage and grounds",https://brownslandscapes.com/school-grounds-maintenance,crm/drafts/L-0464.md,MT-06
+L-0465,Celtic Care Services,not_found,samwhite@celticcare.co.uk,Medium,care,https://adults.wiltshire.gov.uk,crm/drafts/L-0465.md,MT-10
+L-0466,Home Care Service Provider,not_found,admin@homecareserviceprovider.co.uk,Medium,care,https://homecareserviceprovider.co.uk,crm/drafts/L-0466.md,MT-11
+L-0467,Homebuilder (Scarborough) Ltd,not_found,enquiries@homebuilderscarborough.co.uk,Medium,"building, grounds and property-care",https://northyorks.gov.uk,crm/drafts/L-0467.md,MT-14
+L-0468,Anglian Land Services,Chris,chris@anglianlandservices.co.uk,Medium,"building, grounds and property-care",https://anglianlandservices.co.uk/council,crm/drafts/L-0468.md,MT-15
+L-0469,GreenServe GM,not_found,info@greenservegm.com,Medium,"building, grounds and property-care",https://greenservegm.com,crm/drafts/L-0469.md,MT-16
+L-0470,Revive Property Services (UK) Ltd,not_found,info@reviveps.co.uk,Medium,"building, grounds and property-care",https://revivepropertyservices.co.uk/about-revive,crm/drafts/L-0470.md,MT-17
+L-0471,Hamilton Builders & Property Care Ltd,not_found,info@hamiltonbuilders.co.uk,Medium,"building, grounds and property-care",https://hamiltonbuilders.co.uk,crm/drafts/L-0471.md,MT-18
+L-0472,David Ryan Plumbing / Merrybent Bathrooms Ltd,David,info@darlingtonplumber.co.uk,Medium,"building, grounds and property-care",https://northyorks.gov.uk; https://merrybentbathrooms.co.uk,crm/drafts/L-0472.md,MT-19
+L-0473,Sandy's Plumbing,Sandy,sandy@sandysplumbing.co.uk,Medium,"heating, plumbing and electrical",https://redkitehousing.org.uk/about-us/our-partners,crm/drafts/L-0473.md,MT-21
+L-0474,LJH Electrical,Luke,luke@ljhelectrical.com,Medium,"heating, plumbing and electrical",https://ljhelectrical.com/social-housing-eicrs,crm/drafts/L-0474.md,MT-22

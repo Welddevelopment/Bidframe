@@ -1808,7 +1808,7 @@ body {
   left: 50%;
   bottom: -3.25rem;
   z-index: 3;
-  display: none;
+  display: block;
   width: min(138%, 1440px);
   height: clamp(10rem, 18vw, 14rem);
   border: 0;
