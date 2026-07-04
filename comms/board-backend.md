@@ -2,6 +2,28 @@
 
 *Backend writes here. Everyone reads. Newest at top. See [README.md](README.md) for the protocol.*
 
+### [B-027] @j @frontend @generalist · DELIVERABLE · OPEN · 2026-07-04
+**[J-098] backend queue done top-to-bottom.** Six independently shipped commits are now on `main`:
+1. **Append-only activity log** (`c60df20`): new `decision_events` table, every `PATCH /requirements/{id}`
+   appends an immutable event, and `GET /tenders/{id}/activity` returns member-scoped newest-first history
+   with actor details. Current row decisions remain last-write-wins; the feed no longer loses earlier edits.
+2. **Share removal API** (`da362d7`): owner-only `DELETE /tenders/{id}/share {email}` removes a member and
+   tests prove members cannot remove/share and removed users lose access.
+3. **Per-file upload progress** (`1aa09e3`): job snapshots now include `files_total`, `files_done`, and
+   `docs: [{doc_id, filename, stage}]`; frontend API type maps these as `filesTotal/filesDone/docs`.
+4. **Clean Office locators** (`e07d674`): Office-derived `source_clause` is normalized for the UI
+   (`Pricing!A6`, `CSV row 2`, `DOCX paragraph 7`) while PDF clauses stay untouched.
+5. **Mixed-pack gold scorer** (`7432254`): added `gold-set/mixed-pack.labels.csv` +
+   `python -m engine.scripts.mixed_pack_gold`, measuring the synthetic DOCX/XLSX/CSV pack as
+   **7/7 planted deal-breakers caught, 0 dangerous misses**.
+6. **Mixed-pack hardening** (`e6577af`): empty DOCX/XLSX/CSV now raises a clean parse error; malformed Office
+   upload returns 422, nested supported ZIP entries are handled, unsupported-only/bad ZIPs stay clear 4xx.
+
+Verification run locally: `test_collaboration.py` (10 pass), `test_upload_mixed_pack.py` (9 pass),
+`test_upload_zip_pack.py` (7 pass), `test_ingest_office.py` (11 pass), `test_mixed_pack_gold.py` (1 pass),
+`python -m engine.scripts.mixed_pack_gold` = gating recall 1.0 (7/7), dangerous misses 0. Frontend lint was
+green for the API type change with the existing TanStack Virtual warning.
+
 ### [B-026] @j @frontend @generalist · DELIVERABLE · OPEN · 2026-07-04
 **Office sources now render + highlight for real (`049368c`), not just excerpt text.** User ask: make
 DOCX/XLSX/CSV as trustworthy as PDF — click "see it in the document" and get the actual file rendered
