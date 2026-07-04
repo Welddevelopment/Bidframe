@@ -362,6 +362,7 @@ export function MatrixView({ title }: { title: string }) {
   // a sweep can never wave a deal-breaker through.
   const selectedList = requirements.filter((req) => selectedIds.has(req.id));
   const eligibleSelected = selectedList.filter(isConfidentNonGating);
+  const selectedDealBreakers = selectedList.filter((req) => req.is_gating);
 
   const bulkApprove = useCallback(() => {
     approveManyWithUndo(eligibleSelected.map((req) => req.id));
@@ -773,6 +774,7 @@ export function MatrixView({ title }: { title: string }) {
         <BulkActionBar
           count={selectedIds.size}
           eligibleCount={eligibleSelected.length}
+          dealBreakerCount={selectedDealBreakers.length}
           onApprove={bulkApprove}
           onFlag={bulkFlag}
           onClear={clearSelection}

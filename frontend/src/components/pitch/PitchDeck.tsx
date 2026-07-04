@@ -297,6 +297,10 @@ export function PitchDeck() {
     () => requirements.filter((req) => req.is_gating),
     [requirements]
   );
+  const splitDealBreakers = useMemo(
+    () => dealBreakers.slice(0, 5),
+    [dealBreakers]
+  );
   const evidenceReq = useMemo(
     () => pickEvidenceRequirement(requirements),
     [requirements]
@@ -652,37 +656,83 @@ export function PitchDeck() {
         },
         {
           bucket: "Solution",
-          title: "A marked trail through the tender",
+          title: "The tender becomes a deal-breaker view",
           speaker: "Pranav",
           zone: "night",
           light: 0.12,
           notes: [
-            "Two beats: the slide lands with the clause alone — read it out loud into the pause. The NEXT keypress stamps the green 'caught' line; only then keep talking.",
-            "Say it in full: Bidframe turns the tender into a reviewable matrix — deal-breakers first, uncertainty visible, sources attached.",
-            "The card is a real gating requirement from the Bradwell run (the insurance gate), with its clause and page. This is where the room should understand the wedge.",
-            "Avoid claiming universal accuracy. This is a real pre-baked run.",
+            "Two beats: first hold on the raw Bradwell tender page. It should feel dense and easy to miss.",
+            "The NEXT keypress resolves to the split: raw page on the left, Bidframe deal-breaker view on the right.",
+            "Say it in full: this is the same tender turned into a reviewable matrix, with deal-breakers first and sources attached.",
+            "Avoid claiming universal accuracy. This is a real pre-baked Bradwell run.",
           ],
           body: (
-            <div className="pitch-moment">
-              <p className="pitch-kicker">The solution</p>
-              <h2>Find the clause that can void the bid</h2>
-              <div
-                className={`pitch-stopsign ${beat > 0 ? "is-resolved" : ""}`}
-              >
-                <span className="pitch-stopsign__blaze" aria-hidden="true" />
-                <p className="pitch-stopsign__caption">
-                  This is the line that would kill the bid
-                </p>
-                {dealBreakers[0] && (
-                  <div className="pitch-stopsign__card">
-                    <span>
-                      {dealBreakers[0].source_clause} · p.
-                      {dealBreakers[0].source_page}
+            <div
+              className={`pitch-before-after ${
+                beat > 0 ? "is-revealed" : ""
+              }`}
+            >
+              <div className="pitch-before-after__copy">
+                <p className="pitch-kicker">The solution</p>
+                <h2>One clause. Five ways to lose the bid.</h2>
+              </div>
+              <div className="pitch-before-after__stage">
+                <figure className="pitch-before-after__panel pitch-before-after__panel--before">
+                  <figcaption className="pitch-before-after__label">
+                    <span>The tender. 34 pages.</span>
+                  </figcaption>
+                  <div className="pitch-before-after__document">
+                    <Image
+                      src="/pitch/before-tender-p7.png"
+                      alt="Bradwell tender page 7 showing clause 4.6 Rejection of Tender"
+                      width={1241}
+                      height={1754}
+                      sizes="(max-width: 900px) 94vw, 48vw"
+                      priority
+                      className="pitch-before-after__image"
+                    />
+                    <span
+                      className="pitch-before-after__clause"
+                      aria-hidden="true"
+                    >
+                      Clause 4.6. Rejection of Tender.
                     </span>
-                    <strong>{dealBreakers[0].text}</strong>
-                    <em>Caught — surfaced first, before a word is written.</em>
                   </div>
-                )}
+                </figure>
+                <section
+                  className="pitch-before-after__panel pitch-before-after__panel--after"
+                  aria-hidden={beat === 0 ? true : undefined}
+                >
+                  <div className="pitch-before-after__label">
+                    <span>Bidframe. Deal-breakers first.</span>
+                  </div>
+                  <div className="pitch-before-after__summary">
+                    <span>{dealBreakers.length}</span>
+                    <div>
+                      <strong>deal-breakers</strong>
+                      <em>surfaced before writing starts</em>
+                    </div>
+                  </div>
+                  <ul className="pitch-before-after__rows">
+                    {splitDealBreakers.map((req, index) => (
+                      <li key={req.id}>
+                        <span>{String(index + 1).padStart(2, "0")}</span>
+                        <div>
+                          <strong>{req.text}</strong>
+                          <em>
+                            p.{req.source_page}
+                            {req.source_clause
+                              ? ` · ${req.source_clause}`
+                              : ""}
+                          </em>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="pitch-before-after__receipt">
+                    Every row keeps the page and clause attached.
+                  </p>
+                </section>
               </div>
             </div>
           ),
@@ -1131,6 +1181,7 @@ export function PitchDeck() {
       requirements,
       sourcePeekOpen,
       sourceProofReq,
+      splitDealBreakers,
       title,
       triage.groups,
     ]

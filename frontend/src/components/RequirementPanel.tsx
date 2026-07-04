@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import Link from "next/link";
 import type { Requirement, RequirementStatus } from "@/types/requirement";
 import { AnswerPanel } from "./AnswerPanel";
@@ -47,6 +47,8 @@ const DECISION_PADDING: Record<PanelVariant, string> = {
   focus: "border-t border-hairline bg-paper-raised px-6 py-5 sm:px-10 lg:px-14",
 };
 
+const GATING_CONFIRM_TEXT = "CONFIRM";
+
 interface RequirementPanelProps {
   requirement: Requirement;
   variant: PanelVariant;
@@ -89,6 +91,39 @@ function formatTime(timestamp: string): string {
     hour: "2-digit",
     minute: "2-digit",
   });
+}
+
+function confidenceState(req: Requirement): string {
+  if (req.needs_review || req.confidence < 0.55) return "Needs review";
+  if (req.confidence < 0.7) return "Low confidence";
+  if (req.confidence < 0.86) return "Fairly sure";
+  return "Confident";
+}
+
+function flagReason(req: Requirement): string {
+  const haystack = `${req.category} ${req.text} ${req.source_excerpt}`.toLowerCase();
+  if (haystack.includes("insurance")) {
+    return "This is a minimum insurance gate. If the bidder cannot meet it, the tender may fail before scoring.";
+  }
+  if (haystack.includes("deadline") || haystack.includes("returned by")) {
+    return "This is a submission gate. A late or wrongly delivered tender can be rejected without evaluation.";
+  }
+  if (haystack.includes("pricing") || haystack.includes("not be scored")) {
+    return "This is a pricing gate. The source says failure to confirm acceptance can remove the tender from scoring.";
+  }
+  if (
+    haystack.includes("disqualified") ||
+    haystack.includes("rejected") ||
+    haystack.includes("not be accepted") ||
+    haystack.includes("remove") ||
+    haystack.includes("excluded")
+  ) {
+    return "The source uses rejection, exclusion, or removal language. Bidframe treats that as a deal-breaker for human sign-off.";
+  }
+  if (haystack.includes("pass/fail")) {
+    return "This is marked Pass/Fail, so it must be checked before the bid team proceeds.";
+  }
+  return "This is mandatory and carries bid-risk language, so Bidframe surfaced it for human approval.";
 }
 
 export function RequirementPanel({
@@ -241,6 +276,14 @@ function RequirementZone({
         </div>
       </div>
 
+      {requirement.is_gating && (
+        <ExplainabilityBlock
+          requirement={requirement}
+          canVerify={Boolean(pdfUrl)}
+          onVerify={() => setVerifyOpen(true)}
+        />
+      )}
+
       {verifyOpen && (
         <SourceVerifyOverlay
           requirement={requirement}
@@ -249,6 +292,83 @@ function RequirementZone({
         />
       )}
     </Zone>
+  );
+}
+
+function ExplainabilityBlock({
+  requirement,
+  canVerify,
+  onVerify,
+}: {
+  requirement: Requirement;
+  canVerify: boolean;
+  onVerify: () => void;
+}) {
+  const evidenceCount = requirement.answer?.evidence_refs.length ?? 0;
+  const source = requirement.source_clause
+    ? `p.${requirement.source_page}, ${requirement.source_clause}`
+    : `p.${requirement.source_page}`;
+  const next =
+    requirement.status === "pending"
+      ? "Open the source, inspect the evidence, then approve by name, edit the answer, or flag it for a colleague."
+      : "This decision is recorded. Reopen it if the source check changes your mind.";
+
+  return (
+    <div className="mt-4 max-w-[72ch] rounded-md border border-signal-oxblood-frame/35 bg-paper-recessed p-3 shadow-[var(--depth-pressed)]">
+      <p className="font-mono text-[11px] font-medium uppercase tracking-wide text-signal-oxblood">
+        Why Bidframe flagged this
+      </p>
+      <dl className="mt-2 grid gap-2 text-sm leading-relaxed text-ink sm:grid-cols-2">
+        <div>
+          <dt className="font-mono text-[11px] uppercase tracking-wide text-ink-muted">
+            Why flagged
+          </dt>
+          <dd>{flagReason(requirement)}</dd>
+        </div>
+        <div>
+          <dt className="font-mono text-[11px] uppercase tracking-wide text-ink-muted">
+            Source
+          </dt>
+          <dd>
+            <span className="font-mono text-accent">{source}</span>
+            {requirement.source_filename && (
+              <span className="text-ink-muted"> · {requirement.source_filename}</span>
+            )}
+            {canVerify && (
+              <button
+                type="button"
+                onClick={onVerify}
+                className="ml-2 text-forest transition-colors hover:text-forest-hover hover:underline"
+              >
+                See it in the document
+              </button>
+            )}
+          </dd>
+        </div>
+        <div>
+          <dt className="font-mono text-[11px] uppercase tracking-wide text-ink-muted">
+            Confidence state
+          </dt>
+          <dd>{confidenceState(requirement)}</dd>
+        </div>
+        <div>
+          <dt className="font-mono text-[11px] uppercase tracking-wide text-ink-muted">
+            Evidence
+          </dt>
+          <dd>
+            {evidenceCount > 0
+              ? `${evidenceCount} bidder evidence citation${evidenceCount === 1 ? "" : "s"} linked below.`
+              : "No bidder evidence linked."}
+          </dd>
+        </div>
+        <div className="sm:col-span-2">
+          <dt className="font-mono text-[11px] uppercase tracking-wide text-ink-muted">
+            User must decide next
+          </dt>
+          <dd>{next}</dd>
+        </div>
+      </dl>
+    </div>
   );
 }
 
@@ -313,10 +433,29 @@ function SourceRef({
 // a single link there rather than an editor, so the gap review stays the one
 // place an answer is supplied.
 function NeedsInputNotice({ requirement }: { requirement: Requirement }) {
+  const { answerOpenQuestion } = useRequirements();
+  const [answerText, setAnswerText] = useState("");
   const open = (requirement.open_questions ?? []).filter((q) => !q.answer);
+  const current = open[0] ?? null;
+
+  function saveAnswer() {
+    const trimmed = answerText.trim();
+    if (!trimmed || !current) return;
+    answerOpenQuestion(requirement.id, current.id, trimmed);
+    setAnswerText("");
+  }
 
   return (
     <div className="flex max-w-[64ch] flex-col gap-3">
+      <div className="rounded-md border border-signal-amber/50 bg-paper-recessed p-3 shadow-[var(--depth-pressed)]">
+        <p className="text-sm leading-relaxed text-ink">
+          Bidframe did not draft this because no evidence was found.
+        </p>
+        <p className="mt-1 font-mono text-[11px] uppercase tracking-wide text-signal-amber">
+          It asks instead of inventing.
+        </p>
+      </div>
+
       {open.length > 0 ? (
         <ul className="flex flex-col gap-2">
           {open.map((question) => (
@@ -334,22 +473,58 @@ function NeedsInputNotice({ requirement }: { requirement: Requirement }) {
         </ul>
       ) : (
         <p className="text-sm leading-relaxed text-ink-muted">
-          This one needs an answer from you before it can be drafted.
+          The open question has been answered. Review the requirement, then
+          approve, edit, or flag it.
         </p>
       )}
-      <Link
-        href={`/answers#${open[0]?.id ?? ""}`}
-        className="text-sm text-forest transition-colors hover:text-forest-hover hover:underline"
-      >
-        Answer this in the gap review
-      </Link>
+
+      {current && (
+        <div className="flex flex-col gap-2">
+          <label
+            htmlFor={`gap-${current.id}`}
+            className="font-mono text-[11px] uppercase tracking-wide text-ink-muted"
+          >
+            Your answer
+          </label>
+          <textarea
+            id={`gap-${current.id}`}
+            value={answerText}
+            onChange={(event) => setAnswerText(event.target.value)}
+            rows={3}
+            placeholder="Answer the missing evidence question"
+            className="w-full resize-none border border-hairline bg-paper px-3 py-2 text-sm leading-relaxed text-ink outline-none focus:border-forest focus:ring-1 focus:ring-forest"
+          />
+          <div className="flex items-center justify-between gap-3">
+            <span className="font-mono text-[11px] text-ink-muted">
+              {open.length === 1 ? "Last question" : `${open.length} questions remaining`}
+            </span>
+            <button
+              type="button"
+              onClick={saveAnswer}
+              disabled={answerText.trim().length === 0}
+              className="bg-forest px-3.5 py-1.5 text-sm font-semibold text-paper transition-colors hover:bg-forest-hover disabled:cursor-not-allowed disabled:bg-ink-muted/40 disabled:text-paper/70"
+            >
+              Save answer
+            </button>
+          </div>
+        </div>
+      )}
+
+      {current && (
+        <Link
+          href={`/answers#${current.id}`}
+          className="text-sm text-forest transition-colors hover:text-forest-hover hover:underline"
+        >
+          Answer this in the gap review
+        </Link>
+      )}
     </div>
   );
 }
 
 // Zone 4, pinned to the bottom: the decision. Approve leads as the one forest
 // primary, then Edit, then Flag. Edit and Flag reveal a note textarea in place.
-// A gating item asks for a named confirm before it is approved. The self-writing
+// A gating item asks for a typed confirm before it is approved. The self-writing
 // audit line sits in the mono footer once a decision is recorded.
 function DecisionZone({
   requirement,
@@ -376,7 +551,11 @@ function DecisionZone({
   const [mode, setMode] = useState<"idle" | "edit" | "flag">("idle");
   const [note, setNote] = useState("");
   const [confirmingGating, setConfirmingGating] = useState(false);
+  const [confirmText, setConfirmText] = useState("");
+  const confirmInputId = useId();
+  const confirmHelpId = useId();
   const resolved = requirement.status !== "pending";
+  const confirmReady = confirmText === GATING_CONFIRM_TEXT;
 
   // In focus mode, e / f drop straight into the note flow (the textarea then
   // autofocuses and owns the keyboard). Elsewhere the matrix-level handler
@@ -397,11 +576,13 @@ function DecisionZone({
       if (event.key === "e") {
         event.preventDefault();
         setConfirmingGating(false);
+        setConfirmText("");
         setNote(requirement.decision?.note ?? "");
         setMode("edit");
       } else if (event.key === "f") {
         event.preventDefault();
         setConfirmingGating(false);
+        setConfirmText("");
         setNote("");
         setMode("flag");
       }
@@ -425,10 +606,23 @@ function DecisionZone({
   function handleApprove() {
     if (requirement.is_gating && !confirmingGating) {
       setConfirmingGating(true);
+      setConfirmText("");
       return;
     }
+    if (requirement.is_gating && !confirmReady) return;
     setConfirmingGating(false);
+    setConfirmText("");
     onApprove(requirement.id);
+  }
+
+  function submitGatingConfirm(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    handleApprove();
+  }
+
+  function cancelGatingConfirm() {
+    setConfirmingGating(false);
+    setConfirmText("");
   }
 
   return (
@@ -448,80 +642,118 @@ function DecisionZone({
         )}
       </div>
 
-      {requirement.is_gating && confirmingGating && mode === "idle" && (
-        <p className="mb-3 max-w-[64ch] text-sm leading-relaxed text-ink">
-          This is a deal-breaker requirement. Confirm your answer is accurate.
-        </p>
-      )}
-
       {mode === "idle" ? (
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={handleApprove}
-            className="bg-forest px-4 py-1.5 text-sm font-semibold text-paper transition-colors hover:bg-forest-hover"
-          >
-            {requirement.is_gating && confirmingGating
-              ? "Confirm approve"
-              : "Approve"}
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setConfirmingGating(false);
-              setNote(requirement.decision?.note ?? "");
-              setMode("edit");
-            }}
-            className="px-3 py-1.5 text-sm text-ink-muted transition-colors hover:text-ink"
-          >
-            Edit
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setConfirmingGating(false);
-              setNote("");
-              setMode("flag");
-            }}
-            className="px-3 py-1.5 text-sm text-ink-muted transition-colors hover:text-ink"
-          >
-            Flag
-          </button>
-          {resolved && (
-            <button
-              type="button"
-              onClick={() => reopen(requirement.id)}
-              className="px-3 py-1.5 text-sm text-ink-muted transition-colors hover:text-ink"
+        <>
+          {requirement.is_gating && confirmingGating && (
+            <form
+              onSubmit={submitGatingConfirm}
+              className="mb-3 max-w-[64ch] rounded-md border border-signal-oxblood-frame/35 bg-paper-recessed p-3 shadow-[var(--depth-pressed)]"
             >
-              Reopen
-            </button>
+              <label
+                htmlFor={confirmInputId}
+                className="block text-sm leading-relaxed text-ink"
+              >
+                Type{" "}
+                <span className="font-mono font-semibold text-signal-oxblood">
+                  {GATING_CONFIRM_TEXT}
+                </span>{" "}
+                to approve this deal-breaker requirement by name.
+              </label>
+              <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center">
+                <input
+                  id={confirmInputId}
+                  value={confirmText}
+                  onChange={(event) => setConfirmText(event.target.value)}
+                  autoFocus
+                  autoComplete="off"
+                  spellCheck={false}
+                  aria-describedby={confirmHelpId}
+                  className="min-w-0 flex-1 border border-hairline bg-paper px-3 py-2 font-mono text-sm text-ink outline-none focus:border-forest focus:ring-1 focus:ring-forest"
+                />
+                <button
+                  type="submit"
+                  disabled={!confirmReady}
+                  className="bg-forest px-3.5 py-2 text-sm font-semibold text-paper transition-colors hover:bg-forest-hover disabled:cursor-not-allowed disabled:bg-ink-muted/40 disabled:text-paper/70"
+                >
+                  Approve
+                </button>
+                <button
+                  type="button"
+                  onClick={cancelGatingConfirm}
+                  className="px-3.5 py-2 text-sm text-ink-muted transition-colors hover:text-ink"
+                >
+                  Cancel
+                </button>
+              </div>
+              <p
+                id={confirmHelpId}
+                className="mt-2 font-mono text-[11px] leading-relaxed text-ink-muted"
+              >
+                Approval stays locked until the entry exactly matches{" "}
+                {GATING_CONFIRM_TEXT}.
+              </p>
+            </form>
           )}
-          <span className="ml-auto flex items-center gap-3">
-            {confirmingGating && (
+
+          <div className="flex flex-wrap items-center gap-2">
+            {!confirmingGating && (
               <button
                 type="button"
-                onClick={() => setConfirmingGating(false)}
-                className="text-sm text-ink-muted transition-colors hover:text-ink"
+                onClick={handleApprove}
+                className="bg-forest px-4 py-1.5 text-sm font-semibold text-paper transition-colors hover:bg-forest-hover"
               >
-                Cancel
+                {requirement.is_gating ? "Inspect source before approving" : "Approve"}
               </button>
             )}
             <button
               type="button"
-              onClick={onNext}
-              className="text-sm text-ink-muted transition-colors hover:text-ink"
+              onClick={() => {
+                cancelGatingConfirm();
+                setNote(requirement.decision?.note ?? "");
+                setMode("edit");
+              }}
+              className="px-3 py-1.5 text-sm text-ink-muted transition-colors hover:text-ink"
             >
-              Next
+              Edit
             </button>
             <button
               type="button"
-              onClick={onClose}
-              className="text-sm text-ink-muted transition-colors hover:text-ink"
+              onClick={() => {
+                cancelGatingConfirm();
+                setNote("");
+                setMode("flag");
+              }}
+              className="px-3 py-1.5 text-sm text-ink-muted transition-colors hover:text-ink"
             >
-              Close
+              Flag
             </button>
-          </span>
-        </div>
+            {resolved && (
+              <button
+                type="button"
+                onClick={() => reopen(requirement.id)}
+                className="px-3 py-1.5 text-sm text-ink-muted transition-colors hover:text-ink"
+              >
+                Reopen
+              </button>
+            )}
+            <span className="ml-auto flex items-center gap-3">
+              <button
+                type="button"
+                onClick={onNext}
+                className="text-sm text-ink-muted transition-colors hover:text-ink"
+              >
+                Next
+              </button>
+              <button
+                type="button"
+                onClick={onClose}
+                className="text-sm text-ink-muted transition-colors hover:text-ink"
+              >
+                Close
+              </button>
+            </span>
+          </div>
+        </>
       ) : (
         <div className="flex max-w-[64ch] flex-col gap-2.5">
           <textarea

@@ -65,6 +65,11 @@ export function AnswerPanel({ requirement }: { requirement: Requirement }) {
             <p className="whitespace-pre-wrap text-sm leading-relaxed text-ink">
               {answer.text}
             </p>
+            {answer.state === "human_edited" && (
+              <p className="mt-2 font-mono text-[11px] uppercase tracking-wide text-forest">
+                Edited by user. Your wording wins.
+              </p>
+            )}
             <button
               type="button"
               onClick={() => {
@@ -101,6 +106,11 @@ export function AnswerPanel({ requirement }: { requirement: Requirement }) {
       {answer && (
         <div className="flex shrink-0 flex-col gap-3 sm:w-56 sm:border-l sm:border-hairline sm:pl-8">
           <AnswerStateBadge state={answer.state} />
+          {answer.state === "human_edited" && (
+            <p className="font-mono text-xs leading-relaxed text-forest">
+              Human override recorded.
+            </p>
+          )}
 
           {answer.evidence_refs.length === 0 ? (
             <p className="max-w-[64ch] text-sm leading-relaxed text-ink-muted">

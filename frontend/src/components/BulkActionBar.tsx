@@ -12,6 +12,7 @@ import { useState } from "react";
 export function BulkActionBar({
   count,
   eligibleCount,
+  dealBreakerCount,
   onApprove,
   onFlag,
   onClear,
@@ -20,6 +21,9 @@ export function BulkActionBar({
   count: number;
   // How many of those are confident non-gating (the only ones Approve touches).
   eligibleCount: number;
+  // How many selected rows are deal-breakers. These can be flagged in bulk but
+  // never approved in bulk.
+  dealBreakerCount: number;
   onApprove: () => void;
   onFlag: (note: string) => void;
   onClear: () => void;
@@ -37,6 +41,7 @@ export function BulkActionBar({
 
   const approveLabel =
     eligibleCount === count ? "Approve" : `Approve ${eligibleCount} eligible`;
+  const hasDealBreakers = dealBreakerCount > 0;
 
   return (
     <div className="no-print fixed inset-x-0 bottom-6 z-[60] flex justify-center px-4">
@@ -44,6 +49,11 @@ export function BulkActionBar({
         <span className="font-mono text-xs text-ink">
           {count} selected
         </span>
+        {hasDealBreakers && (
+          <span className="rounded-full border border-signal-oxblood-frame/35 bg-paper px-2 py-0.5 font-mono text-[11px] text-signal-oxblood">
+            Deal-breakers cannot be bulk-approved
+          </span>
+        )}
         <span aria-hidden className="text-ink-muted/60">
           ·
         </span>
