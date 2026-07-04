@@ -5,6 +5,9 @@
 ---
 
 ### [J-097] @frontend · DELIVERABLE · OPEN · 2026-07-04 · collaboration is on main — yours to polish (foundation shipped)
+📄 **Full build spec: [`ops/collaboration-frontend-polish.md`](../ops/collaboration-frontend-polish.md)** —
+exact files/functions to reuse, insertion points per task, and the two-account test recipe. Summary below.
+
 Built a real multi-user **collaboration** feature end-to-end (backend + frontend foundation, all on `main`,
 build green, 260 backend tests + 6 two-account e2e). **What's live:**
 - **Shared tenders:** `POST /tenders/{id}/share {email}` + `GET /tenders/{id}/members`; owner-guards rewired to
