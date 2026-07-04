@@ -20,6 +20,7 @@ import {
   sourceDocumentKind,
   sourceKindLabel,
   sourceKindShortLabel,
+  sourceLocatorLabel,
   type SourceDocumentKind,
   sourceRefLabel,
 } from "@/lib/source-doc";
@@ -115,9 +116,9 @@ export interface MatrixSelection {
 // checkbox; without it the original geometry is untouched. Full literal strings.
 const ROW_GRID: Record<"plain" | "selectable", string> = {
   plain:
-    "grid-cols-[42px_24px_minmax(0,1fr)] sm:grid-cols-[46px_30px_1fr_auto]",
+    "grid-cols-[80px_22px_minmax(0,1fr)] sm:grid-cols-[92px_26px_minmax(0,1fr)_auto]",
   selectable:
-    "grid-cols-[58px_24px_minmax(0,1fr)] sm:grid-cols-[68px_30px_1fr_auto]",
+    "grid-cols-[98px_22px_minmax(0,1fr)] sm:grid-cols-[112px_26px_minmax(0,1fr)_auto]",
 };
 
 // The resting row wash, keyed to the confidence tier so the worklist carries a
@@ -215,14 +216,23 @@ function StatusWord({ req }: { req: Requirement }) {
 
 function SourceTypeBadge({ req }: { req: Requirement }) {
   const kind = sourceDocumentKind(req);
+  const badgeShape =
+    kind === "pdf"
+      ? "px-0 text-ink-muted/70"
+      : `rounded-[3px] border px-1 ${SOURCE_BADGE_TONE[kind]}`;
   return (
     <span
       title={sourceKindLabel(req)}
-      className={`inline-flex h-4 shrink-0 items-center rounded border px-1 font-mono text-[9px] font-medium leading-none ${SOURCE_BADGE_TONE[kind]}`}
+      className={`inline-flex h-[17px] shrink-0 items-center font-mono text-[8.5px] font-medium leading-none ${badgeShape}`}
     >
       {sourceKindShortLabel(kind)}
     </span>
   );
+}
+
+function matrixSourceRefLabel(req: Requirement): string {
+  if (sourceDocumentKind(req) === "pdf") return `p.${req.source_page}`;
+  return sourceLocatorLabel(req);
 }
 
 function DecisionActorChip({ req }: { req: Requirement }) {
@@ -284,7 +294,8 @@ function MatrixRow({
 
   // The register: each row carries its real clause ref down a quiet mono margin
   // (design-language). Fall back to the page when there is no clause.
-  const ref = sourceRefLabel(req);
+  const ref = matrixSourceRefLabel(req);
+  const fullRef = sourceRefLabel(req);
 
   // Rows read as a flagged zone, not a pinstripe: a faint tier-keyed wash that
   // deepens on hover (oxblood gating carries a pennant + alarm meter too). No
@@ -316,7 +327,10 @@ function MatrixRow({
           a gating pennant, then the clause ref, right-aligned in mono. The
           pennant marks the deal-breaker even on decided rows, where the alarm
           meter no longer shows. */}
-      <span className="flex items-start justify-end gap-1 pt-1 text-right font-mono text-[11px] leading-tight text-accent/85">
+      <span
+        title={fullRef}
+        className="flex min-w-0 items-start justify-end gap-1 overflow-hidden pt-1 text-right font-mono text-[11px] leading-tight text-accent/85"
+      >
         {selection && (
           <input
             type="checkbox"
@@ -350,7 +364,7 @@ function MatrixRow({
         )}
         <SourceTypeBadge req={req} />
         <DecisionActorChip req={req} />
-        {ref}
+        <span className="min-w-0 truncate">{ref}</span>
       </span>
 
       {/* The confidence bead, on the reading edge. */}
