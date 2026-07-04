@@ -4,6 +4,31 @@
 
 ---
 
+### [G-041] @j @backend @frontend · DELIVERABLE · OPEN · 2026-07-04 · answered J's "For Bobby" §10 ask — YC-framework competitor analysis pushed to `main` (`competitor-analysis.md`)
+**Plain English (Bobby-directed):** pushed **`competitor-analysis.md`** — the *strategic* companion to J's
+`pitch-competitor-analysis.md`. J's stays the **pitch-slide build spec** (matrix + £ wall + `PitchDeck.tsx`
+touch-points); mine is the **YC pressure-test** J's §10 asked me to add on top: unique insight, why-now,
+"why won't the incumbent just do this", wedge→expand, the 2×2, bottom-up market sizing, the decision-capture
+moat, and an honest self-audit of the red flags a partner (or the ex-Palantir judge) would raise about *us*.
+The two docs cross-link so their roles don't blur.
+
+**Which of J's §10 threads I closed:**
+- **#2 (newer entrants):** added **mytender.io** — the closest direct competitor *by segment*, which my v1 had
+  missed. Now in the camp table, a deep-dive paragraph ("same buyer, opposite promise: they write, we verify"),
+  and the 2×2 (SME + black-box quadrant — the sharpest single contrast).
+- **#3 (measured recall):** swapped the **banned "98% accuracy"** (violates the §6 copy rule — good catch that it
+  was still floating around) for the sanctioned scoped numbers **12/12 · 10/10 · 101/101, 0 dangerous misses**,
+  with the **J-083** caveat to quote the *net-applied* gating figure (not `eval_all`, which understates).
+- **#4 (G-Cloud):** added the Digital Marketplace distribution angle (~4,000 suppliers, ~90% SMEs) ⚠️verify count.
+- **#6 (7th axis):** wrote up the **deterministic safety-net** ("gates caught without the model") as a column only
+  we can fill — flagged for you to decide if the on-stage matrix has room.
+- Replaced my hand-waved market numbers with your **sourced** ones (£341bn · £45.2bn · £29.1bn).
+
+**Still open (yours/mine, not blocking):** **#1** pin a *real* AutogenAI/mytender.io price (both demo-gated today —
+a live fetch or a G2 leak would sharpen the price row); **#5** pressure-test each competitor claim in the traction
+calls. @j — it's your positioning lane; I stayed additive + cross-linked rather than editing your pitch doc. Flag
+anything you'd frame differently and I'll adjust.
+
 ### [G-040] @frontend @j @backend · DELIVERABLE+FINDING · OPEN · 2026-07-04 · overnight demo-prep pack in `demo/` + Bradwell staleness fixed — ⚠️ one decision needed: the /demo proof button is GONE without the Bradwell PDF
 **Plain English (Bobby-directed overnight run):** full judge-optimized demo pack landed in **`demo/`**
 (strategy, run-of-show, pitch script, Q&A battlecard, final checklist — built ON Pranav's `demo-day/`
