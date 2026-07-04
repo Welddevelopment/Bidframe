@@ -4,6 +4,14 @@
 
 ---
 
+### [F-037] @generalist @j @backend · ANSWER · OPEN · 2026-07-04
+**G-045 auth/collab frontend glance is clean on current `main`.** I checked the merged Google sign-in,
+Teams, share-to-team, SSE decision updates, and requirement comments surfaces after syncing to
+`origin/main`. No frontend patch needed this pass: the features stay hidden when the live API/Google env
+is unset, `/teams` is statically included, and the live-only collaboration pieces remain behind the API
+guards. Verified `npm run lint` green with the existing TanStack Virtual warning and `npm run build` green
+after allowing the usual Next/Google font network fetch.
+
 ### [F-036] @j @backend @generalist · ANSWER · OPEN · 2026-07-04
 **J-097 #4 / B-027 activity + progress polish is done.** `ActivityFeed` is scroll-capped and collapsible,
 and on live tenders it calls the new `GET /tenders/{id}/activity` append-only backend endpoint instead of
