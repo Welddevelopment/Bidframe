@@ -3008,7 +3008,7 @@ body {
 
 .pitch-trailmap__fieldnotes {
   position: absolute;
-  left: 89%;
+  left: 63%;
   top: 0.35rem;
   font-family: var(--font-mono-ibm), monospace;
   font-size: clamp(0.5rem, 0.6vw, 0.66rem);
@@ -4717,6 +4717,291 @@ body {
   margin-top: 0.45rem;
   font-size: 0.92rem;
   line-height: 1.38;
+}
+
+/* --- Pace ghost: elapsed time vs the rehearsed slide budget. Quiet until the
+   deck runs more than five seconds hot, then it turns amber. */
+.pitch-pace {
+  margin-left: 0.4rem;
+  font-style: normal;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  color: rgba(246, 242, 233, 0.5);
+}
+
+.pitch-pace--over {
+  color: var(--color-signal-amber);
+}
+
+/* --- Handoff cue: who takes the mic after this slide. Presenter chrome. */
+.pitch-handoff {
+  display: grid;
+  border-left: 1px solid rgba(246, 242, 233, 0.16);
+  padding: 0 0.55rem;
+  font-family: var(--font-mono-ibm), monospace;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+.pitch-handoff span {
+  font-size: 0.5rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.56;
+}
+
+.pitch-handoff strong {
+  margin-top: 0.12rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+  color: var(--color-signal-amber);
+}
+
+/* --- Rehearsal HUD: speaker + per-slide countdown, readable from a couch. */
+.pitch-rehearsal {
+  position: absolute;
+  z-index: 90;
+  left: clamp(1rem, 1.8vw, 2rem);
+  bottom: clamp(4rem, 5.2vw, 5.4rem);
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  border: 1px solid rgba(246, 242, 233, 0.2);
+  border-left: 4px solid var(--color-signal-amber);
+  background: rgba(17, 26, 19, 0.88);
+  padding: 0.7rem 1rem;
+  color: var(--color-paper);
+  box-shadow: 0 20px 42px rgba(0, 0, 0, 0.36);
+  backdrop-filter: blur(12px);
+}
+
+.pitch-rehearsal span {
+  font-family: var(--font-head), Georgia, serif;
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  font-weight: 650;
+  line-height: 1;
+}
+
+.pitch-rehearsal strong {
+  font-family: var(--font-mono-ibm), monospace;
+  font-size: clamp(1.1rem, 1.6vw, 1.6rem);
+  color: var(--color-signal-light-green);
+}
+
+.pitch-rehearsal strong.is-closing {
+  color: var(--color-signal-amber);
+}
+
+.pitch-rehearsal em {
+  font-style: normal;
+  font-family: var(--font-mono-ibm), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.66;
+}
+
+/* --- Walk into the product: the real MatrixView mounted over the stage. */
+.pitch-portal {
+  position: absolute;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+.pitch-portal__chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(33, 29, 23, 0.18);
+  background: var(--color-ink);
+  padding: 0.45rem clamp(0.75rem, 1.2vw, 1.25rem);
+  font-family: var(--font-mono-ibm), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-paper);
+}
+
+.pitch-portal__chrome span {
+  opacity: 0.72;
+}
+
+.pitch-portal__chrome button {
+  border: 1px solid rgba(246, 242, 233, 0.32);
+  background: transparent;
+  padding: 0.3rem 0.65rem;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.pitch-portal__chrome button:hover,
+.pitch-portal__chrome button:focus-visible {
+  background: rgba(246, 242, 233, 0.14);
+  outline: none;
+}
+
+.pitch-portal__body {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+/* --- The portal hint on the Product slide: an inviting doorway, not chrome. */
+.pitch-portal-hint {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: clamp(0.6rem, 1vw, 1rem);
+  border: 1px solid rgba(33, 29, 23, 0.32);
+  background: transparent;
+  padding: 0.5rem 0.85rem;
+  font-family: var(--font-mono-ibm), monospace;
+  font-size: clamp(0.62rem, 0.76vw, 0.8rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: inherit;
+  cursor: pointer;
+  transition: background 220ms ease, border-color 220ms ease;
+}
+
+.pitch-portal-hint:hover,
+.pitch-portal-hint:focus-visible {
+  border-color: var(--color-signal-amber);
+  background: rgba(210, 164, 53, 0.14);
+  outline: none;
+}
+
+.pitch-portal-hint span {
+  display: grid;
+  place-items: center;
+  min-width: 1.4rem;
+  height: 1.4rem;
+  border: 1px solid currentColor;
+  font-size: 0.8rem;
+}
+
+/* --- Team monograms: engraved initials instead of raster avatars. */
+.pitch-team-card__monogram {
+  display: grid;
+  place-items: center;
+  width: clamp(4.5rem, 7vw, 6.5rem);
+  aspect-ratio: 1;
+  margin-inline: auto;
+  border: 1px solid rgba(33, 29, 23, 0.35);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(33, 29, 23, 0.06);
+  background:
+    radial-gradient(circle at 32% 28%, rgba(246, 242, 233, 0.9), transparent 60%),
+    var(--color-moss);
+  font-family: var(--font-head), Georgia, serif;
+  font-size: clamp(1.5rem, 2.2vw, 2.2rem);
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  color: var(--color-forest);
+}
+
+/* --- The tender-page facsimile: page 7 typeset in TSX. Dense wall of legal
+   text first; the five buried disqualifiers pick up their marks on reveal. */
+.pitch-facsimile {
+  height: 100%;
+  overflow: hidden;
+  background: #fbf8f1;
+  color: #2a251d;
+  padding: clamp(0.8rem, 1.3vw, 1.3rem) clamp(0.9rem, 1.5vw, 1.5rem);
+  font-family: var(--font-body), Georgia, serif;
+}
+
+.pitch-facsimile__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(42, 37, 29, 0.3);
+  padding-bottom: 0.4rem;
+  margin-bottom: clamp(0.5rem, 0.9vw, 0.85rem);
+  font-family: var(--font-mono-ibm), monospace;
+  font-size: clamp(0.44rem, 0.56vw, 0.6rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(42, 37, 29, 0.62);
+}
+
+.pitch-facsimile__section {
+  margin: clamp(0.5rem, 0.85vw, 0.85rem) 0 0.3rem;
+  font-size: clamp(0.6rem, 0.78vw, 0.82rem);
+  font-weight: 700;
+  color: rgba(42, 37, 29, 0.55);
+}
+
+.pitch-facsimile__section--live {
+  color: #2a251d;
+}
+
+.pitch-facsimile__body {
+  margin: 0 0 0.3rem;
+  font-size: clamp(0.56rem, 0.72vw, 0.78rem);
+  line-height: 1.45;
+}
+
+.pitch-facsimile__greek {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.pitch-facsimile__greek span {
+  display: block;
+  height: clamp(0.3rem, 0.42vw, 0.44rem);
+  background: rgba(42, 37, 29, 0.16);
+}
+
+.pitch-facsimile__clauses {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.18rem;
+}
+
+.pitch-facsimile__clauses li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.45rem;
+  padding: 0.18rem 0.35rem;
+  border-left: 3px solid transparent;
+  font-size: clamp(0.56rem, 0.72vw, 0.78rem);
+  line-height: 1.42;
+  transition:
+    background 420ms ease,
+    border-color 420ms ease;
+}
+
+.pitch-facsimile__clauses li span {
+  font-family: var(--font-mono-ibm), monospace;
+  font-size: 0.9em;
+  color: rgba(42, 37, 29, 0.6);
+}
+
+.pitch-facsimile__clauses li em {
+  font-style: normal;
+}
+
+.pitch-facsimile.is-highlighted .pitch-facsimile__clauses li {
+  border-left-color: var(--color-signal-oxblood);
+  background: rgba(180, 45, 36, 0.13);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pitch-facsimile__clauses li {
+    transition: none;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {

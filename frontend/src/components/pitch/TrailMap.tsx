@@ -16,10 +16,12 @@ import {
 // route dims and a dashed side-path lights up instead — Q&A material is
 // visibly off the trail, not more trail.
 
-// The route stops short of the right edge; the controls dock in the band's
-// last stretch and the field-notes side path branches off the final blaze.
+// The route sits centered in the band's free stretch: it starts far enough in
+// for the first label to breathe and ends well short of the controls dock
+// (timer, pace, handoff), which now claims the band's right quarter. The
+// field-notes side path branches off the final blaze.
 const TRAIL_PATH =
-  "M 18 30 C 110 12, 200 40, 300 26 C 400 12, 490 38, 580 24 C 670 12, 750 34, 852 22";
+  "M 70 30 C 140 14, 210 38, 290 26 C 370 12, 440 38, 510 24 C 560 14, 600 30, 640 22";
 
 const VIEW_W = 1000;
 const VIEW_H = 44;
@@ -131,7 +133,7 @@ export function TrailMap({
         {/* the field-notes side path, off the end of the route */}
         <path
           className="pitch-trailmap__sidepath"
-          d="M 852 22 C 866 14, 876 10, 888 7"
+          d="M 640 22 C 654 14, 664 10, 676 7"
           stroke="currentColor"
           strokeWidth="1.5"
           strokeDasharray="3 4"
