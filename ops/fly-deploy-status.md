@@ -27,41 +27,26 @@ Fly.io account owner.
 - Verified on the running machine itself (`fly ssh console`): `pipeline._HAVE_ENGINE == True` — the
   real engine package imported correctly, confirming the Dockerfile fix actually worked in production,
   not just in theory.
+- Verified the documented Alice demo account can log in against Fly (token not printed).
+- Verified the public `bidframe.org` frontend bundle is built with `https://bidframe-api.fly.dev` and
+  calls `/tenders/upload` on that host.
+- Verified a live ZIP/mixed-pack upload against Fly: `fixtures/mixed-pack/sample-pack.zip` →
+  `job-26bc1a66` → `done`, 21 requirements, 18 deal-breakers, 3 source docs, with per-file progress.
 
-## Left to do — needs a live SSH/interactive session (I'm not allowed to run these myself)
+## Left to do — presenter-machine acceptance only
 
-### 1. Create the two demo accounts on the live machine
-```powershell
-& "$env:USERPROFILE\.fly\bin\flyctl.exe" ssh console --app bidframe-api
-# once inside the container (cwd is /app):
-cd /app
-python -m app.admin create-user alice@bidframe.co.uk --name "Alice Bidmanager" --password alicepw123
-python -m app.admin create-user bob@bidframe.co.uk   --name "Bob Compliance"   --password bobpw12345
-exit
-```
-These persist on the `bidframe_data` volume, so they survive restarts/redeploys. **Do this before
-recording the demo.** If `flyctl` isn't installed wherever you run this: download
-`flyctl_<version>_Windows_x86_64.zip` from https://github.com/superfly/flyctl/releases/latest and
-extract `flyctl.exe` anywhere on PATH (this avoids the official installer's symlink step, which needs
-admin elevation and can hang in a non-interactive shell).
+The infrastructure/upload path is live. Before recording or presenting, do one browser-level pass on the
+actual presenter machine:
 
-### 2. Point the frontend (Vercel) at Fly
-In the Vercel project for `bidframe.org` → **Settings → Environment Variables**:
-```
-NEXT_PUBLIC_API_BASE_URL = https://bidframe-api.fly.dev
-```
-Then **trigger a redeploy** of the frontend (env vars only take effect on a fresh build — this is a
-Vercel rebuild, unaffected by Render's exhausted build minutes).
-
-### 3. End-to-end acceptance (the actual collab demo — do this after 1 + 2)
-1. Open `https://bidframe.org` → sign in as **Alice** (`alice@bidframe.co.uk` / `alicepw123`) → upload
-   a tender → wait for extraction.
+1. Open `https://bidframe.org` → sign in as **Alice** (`alice@bidframe.co.uk` / documented password) →
+   upload a small tender/pack → wait for extraction.
 2. **Share** the tender to `bob@bidframe.co.uk`.
-3. In a second browser/profile, sign in as **Bob** (`bob@bidframe.co.uk` / `bobpw12345`) → open the
-   same tender (must be 200, not 404).
+3. In a second browser/profile, sign in as **Bob** → open the same tender (must be 200, not 404).
 4. Both approve/edit/flag rows → confirm **"Approved by Alice / Bob"** attribution, the **activity
-   feed** updating, and **member avatars** — all real, persisted, server-stamped (actor can't be
-   forged from the client).
+   feed** updating, and **member avatars**.
+
+Latest non-browser proof (2026-07-04, Codex): health=openai, Alice login ok, public frontend points at
+Fly, live ZIP upload finished `done` with 21 requirements / 18 deal-breakers / 3 source docs.
 
 ## Gotchas (from the original runbook, still true)
 

@@ -2,6 +2,11 @@
 
 *Backend writes here. Everyone reads. Newest at top. See [README.md](README.md) for the protocol.*
 
+### [B-029] @j @frontend @generalist · ANSWER · RESOLVED · 2026-07-04 · [J-099/J-096] Fly upload path verified live
+**Direct live smoke is green.** Pulled/rebased latest main, confirmed `https://bidframe-api.fly.dev/health` → `{"status":"ok","extractor":"openai"}`, confirmed the public `bidframe.org` JS bundle embeds `https://bidframe-api.fly.dev` + `/tenders/upload`, logged in as the documented Alice demo account (token not printed), uploaded `fixtures/mixed-pack/sample-pack.zip`, and polled `job-26bc1a66` to `done`: **21 requirements, 18 deal-breakers, 3 source docs** (`sample-return-forms.docx`, `sample-pricing-schedule.xlsx`, `sample-compliance.csv`) with per-file progress stages.
+
+**Net:** the real user upload path is no longer Render-blocked; ZIP/mixed-pack upload works on Fly through the public frontend target. Remaining work is only a presenter-machine two-account collaboration click-through if you want screen-recording proof.
+
 ### [B-028] @j · DELIVERABLE · OPEN · 2026-07-04 · [J-099] Fly deploy is LIVE — 3 steps left, need Vercel/ssh access
 **`https://bidframe-api.fly.dev` is deployed and healthy.** Pranav (`pranav.bgri@gmail.com`) is the Fly
 account owner and did the account/secrets/ssh steps himself (I did everything else: installed `flyctl`,

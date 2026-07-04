@@ -8,15 +8,19 @@ Cloudflare — serverless can't run our SQLite + disk + long-running extraction)
 tender, attributed approve/edit/flag, activity feed) — with two real accounts for the demo/video.
 
 The repo is already Fly-ready: `backend/Dockerfile` exists (`WORKDIR /app`, respects injected `$PORT`),
-CORS reads `CORS_ORIGINS`, `DATABASE_URL` is env-driven, and `python -m app.admin create-user --name` exists.
+CORS reads `CORS_ORIGINS`, `DATABASE_URL` is env-driven, and the backend admin CLI exists
+(`cd backend && python -m app.admin create-user --name ...`).
 
 ---
 
 ## Ground truth (so you don't rediscover it)
 
-- **Dockerfile context is `backend/`** — `COPY . .` copies the backend into `/app`. So run `fly launch`
-  **from inside `backend/`**, not the repo root.
-- **In-container app root = `/app`**; admin CLI = `python -m app.admin ...` run there.
+- **Dockerfile context is the repo root** — `backend/app/pipeline.py` imports the sibling `engine/` package.
+  A backend-only build context silently drops the real reconcile/gating/autofill engine. Keep `fly.toml` at
+  the repo root and build with `backend/Dockerfile`.
+- **In-container repo root = `/app`**; backend package lives at `/app/backend`, engine at `/app/engine`.
+  Admin CLI can be run as `cd /app/backend && python -m app.admin ...` (or from `/app` as
+  `python -m backend.app.admin ...`).
 - **SQLite** defaults to `sqlite:///./tender.db` → `/app/tender.db` = **ephemeral** (wiped on every
   redeploy/restart). To persist accounts + tenders, mount a **Fly volume** and point `DATABASE_URL` at it.
 - **Uploads** live at `/app/data/uploads` (hardcoded, relative to the code) = ephemeral. Persisting them
@@ -33,14 +37,14 @@ CORS reads `CORS_ORIGINS`, `DATABASE_URL` is env-driven, and `python -m app.admi
 fly auth signup      # or: fly auth login  (a card is required even on the free allowance)
 ```
 
-## Step 2 — Launch the app (from backend/, don't deploy yet)
+## Step 2 — Launch the app (from repo root, don't deploy yet)
 ```bash
-cd backend
-fly launch --no-deploy --dockerfile Dockerfile --name bidframe-api --region lhr
+# run from the repository root, not backend/ — the Docker build needs backend/ + engine/
+fly launch --no-deploy --dockerfile backend/Dockerfile --name bidframe-api --region lhr
 ```
 - Pick region `lhr` (London) — closest to the UK judges / bidframe.org.
 - When it asks about a Postgres/Redis/DB — **say no** (we use SQLite on a volume).
-- This writes a `fly.toml` in `backend/`. Open it and make sure:
+- Keep/write `fly.toml` at the repo root. Open it and make sure:
   - `internal_port = 8000` (the container listens on `$PORT`, default 8000)
   - `force_https = true`
   - under `[[vm]]`/`[http_service]`: set **`min_machines_running = 1`** so it never scales to zero
@@ -50,7 +54,7 @@ fly launch --no-deploy --dockerfile Dockerfile --name bidframe-api --region lhr
 ```bash
 fly volumes create bidframe_data --region lhr --size 1     # 1 GB is plenty
 ```
-Then in `backend/fly.toml` add a mount:
+Then in root `fly.toml` add a mount:
 ```toml
 [mounts]
   source = "bidframe_data"
@@ -83,7 +87,8 @@ curl https://bidframe-api.fly.dev/health      # → {"status":"ok","extractor":"
 ## Step 6 — Create the two demo accounts (on the live machine)
 ```bash
 fly ssh console
-# inside the container (/app):
+# inside the container:
+cd /app/backend
 python -m app.admin create-user alice@bidframe.co.uk --name "Alice Bidmanager" --password alicepw123
 python -m app.admin create-user bob@bidframe.co.uk   --name "Bob Compliance"   --password bobpw12345
 exit
