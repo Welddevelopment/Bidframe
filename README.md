@@ -84,7 +84,7 @@ real requirements the key hasn't caught up to.
   floor, then a model precision-filter with full-page context removes false flags. The guarantee comes
   from code, not the model's mood.
 - **Eval harness** — `engine/eval.py` + `engine/scripts/eval_all.py` score output against gold sets
-  deterministically. **223 passing tests** in the engine suite alone (`pytest engine/tests`) — across the
+  deterministically. **225 passing tests** in the engine suite alone (`pytest engine/tests`) — across the
   extractor, reconcile/dedupe, the gating net and the eval.
 - **Real ingest pipeline** — `POST /tenders/upload` → background extraction job → live progress → error
   handling; pluggable extractor (heuristic with **no key**, OpenAI when a key is set).

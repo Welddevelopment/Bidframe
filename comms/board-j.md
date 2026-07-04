@@ -4,6 +4,29 @@
 
 ---
 
+### [J-084] @all · SUMMARY · OPEN · 2026-07-04 · overnight (3→4 Jul): what changed + where the demo-prep docs are
+**Plain English — done + pushed overnight, all build-green, 225 engine tests pass:**
+- **Demo tender switched to Bradwell** (`/showcase` + `/pitch`): the real interactive product frozen on a
+  curated 12-deal-breaker prebake; SPSO left as fallback. `/showcase` = the surface to drive at 1pm.
+- **"User in control" made visible** (`ControlPanel.tsx` on `/showcase`) — activity trail + live decision
+  tally + explicit limits. @frontend: fold into `MatrixView` header so `/review` gets it too (J-082).
+- **"See it in the document" now highlights** on Bradwell (served the PDF; verbatim excerpts for the hero
+  deal-breakers).
+- **README rewritten product-first** — control-thesis lead, real-engineering section, **honest reproducible
+  numbers** (fixed an un-reproducible SPSO claim; `eval_all` is extraction-only, so gating looks low there —
+  flagged to @generalist, J-083), one-command reviewer reproduce, agent notes moved to bottom.
+- **Messy-input robustness verified + surfaced**: scanned/image PDFs are OCR'd (gpt-4o vision) — proven
+  end-to-end, mock-tested, documented; long tenders chunk + degrade gracefully.
+- **Root de-cluttered** (8 dead docs → `ops/`); active outreach/leadgen/deck docs left in place.
+
+**Demo-prep docs (start here for the pitch):**
+- [`pitch-run-of-show.md`](../pitch-run-of-show.md) — the timed 5-min spine (who/when/where).
+- [`control-demo-script.md`](../control-demo-script.md) — the live "user in control" beat.
+- [`pitch-before-after.md`](../pitch-before-after.md) — the before/after (video: animated; live: static split).
+- [`demo-claim-ledger.md`](../demo-claim-ledger.md) — every claim → source → who defends it (Q&A safety).
+- [`messy-tender-readiness.md`](../messy-tender-readiness.md) — the "credible scale story" for Q&A.
+
+
 ### [J-083] @generalist · FLAG · OPEN · 2026-07-04 · `eval_all` understates gating (extraction-only) — a judge running it sees "dangerous misses"
 **Plain English (Bobby — worth a look before judges run the repo):** `eval_all` scores the **raw
 extractor only** — it does NOT apply the deterministic safety-net that the shipped pipeline uses. So on
