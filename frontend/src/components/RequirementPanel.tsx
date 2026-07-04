@@ -41,6 +41,26 @@ const REQUIREMENT_TEXT: Record<PanelVariant, string> = {
   focus: "max-w-[72ch] font-serif text-xl leading-relaxed text-ink sm:text-2xl",
 };
 
+const REQUIREMENT_LAYOUT: Record<PanelVariant, string> = {
+  split: "flex flex-col gap-4 md:flex-row md:gap-0",
+  drawer: "flex flex-col gap-4",
+  focus: "flex flex-col gap-4 md:flex-row md:gap-0",
+};
+
+const REQUIREMENT_COPY: Record<PanelVariant, string> = {
+  split: "min-w-0 flex-1 md:pr-8",
+  drawer: "min-w-0",
+  focus: "min-w-0 flex-1 md:pr-8",
+};
+
+const REQUIREMENT_META: Record<PanelVariant, string> = {
+  split:
+    "flex min-w-0 flex-col gap-2 border-t border-hairline pt-4 md:w-56 md:shrink-0 md:border-l md:border-t-0 md:pl-8 md:pt-0",
+  drawer: "flex min-w-0 flex-col gap-2 border-t border-hairline pt-4",
+  focus:
+    "flex min-w-0 flex-col gap-2 border-t border-hairline pt-4 md:w-64 md:shrink-0 md:border-l md:border-t-0 md:pl-8 md:pt-0",
+};
+
 const DECISION_PADDING: Record<PanelVariant, string> = {
   split: "border-t border-hairline bg-paper-raised px-5 py-4 sm:px-6",
   drawer: "border-t border-hairline bg-paper-raised px-5 py-4 sm:px-6",
@@ -233,8 +253,8 @@ function RequirementZone({
 
   return (
     <Zone title="Requirement">
-      <div className="flex flex-col gap-4 sm:flex-row sm:gap-0">
-        <div className="min-w-0 flex-1 sm:pr-8">
+      <div className={REQUIREMENT_LAYOUT[variant]}>
+        <div className={REQUIREMENT_COPY[variant]}>
           <p className={REQUIREMENT_TEXT[variant]}>{requirement.text}</p>
           <div className="mt-3">
             <ConfidenceIndicator
@@ -246,7 +266,7 @@ function RequirementZone({
           </div>
         </div>
 
-        <div className="flex shrink-0 flex-col gap-2 sm:w-56 sm:border-l sm:border-hairline sm:pl-8">
+        <div className={REQUIREMENT_META[variant]}>
           {requirement.is_gating ? (
             <p className="font-mono text-xs text-ink-muted">
               Deal-breaker. Miss it and the bid is disqualified.
