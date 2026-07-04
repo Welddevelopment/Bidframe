@@ -1,6 +1,6 @@
 # 5-minute run-of-show — the 1pm live pitch
 
-> The timed spine that ties it all together. The word-for-word track is `pitch-script.md`; detailed
+> The timed spine that ties it all together. The word-for-word track is `demo/pitch-script.md`; detailed
 > beats live in `control-demo-script.md` (the control moment), `pitch-before-after.md` (the
 > before/after), and `demo-claim-ledger.md` (Q&A numbers). This is the clock + the handoffs. Target
 > **5:00**: a **3-minute, 5-slide deck with two speakers** (Jawad opens and closes; Pranav owns
