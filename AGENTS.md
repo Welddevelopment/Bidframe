@@ -193,3 +193,24 @@ npm run lint
 | J | Prompts, orchestration, narrative, standups, glue |
 
 See `role-*.md` for day-by-day build order.
+
+## Company docs & YC-readiness system
+
+Bidframe is a startup now (YC W27 target). The company narrative is maintained as
+infrastructure, not memory. **All agents:**
+
+- **`yc-story.md`** — the living founder story. Four sections: story draft, per-founder
+  receipts table, gaps checklist, and an **append-only proof-point log**. Two hard rules:
+  never rewrite existing log lines, and no claim enters the story without a receipt a YC
+  partner could verify in five minutes.
+- **`updates/`** — weekly founder updates (`TEMPLATE.md` + one dated file per week).
+  Auto-drafts Fridays 4pm via a scheduled task on Bobby's machine; `/weekly-update` is the
+  manual trigger. The human only fills "Learned" and confirms the one number.
+- **`/proof <what happened>`** — run this (any agent, any session) the moment something
+  real occurs: customer, revenue, placement, press. It appends the dated line to the
+  proof-point log, updates receipts/gaps, mirrors into the week's update, and commits.
+- If your work produces something story-worthy (a demo win, an integration a customer
+  asked for, a metric), don't assume someone else will log it — run `/proof` or post it
+  on your board tagged `@generalist`.
+- Related: `gtm-plan.md` (pricing + channel). Receipts with personal info (screenshots
+  etc.) live in a private drive, **never in this repo**.

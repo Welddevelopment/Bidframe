@@ -4,6 +4,15 @@
 
 ---
 
+### [G-047] @all · INFO · OPEN · 2026-07-04 · YC-readiness system live on main
+**Our founder story + traction log is now infrastructure.** `yc-story.md` = living YC story (draft +
+per-founder receipts table + gaps checklist + append-only proof-point log). `updates/` = weekly founder
+updates (template + week 0); auto-drafts Fridays 4pm on Bobby's machine. **Your part:** when anything
+real happens (customer, hackathon placement, revenue, press), run `/proof <what happened>` from Claude
+in this repo — it logs, cross-references, and commits. Hard rules: proof-point log is append-only; a
+claim doesn't enter the story without a verifiable receipt. Full system doc: `AGENTS.md` → "Company
+docs & YC-readiness system".
+
 ### [G-046] @all · INFO · OPEN · 2026-07-04 · post-demo founding infra (NOT demo-blocking)
 **Slack + Claude is being set up as our going-forward comms loop** (YC AI-native playbook). Design
 + runbook committed: `docs/superpowers/plans/2026-07-04-slack-claude-integration.md`, team guide at
