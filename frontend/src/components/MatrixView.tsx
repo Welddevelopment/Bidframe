@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   useCallback,
   useEffect,
@@ -161,6 +162,7 @@ export function MatrixView({
     restoreDecisions,
     answerOpenQuestion,
   } = useRequirements();
+  const router = useRouter();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<GroupKey | null>(null);
   // Category filter (empty set = all categories shown) and the row sort order.
@@ -537,6 +539,35 @@ export function MatrixView({
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [triage.groups, selectedId, approveWithUndo, focusMode, paletteOpen]);
+
+  useEffect(() => {
+    if (!stageReturnHref) return;
+    const returnHref = stageReturnHref;
+
+    function onStageAdvance(event: KeyboardEvent) {
+      if (event.key !== "ArrowRight") return;
+
+      const target = event.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "A" ||
+          target.tagName === "BUTTON" ||
+          target.tagName === "INPUT" ||
+          target.tagName === "SELECT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+
+      event.preventDefault();
+      router.push(returnHref);
+    }
+
+    document.addEventListener("keydown", onStageAdvance, true);
+    return () => document.removeEventListener("keydown", onStageAdvance, true);
+  }, [router, stageReturnHref]);
 
   // Remember that the split has been open, so the resting view knows a return
   // from the split (cross-fade) from a first paint (staged reveal only). The

@@ -11,6 +11,7 @@ import bradwellPrebake from "@/data/bradwell-prebake.json";
 // the results are already computed. This is the stage walkthrough surface. No AuthGate so the
 // demo opens instantly.
 const demoTender = bradwellPrebake as unknown as Tender;
+const DEFAULT_STAGE_RETURN_HREF = "/pitch#5";
 
 export const metadata: Metadata = {
   title: "Bidframe — tender walkthrough",
@@ -29,7 +30,8 @@ function safeReturnTo(value: string | string[] | undefined) {
 
 export default async function ShowcasePage({ searchParams }: ShowcasePageProps) {
   const params = await searchParams;
-  const stageReturnHref = safeReturnTo(params?.returnTo);
+  const stageReturnHref =
+    safeReturnTo(params?.returnTo) ?? DEFAULT_STAGE_RETURN_HREF;
 
   return (
     <RequirementsProvider initialTender={demoTender}>
