@@ -170,10 +170,24 @@ export function SourceVerifyOverlay({
   );
 }
 
-// The honest match signal: a word beside a mark, never a score. Forest when the
-// excerpt is on the page verbatim, amber when it is only a close match, muted
-// while we look or when we can't pin the line (copywriting.md — show the source,
-// never overclaim).
+// The honest match signal, as one shared vocabulary: a word beside a mark, never
+// a score. Forest when the excerpt is on the page verbatim, amber when it is only
+// a close match, muted when we can't pin the line (copywriting.md — show the
+// source, never overclaim). This wording is canonical: the overlay's claim side
+// and the split's persistent evidence pane both read from here, so the product
+// never describes the same match two different ways.
+export function matchSignalLabel(
+  kind: MatchKind,
+  page: number,
+  isPdf = true
+): string {
+  if (kind === "exact") {
+    return isPdf ? `Matches the tender, p.${page}` : "Matches the document";
+  }
+  if (kind === "approximate") return "Close match, check the wording";
+  return "Shown from the extracted text";
+}
+
 function MatchSignal({
   kind,
   page,
@@ -194,7 +208,7 @@ function MatchSignal({
         <span aria-hidden className="text-forest">
           ✓
         </span>
-        {isPdf ? `Matches the tender, p.${page}` : "Matches the document"}
+        {matchSignalLabel(kind, page, isPdf)}
       </p>
     );
   }
@@ -205,13 +219,13 @@ function MatchSignal({
           aria-hidden
           className="h-2 w-2 shrink-0 rounded-full bg-signal-amber ring-1 ring-ink/30"
         />
-        Close match, check the wording
+        {matchSignalLabel(kind, page, isPdf)}
       </p>
     );
   }
   return (
     <p className="font-mono text-xs text-ink-muted">
-      Shown from the extracted text
+      {matchSignalLabel(kind, page, isPdf)}
     </p>
   );
 }

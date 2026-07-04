@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import type {
   Actor,
@@ -26,9 +26,20 @@ import {
   projectStore,
   saveAnswerStore,
 } from "@/lib/answer-store";
+import { compareWeakestFirst, hasDraft } from "@/lib/answers";
 
 const SAVE_FAILED =
   "Couldn't save that change to the server. It shows here, but may not have been kept. Check your connection, then redo it.";
+
+// A draft run in flight (live or the sample-mode replay): which cards are still
+// waiting for their answer (the card shows a skeleton), which just landed (the
+// card runs its one-shot settle), and the run's total for the "N of M drafted"
+// count. Null whenever no run is playing.
+export interface DraftRun {
+  pending: Set<string>;
+  landed: Set<string>;
+  total: number;
+}
 
 // The undo seam for batch decisions: what to capture before a bulk change so it
 // can be put back exactly (status + recorded decision), one entry per id.
@@ -63,6 +74,14 @@ interface RequirementsContextValue {
   ) => void;
   loadTender: (tenderId: string) => Promise<void>;
   draftAnswers: (provider?: "openai" | "mock", files?: File[]) => Promise<void>;
+  demoDraft: () => void;
+  draftRun: DraftRun | null;
+  // Draft-edit sessions for the answers workspace, keyed by requirement id so
+  // mid-edit text survives the card unmounting on a re-sort/filter change.
+  answerEdits: Record<string, string>;
+  beginAnswerEdit: (id: string, initial: string) => void;
+  updateAnswerEdit: (id: string, text: string) => void;
+  endAnswerEdit: (id: string) => void;
 }
 
 const RequirementsContext = createContext<RequirementsContextValue | null>(null);
@@ -183,21 +202,129 @@ export function RequirementsProvider({
     saveAnswerStore(persistKey, projectStore(requirements));
   }, [requirements, persistKey]);
 
+  // The draft run playing right now (live or replay), for the per-card
+  // skeleton/settle and the "N of M drafted" count. Null when idle.
+  const [draftRun, setDraftRun] = useState<DraftRun | null>(null);
+  // Timers for the staged landing, cleared on unmount so navigating away
+  // mid-run can't fire setState on a dead provider.
+  const revealTimers = useRef<number[]>([]);
+  useEffect(() => {
+    const timers = revealTimers.current;
+    return () => timers.forEach((t) => window.clearTimeout(t));
+  }, []);
+
+  // The staged landing shared by live drafting and the demo replay: swap each
+  // drafted requirement into view one at a time, in the given order (callers
+  // pass weakest-first, matching the workspace's default sort), so drafting
+  // reads as drafting rather than a form submit. Reduced motion lands
+  // everything at once — the run still works, it just doesn't perform.
+  function playReveal(finalById: Map<string, Requirement>, order: string[]) {
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced || order.length === 0) {
+      setRequirements((prev) => prev.map((req) => finalById.get(req.id) ?? req));
+      setDraftRun(null);
+      setDrafting(false);
+      return;
+    }
+    // Aim for a ~4.5s run whatever the answer count, clamped so two answers
+    // still read as a sequence and fifty don't take a minute.
+    const step = Math.min(700, Math.max(260, Math.round(4500 / order.length)));
+    order.forEach((id, index) => {
+      revealTimers.current.push(
+        window.setTimeout(() => {
+          setRequirements((prev) =>
+            prev.map((req) => (req.id === id ? finalById.get(id) ?? req : req))
+          );
+          setDraftRun((prev) =>
+            prev
+              ? {
+                  total: prev.total,
+                  pending: new Set([...prev.pending].filter((p) => p !== id)),
+                  landed: new Set(prev.landed).add(id),
+                }
+              : prev
+          );
+        }, 420 + index * step)
+      );
+    });
+    // Keep the landed set alive long enough for the last card's settle, then
+    // close the run.
+    revealTimers.current.push(
+      window.setTimeout(() => {
+        setDraftRun(null);
+        setDrafting(false);
+      }, 420 + order.length * step + 600)
+    );
+  }
+
   // Auditable autofill: ask the API to (re)draft grounded answers for the loaded
-  // tender, optionally against freshly-uploaded capability docs, then swap the enriched
-  // requirements + capability docs into the UI.
+  // tender, optionally against freshly-uploaded capability docs. The non-answer
+  // fields swap in at once; the drafted answers land through playReveal.
   async function draftAnswers(provider: "openai" | "mock" = "openai", files?: File[]) {
     if (!tenderId || !isApiEnabled()) return;
     setDrafting(true);
+    // While the request is in flight we don't yet know which cards will get a
+    // draft, so every card shows the in-flight skeleton; the run narrows to
+    // the actually-drafted set once the response arrives.
+    setDraftRun({
+      pending: new Set(requirements.map((req) => req.id)),
+      landed: new Set(),
+      total: requirements.length,
+    });
     try {
       const tender = await apiDraftAnswers(tenderId, { provider, files });
-      setRequirements(tender.requirements);
       setCapabilityDocs(tender.capability_docs ?? []);
       setSourceDocs(tender.source_docs ?? []);
       setAwardCriteria(tender.award_criteria ?? []);
-    } finally {
+      const drafted = tender.requirements.filter(hasDraft);
+      const draftedIds = new Set(drafted.map((req) => req.id));
+      // Swap everything else in now; hold the drafted answers back so each can
+      // land on its own beat.
+      setRequirements(
+        tender.requirements.map((req) =>
+          draftedIds.has(req.id)
+            ? { ...req, answer: null, draft_answer: null }
+            : req
+        )
+      );
+      setDraftRun({ pending: draftedIds, landed: new Set(), total: drafted.length });
+      playReveal(
+        new Map(tender.requirements.map((req) => [req.id, req])),
+        [...drafted].sort(compareWeakestFirst).map((req) => req.id)
+      );
+    } catch (err) {
+      setDraftRun(null);
       setDrafting(false);
+      throw err;
     }
+  }
+
+  // Scripted demo draft for sample mode (no live tender, no backend): the hero
+  // action still has to WORK in front of judges, so clear the prebaked answers
+  // (state only — the seed file is untouched) and re-play them through the same
+  // staged landing a live run uses. Honest by construction: it only ever
+  // replays answers the seeded run actually produced, never invents prose.
+  function demoDraft() {
+    if (drafting) return;
+    const drafted = requirements.filter(hasDraft);
+    if (drafted.length === 0) return;
+    const finalById = new Map(drafted.map((req) => [req.id, req]));
+    setDrafting(true);
+    setDraftRun({
+      pending: new Set(finalById.keys()),
+      landed: new Set(),
+      total: drafted.length,
+    });
+    setRequirements((prev) =>
+      prev.map((req) =>
+        finalById.has(req.id)
+          ? { ...req, answer: null, draft_answer: null }
+          : req
+      )
+    );
+    playReveal(finalById, [...drafted].sort(compareWeakestFirst).map((req) => req.id));
   }
 
   // Collaboration attribution: stamp the signed-in user onto a decision so the UI shows "who did
@@ -333,6 +460,25 @@ export function RequirementsProvider({
     }
   }
 
+  // Draft-edit sessions for the answers workspace, keyed by requirement id and
+  // held here rather than in the card so mid-edit text survives the card
+  // unmounting when a filter or re-sort moves it (a live-demo hazard when it
+  // was card-local useState). An id is "editing" while it has an entry.
+  const [answerEdits, setAnswerEdits] = useState<Record<string, string>>({});
+  function beginAnswerEdit(id: string, initial: string) {
+    setAnswerEdits((prev) => ({ ...prev, [id]: initial }));
+  }
+  function updateAnswerEdit(id: string, text: string) {
+    setAnswerEdits((prev) => ({ ...prev, [id]: text }));
+  }
+  function endAnswerEdit(id: string) {
+    setAnswerEdits((prev) => {
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
+  }
+
   // Human revises the drafted answer — record it as human-edited and keep the
   // deprecated draft_answer alias in sync. When no answer exists yet (a
   // requirement the autofill left blank), CREATE one from the human's text so
@@ -411,6 +557,12 @@ export function RequirementsProvider({
         answerOpenQuestion,
         loadTender,
         draftAnswers,
+        demoDraft,
+        draftRun,
+        answerEdits,
+        beginAnswerEdit,
+        updateAnswerEdit,
+        endAnswerEdit,
       }}
     >
       {children}

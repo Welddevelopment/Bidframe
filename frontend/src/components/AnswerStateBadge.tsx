@@ -1,7 +1,11 @@
 import type { AnswerState } from "@/types/requirement";
 
+// Colour semantics (design-language): accent teal = machine work traceable to
+// source, so the auto draft wears accent, not forest (forest is reserved for
+// the user's own action); amber = still needs input; ink = the human's own
+// words; muted = nothing here yet.
 const styles: Record<AnswerState, string> = {
-  auto: "bg-forest/10 text-forest ring-forest/30",
+  auto: "bg-accent/10 text-accent ring-accent/30",
   needs_input: "bg-signal-amber/15 text-signal-amber ring-signal-amber/30",
   human_edited: "bg-ink/5 text-ink ring-ink/15",
   empty: "bg-paper text-ink-muted ring-hairline",

@@ -4,34 +4,60 @@ import { useState } from "react";
 import type { Requirement } from "@/types/requirement";
 import { useRequirements } from "@/context/RequirementsContext";
 import { AnswerStateBadge } from "./AnswerStateBadge";
+import styles from "./AnswerPanel.module.css";
 
 // The drafted-answer zone of the requirement panel (layout.md section 6). It
 // lives inside the panel's measure and margin: the warm answer prose sits in a
 // 64ch reading column on the left, and everything machine-ish (the answer-state
-// badge, the evidence refs, the page numbers) runs down the mono margin on the
-// right. The draft is provisional, so it carries at most a 2px accent edge,
-// never a coloured slab. Evidence reads as "Backed by your {doc}, p.{page}" and
-// expands in place to the verbatim excerpt.
+// badge, the edit control, the evidence refs, the page numbers) runs down the
+// mono margin on the right. The draft is provisional, so it carries at most a
+// 2px accent edge, never a coloured slab. Evidence reads as "Backed by your
+// {doc}, p.{page}" — the first receipt sits open so the grounding is visible
+// without a click; further refs expand in place to the verbatim excerpt.
+// While a draft run is in flight the prose column shows a shimmer skeleton,
+// and a landing answer settles in with a one-shot rise (AnswerPanel.module.css,
+// reduced-motion gated). Edit state lives in context, keyed by requirement id,
+// so mid-edit text survives the card unmounting on a re-sort or filter change.
 
 export function AnswerPanel({ requirement }: { requirement: Requirement }) {
-  const { capabilityDocs, editAnswer } = useRequirements();
+  const {
+    capabilityDocs,
+    editAnswer,
+    draftRun,
+    answerEdits,
+    beginAnswerEdit,
+    updateAnswerEdit,
+    endAnswerEdit,
+  } = useRequirements();
   const answer = requirement.answer ?? null;
-  const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState(answer?.text ?? "");
+  const draft = answerEdits[requirement.id];
+  const editing = draft !== undefined;
+  // This card's place in a draft run: waiting shows the skeleton, landing runs
+  // the one-shot settle. An open edit always wins over the skeleton — never
+  // hide a judge's half-typed text behind a loading state.
+  const pending = !editing && (draftRun?.pending.has(requirement.id) ?? false);
+  const justLanded =
+    !!answer && (draftRun?.landed.has(requirement.id) ?? false);
 
   function docName(docId: string): string {
     return capabilityDocs.find((d) => d.doc_id === docId)?.filename ?? docId;
   }
 
   return (
-    <div className="flex flex-col gap-4 @2xl:flex-row @2xl:gap-0">
+    <div
+      className={`flex flex-col gap-4 @2xl:flex-row @2xl:gap-0 ${
+        justLanded ? styles.settle : ""
+      }`}
+    >
       {/* Prose column: the warm reading measure, left-aligned, capped at 64ch. */}
       <div className="min-w-0 flex-1 @2xl:pr-8">
         {editing ? (
           <div className="flex max-w-[64ch] flex-col gap-2.5">
             <textarea
               value={draft}
-              onChange={(event) => setDraft(event.target.value)}
+              onChange={(event) =>
+                updateAnswerEdit(requirement.id, event.target.value)
+              }
               rows={5}
               autoFocus
               placeholder="Write your answer"
@@ -42,7 +68,7 @@ export function AnswerPanel({ requirement }: { requirement: Requirement }) {
                 type="button"
                 onClick={() => {
                   editAnswer(requirement.id, draft.trim());
-                  setEditing(false);
+                  endAnswerEdit(requirement.id);
                 }}
                 className="bg-forest px-3.5 py-1.5 text-sm font-semibold text-paper transition-colors hover:bg-forest-hover"
               >
@@ -50,14 +76,24 @@ export function AnswerPanel({ requirement }: { requirement: Requirement }) {
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setDraft(answer?.text ?? "");
-                  setEditing(false);
-                }}
+                onClick={() => endAnswerEdit(requirement.id)}
                 className="px-3.5 py-1.5 text-sm text-ink-muted transition-colors hover:text-ink"
               >
                 Cancel
               </button>
+            </div>
+          </div>
+        ) : pending ? (
+          // In-flight skeleton: placeholder lines where the prose will land.
+          <div
+            role="status"
+            aria-label="Drafting this answer"
+            className="max-w-[64ch] border-l-2 border-hairline pl-3"
+          >
+            <div className="flex flex-col gap-2 py-1">
+              <div className={`${styles.skeletonLine} w-[95%]`} />
+              <div className={`${styles.skeletonLine} w-[88%]`} />
+              <div className={`${styles.skeletonLine} w-[62%]`} />
             </div>
           </div>
         ) : answer ? (
@@ -70,16 +106,6 @@ export function AnswerPanel({ requirement }: { requirement: Requirement }) {
                 Edited by user. Your wording wins.
               </p>
             )}
-            <button
-              type="button"
-              onClick={() => {
-                setDraft(answer.text);
-                setEditing(true);
-              }}
-              className="mt-2 text-xs text-forest transition-colors hover:text-forest-hover hover:underline"
-            >
-              Edit answer
-            </button>
           </div>
         ) : (
           <div className="max-w-[64ch]">
@@ -89,23 +115,34 @@ export function AnswerPanel({ requirement }: { requirement: Requirement }) {
             </p>
             <button
               type="button"
-              onClick={() => {
-                setDraft("");
-                setEditing(true);
-              }}
-              className="mt-2 text-xs text-forest transition-colors hover:text-forest-hover hover:underline"
+              onClick={() => beginAnswerEdit(requirement.id, "")}
+              className="no-print mt-2 inline-flex items-center gap-1.5 rounded-md border border-hairline bg-paper px-2.5 py-1.5 text-xs font-medium text-ink shadow-[var(--depth-control)] transition-colors hover:border-forest hover:text-forest"
             >
+              <PencilIcon />
               Write answer
             </button>
           </div>
         )}
       </div>
 
-      {/* Mono margin: the answer-state badge, then the evidence refs as quiet
-          source lines that expand in place to the verbatim excerpt. */}
-      {answer && (
+      {/* Mono margin: the answer-state badge and edit control, then the
+          evidence refs as quiet source lines that expand in place to the
+          verbatim excerpt. */}
+      {answer && !pending && (
         <div className="flex shrink-0 flex-col gap-3 @2xl:w-56 @2xl:border-l @2xl:border-hairline @2xl:pl-8">
-          <AnswerStateBadge state={answer.state} />
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <AnswerStateBadge state={answer.state} />
+            {!editing && (
+              <button
+                type="button"
+                onClick={() => beginAnswerEdit(requirement.id, answer.text)}
+                className="no-print inline-flex shrink-0 items-center gap-1.5 rounded-md border border-hairline bg-paper px-2 py-1 font-mono text-[11px] font-medium text-ink shadow-[var(--depth-control)] transition-colors hover:border-forest hover:text-forest"
+              >
+                <PencilIcon />
+                Edit
+              </button>
+            )}
+          </div>
           {answer.state === "human_edited" && (
             <p className="font-mono text-xs leading-relaxed text-forest">
               Human override recorded.
@@ -125,6 +162,9 @@ export function AnswerPanel({ requirement }: { requirement: Requirement }) {
                   doc={docName(ref.doc_id)}
                   page={ref.page}
                   excerpt={ref.excerpt}
+                  // The first receipt sits open so every drafted answer shows
+                  // its grounding without a click; the rest stay collapsed.
+                  defaultOpen={index === 0}
                 />
               ))}
             </ul>
@@ -141,12 +181,14 @@ function EvidenceRefItem({
   doc,
   page,
   excerpt,
+  defaultOpen = false,
 }: {
   doc: string;
   page: number;
   excerpt: string;
+  defaultOpen?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
 
   return (
     <li className="font-mono text-xs leading-relaxed">
@@ -168,5 +210,25 @@ function EvidenceRefItem({
         &ldquo;{excerpt}&rdquo;
       </p>
     </li>
+  );
+}
+
+// The edit affordance's glyph: a small pencil, stroke-drawn like the repo's
+// other inline icons.
+function PencilIcon() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 16 16"
+      className="h-3 w-3 shrink-0"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m11.3 2.7 2 2L5 13l-2.7.7L3 11l8.3-8.3Z" />
+      <path d="m9.8 4.2 2 2" />
+    </svg>
   );
 }

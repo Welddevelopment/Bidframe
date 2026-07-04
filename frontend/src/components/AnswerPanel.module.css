@@ -1,0 +1,54 @@
+/* Drafting motion for the answers workspace. The landing page's reveal
+   vocabulary (hero-row-pop etc.) is deliberately scoped away from product
+   surfaces, so the two moves the draft run needs are recreated here in
+   miniature: a shimmer over the placeholder lines while an answer is in
+   flight, and a one-shot settle when it lands. Both are gated behind
+   prefers-reduced-motion — reduced motion shows static placeholder bars and
+   answers that simply appear, matching the repo's motion discipline. */
+
+.skeletonLine {
+  height: 0.7rem;
+  border-radius: 0.25rem;
+  background-color: var(--color-paper-recessed);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .skeletonLine {
+    background-image: linear-gradient(
+      90deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.55) 50%,
+      transparent 80%
+    );
+    background-size: 200% 100%;
+    animation: answer-shimmer 1.4s ease-in-out infinite;
+  }
+
+  .settle {
+    animation: answer-settle 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+/* The sheen sweeping across the placeholder lines — the only looping motion in
+   the product, and only while a draft is genuinely in flight. */
+@keyframes answer-shimmer {
+  from {
+    background-position: 160% 0;
+  }
+  to {
+    background-position: -60% 0;
+  }
+}
+
+/* An answer landing: rises a step and settles, the workspace cousin of the
+   landing hero's row-pop. */
+@keyframes answer-settle {
+  from {
+    opacity: 0;
+    transform: translateY(9px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

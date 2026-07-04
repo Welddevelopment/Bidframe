@@ -6,6 +6,7 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
+import { useRouter } from "next/navigation";
 import { useRequirements } from "@/context/RequirementsContext";
 import { isApiEnabled } from "@/lib/api";
 import type { Requirement } from "@/types/requirement";
@@ -46,6 +47,7 @@ function useIsWide(): boolean {
 export function StructureView() {
   const { requirements, tenderId, approve, editRequirement, flag } =
     useRequirements();
+  const router = useRouter();
 
   // The shared spine: what is selected (opens the drawer + lights both panes),
   // what is hovered (a lighter, transient trace), and which criterion lane is
@@ -55,7 +57,8 @@ export function StructureView() {
   const [selectedCrit, setSelectedCrit] = useState<string | null>(null);
 
   // The filter controls. Both panes receive the same predicate, so they always
-  // show the same slice of the tender.
+  // show the same slice of the tender. The deal-breaker lens is its own toggle
+  // chip (one click, composable with the category select), not a select option.
   const [query, setQuery] = useState("");
   const [gatingOnly, setGatingOnly] = useState(false);
   const [reviewOnly, setReviewOnly] = useState(false);
@@ -71,6 +74,11 @@ export function StructureView() {
       Array.from(new Set(requirements.map((r) => r.category))).sort((a, b) =>
         a.localeCompare(b)
       ),
+    [requirements]
+  );
+
+  const gatingCount = useMemo(
+    () => requirements.filter((r) => r.is_gating).length,
     [requirements]
   );
 
@@ -109,23 +117,19 @@ export function StructureView() {
     setReviewOnly(false);
     setActiveCats(new Set());
   }, []);
-  const filterValue =
-    gatingOnly
-      ? "deal-breakers"
-      : reviewOnly
-        ? "to-check"
-        : activeCats.size === 1
-          ? `category:${Array.from(activeCats)[0]}`
-          : activeCats.size > 1
-            ? "category:mixed"
-            : "all";
+  const filterValue = reviewOnly
+    ? "to-check"
+    : activeCats.size === 1
+      ? `category:${Array.from(activeCats)[0]}`
+      : activeCats.size > 1
+        ? "category:mixed"
+        : "all";
   const selectFilter = useCallback((next: string) => {
-    setGatingOnly(false);
+    // The select owns the to-check/category lens; the deal-breaker chip is
+    // independent, so it survives select changes.
     setReviewOnly(false);
     setActiveCats(new Set());
-    if (next === "deal-breakers") {
-      setGatingOnly(true);
-    } else if (next === "to-check") {
+    if (next === "to-check") {
       setReviewOnly(true);
     } else if (next.startsWith("category:")) {
       setActiveCats(new Set([next.slice("category:".length)]));
@@ -153,7 +157,8 @@ export function StructureView() {
 
   return (
     <div>
-      {/* Toolbar: the switcher, search, and one compact filter select. */}
+      {/* Toolbar: the switcher, search, the deal-breaker chip, and one compact
+          filter select. */}
       <div className="mb-6 flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <Segmented
@@ -165,6 +170,26 @@ export function StructureView() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          {gatingCount > 0 && (
+            <button
+              type="button"
+              onClick={() => setGatingOnly((v) => !v)}
+              aria-pressed={gatingOnly}
+              className={`inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 font-mono text-[11px] uppercase tracking-wide transition-colors ${
+                gatingOnly
+                  ? "border-signal-oxblood-frame bg-paper-raised text-ink shadow-[var(--depth-row)]"
+                  : "border-hairline text-ink-muted hover:bg-paper-raised hover:text-ink"
+              }`}
+            >
+              <span
+                className={`h-2 w-2 rounded-full ${
+                  gatingOnly ? "bg-signal-oxblood" : "border border-hairline"
+                }`}
+                aria-hidden
+              />
+              Deal-breakers only · {gatingCount}
+            </button>
+          )}
           <WorkspaceFilterSelect
             value={filterValue}
             categories={categories}
@@ -211,7 +236,45 @@ export function StructureView() {
         onNext={goNext}
         onClose={() => setSelectedId(null)}
       />
+
+      {/* The drawer's onward journeys. The drawer shell has no footer slot, so
+          the rail floats just outside its left edge (the panel is max-w-md =
+          28rem, pinned right): review the item in the matrix or jump straight
+          to drafting its answer. Hidden where the drawer takes the full width. */}
+      {selected && (
+        <div className="fixed bottom-5 right-[calc(28rem+1.25rem)] z-[60] hidden flex-col items-end gap-2 md:flex">
+          <DrawerJumpButton
+            label="View in matrix"
+            onClick={() => router.push(`/review?req=${selected.id}`)}
+          />
+          <DrawerJumpButton
+            label="Draft answer"
+            onClick={() => router.push(`/answers?req=${selected.id}`)}
+          />
+        </div>
+      )}
     </div>
+  );
+}
+
+// One onward link beside the drawer: quiet paper chip, mono voice, arrow to say
+// "this leaves the workspace".
+function DrawerJumpButton({
+  label,
+  onClick,
+}: {
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="inline-flex items-center gap-1.5 rounded-md border border-hairline bg-paper-raised px-3 py-1.5 font-mono text-[11.5px] text-ink shadow-[var(--depth-sheet)] transition-colors hover:border-forest hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+    >
+      {label}
+      <span aria-hidden>→</span>
+    </button>
   );
 }
 
@@ -234,7 +297,6 @@ function WorkspaceFilterSelect({
         className="rounded border border-hairline bg-paper px-1.5 py-0.5 text-[11px] text-ink outline-none transition-colors focus:border-forest focus:ring-1 focus:ring-forest"
       >
         <option value="all">All requirements</option>
-        <option value="deal-breakers">Deal-breakers</option>
         <option value="to-check">To check</option>
         {value === "category:mixed" && (
           <option value="category:mixed" disabled>

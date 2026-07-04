@@ -5,6 +5,7 @@ import { useRequirements } from "@/context/RequirementsContext";
 import { isApiEnabled, listMembers, type TenderMember } from "@/lib/api";
 import { collaboratorFor, displayName } from "@/lib/collaborators";
 import {
+  SOURCE_KIND_BADGE_TONE,
   sourceDocumentKindFromFilename,
   sourceKindName,
   sourceKindShortLabel,
@@ -12,17 +13,11 @@ import {
 } from "@/lib/source-doc";
 import { deriveTriage } from "@/lib/triage";
 
-const SOURCE_BADGE_TONE: Record<SourceDocumentKind, string> = {
-  pdf: "border-ink/20 bg-paper text-ink-muted",
-  word: "border-forest/30 bg-forest/5 text-forest",
-  excel: "border-accent/35 bg-accent/5 text-accent",
-  csv: "border-signal-amber/40 bg-signal-amber/10 text-ink",
-  zip: "border-ink/25 bg-paper text-ink",
-  document: "border-hairline bg-paper text-ink-muted",
-};
-
-// Live decision tally for the demo shell: short enough to sit above the matrix,
-// but still explicit that every approval, edit, and flag is human-owned.
+// Live decision tally for the demo shell. At rest it is one slim mono line —
+// documents · requirements · deal-breakers · decision log — so the matrix stays
+// above the fold; a quiet Details disclosure unfolds the full ledger (headline
+// counts, the tender pack, the decision log, people) for whoever wants the
+// receipts. Still explicit that every approval, edit, and flag is human-owned.
 export function ControlPanel() {
   const { requirements, sourceDocs, tenderId } = useRequirements();
   const [members, setMembers] = useState<TenderMember[]>([]);
@@ -252,7 +247,7 @@ export function ControlPanel() {
                   className="inline-flex max-w-full items-center gap-1.5 rounded border border-hairline bg-paper-recessed px-2 py-1 font-mono text-[11px] text-ink shadow-[var(--depth-pressed)]"
                 >
                   <span
-                    className={`inline-flex h-4 shrink-0 items-center rounded border px-1 text-[9px] font-medium leading-none ${SOURCE_BADGE_TONE[doc.kind]}`}
+                    className={`inline-flex h-4 shrink-0 items-center rounded border px-1 text-[9px] font-medium leading-none ${SOURCE_KIND_BADGE_TONE[doc.kind]}`}
                     aria-hidden
                   >
                     {sourceKindShortLabel(doc.kind)}

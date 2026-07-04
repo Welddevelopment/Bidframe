@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import type { OpenQuestion, Requirement } from "@/types/requirement";
 import { useRequirements } from "@/context/RequirementsContext";
 
@@ -8,7 +9,8 @@ export function OpenQuestions({ requirement }: { requirement: Requirement }) {
   const questions = requirement.open_questions ?? [];
   if (questions.length === 0) return null;
 
-  const unanswered = questions.filter((q) => q.answer === null).length;
+  const answered = questions.filter((q) => q.answer !== null).length;
+  const unanswered = questions.length - answered;
 
   return (
     <section className="mt-5">
@@ -16,11 +18,15 @@ export function OpenQuestions({ requirement }: { requirement: Requirement }) {
         <h3 className="font-mono text-xs font-medium uppercase tracking-wide text-ink-muted">
           Open questions
         </h3>
-        {unanswered > 0 && (
-          <span className="text-xs font-medium text-signal-amber">
-            {unanswered} need{unanswered === 1 ? "s" : ""} an answer
-          </span>
-        )}
+        {/* Partial progress stays visible: "1 of 3 answered", amber while any
+            gap still needs the human, quiet once they're all in. */}
+        <span
+          className={`font-mono text-xs ${
+            unanswered > 0 ? "text-signal-amber" : "text-ink-muted"
+          }`}
+        >
+          {answered} of {questions.length} answered
+        </span>
       </div>
       <ul className="flex flex-col gap-4">
         {questions.map((question) => (
@@ -45,17 +51,17 @@ export function OpenQuestionItem({
   const { answerOpenQuestion, requirements, updateRequirement } =
     useRequirements();
   const [value, setValue] = useState(question.answer ?? "");
-  const [saved, setSaved] = useState(false);
   const answered = question.answer !== null;
   const trimmed = value.trim();
   const dirty = trimmed.length > 0 && trimmed !== (question.answer ?? "");
   const requirement = requirements.find((req) => req.id === requirementId);
-  const questionAnswer = question.answer ?? "";
 
   function saveAnswer() {
     if (!requirement) {
       answerOpenQuestion(requirementId, question.id, trimmed);
-      setSaved(true);
+      toast("Answer saved", {
+        description: "The draft notes your input for review.",
+      });
       return;
     }
 
@@ -64,7 +70,8 @@ export function OpenQuestionItem({
         ? { ...q, answer: trimmed, answered_at: new Date().toISOString() }
         : q
     );
-    const allAnswered = nextQuestions.every((q) => q.answer);
+    const answeredCount = nextQuestions.filter((q) => q.answer !== null).length;
+    const allAnswered = answeredCount === nextQuestions.length;
     const baseText =
       requirement.answer?.text ??
       requirement.draft_answer ??
@@ -88,7 +95,14 @@ export function OpenQuestionItem({
           }
         : requirement.answer,
     });
-    setSaved(true);
+
+    // Confirmation rides the app's toaster (restyled sonner) rather than an
+    // inline line, and reports honest per-requirement progress.
+    toast("Answer saved", {
+      description: allAnswered
+        ? "All gaps closed — your input is merged into the draft for review."
+        : `${answeredCount} of ${nextQuestions.length} answered for this requirement.`,
+    });
   }
 
   return (
@@ -116,10 +130,7 @@ export function OpenQuestionItem({
       <div className="mt-2 flex items-start gap-2 pl-4">
         <textarea
           value={value}
-          onChange={(event) => {
-            setValue(event.target.value);
-            setSaved(false);
-          }}
+          onChange={(event) => setValue(event.target.value)}
           placeholder="Type your answer"
           rows={answered || value.includes("\n") ? 3 : 2}
           className="min-w-0 flex-1 resize-y rounded-md border border-hairline px-2.5 py-1.5 text-sm leading-relaxed text-ink outline-none transition-colors focus:border-forest focus:ring-1 focus:ring-forest"
@@ -133,11 +144,6 @@ export function OpenQuestionItem({
           {answered ? "Update" : "Save"}
         </button>
       </div>
-      {(saved || (!dirty && answered && questionAnswer.length > 0)) && (
-        <p className="mt-1 pl-4 text-xs text-forest">
-          Saved. The draft now includes your input for review.
-        </p>
-      )}
     </li>
   );
 }

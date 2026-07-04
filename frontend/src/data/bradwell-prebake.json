@@ -54,7 +54,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -80,7 +80,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -106,7 +106,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -117,7 +117,7 @@
    "text": "No variant bids will be accepted; any bid including proposed amendments to the terms and conditions of contract is deemed a variant bid and will not be accepted.",
    "source_page": 6,
    "source_clause": "4.1",
-   "source_excerpt": "Any bid which includes proposed amendments to the terms and conditions of contract shall",
+   "source_excerpt": "Any bid which includes proposed amendments to the terms and conditions",
    "type": "mandatory",
    "is_gating": true,
    "category": "compliance",
@@ -132,7 +132,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -158,7 +158,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -169,7 +169,7 @@
    "text": "Any attempt to contact an Officer or Member of the Council by telephone to discuss the Tender will be treated as canvassing and lead to removal of the tenderer from the procurement process.",
    "source_page": 3,
    "source_clause": "2.6",
-   "source_excerpt": "or their representatives to contact any Officer or Member of the Council by telephone to",
+   "source_excerpt": "Member of the Council by telephone to discuss any aspect of this Tender will be considered as canvassing, leading to removal of that tenderer",
    "type": "mandatory",
    "is_gating": true,
    "category": "canvassing",
@@ -184,7 +184,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -210,7 +210,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -236,7 +236,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -245,9 +245,9 @@
   {
    "id": "brad-r0010",
    "text": "The Form of Tender must be completed and signed by an authorised signatory and returned with the bid; an unsigned Form of Tender will invalidate the tender.",
-   "source_page": 30,
+   "source_page": 7,
    "source_clause": "Response Pack 5",
-   "source_excerpt": "The Form of Tender must be completed and signed by an authorised signatory and returned with the bid; an unsigned Form of Tender will invalidate the tender.",
+   "source_excerpt": "submits a Tender which is not in accordance with the Form of Tender and Conditions of Tender",
    "type": "mandatory",
    "is_gating": true,
    "category": "submission",
@@ -262,7 +262,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -271,9 +271,9 @@
   {
    "id": "brad-r0011",
    "text": "Tenderers must complete and return all documents required by the Response Pack; an incomplete submission may be rejected.",
-   "source_page": 28,
+   "source_page": 4,
    "source_clause": "Response Pack",
-   "source_excerpt": "Tenderers must complete and return all documents required by the Response Pack; an incomplete submission may be rejected.",
+   "source_excerpt": "And must include all completed supporting documentation as follows",
    "type": "mandatory",
    "is_gating": true,
    "category": "submission",
@@ -288,7 +288,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -297,9 +297,9 @@
   {
    "id": "brad-r0012",
    "text": "A tender that does not substantially conform to the Instructions to Tenderers may be rejected.",
-   "source_page": 3,
+   "source_page": 7,
    "source_clause": "1.1",
-   "source_excerpt": "A tender that does not substantially conform to the Instructions to Tenderers may be rejected.",
+   "source_excerpt": "does not provide all the information required by the Council",
    "type": "mandatory",
    "is_gating": true,
    "category": "compliance",
@@ -314,7 +314,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -325,7 +325,7 @@
    "text": "Tenderers must provide a company profile describing relevant grounds-maintenance experience.",
    "source_page": 28,
    "source_clause": "Response Pack 1",
-   "source_excerpt": "Tenderers must provide a company profile describing relevant grounds-maintenance experience.",
+   "source_excerpt": "Suitable references and contract details must be provided, and tenderers must satisfy these mandatory criteria before their bid will be considered further",
    "type": "mandatory",
    "is_gating": false,
    "category": "experience",
@@ -355,9 +355,9 @@
   {
    "id": "brad-r0014",
    "text": "Tenderers must hold a valid waste carrier licence for the removal of grass arisings and green waste.",
-   "source_page": 12,
+   "source_page": 9,
    "source_clause": "Spec 6.4",
-   "source_excerpt": "Tenderers must hold a valid waste carrier licence for the removal of grass arisings and green waste.",
+   "source_excerpt": "The Contractor shall allow for the removal of all arising’s in connection with landscape maintenance operations",
    "type": "mandatory",
    "is_gating": false,
    "category": "certification",
@@ -389,7 +389,7 @@
    "text": "Tenderers must provide a Health & Safety policy and evidence of a safety management system.",
    "source_page": 28,
    "source_clause": "Response Pack 2",
-   "source_excerpt": "Tenderers must provide a Health & Safety policy and evidence of a safety management system.",
+   "source_excerpt": "Please provide any documentation which makes up your Health and Safety Management System. Please provide copies of any health and safety accreditations that the organisation holds",
    "type": "mandatory",
    "is_gating": false,
    "category": "security",
@@ -421,7 +421,7 @@
    "text": "Tenderers must provide two comparable contracts (grounds maintenance) with client contact details as references.",
    "source_page": 28,
    "source_clause": "Response Pack 2",
-   "source_excerpt": "Tenderers must provide two comparable contracts (grounds maintenance) with client contact details as references.",
+   "source_excerpt": "Provide two references from clients for whom you have undertaken contracts and details of the nature and value of the contracts which satisfy the Council that the tenderer has satisfactorily completed similar contract works for other parties",
    "type": "mandatory",
    "is_gating": false,
    "category": "experience",
@@ -436,7 +436,7 @@
     "text": "",
     "state": "needs_input",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [
     {
@@ -452,13 +452,13 @@
   {
    "id": "brad-r0017",
    "text": "The Tenderer is to provide all works included in the tender documents.",
-   "source_page": 1,
+   "source_page": 2,
    "source_clause": null,
    "source_excerpt": "The Tenderer is to provide all works included in the tender documents.",
    "type": "mandatory",
    "is_gating": false,
    "category": "obligation",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -469,7 +469,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -478,13 +478,13 @@
   {
    "id": "brad-r0018",
    "text": "A schedule of prices is requested in the response pack at appendix D.",
-   "source_page": 1,
+   "source_page": 2,
    "source_clause": null,
    "source_excerpt": "A schedule of prices is requested in the response pack at appendix D.",
    "type": "mandatory",
    "is_gating": false,
    "category": "obligation",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -495,7 +495,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -504,13 +504,13 @@
   {
    "id": "brad-r0019",
    "text": "Tenderers should, before submitting a Tender, read the Invitation to Tender, including description of Works and Contract details and ensure that they can comply with all obligations.",
-   "source_page": 2,
+   "source_page": 3,
    "source_clause": null,
-   "source_excerpt": "Tenderers should, before submitting a Tender, read the Invitation to Tender, including description of Works and Contract details and ensure that they can comply with all obligations.",
+   "source_excerpt": "Read the Invitation to Tender, including description of Works and Contract details",
    "type": "mandatory",
    "is_gating": false,
    "category": "obligation",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -521,7 +521,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -530,13 +530,13 @@
   {
    "id": "brad-r0020",
    "text": "The Tenderer must, before tendering ascertain the nature of the sites, the extent and nature of the types of work required and all local conditions and restrictions likely to affect the execution of the works.",
-   "source_page": 2,
+   "source_page": 3,
    "source_clause": null,
-   "source_excerpt": "The Tenderer must, before tendering ascertain the nature of the sites, the extent and nature of the types of work required and all local conditions and restrictions likely to affect the execution of the works.",
+   "source_excerpt": "The Tenderer must, before tendering ascertain the nature of the sites, the extent and nature of the types of work required and all local conditions and restrictions",
    "type": "mandatory",
    "is_gating": false,
    "category": "obligation",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -547,7 +547,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -562,7 +562,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "obligation",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -573,7 +573,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -582,13 +582,13 @@
   {
    "id": "brad-r0022",
    "text": "All tender documents are to be submitted in a sealed envelope, packet or parcel, or online to the Clerk’s email address; clerk@bradwell-pc.gov.uk.",
-   "source_page": 3,
+   "source_page": 4,
    "source_clause": null,
-   "source_excerpt": "clerk@bradwell-pc.gov.uk to confirm your intention to tender and to ensure",
+   "source_excerpt": "All tender documents are to be submitted in a sealed envelope, packet or parcel",
    "type": "mandatory",
    "is_gating": false,
    "category": "submission",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -599,7 +599,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -608,13 +608,13 @@
   {
    "id": "brad-r0023",
    "text": "The envelope, packet or parcel shall in no circumstances bear any name, logo or mark indicating the name of the sender.",
-   "source_page": 3,
+   "source_page": 4,
    "source_clause": null,
    "source_excerpt": "The envelope, packet or parcel shall in no circumstances bear any name, logo or mark indicating the name of the sender.",
    "type": "mandatory",
    "is_gating": false,
    "category": "submission",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -625,7 +625,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -636,7 +636,7 @@
    "text": "ensure that they can comply with all obligations.",
    "source_page": 3,
    "source_clause": null,
-   "source_excerpt": "ensure that they can comply with all obligations.",
+   "source_excerpt": "In particular, they should note Health and Safety, Equality and Diversity",
    "type": "mandatory",
    "is_gating": false,
    "category": "other",
@@ -651,7 +651,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -677,7 +677,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -692,7 +692,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "Method Statement",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -703,7 +703,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -712,13 +712,13 @@
   {
    "id": "brad-r0027",
    "text": "Ensuring the commission is adequately resourced, including reference to resources and operational facilities.",
-   "source_page": 6,
+   "source_page": 5,
    "source_clause": null,
    "source_excerpt": "Ensuring the commission is adequately resourced, including reference to resources and operational facilities.",
    "type": "mandatory",
    "is_gating": false,
    "category": "method statement",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -729,7 +729,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -738,13 +738,13 @@
   {
    "id": "brad-r0028",
    "text": "Ensuring appropriate staff qualifications, knowledge and experience for the commission.",
-   "source_page": 6,
+   "source_page": 5,
    "source_clause": null,
    "source_excerpt": "Ensuring appropriate staff qualifications, knowledge and experience for the commission.",
    "type": "mandatory",
    "is_gating": false,
    "category": "method statement",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -755,7 +755,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -770,7 +770,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "Confidentiality",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -781,7 +781,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -792,11 +792,11 @@
    "text": "Suppliers should state why they consider the information to be confidential or commercially sensitive and for how long.",
    "source_page": 6,
    "source_clause": null,
-   "source_excerpt": "the information to be confidential or commercially sensitive and for how long.",
+   "source_excerpt": "Tenderers should state on the on the form (appendix c part 8) if any of the information supplied by them is confidential or commercially sensitive",
    "type": "mandatory",
    "is_gating": false,
    "category": "Confidentiality",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -807,7 +807,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -822,7 +822,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "method statement",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -833,7 +833,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -842,13 +842,13 @@
   {
    "id": "brad-r0032",
    "text": "The tenderer will have no claim whatsoever against the Council in respect of such matters and in particular (but with no limitation) neither the Council shall make any payments to the tenderer save as expressly provided for in the contract.",
-   "source_page": 7,
+   "source_page": 8,
    "source_clause": null,
    "source_excerpt": "The tenderer will have no claim whatsoever against the Council in respect of such matters and in particular (but with no limitation) neither the Council shall make any payments to the tenderer save as expressly provided for in the contract.",
    "type": "mandatory",
    "is_gating": false,
    "category": "obligation",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -859,7 +859,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -874,7 +874,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "contractual obligation",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -885,7 +885,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -900,7 +900,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "warranty",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -911,7 +911,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -926,7 +926,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "warranty",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -937,7 +937,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -952,7 +952,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "warranty",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -963,7 +963,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -978,7 +978,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "warranty",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -989,7 +989,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -1004,7 +1004,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "Safety Requirements",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -1015,7 +1015,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -1030,7 +1030,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "Safety Requirements",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -1041,7 +1041,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -1056,7 +1056,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "Standard of Maintenance",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -1067,7 +1067,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -1082,7 +1082,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "Removal of arisings",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -1093,7 +1093,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -1108,7 +1108,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "Weed Control",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -1119,7 +1119,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -1130,11 +1130,11 @@
    "text": "They must however conform to current health and safety legislation and industry best practice including the Code of Practice noted below.",
    "source_page": 9,
    "source_clause": null,
-   "source_excerpt": "they feel is appropriate, they must however conform to current health and safety",
+   "source_excerpt": "The contractor will be responsible for effective weed control on shrub/flower/rose beds, hedge bottoms and hard surfaces as specified",
    "type": "mandatory",
    "is_gating": false,
    "category": "Contractor's Responsibilities",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -1145,7 +1145,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -1160,7 +1160,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "Tree Services",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -1171,7 +1171,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -1186,7 +1186,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "Tree Services",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -1197,7 +1197,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -1212,7 +1212,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "Tree Services",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -1223,7 +1223,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -1238,7 +1238,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "Tree Services",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -1249,7 +1249,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -1264,7 +1264,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "Contractor's Responsibilities",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -1275,7 +1275,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -1290,7 +1290,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "Contractor's Responsibilities",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -1301,7 +1301,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",
@@ -1316,7 +1316,7 @@
    "type": "mandatory",
    "is_gating": false,
    "category": "Contractor's Responsibilities",
-   "confidence": 1.0,
+   "confidence": 1,
    "status": "pending",
    "needs_review": false,
    "decision": null,
@@ -1327,7 +1327,7 @@
     "text": "",
     "state": "empty",
     "evidence_refs": [],
-    "confidence": 0.0
+    "confidence": 0
    },
    "open_questions": [],
    "source_doc_id": "d1",

@@ -2,11 +2,11 @@
 
 import { useRequirements } from "@/context/RequirementsContext";
 
-// #22 (visibility half): a small library of the capability documents backing the
-// drafted answers, each showing how many answers it supports — so the evidence
-// reads as managed and transparent, not a black box. Works on the mock sample and
-// on a live tender. (Removing a document re-runs the draft; that's a backend
-// follow-up, best verified with the live answerer.)
+// #22 (visibility half): the capability documents backing the drafted answers,
+// each showing how many answers it supports — so the evidence reads as managed
+// and transparent, not a black box. Rendered inside the CapabilityUpload panel,
+// and the ONLY place the per-doc counts live (the upload chips used to
+// duplicate this maths). Works on the mock sample and on a live tender.
 export function EvidenceLibrary() {
   const { capabilityDocs, requirements } = useRequirements();
   if (capabilityDocs.length === 0) return null;
@@ -22,30 +22,30 @@ export function EvidenceLibrary() {
   }
 
   return (
-    <section className="rounded-lg border border-hairline bg-paper-raised p-4">
-      <p className="font-mono text-[11px] font-medium uppercase tracking-wide text-ink-muted">
-        Your evidence
-      </p>
-      <ul className="mt-2 flex flex-col gap-1.5">
-        {capabilityDocs.map((doc) => {
-          const n = usage.get(doc.doc_id) ?? 0;
-          return (
-            <li
-              key={doc.doc_id}
-              className="flex items-baseline justify-between gap-3 text-sm"
-            >
-              <span className="min-w-0 truncate font-mono text-xs text-accent">
-                {doc.filename}
-              </span>
-              <span className="shrink-0 font-mono text-xs text-ink-muted">
-                {n > 0
-                  ? `backs ${n} answer${n === 1 ? "" : "s"}`
-                  : "not yet cited"}
-              </span>
-            </li>
-          );
-        })}
-      </ul>
-    </section>
+    <ul className="mt-3 flex flex-col gap-1.5 border-t border-hairline pt-3">
+      {capabilityDocs.map((doc) => {
+        const n = usage.get(doc.doc_id) ?? 0;
+        return (
+          <li
+            key={doc.doc_id}
+            className="flex items-baseline justify-between gap-3 text-sm"
+          >
+            <span className="min-w-0 truncate font-mono text-xs text-accent">
+              {doc.filename}
+              {doc.page_count > 0 && (
+                <span className="ml-1 text-ink-muted/75">
+                  ({doc.page_count}p)
+                </span>
+              )}
+            </span>
+            <span className="shrink-0 font-mono text-xs text-ink-muted">
+              {n > 0
+                ? `backs ${n} answer${n === 1 ? "" : "s"}`
+                : "not yet cited"}
+            </span>
+          </li>
+        );
+      })}
+    </ul>
   );
 }

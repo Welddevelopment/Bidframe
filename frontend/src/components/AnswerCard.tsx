@@ -4,7 +4,6 @@ import type { Requirement } from "@/types/requirement";
 import { hasDraft, isOpenDealBreaker } from "@/lib/answers";
 import { sourceRefLabel } from "@/lib/source-doc";
 import { AnswerPanel } from "./AnswerPanel";
-import { AnswerStateBadge } from "./AnswerStateBadge";
 import { CategoryTag } from "./CategoryTag";
 import { ConfidenceIndicator } from "./ConfidenceIndicator";
 import { OpenQuestions } from "./OpenQuestions";
@@ -44,8 +43,11 @@ export function AnswerCard({ requirement: req }: { requirement: Requirement }) {
           variant="dot"
           size="sm"
         />
-        <AnswerStateBadge state={answer?.state ?? "empty"} />
-        <span className="font-mono text-ink-muted">{sourceRefLabel(req)}</span>
+        {/* The answer-state badge lives in the panel's mono margin — one badge
+            per card, not two. Accent on the clause ref: the requirement's own
+            source ref and the evidence refs share the one "traceable to
+            source" colour. */}
+        <span className="font-mono text-accent">{sourceRefLabel(req)}</span>
       </div>
 
       <p className="mb-3 max-w-[64ch] text-sm font-medium leading-snug text-ink">

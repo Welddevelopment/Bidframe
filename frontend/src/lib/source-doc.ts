@@ -75,6 +75,19 @@ export function sourceKindLabel(req: Requirement): string {
   return sourceKindName(sourceDocumentKind(req));
 }
 
+// The one badge tone per source kind, shared by every surface that chips a
+// document format (the matrix margin badge, the control panel's pack list), so
+// the same file type can never wear two colours. Full literal class strings —
+// Tailwind must see every one.
+export const SOURCE_KIND_BADGE_TONE: Record<SourceDocumentKind, string> = {
+  pdf: "border-ink/20 bg-paper text-ink-muted",
+  word: "border-forest/30 bg-forest/5 text-forest",
+  excel: "border-accent/35 bg-accent/5 text-accent",
+  csv: "border-signal-amber/40 bg-signal-amber/10 text-ink",
+  zip: "border-ink/25 bg-paper text-ink",
+  document: "border-hairline bg-paper text-ink-muted",
+};
+
 export function hasPdfSource(req: Requirement): boolean {
   return sourceDocumentKind(req) === "pdf";
 }

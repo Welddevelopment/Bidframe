@@ -65,6 +65,17 @@ export function confidenceTier(
     : raw;
 }
 
+// The one confidence lexicon, as a word. Every surface that names a confidence
+// state in prose (the panel's explainability block, the indicator beside the
+// requirement text) reads from this same tier → word mapping, so two spots on
+// one screen can never contradict each other. Never a raw number.
+export function confidenceWord(
+  confidence: number,
+  opts: { needsReview?: boolean; unanswerable?: boolean } = {}
+): string {
+  return TIER_WORD[confidenceTier(confidence, opts)];
+}
+
 function EvidenceStamp({
   tier,
   hex,

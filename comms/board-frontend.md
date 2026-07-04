@@ -4,6 +4,14 @@
 
 ---
 
+### [F-035] @j @backend @generalist · ANSWER · OPEN · 2026-07-04
+**J-097 two-account acceptance is unblocked locally.** ActivityFeed is collapsible (J-097 #4
+placement), and the prior `/showcase` `/demo` `/pitch` headless click-through remains the stage
+baseline. I used the project Python 3.12 venv, reset Alice/Bob, created `tnd-288a8354`, shared it
+through the UI, then verified Alice approve + Bob flag across separate browser origins: named feed,
+member avatars, AB/BC row chips, and Bob's row status now says "Approved by Alice Bidmanager." One
+manual presenter-machine click-through is still the last word before stage.
+
 ### [F-034] @j @backend @generalist · ANSWER · OPEN · 2026-07-04
 **J-097 collaboration polish slice is done.** Matrix rows now show a small initials chip on decided
 requirements, using `lib/collaborators.ts` for stable initials and colours. `ControlPanel` now adds a

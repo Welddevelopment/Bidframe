@@ -17,14 +17,15 @@ import {
 } from "@/lib/triage";
 import { alsoCitedLabel } from "@/lib/dedupe";
 import {
+  SOURCE_KIND_BADGE_TONE,
   sourceDocumentKind,
   sourceKindLabel,
   sourceKindShortLabel,
   sourceLocatorLabel,
-  type SourceDocumentKind,
   sourceRefLabel,
 } from "@/lib/source-doc";
-import { collaboratorFor, displayName } from "@/lib/collaborators";
+import { useAuth } from "@/context/AuthContext";
+import { actorLabel, collaboratorFor, displayName } from "@/lib/collaborators";
 import {
   deriveVisibleGroups,
   type MatrixLens,
@@ -45,6 +46,15 @@ export type Density = "compact" | "comfortable";
 const ROW_PADDING: Record<Density, string> = {
   comfortable: "py-2",
   compact: "py-1",
+};
+
+// How much requirement text a resting row shows. The text IS the product, so
+// comfortable gives it two lines before clamping; compact keeps the strict
+// one-line register. The selected row always shows the full text — the row you
+// are reading never hides its own words.
+const TEXT_CLAMP: Record<Density, string> = {
+  comfortable: "line-clamp-2",
+  compact: "truncate",
 };
 
 // ---- Motion / virtualization reconciliation (Batch E policy) ---------------
@@ -134,15 +144,6 @@ const TIER_WASH: Record<ConfidenceTier, string> = {
   "light-green": "hover:bg-paper-raised",
 };
 
-const SOURCE_BADGE_TONE: Record<SourceDocumentKind, string> = {
-  pdf: "border-ink/20 bg-paper text-ink-muted",
-  word: "border-forest/30 bg-forest/5 text-forest",
-  excel: "border-accent/35 bg-accent/5 text-accent",
-  csv: "border-signal-amber/40 bg-signal-amber/10 text-ink",
-  zip: "border-ink/25 bg-paper text-ink",
-  document: "border-hairline bg-paper text-ink-muted",
-};
-
 // The resting matrix: a contents page, not a table (layout.md sections 3, 4, 7).
 // Each requirement is one line on a shared grid [ref | dot | text | status],
 // grouped by the ask. Hierarchy comes from type and space, not boxes: no card
@@ -157,13 +158,9 @@ const SOURCE_BADGE_TONE: Record<SourceDocumentKind, string> = {
 // right-aligned. Approval also carries a forest tick, so it never relies on
 // colour alone (the greyscale test). Pending items get a differentiated word
 // from pendingStatusWord() instead of one flat label.
-const DECIDED_WORD: Record<"accepted" | "edited" | "flagged", string> = {
-  accepted: "Approved by you",
-  edited: "Edited by you",
-  flagged: "Flagged",
-};
-
 function StatusWord({ req }: { req: Requirement }) {
+  const { user } = useAuth();
+
   // Pending: name what this item needs. A confident non-gating item returns
   // null and rests silent (its cell is owned by the hover Approve). A gating
   // item carries the one signal-coloured word in the column, matched to its
@@ -209,7 +206,11 @@ function StatusWord({ req }: { req: Requirement }) {
           />
         </svg>
       )}
-      {DECIDED_WORD[req.status]}
+      {req.status === "accepted"
+        ? `Approved by ${actorLabel(req.decision?.actor, user?.id)}`
+        : req.status === "edited"
+          ? `Edited by ${actorLabel(req.decision?.actor, user?.id)}`
+          : "Flagged"}
     </span>
   );
 }
@@ -219,7 +220,7 @@ function SourceTypeBadge({ req }: { req: Requirement }) {
   const badgeShape =
     kind === "pdf"
       ? "px-0 text-ink-muted/70"
-      : `rounded-[3px] border px-1 ${SOURCE_BADGE_TONE[kind]}`;
+      : `rounded-[3px] border px-1 ${SOURCE_KIND_BADGE_TONE[kind]}`;
   return (
     <span
       title={sourceKindLabel(req)}
@@ -260,8 +261,10 @@ function DecisionActorChip({ req }: { req: Requirement }) {
 function MatrixRow({
   req,
   isSelected,
+  isCursor = false,
   alsoCitedOn,
   density,
+  showSourceKind = true,
   onSelect,
   onApprove,
   selection,
@@ -269,9 +272,15 @@ function MatrixRow({
 }: {
   req: Requirement;
   isSelected: boolean;
+  // The keyboard cursor rests here (j/k). A quieter ring than selection: the
+  // cursor marks where Enter would open, without opening anything itself.
+  isCursor?: boolean;
   // Pages the same requirement was also cited on (display-dedupe annotation).
   alsoCitedOn: number[];
   density: Density;
+  // Whether the format badge earns its margin space: only when the tender pack
+  // actually mixes document kinds. A single-format pack repeats no information.
+  showSourceKind?: boolean;
   onSelect: (id: string) => void;
   onApprove: (id: string) => void;
   // Multi-select (omitted on frozen surfaces — no checkbox renders).
@@ -298,20 +307,28 @@ function MatrixRow({
   const fullRef = sourceRefLabel(req);
 
   // Rows read as a flagged zone, not a pinstripe: a faint tier-keyed wash that
-  // deepens on hover (oxblood gating carries a pennant + alarm meter too). No
-  // naked coloured border. Decided rows rest clean; depth lifts only the open row.
-  const shape = "rounded-md";
+  // deepens on hover. A gating row also carries a real left reading edge in the
+  // frame tone (edges use the frame colour, fills use oxblood proper) so a
+  // deal-breaker reads across a room, pennant or no pennant. Decided rows rest
+  // clean; depth lifts only the open row; the keyboard cursor rests a quieter
+  // ring than the open row's.
+  const shape = req.is_gating
+    ? "rounded-md border-l-2 border-signal-oxblood-frame"
+    : "rounded-md";
   const rest =
     req.status === "accepted" ? "hover:bg-paper-raised" : TIER_WASH[tier];
   const state = isSelected
     ? "bg-paper-raised shadow-[var(--depth-row)] ring-1 ring-inset ring-ink/30"
-    : rest;
+    : isCursor
+      ? `ring-1 ring-inset ring-ink/20 ${rest}`
+      : rest;
 
   return (
     <div
       role="button"
       tabIndex={0}
       aria-pressed={isSelected}
+      data-req-id={req.id}
       onClick={() => onSelect(req.id)}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -362,7 +379,7 @@ function MatrixRow({
             <path d="M1 1h5L4.6 3 6 5H1z" fill="currentColor" />
           </svg>
         )}
-        <SourceTypeBadge req={req} />
+        {showSourceKind && <SourceTypeBadge req={req} />}
         <DecisionActorChip req={req} />
         <span className="min-w-0 truncate">{ref}</span>
       </span>
@@ -377,18 +394,27 @@ function MatrixRow({
         />
       </span>
 
-      {/* One line of requirement text. The drafted-answer preview and the
-          low-confidence note are revealed only on hover or keyboard focus. */}
+      {/* The requirement text: two lines in comfortable, one in compact, full
+          on the selected row (the words are the product — never hide the row
+          you are reading). The drafted-answer preview stays a hover reveal. */}
       <div className="min-w-0 pt-0.5">
-        <div className="flex min-w-0 items-center gap-2">
+        <div className="flex min-w-0 items-start gap-2">
           <CategoryTag category={req.category} className="shrink-0" />
           <p
-            className={`min-w-0 truncate leading-snug ${
-              req.is_gating ? "font-medium text-ink" : "text-ink"
-            }`}
+            className={`min-w-0 leading-snug ${
+              isSelected ? "" : TEXT_CLAMP[density]
+            } ${req.is_gating ? "font-medium text-ink" : "text-ink"}`}
           >
             {req.text}
           </p>
+          {/* Uncertainty is never hover-gated: a needs_review row wears its
+              amber pill at rest (the same quiet idiom as the gating dossier),
+              so a hesitant extraction looks hesitant from across the desk. */}
+          {req.needs_review && (
+            <span className="inline-flex shrink-0 items-center rounded border border-signal-amber/50 bg-signal-amber/10 px-1.5 py-0.5 font-mono text-[10px] font-medium uppercase tracking-wide text-signal-amber">
+              Needs review
+            </span>
+          )}
         </div>
 
         {alsoOn && (
@@ -580,7 +606,9 @@ function VirtualizedRows({
   representatives,
   meta,
   density,
+  showSourceKind,
   selectedId,
+  cursorId,
   onSelect,
   onApprove,
   selection,
@@ -590,7 +618,9 @@ function VirtualizedRows({
   representatives: Requirement[];
   meta: VisibleGroup["meta"];
   density: Density;
+  showSourceKind: boolean;
   selectedId: string | null;
+  cursorId: string | null;
   onSelect: (id: string) => void;
   onApprove: (id: string) => void;
   selection?: MatrixSelection;
@@ -628,8 +658,10 @@ function VirtualizedRows({
               <MatrixRow
                 req={req}
                 isSelected={req.id === selectedId}
+                isCursor={req.id === cursorId}
                 alsoCitedOn={meta.get(req.id)?.alsoCitedOn ?? []}
                 density={density}
+                showSourceKind={showSourceKind}
                 onSelect={onSelect}
                 onApprove={onApprove}
                 selection={selection}
@@ -648,8 +680,10 @@ function MatrixGroup({
   expanded,
   collapsible,
   density,
+  showSourceKind,
   onToggle,
   selectedId,
+  cursorId,
   onSelect,
   onApprove,
   onApproveAll,
@@ -670,8 +704,12 @@ function MatrixGroup({
   expanded: boolean;
   collapsible: boolean;
   density: Density;
+  // Whether rows show the format badge (only when the pack mixes formats).
+  showSourceKind: boolean;
   onToggle: () => void;
   selectedId: string | null;
+  // The keyboard cursor row (j/k), or null when the keyboard is idle.
+  cursorId: string | null;
   onSelect: (id: string) => void;
   onApprove: (id: string) => void;
   onApproveAll: (ids: string[]) => void;
@@ -778,7 +816,9 @@ function MatrixGroup({
             representatives={representatives}
             meta={meta}
             density={density}
+            showSourceKind={showSourceKind}
             selectedId={selectedId}
+            cursorId={cursorId}
             onSelect={onSelect}
             onApprove={onApprove}
             selection={selection}
@@ -791,8 +831,10 @@ function MatrixGroup({
                 key={req.id}
                 req={req}
                 isSelected={req.id === selectedId}
+                isCursor={req.id === cursorId}
                 alsoCitedOn={meta.get(req.id)?.alsoCitedOn ?? []}
                 density={density}
+                showSourceKind={showSourceKind}
                 onSelect={onSelect}
                 onApprove={onApprove}
                 selection={selection}
@@ -846,8 +888,10 @@ function MatrixGroup({
                     <MatrixRow
                       req={req}
                       isSelected={req.id === selectedId}
+                      isCursor={req.id === cursorId}
                       alsoCitedOn={meta.get(req.id)?.alsoCitedOn ?? []}
                       density={density}
+                      showSourceKind={showSourceKind}
                       onSelect={onSelect}
                       onApprove={onApprove}
                       selection={selection}
@@ -889,6 +933,7 @@ function MatrixGroup({
 export function ComplianceMatrix({
   groups,
   selectedId,
+  cursorId = null,
   onSelect,
   onApprove,
   activeFilter,
@@ -910,6 +955,9 @@ export function ComplianceMatrix({
 }: {
   groups: TriageGroup[];
   selectedId: string | null;
+  // The keyboard cursor row (j/k moves it; Enter opens it). Optional so the
+  // frozen demo/hero surfaces never show a cursor ring.
+  cursorId?: string | null;
   onSelect: (id: string) => void;
   onApprove: (id: string) => void;
   activeFilter: GroupKey | null;
@@ -999,6 +1047,17 @@ export function ComplianceMatrix({
     [groups, query, activeFilter, activeCategories, sortBy, lens, awardCriteria]
   );
 
+  // The format badge earns its slot in the crowded ref margin only when the
+  // tender pack actually mixes document kinds; a single-format pack (one PDF)
+  // would just repeat the same three letters down every row.
+  const showSourceKind = useMemo(() => {
+    const kinds = new Set<string>();
+    for (const group of groups) {
+      for (const req of group.items) kinds.add(sourceDocumentKind(req));
+    }
+    return kinds.size > 1;
+  }, [groups]);
+
   function approveAll(ids: string[]) {
     // One batch pass (and one undo toast) when the owner provides it; the
     // frozen surfaces fall back to per-row approves.
@@ -1063,8 +1122,10 @@ export function ComplianceMatrix({
             expanded={expanded}
             collapsible={collapsible}
             density={density}
+            showSourceKind={showSourceKind}
             onToggle={() => onToggleGroup?.(group.key)}
             selectedId={selectedId}
+            cursorId={cursorId}
             onSelect={onSelect}
             onApprove={onApprove}
             onApproveAll={approveAll}
