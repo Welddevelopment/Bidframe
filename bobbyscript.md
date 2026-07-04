@@ -1,63 +1,85 @@
-# Bobby Script — Slides 3, 4 and 5
+# Bobby Script — Slides 3, 4, 5 (one block, 1:43)
 
-> Bobby owns the middle of the deck: slide 3 (Solution), slide 4 (Product) and slide 5 (the
-> competitor register). Jawad sets up the tender/problem on slides 1-2, then hands here. After
-> slide 5, hand to Joe at the laptop and Pranav on narration for the live `/showcase` demo —
-> NEXT on slide 5 cuts the stage straight to `/showcase`.
+> Bobby owns the middle: **Solution → Product → Competitor analysis**, then hands the stage to the
+> live demo. Jawad lands slide 2 and says your name — you start talking on slide 3, beat 0.
+> **Budget: 1:45. This script runs ~1:43 at stage pace.** Numbers come from `demo-claim-ledger.md`.
 
-## Slide 3 — Solution (Bobby · 40s · TWO beats)
+## Your five key presses (that's all of them)
 
-*(Beat 1 — the slide lands on the typeset page 7, clause 4.6 buried in the legalese. Read it aloud
-into the pause, ~18s:)*
-> "'A Tender will be rejected where the tenderer fixes or adjusts the prices shown in its Tender by
-> agreement with any other party...' — clause 4.6, page seven of a real tender. It looks like every
-> other paragraph, which is exactly the problem. In plain English: if the bidder colludes on price,
-> talks to the wrong people, or breaks the competition rules, they are out. Hidden inside this one
-> paragraph are **five separate ways to be disqualified outright.** This is not a paragraph; this is
-> a trap wearing a cardigan."
+| # | When | What happens |
+|---|------|--------------|
+| 1 | After the clause read (s3 beat 1) | **NEXT** — the five disqualifiers light up oxblood, deal-breaker view splits in |
+| 2 | End of s3 | **NEXT** — slide 4, the product |
+| 3 | End of s4 | **NEXT** — slide 5, the register lands with only Bidframe's row lit |
+| 4 | After "the bar" line (s5 beat 1) | **NEXT** — competitors' gaps + price line land |
+| 5 | End of the handoff line | **NEXT** — **cuts the stage to `/showcase`** for Joe + Pranav |
 
-*(NEXT — the five disqualifiers light up oxblood and the deal-breaker view splits in. Then, ~22s:)*
-> "Bidframe doesn't ask a bid manager to spot that after three coffees and a spreadsheet. Same tender,
-> one pass: twelve deal-breakers surfaced before writing starts — these five included — each linked to
-> its exact clause and page, uncertainty flagged honestly. The old process makes one expert carry the
-> whole risk alone. Bidframe turns that judgment into a marked trail through the document, not a
-> summary you have to trust."
+One extra click inside s4: the **Source proof** peek. After the demo, one more right arrow anywhere
+in `/showcase` brings the deck back on the Ask for Jawad — not your press.
 
-**NEXT → slide 4.**
+---
 
-## Slide 4 — Product (Bobby · 46s)
+## Slide 3 — Solution (~37s, two beats)
 
-> **On screen:** the live product tilted in the exhibit stack — GatingHero front, compliance matrix
-> behind, answer receipt floating. Optional flourish: press **P** to step inside the real product
-> in-stage; **Esc** walks back.
+*(You arrive on beat 0: the typeset page 7, clause 4.6 buried in the legalese. Read the quote
+slowly — the boredom is the point. ~20s:)*
 
-> "This is the real product on that same tender — not a mockup, not a vibes-based PDF summary.
-> Deal-breakers sit at the top in oxblood; you cannot scroll past them and pretend you didn't see
-> them. Click any line —" *(click Source proof)* "— and it shows the exact sentence on the exact page
-> it came from. Where it drafts an answer, it drafts from the bidder's own evidence pack: insurance,
-> policies, case studies, certificates, with the citation attached. And where it can't, it asks a
-> question instead of guessing. Nothing ships without a human: approve, edit, or flag, on every single
-> requirement. Every approval, edit, and flag is the legacy move: context captured while the work
-> happens."
+> "Page seven of a real tender. Clause 4.6: 'a Tender will be rejected where the tenderer fixes or
+> adjusts the prices shown by agreement with any other party…' It reads like every other paragraph —
+> that is exactly the problem. Buried in this one paragraph are **five separate ways to be
+> disqualified outright.** A trap wearing a cardigan."
 
-**NEXT → slide 5 (the competitor register).**
+*(**PRESS 1 — NEXT.** The five light up oxblood, the deal-breaker view splits in. ~17s:)*
 
-## Slide 5 — Competitors (Bobby · 25s · TWO beats)
+> "Same tender through Bidframe, one pass: twelve deal-breakers surfaced before a word is written —
+> these five included — each tied to its exact clause and page. One expert carrying the whole risk
+> alone becomes a marked trail through the document."
 
-*(Beat 1 — the register lands with only Bidframe's column lit: the bar. ~10s:)*
-> "Before Joe drives it live: this is the bar. Every requirement source-linked to its clause, a
-> deterministic deal-breaker floor — twelve out of twelve caught without trusting the model — and
-> every human decision recorded."
+*(**PRESS 2 — NEXT → slide 4.**)*
 
-*(NEXT — the rest of the field resolves in, gaps in oxblood, and the price line lands. ~15s:)*
-> "And this is the rest of the market. AI bid writers generate prose but don't prove the first read —
-> enterprise-priced, demo-gated. Answer libraries reuse yesterday's bid. A PDF chatbot summarises
-> without ever being accountable for a miss. We're the affordable first read; nobody else is even
-> playing that game."
+## Slide 4 — Product (~41s)
 
-**Handoff to demo (NEXT on this slide cuts the stage to `/showcase`):**
-> "Now Joe is going to drive the product live, and Pranav will talk us through what his clicks mean.
-> I will do the brave engineering thing and stop touching the keyboard."
+*(On screen: the live product in the exhibit stack — GatingHero front, matrix behind. One click
+mid-speech: the **Source proof** peek. ~41s:)*
 
-**Hand to Joe at the laptop and Pranav on narration. NEXT switches to `/showcase`; when the demo
-wraps, one more right arrow brings the deck back on the Ask for Jawad.**
+> "This is the real product on that same tender — not a mockup. Deal-breakers sit at the top, in
+> oxblood; you cannot scroll past them and pretend you didn't see them. Click any line —"
+> *(click Source proof)* "— the exact sentence, on the exact page, in **their** document. Where it
+> can draft an answer, it drafts from the bidder's own evidence pack, citation attached. Where it
+> can't, it asks a question instead of guessing. And nothing ships without a human: approve, edit,
+> or flag — every single requirement. Every one of those calls is captured. That is the legacy move."
+
+*(**PRESS 3 — NEXT → slide 5.** Optional flourish if ahead of clock: press **P** to step inside the
+real product; **Esc** walks back. Skip it if the pace ghost shows red.)*
+
+## Slide 5 — Competitor analysis (~25s, two beats)
+
+*(Beat 0: the register lands with **only Bidframe's row lit**. ~10s:)*
+
+> "Competitor analysis, in one look. The top row is the bar: every line source-linked, deal-breakers
+> caught, decisions recorded — at a price an SME can actually reach."
+
+*(**PRESS 4 — NEXT.** The rest of the field resolves in, gaps in oxblood, price line lands. ~11s:)*
+
+> "The rest of the market: AI writers generate prose but don't prove the first read — enterprise-priced,
+> demo-gated. Libraries reuse yesterday's answers. Chatbots aren't accountable for a miss. Nobody
+> else is playing the first-read game."
+
+*(Handoff, ~6s:)*
+
+> "Joe will drive it live, Pranav narrates — I'll do the brave engineering thing and stop touching
+> the keyboard."
+
+*(**PRESS 5 — NEXT.** The stage cuts to `/showcase`. You're done.)*
+
+---
+
+## If the clock is against you
+
+- **Drop first:** the P-flourish (never planned), then the cardigan line (-3s), then s5 beat 1
+  becomes just: "Competitor analysis. Top row is us — the bar." (-5s)
+- **Never drop:** the clause read (the pain), the Source-proof click (the trust), the handoff line
+  (Joe's cue).
+- **Claim discipline:** twelve deal-breakers = the Bradwell count; say "drafts from the bidder's own
+  evidence", never "writes your bid"; no accuracy percentages — the demo's numbers beat carries the
+  eval claims.
