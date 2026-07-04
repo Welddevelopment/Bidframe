@@ -48,28 +48,35 @@ with the work. Bidframe does that for the bid manager — every approve/edit/fla
 becomes reusable context that **compounds across future bids**. The matrix is the surface; the captured
 decisions are the moat.
 
-## Measured accuracy — reproduce it in one command
+## Measured accuracy — reproduce it yourself
 
-Most tools hand you a requirement list and you *hope* it's complete. We measure ours **deterministically**
-(no LLM-as-judge, so the score is itself auditable) against hand-labelled gold sets, across four real
-public-sector tenders spanning cleaning, grounds-maintenance and arboriculture.
+We measure our output against hand-labelled gold sets across four real public-sector tenders (cleaning,
+grounds-maintenance, arboriculture), deterministically — no LLM-as-judge.
 
-- **Deal-breaker (gating) recall: 100%.** Every disqualifier caught on all four gold tenders. It's
-  guaranteed, not luck: a **deterministic net catches 12/12 with no LLM at all**, we hold **10/10 on a
-  held-out tender the system had never seen**, and **101/101** on an adversarial bank of deal-breaker
-  phrasings built to dodge our keywords. No unseen tender silently drops a bid-killer.
-- **General requirement recall: ~0.7** across the four tenders (LLM extractor) — we catch the majority and,
-  crucially, **flag what we're unsure of** rather than guessing. It's an early number on a small gold set,
-  broadening as we label more — but it's a *real* number on *real* documents, not a promise.
-- We deliberately **don't headline a precision figure**: our gold sets are sparse, so much of the apparent
-  "over-extraction" is real requirements the key hasn't caught up to. We optimise for missing nothing that
-  matters and being honest about the rest.
-
-**Reproduce it yourself** (deterministic gating floor needs no key; the LLM recall path uses `OPENAI_API_KEY`):
+**Catching deal-breakers is the number that matters, and it's engineered, not hoped for.** A generous
+*deterministic* net (recall-first) surfaces every candidate disqualifier, then a model filter removes the
+false flags. The net's robustness is provable **with no key at all**:
 
 ```bash
-python -m engine.scripts.eval_all        # scores extraction vs the gold sets, per tender
+pytest engine/tests/test_adversarial_safety.py   # 20/20 — disqualifiers in adversarial phrasings still caught
 ```
+
+On our gold sets the shipped pipeline (net + extraction) catches every deal-breaker, including on a
+**held-out tender the system had never seen**. Reproduce the net-applied gating number with
+`python -m engine.scripts.gating_recall` (needs `OPENAI_API_KEY` for the embedding match). One honest
+caveat: plain `eval_all` scores *raw extraction without the net*, so its gating figure looks lower — the
+net is precisely the safety layer that closes that gap. That two-stage design is the point.
+
+**General requirement recall** — run it yourself:
+
+```bash
+python -m engine.scripts.eval_all     # recall ~0.52 with the built-in heuristic (no key) · ~0.7 with the OpenAI extractor
+```
+
+We catch the majority and, crucially, **flag what we're unsure of** rather than guessing. Early numbers on
+a small gold set, broadening as we label more — but real numbers on real documents. We deliberately
+**don't headline a precision figure**: the gold sets are sparse, so much of the apparent over-extraction is
+real requirements the key hasn't caught up to.
 
 ## Real engineering (not a wrapper around a prompt)
 
