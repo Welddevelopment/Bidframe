@@ -1,18 +1,20 @@
 # 5-minute run-of-show — the 1pm live pitch
 
-> The timed spine that ties it all together. Detailed beats live in `control-demo-script.md` (the control
-> moment), `pitch-before-after.md` (the before/after), and `demo-claim-ledger.md` (Q&A numbers). This is
-> the clock + the handoffs. Target **5:00**: a **3-minute, 5-slide deck with three speakers**
-> (Jawad → Bobby → Pranav) followed by **Joel's 2-minute live demo** on **`/showcase`**, then Jawad
-> closes on the deck's Ask slide. The deck's built-in pace ghost (next to the timer) tracks the
-> rehearsed slide budgets: 24s / 30s / 40s / 46s / 30s — 170s with 10s of handoff slack.
+> The timed spine that ties it all together. The word-for-word track is `pitch-script.md`; detailed
+> beats live in `control-demo-script.md` (the control moment), `pitch-before-after.md` (the
+> before/after), and `demo-claim-ledger.md` (Q&A numbers). This is the clock + the handoffs. Target
+> **5:00**: a **3-minute, 5-slide deck with two speakers** (Jawad opens and closes; Pranav owns
+> Solution + Product) followed by **Joel's 2-minute live demo** on **`/showcase`**, then Jawad closes
+> on the deck's Ask slide. One handoff inside the deck, one to Joel, one back. The deck's built-in
+> pace ghost (next to the timer) tracks the rehearsed slide budgets:
+> 24s / 30s / 40s / 46s / 30s — 170s with 10s of handoff slack.
 
 ## The clock
 
 | Time | Who | Where | Beat |
 |---|---|---|---|
 | **0:00–0:24** | Jawad | Deck s1 (Problem) | **Hook.** "A public-sector tender is 100+ pages of legal text. Hidden in it are pass/fail rules that disqualify a bid outright — miss one after days of work and the whole bid is binned." |
-| **0:24–0:54** | Bobby | Deck s2 (Use Case) | **The wedge.** "The work everyone struggles with is the *first read* — before you write a word. That's what Bidframe does: it turns weeks of reading into hours, and keeps the expert in control." £341bn counts up. |
+| **0:24–0:54** | Jawad | Deck s2 (Use Case) | **The wedge, four beats.** Each NEXT lights a register station and swaps the proof below: Days→minutes + £341bn, then deal-breaker register, source trace, evidence-backed answer. "The work everyone struggles with is the *first read* — before you write a word." |
 | **0:54–1:34** | Pranav | Deck s3 (Solution) | **Before/after, two beats.** Hold on the typeset clause 4.6 page — dense, easy to miss. NEXT marks the five buried disqualifiers and splits to the Bidframe deal-breaker view. *"A human can't see them; Bidframe pulls each one out."* |
 | **1:34–2:20** | Pranav | Deck s4 (Product) | **Product proof.** GatingHero + one click on Source proof (the receipt). Optional flourish: press **Enter/P** to step *inside* the real product without leaving the stage, **Esc** back. The handoff chip reads "next · Joel — live demo". |
 | **2:20–4:20** | Joel | **`/showcase`** | **The 2-minute live walkthrough.** Deal-breakers first (12, pinned) → insurance £5m/£10m → source trace (exact clause + page, one click into the real PDF) → the page-31 pricing landmine → the answer beat (evidence-backed draft with a citation) → the **control beat** (`control-demo-script.md`): named-confirm on a deal-breaker + answering the open question. Point at the ControlPanel tally: *"every decision captured — I'm at the wheel."* |

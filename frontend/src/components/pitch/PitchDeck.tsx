@@ -37,8 +37,9 @@ import { useRequirements } from "@/context/RequirementsContext";
 import { isBacked } from "@/lib/answers";
 import { deriveTriage } from "@/lib/triage";
 
-// The 3-minute deck: five slides, three speakers (Jawad, Bobby, Pranav).
-// Joel takes the mic after the Product slide for the 2-minute live demo.
+// The 3-minute deck: five slides, two speakers (Jawad opens and closes,
+// Pranav owns Solution + Product). Joel takes the mic after the Product
+// slide for the 2-minute live demo.
 const MAIN_SLIDE_COUNT = 5;
 const APPENDIX_SLIDE_COUNT = 6;
 const TOTAL_SLIDE_COUNT = MAIN_SLIDE_COUNT + APPENDIX_SLIDE_COUNT;
@@ -656,7 +657,7 @@ export function PitchDeck() {
             "Open with the plain-language definition: a tender is the buyer's official request to bid, with pass/fail requirements and evidence asks.",
             "Say the full thought out loud: hidden inside are pass/fail clauses, scored requirements and evidence asks — miss one gate and the answer is no.",
             "Make the pain concrete: the first read is where teams hunt for disqualifiers.",
-            "Hand to Bobby on the workflow, not a feature list.",
+            "Keep the mic: roll straight into the use case, not a feature list.",
           ],
           body: (
             <div className="pitch-poster pitch-poster--center">
@@ -678,7 +679,7 @@ export function PitchDeck() {
         {
           bucket: "Use Case",
           title: "The bid manager's first read",
-          speaker: "Bobby",
+          speaker: "Jawad",
           zone: "pine",
           light: 0.3,
           glyph: "read",
