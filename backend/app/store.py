@@ -66,6 +66,18 @@ def init_db() -> None:
                 PRIMARY KEY (tender_id, user_id),
                 FOREIGN KEY (tender_id) REFERENCES tenders(id)
             );
+            CREATE TABLE IF NOT EXISTS decision_events (
+                id        TEXT PRIMARY KEY,
+                tender_id TEXT NOT NULL,
+                req_id    TEXT NOT NULL,
+                actor_id  TEXT NOT NULL,
+                action    TEXT NOT NULL,
+                note      TEXT,
+                timestamp TEXT NOT NULL,
+                FOREIGN KEY (tender_id) REFERENCES tenders(id),
+                FOREIGN KEY (req_id) REFERENCES requirements(id),
+                FOREIGN KEY (actor_id) REFERENCES users(id)
+            );
             """
         )
         # Additive migration: the bidder's capability docs (autofill envelope). Idempotent,
@@ -278,6 +290,16 @@ def can_access_requirement(req_id: str, user_id: str) -> bool:
     return row["owner"] == user_id or is_member(row["tid"], user_id)
 
 
+def get_requirement_tender_id(req_id: str) -> str | None:
+    """The tender id a requirement belongs to, or None when the requirement is missing."""
+    with _conn() as c:
+        row = c.execute(
+            "SELECT tender_id FROM requirements WHERE id = ?",
+            (req_id,),
+        ).fetchone()
+    return row["tender_id"] if row is not None else None
+
+
 def list_members(tender_id: str) -> list[dict]:
     """Everyone with access to a tender: the owner first, then shared members, with names."""
     with _conn() as c:
@@ -296,6 +318,54 @@ def list_members(tender_id: str) -> list[dict]:
             if owner is not None:
                 members.insert(0, {**dict(owner), "added_at": None, "role": "owner"})
     return members
+
+
+def append_decision_event(
+    event_id: str,
+    tender_id: str,
+    req_id: str,
+    actor_id: str,
+    action: str,
+    note: str | None,
+    timestamp: str,
+) -> None:
+    """Append one immutable collaboration event for the tender activity timeline."""
+    with _conn() as c:
+        c.execute(
+            "INSERT INTO decision_events "
+            "(id, tender_id, req_id, actor_id, action, note, timestamp) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (event_id, tender_id, req_id, actor_id, action, note, timestamp),
+        )
+
+
+def list_decision_events(tender_id: str) -> list[dict]:
+    """Newest-first decision history for a tender, with actor details for the UI."""
+    with _conn() as c:
+        rows = c.execute(
+            "SELECT e.id, e.tender_id, e.req_id, e.action, e.note, e.timestamp, "
+            "u.id AS actor_id, u.email AS actor_email, u.name AS actor_name "
+            "FROM decision_events e LEFT JOIN users u ON u.id = e.actor_id "
+            "WHERE e.tender_id = ? "
+            "ORDER BY e.timestamp DESC, e.id DESC",
+            (tender_id,),
+        ).fetchall()
+    return [
+        {
+            "id": r["id"],
+            "tender_id": r["tender_id"],
+            "req_id": r["req_id"],
+            "action": r["action"],
+            "note": r["note"],
+            "timestamp": r["timestamp"],
+            "actor": {
+                "id": r["actor_id"],
+                "email": r["actor_email"],
+                "name": r["actor_name"],
+            },
+        }
+        for r in rows
+    ]
 
 
 def update_requirement(req_id: str, update: DecisionUpdate) -> Requirement | None:

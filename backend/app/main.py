@@ -374,6 +374,15 @@ def list_tender_members(tender_id: str, user: dict = Depends(current_user)):
     return {"members": store.list_members(tender_id)}
 
 
+@app.get("/tenders/{tender_id}/activity")
+def list_tender_activity(tender_id: str, user: dict = Depends(current_user)):
+    """Append-only collaboration timeline for a tender. Unlike the current row state,
+    this does not collapse earlier edits when a later teammate approves the row."""
+    if not store.can_access(tender_id, user["id"]):
+        raise HTTPException(status_code=404, detail="Tender not found.")
+    return {"events": store.list_decision_events(tender_id)}
+
+
 @app.post("/tenders/{tender_id}/share")
 def share_tender(tender_id: str, body: ShareRequest, user: dict = Depends(current_user)):
     """Grant a registered user access to this tender by email (owner-only). Returns the updated
@@ -529,7 +538,25 @@ def update_requirement(req_id: str, update: DecisionUpdate,
         update.decision.actor = Actor(
             id=user["id"], email=user["email"], name=user.get("name")
         )
+    tender_id = store.get_requirement_tender_id(req_id)
     req = store.update_requirement(req_id, update)
     if req is None:
         raise HTTPException(status_code=404, detail="Requirement not found.")
+    if tender_id is not None:
+        decision = update.decision
+        action = decision.action if decision is not None else (update.status or "update")
+        note = decision.note if decision is not None else None
+        timestamp = (
+            decision.timestamp if decision is not None and decision.timestamp
+            else time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        )
+        store.append_decision_event(
+            event_id=f"evt-{uuid.uuid4().hex[:12]}",
+            tender_id=tender_id,
+            req_id=req_id,
+            actor_id=user["id"],
+            action=action,
+            note=note,
+            timestamp=timestamp,
+        )
     return req

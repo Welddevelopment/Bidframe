@@ -77,6 +77,38 @@ def test_member_decision_is_stamped_with_their_identity(team):
     assert actor["email"] == "member@bidframe.co.uk" and actor["name"] == "Marcus Member"
 
 
+def test_activity_log_keeps_every_decision_event_newest_first(team):
+    owner, member, _outsider, tid, rid = team
+    owner.post(f"/tenders/{tid}/share", json={"email": "member@bidframe.co.uk"})
+
+    first = {"status": "flagged",
+             "decision": {"action": "edit", "note": "Owner spotted a gap",
+                          "timestamp": "2026-07-04T18:00:00Z"}}
+    second = {"status": "accepted",
+              "decision": {"action": "approve", "note": "Member cleared it",
+                           "timestamp": "2026-07-04T18:05:00Z"}}
+    assert owner.patch(f"/requirements/{rid}", json=first).status_code == 200
+    assert member.patch(f"/requirements/{rid}", json=second).status_code == 200
+
+    events = owner.get(f"/tenders/{tid}/activity").json()["events"]
+    assert [e["action"] for e in events[:2]] == ["approve", "edit"]
+    assert events[0]["actor"]["email"] == "member@bidframe.co.uk"
+    assert events[1]["actor"]["email"] == "owner@bidframe.co.uk"
+    assert events[1]["note"] == "Owner spotted a gap"
+
+    row = owner.get(f"/tenders/{tid}/requirements").json()["requirements"][0]
+    assert row["decision"]["action"] == "approve"  # current row still last-write-wins
+
+
+def test_activity_log_is_member_scoped(team):
+    owner, member, outsider, tid, rid = team
+    assert outsider.get(f"/tenders/{tid}/activity").status_code == 404
+    owner.post(f"/tenders/{tid}/share", json={"email": "member@bidframe.co.uk"})
+    owner.patch(f"/requirements/{rid}", json=_DECISION)
+    assert member.get(f"/tenders/{tid}/activity").status_code == 200
+    assert outsider.get(f"/tenders/{tid}/activity").status_code == 404
+
+
 def test_outsider_cannot_decide(team):
     _owner, _member, outsider, _tid, rid = team
     assert outsider.patch(f"/requirements/{rid}", json=_DECISION).status_code == 404
