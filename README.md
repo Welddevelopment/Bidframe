@@ -88,6 +88,12 @@ real requirements the key hasn't caught up to.
   extractor, reconcile/dedupe, the gating net and the eval.
 - **Real ingest pipeline** — `POST /tenders/upload` → background extraction job → live progress → error
   handling; pluggable extractor (heuristic with **no key**, OpenAI when a key is set).
+- **Handles messy inputs, not just clean ones** — multi-parser fallback (PyMuPDF → pdfplumber for
+  tables/form pages → pypdf), and **scanned / image-only PDFs are OCR'd via gpt-4o vision** (verified
+  end-to-end: an image-only page with a zero-char text layer is recovered to full text). Bounded to 15
+  vision pages/doc to control cost; long tenders are split into overlapping chunks and a chunk that fails
+  after retries is skipped, never crashing the run; pages that still can't be read are flagged, not
+  silently dropped.
 - **Traceability to the line** — `source_rect` bounding boxes highlight the exact line in the source PDF;
   two-sided evidence links tie each drafted answer to the capability doc that backs it.
 
