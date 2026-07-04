@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { Tender } from "@/types/requirement";
 import { RequirementsProvider } from "@/context/RequirementsContext";
 import { MatrixView } from "@/components/MatrixView";
+import { ControlPanel } from "@/components/ControlPanel";
 import bradwellPrebake from "@/data/bradwell-prebake.json";
 
 // The live product, driven on a frozen real tender (Bradwell grounds ITT). This is the
@@ -20,6 +21,7 @@ export const metadata: Metadata = {
 export default function ShowcasePage() {
   return (
     <RequirementsProvider initialTender={demoTender}>
+      <ControlPanel />
       <MatrixView title={demoTender.title} />
     </RequirementsProvider>
   );
