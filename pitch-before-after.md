@@ -91,10 +91,11 @@ small-caps labels; one italic-serif accent on the contrast headline (§4) if it 
 ## 7. The other rubric touches (copy drops — same "do the work" principle)
 Small, paste-ready lines so all four criteria are *named*, not just implied.
 
-- **Impact & speed-up (30%) — quantify the before.** Put a real number on it:
-  `Before: 1–2 days per tender by hand, or a bid consultant's day rate. After: minutes. The difference between
-  bidding for three contracts a quarter and thirty.` *(J: fill the consultant day-rate figure if we cite one;
-  otherwise keep it qualitative.)*
+- **Impact & speed-up (30%) — the hard number (researched, sourced in `incumbent-pricing-research.md`):**
+  `An outsourced tender review starts at £950; a full bid averages ~£4,000 and takes 2–8 weeks — all wasted
+  if one deal-breaker is missed. Bidframe does the first read in hours, so a small firm gets that safety net
+  without a £35–50k-a-year bid writer.` Fallback one-liner: *"£400–£950 saved per tender on the first read —
+  but the real number is not wasting a £4,000, multi-week bid on a rule you missed."*
 - **User stays in control (20%) — SHOW it, don't just say it.** In the after walkthrough, explicitly surface
   the **open-question row**, the **needs-review flags**, and the **approve / edit / flag** controls. That
   criterion is 20% and it's our strongest fit — make it visible on screen.
