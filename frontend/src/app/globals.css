@@ -5510,9 +5510,9 @@ body {
 }
 
 /* Journey exhibit: the zone under the route register where the talk's
-   current proof lives — the £341bn stat on the first beat, then one tilted
-   product card per station as the speaker walks the register. Each card
-   remounts on its beat, so it settles in fresh. */
+   current proof lives — first the tender PDF, then one tilted product card
+   per station as the speaker walks the register. Each card remounts on its
+   beat, so it settles in fresh. */
 .pitch-journey__exhibit {
   min-height: 0;
   display: grid;

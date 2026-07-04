@@ -64,6 +64,32 @@ const CHAOS_NOTES = [
   "one missed clause = binned bid",
 ] as const;
 
+const PITCH_REEL_PAGES = [
+  "before-tender-p7.png",
+  "before-tender-p31.png",
+] as const;
+
+const PDF_REEL_FRAME_STYLE = {
+  "--tilt-x": "2deg",
+  "--tilt-y": "-4deg",
+  "--plane-z": "-34px",
+  position: "relative",
+  width: "min(56rem, 86vw)",
+  height: "clamp(11rem, 48vh, 22rem)",
+  overflow: "hidden",
+  border: "1px solid rgba(246, 242, 233, 0.2)",
+  background: "rgba(6, 18, 11, 0.72)",
+  boxShadow: "0 28px 68px rgba(0, 0, 0, 0.46)",
+} as React.CSSProperties;
+
+const PDF_REEL_SHADE_STYLE = {
+  position: "absolute",
+  inset: 0,
+  pointerEvents: "none",
+  background:
+    "linear-gradient(180deg, rgba(6, 18, 11, 0.08), rgba(6, 18, 11, 0.32)), radial-gradient(circle at center, transparent 46%, rgba(6, 18, 11, 0.45))",
+} as React.CSSProperties;
+
 // Sums to 170s — ten seconds of handoff slack inside the 3:00 window.
 const AUTOPLAY_SECONDS = [24, 30, 40, 46, 30] as const;
 // Where the clock *should* be when each main slide starts (pace ghost).
@@ -187,6 +213,23 @@ function Metric({
           value
         )}
       </strong>
+    </div>
+  );
+}
+
+function PitchPdfReel() {
+  return (
+    <div className="pitch-before-after__reel" aria-hidden="true">
+      <div className="pitch-before-after__reel-track">
+        {[0, 1].map((half) => (
+          <div className="pitch-before-after__reel-half" key={half}>
+            {PITCH_REEL_PAGES.map((page) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img key={page} src={`/pitch/${page}`} alt="" />
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -613,42 +656,14 @@ export function PitchDeck() {
               />
               <div className="pitch-journey__exhibit pitch-exhibit">
                 {(activeIndex === 1 ? beat : 3) === 0 ? (
-                  <div className="pitch-journey__stats">
-                    <div className="pitch-journey__stat pitch-journey__stat--impact">
-                      <span
-                        className="pitch-journey__figure"
-                        aria-label="Weeks to minutes"
-                      >
-                        Weeks
-                        <span className="pitch-journey__arrow" aria-hidden="true">
-                          →
-                        </span>
-                        minutes
-                      </span>
-                      <span className="pitch-journey__note">
-                        A bid like this is weeks of expert work, and one missed
-                        clause on page 31 bins all of it. Bidframe does the first
-                        read — where the bid-killers hide — in minutes.
-                      </span>
-                    </div>
-                    <div className="pitch-journey__stat pitch-journey__stat--context">
-                      <span
-                        className="pitch-journey__figure pitch-journey__figure--sm"
-                        aria-label="341 billion pounds"
-                      >
-                        £
-                        <AnimatedNumber
-                          key={activeIndex === 1 ? "gbp-active" : "gbp-idle"}
-                          value={341}
-                          from={activeIndex === 1 ? 0 : 341}
-                        />
-                        bn
-                      </span>
-                      <span className="pitch-journey__note">
-                        UK public procurement, 2023/24 · about a third of
-                        public spend
-                      </span>
-                    </div>
+                  <div
+                    className="pitch-journey__pdf-reel pitch-exhibit__plane"
+                    role="img"
+                    aria-label="Scrolling preview of the Bradwell tender PDF"
+                    style={PDF_REEL_FRAME_STYLE}
+                  >
+                    <PitchPdfReel />
+                    <span aria-hidden="true" style={PDF_REEL_SHADE_STYLE} />
                   </div>
                 ) : (
                   <div
@@ -719,23 +734,7 @@ export function PitchDeck() {
                         facsimile resolves over it with the disqualifiers
                         marked, crisp instead of pixel-guessed onto the scan.
                         Two identical halves make the loop seamless. */}
-                    <div className="pitch-before-after__reel" aria-hidden="true">
-                      <div className="pitch-before-after__reel-track">
-                        {[0, 1].map((half) => (
-                          <div
-                            className="pitch-before-after__reel-half"
-                            key={half}
-                          >
-                            {["before-tender-p7.png", "before-tender-p31.png"].map(
-                              (page) => (
-                                // eslint-disable-next-line @next/next/no-img-element
-                                <img key={page} src={`/pitch/${page}`} alt="" />
-                              )
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                    <PitchPdfReel />
                     <div className="pitch-before-after__scan" aria-hidden="true" />
                     {/* The manual-process chaos stuck to the page at beat 0 —
                         swept away with the scan when Bidframe takes over. */}
