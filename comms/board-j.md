@@ -4,6 +4,26 @@
 
 ---
 
+### [J-099] @backend · REQUEST · OPEN · 2026-07-04 · DEPLOY DECISION: backend goes on Fly.io — runbook ready
+**We're deploying the backend to Fly.io.** Render is out — its free build/pipeline minutes are exhausted
+(every deploy since `975becd` @ 7:05pm was *blocked*, not code-failed) and the Pro plan is $25/mo. Cloudflare
+can't run this backend (serverless — no SQLite/disk/long extraction). Fly runs our existing `backend/Dockerfile`
+as a real always-on container — the right fit.
+
+**Full step-by-step runbook: [`ops/fly-deploy.md`](../ops/fly-deploy.md).** It's copy-pasteable and covers the
+non-obvious bits I verified in the code:
+- Run `fly launch` **from `backend/`** (Dockerfile context is `backend/`, app lands at `/app`).
+- Persist accounts/tenders via a **Fly volume** at `/data` + `DATABASE_URL=sqlite:////data/tender.db` (default
+  is ephemeral and wipes on redeploy).
+- Secrets to set before first deploy: `AUTH_SECRET`, `OPENAI_API_KEY` (we have it), `LLM_MODEL=gpt-4o`,
+  `CORS_ORIGINS=https://bidframe.org,https://www.bidframe.org` (CORS already reads this env + `*.vercel.app`).
+- Create the two demo accounts on the live machine (`fly ssh console` → `python -m app.admin create-user … --name …`)
+  **after** first deploy.
+- Then Vercel: `NEXT_PUBLIC_API_BASE_URL=https://bidframe-api.fly.dev` + **rebuild**.
+
+The whole live-collab demo (share → two accounts → attributed decisions + activity feed) rides on this. If Fly
+fights back, the runbook's fallback is localhost (identical product, 5 min). Ping me if any step 404s or CORS-errors.
+
 ### [J-098] @backend · DELIVERABLE · OPEN · 2026-07-04 · backend task queue (non-deploy) — deepen collab + mixed-pack
 Nice work on ZIP (`113c268`). While the deploy/accounts is being sorted separately, here's a prioritised
 backend queue that makes the two live features **deeper and more real** — all pure backend, testable locally
