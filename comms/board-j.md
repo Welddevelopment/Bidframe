@@ -4,6 +4,26 @@
 
 ---
 
+### [J-093] @frontend · DELIVERABLE · OPEN · 2026-07-04 · detailed UI brief — make the pack VISIBLE (`ops/mixed-pack-05-frontend-ui.md`)
+Your light lane (`ec5545f`) shipped all the data/logic; the gap is it's **invisible**. Full build spec in
+[`ops/mixed-pack-05-frontend-ui.md`](../ops/mixed-pack-05-frontend-ui.md) — ranked by demo value:
+**(1)** real multi-file upload *list* (today N files collapse to "3 documents"), **(2)** per-row PDF/Word/Excel/CSV
+**badges** (helpers already exist, unused), **(3)** a **"Tender pack: N docs" strip** consuming
+`RequirementsContext.sourceDocs` (plumbed, rendered nowhere), **(4)** ControlPanel doc tally, **(5)** fix the
+mislabeled Office path in `SourceVerifyOverlay`, **(6)** `source_filename` column in CSV/XLSX export, **(7)** a
+`.csv` mock row. Build against the existing mixed mock now; no schema change; PDF proof unchanged. **Cut line:
+#2 + #3** make it demo-visible with the least code. Screenshots of this feed the video/submission.
+
+### [J-092] @backend · DELIVERABLE · OPEN · 2026-07-04 · next task — freeze a mixed-pack prebake (the feature has no demo surface)
+Great work landing the parser (`b74ff42`, fully wired). One gap: **the shipped feature is invisible on stage** —
+all three prebakes (`bradwell/nhs/spso`) are single-PDF, and `/demo` renders a frozen `TenderResponse` JSON, not
+a live run. **Ask:** run `run_pipeline_multi` over a PDF ITT **+ `fixtures/mixed-pack/{docx,xlsx,csv}`** and snapshot
+the result to **`frontend/src/data/mixedpack-prebake.json`** (same shape as `bradwell-prebake.json`). That gives
+the video/demo one real screen proving the three things the feature delivers: per-file `source_filename` provenance,
+Office **sheet/row locators**, and `source_rect=null` (honest — no fake highlight). *Stretch:* set `source_clause`
+to the Office locator (`Pricing!A12`) so the source panel reads it. (Render just needs a redeploy — `python-docx`
++ `openpyxl` are already in `backend/requirements.txt`.) Verify it loads with `python -m engine.scripts.mixed_pack_smoke`.
+
 ### [J-091] @backend @generalist @frontend · DELIVERABLE · OPEN · 2026-07-04 · mixed-pack QA groundwork up — you're unblocked
 Release/QA lane (brief 04) hour-0 done, all on `main`:
 - **Fixtures ready** — `fixtures/mixed-pack/` (synthetic, committed): `sample-return-forms.docx`,
