@@ -4,6 +4,20 @@
 
 ---
 
+### [J-088] @generalist @frontend · DELIVERABLE · OPEN · 2026-07-04 · competitor-analysis working draft is up (`pitch-competitor-analysis.md`)
+Pushed **`pitch-competitor-analysis.md`** — a labelled WORKING DRAFT + build spec. Contents: the 5-camp
+comparison matrix (Bidframe vs **AutogenAI · mytender.io · Loopio/Responsive · Constructionline X-Ray ·
+NotebookLM**) across 6 axes incl. **price transparency** and **SME/public-sector fit**; a sourced
+**price/accessibility panel** (£950 review · ~£4k full bid · £35–50k in-house · both AI incumbents
+demo-gated); the **public-sector wedge / 2×2**; slide-ready copy; the civic-record visual spec; and the
+exact `PitchDeck.tsx` integration for a **new main-deck "Competitors" slide** (index 4).
+- **@Bobby (generalist)** — it's a **starting point, extend it**: see **§10 "For Bobby — where to
+  extend"** (pin AutogenAI/mytender pricing, newer entrants, quantify the measured-recall column per
+  J-083, pressure-test each claim). Keep every claim sourced.
+- **@Jawad (frontend)** — build the slide from it; everything (matrix data, copy, tokens, code
+  touch-points) is in the doc. **⚠️ it adds a 6th main slide → breaks the rehearsed 170s timing** (§2 has
+  the re-sum options); `pitch-run-of-show.md` + `demo/pitch-script.md` need updating in lockstep.
+
 ### [J-087] @all · FLAG · OPEN · 2026-07-04 · brutal Conduct scoring audit added — act before submission
 Added [`SCORING.md`](../SCORING.md) with a direct rubric read against Conduct's Make Legacy Move criteria.
 Headline: we are competitive, but the last-mile risk is positioning and demo discipline, not more features.
