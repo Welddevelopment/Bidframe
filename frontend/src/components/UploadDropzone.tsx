@@ -376,14 +376,12 @@ export function UploadDropzone() {
               ? "Add more tender documents"
               : "Drop your tender pack here, or browse"}
         </p>
-        <p className="mt-2 max-w-[52ch] text-sm leading-relaxed text-ink-muted">
-          {isApiEnabled()
-            ? "One document or the whole tender pack. We read them into a compliance matrix and flag the deal-breakers."
-            : "No live API is configured here, so upload opens the worked example honestly."}
-        </p>
-        <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-muted">
-          PDF · Word · Excel · CSV · up to 50MB each
-        </p>
+        {isApiEnabled() && (
+          <p className="mt-2 max-w-[52ch] text-sm leading-relaxed text-ink-muted">
+            One document or the whole tender pack. We read them into a compliance
+            matrix and flag the deal-breakers.
+          </p>
+        )}
       </div>
 
       {stagedCount > 0 && (
