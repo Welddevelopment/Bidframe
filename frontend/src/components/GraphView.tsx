@@ -19,6 +19,7 @@ import {
 import "@xyflow/react/dist/style.css";
 import { useRequirements } from "@/context/RequirementsContext";
 import { isApiEnabled } from "@/lib/api";
+import { sourceRefLabel } from "@/lib/source-doc";
 import type { Requirement } from "@/types/requirement";
 import { ConfidenceIndicator } from "./ConfidenceIndicator";
 import { CategoryTag } from "@/components/CategoryTag";
@@ -111,8 +112,7 @@ function RequirementNode({ data }: NodeProps) {
   };
   const gating = req.is_gating;
   const unanswerable = gating && req.status === "pending";
-  const ref =
-    req.source_clause?.replace(/^section\s+/i, "") ?? `p.${req.source_page}`;
+  const ref = sourceRefLabel(req);
 
   return (
     <div
@@ -167,7 +167,7 @@ function RequirementNode({ data }: NodeProps) {
       </p>
 
       <div className="mt-2 flex items-center justify-between gap-2 font-mono text-[10.5px] text-ink-muted">
-        <span>p.{req.source_page}</span>
+        <span>{ref}</span>
         {gating ? (
           <span className="font-medium text-signal-oxblood">Deal-breaker</span>
         ) : req.status === "accepted" ? (

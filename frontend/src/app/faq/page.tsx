@@ -12,13 +12,13 @@ import { jsonLd } from "@/lib/json-ld";
 
 const title = "Bidframe FAQ: public-sector tender review questions answered";
 const description =
-  "Plain answers about how Bidframe reads UK public-sector tender PDFs, flags deal-breakers, shows source clauses, and keeps bid teams in control.";
+  "Plain answers about how Bidframe reads UK public-sector tender packs, flags deal-breakers, shows source clauses, and keeps bid teams in control.";
 
 const FAQ_ITEMS = [
   {
     question: "What is Bidframe?",
     answer:
-      "Bidframe is a tender review tool for public-sector bids. It reads a tender PDF, turns the requirements into a reviewable worklist, flags deal-breakers, and links each line back to the source clause.",
+      "Bidframe is a tender review tool for public-sector bids. It reads a tender pack, turns the requirements into a reviewable worklist, flags deal-breakers, and links each line back to the source clause.",
   },
   {
     question: "Who is Bidframe for?",
@@ -46,9 +46,9 @@ const FAQ_ITEMS = [
       "Uncertain requirements stay visible. Bidframe marks them for review, asks for missing information where needed, and avoids presenting a guess as a finished answer.",
   },
   {
-    question: "Can Bidframe read UK public-sector tender PDFs?",
+    question: "Can Bidframe read UK public-sector tender packs?",
     answer:
-      "Yes. The demo uses a real UK public-sector tender run. Bidframe is designed around PDF tender packs, including requirement lists, clauses, schedules, forms, and source excerpts.",
+      "Yes. The demo uses a real UK public-sector tender run. Bidframe accepts PDF, Word, Excel and CSV tender documents, then shows each requirement with its filename, locator and source excerpt.",
   },
 ];
 

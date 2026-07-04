@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRequirements } from "@/context/RequirementsContext";
+import { sourceRefLabel } from "@/lib/source-doc";
 import type { Requirement } from "@/types/requirement";
 import {
   UNASSIGNED,
@@ -278,7 +279,7 @@ export function MarksView({
                               {r.text}
                             </span>
                             <span className="shrink-0 font-mono text-[11px] text-ink-muted">
-                              p.{r.source_page}
+                              {sourceRefLabel(r)}
                             </span>
                           </button>
                         </li>

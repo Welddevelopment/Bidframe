@@ -71,7 +71,7 @@ const homepageStructuredData = [
       audienceType: "SME bidders and small bid-writing consultancies",
     },
     featureList: [
-      "Extracts tender requirements from public-sector PDFs",
+      "Extracts tender requirements from public-sector tender packs",
       "Flags deal-breakers and uncertain requirements for review",
       "Links requirements and drafted answers back to source evidence",
       "Keeps the bidder in control of every approved line",

@@ -9,7 +9,12 @@ import { ConfidenceIndicator } from "./ConfidenceIndicator";
 import { CategoryTag } from "./CategoryTag";
 import { useRequirements } from "@/context/RequirementsContext";
 import { tenderPdfPageUrl } from "@/lib/api";
-import { requirementPdfUrl } from "@/lib/source-doc";
+import {
+  hasPdfSource,
+  requirementPdfUrl,
+  sourceLocatorLabel,
+  sourceRefLabel,
+} from "@/lib/source-doc";
 import { SourceVerifyOverlay } from "./SourceVerifyOverlay";
 
 // The open-state panel internals (layout.md section 6). One sheet on a
@@ -280,13 +285,7 @@ function RequirementZone({
             <p className="font-mono text-xs text-ink-muted">Optional.</p>
           )}
           <CategoryTag category={requirement.category} className="w-fit" />
-          <SourceRef
-            page={requirement.source_page}
-            clause={requirement.source_clause}
-            excerpt={requirement.source_excerpt}
-            docId={requirement.source_doc_id ?? null}
-            filename={requirement.source_filename ?? null}
-          />
+          <SourceRef requirement={requirement} />
           {pdfUrl && (
             <button
               type="button"
@@ -328,12 +327,12 @@ function ExplainabilityBlock({
   onVerify: () => void;
 }) {
   const evidenceCount = requirement.answer?.evidence_refs.length ?? 0;
-  const source = requirement.source_clause
-    ? `p.${requirement.source_page}, ${requirement.source_clause}`
-    : `p.${requirement.source_page}`;
+  const source = sourceRefLabel(requirement);
   const next =
     requirement.status === "pending"
-      ? "Open the source, inspect the evidence, then approve by name, edit the answer, or flag it for a colleague."
+      ? canVerify
+        ? "Open the source, inspect the evidence, then approve by name, edit the answer, or flag it for a colleague."
+        : "Read the source excerpt, inspect the evidence, then approve by name, edit the answer, or flag it for a colleague."
       : "This decision is recorded. Reopen it if the source check changes your mind.";
 
   return (
@@ -395,46 +394,44 @@ function ExplainabilityBlock({
   );
 }
 
-// The source reference in the margin: a quiet mono "p.14, Section 4.2.1" line
-// that expands in place to the verbatim excerpt the requirement was lifted from.
-function SourceRef({
-  page,
-  clause,
-  excerpt,
-  docId,
-  filename,
-}: {
-  page: number;
-  clause: string | null;
-  excerpt: string;
-  docId?: string | null;
-  filename?: string | null;
-}) {
+// The source reference in the margin: a quiet mono line that expands in place
+// to the verbatim excerpt the requirement was lifted from. PDF sources get the
+// page link; Office/CSV sources stay excerpt-only.
+function SourceRef({ requirement }: { requirement: Requirement }) {
   const { tenderId } = useRequirements();
   const [open, setOpen] = useState(false);
-  const ref = clause ? `p.${page}, ${clause}` : `p.${page}`;
+  const ref = sourceRefLabel(requirement);
+  const locator = sourceLocatorLabel(requirement);
   // With a live tender loaded, link to the original PDF (the right document in the
   // pack) opened at this page.
-  const pdfUrl = tenderId ? tenderPdfPageUrl(tenderId, page, docId) : "";
+  const pdfUrl =
+    tenderId && hasPdfSource(requirement)
+      ? tenderPdfPageUrl(
+          tenderId,
+          requirement.source_page,
+          requirement.source_doc_id ?? null
+        )
+      : "";
 
   return (
     <div className="font-mono text-xs leading-relaxed">
-      {filename && (
-        <p className="truncate text-accent/70" title={filename}>
-          {filename}
+      {requirement.source_filename && (
+        <p className="truncate text-accent/70" title={requirement.source_filename}>
+          {requirement.source_filename}
         </p>
       )}
       <button
         type="button"
         aria-expanded={open}
         onClick={() => setOpen((prev) => !prev)}
+        title={locator}
         className="text-left text-accent transition-colors hover:text-ink"
       >
         {ref}
       </button>
-      {open && excerpt && (
+      {open && requirement.source_excerpt && (
         <p className="mt-2 rounded bg-paper-recessed p-2.5 leading-relaxed text-accent shadow-[var(--depth-pressed)]">
-          &ldquo;{excerpt}&rdquo;
+          &ldquo;{requirement.source_excerpt}&rdquo;
         </p>
       )}
       {pdfUrl && (

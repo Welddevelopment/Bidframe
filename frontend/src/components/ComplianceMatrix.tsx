@@ -16,6 +16,7 @@ import {
   type TriageGroup,
 } from "@/lib/triage";
 import { alsoCitedLabel } from "@/lib/dedupe";
+import { sourceRefLabel } from "@/lib/source-doc";
 import {
   deriveVisibleGroups,
   type MatrixLens,
@@ -233,8 +234,7 @@ function MatrixRow({
 
   // The register: each row carries its real clause ref down a quiet mono margin
   // (design-language). Fall back to the page when there is no clause.
-  const ref =
-    req.source_clause?.replace(/^section\s+/i, "") ?? `p.${req.source_page}`;
+  const ref = sourceRefLabel(req);
 
   // Rows read as a flagged zone, not a pinstripe: a faint tier-keyed wash that
   // deepens on hover (oxblood gating carries a pennant + alarm meter too). No

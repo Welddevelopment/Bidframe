@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   useCallback,
@@ -23,7 +22,12 @@ import {
   type SortKey,
 } from "@/lib/triage";
 import { deriveVisibleGroups, type MatrixLens } from "@/lib/matrix-derive";
-import { requirementPdfUrl, sourceRefLabel } from "@/lib/source-doc";
+import {
+  hasPdfSource,
+  requirementPdfUrl,
+  sourceKindLabel,
+  sourceRefLabel,
+} from "@/lib/source-doc";
 import { exportMatrixXlsx } from "@/lib/export-matrix-xlsx";
 import { AnimatedNumber } from "./AnimatedNumber";
 import { AppMain } from "./AppMain";
@@ -137,9 +141,7 @@ function latestDecisionTimeLabel(requirements: Requirement[]): string | undefine
 // present, else its page — the same margin ref the matrix rows carry.
 function toastRef(req: Requirement | undefined): string {
   if (!req) return "1 requirement";
-  return (
-    req.source_clause?.replace(/^section\s+/i, "") ?? `p.${req.source_page}`
-  );
+  return sourceRefLabel(req);
 }
 
 export function MatrixView({
@@ -1013,6 +1015,8 @@ function EvidencePane({
   // null while PdfSourceView is still locating the line.
   const [match, setMatch] = useState<MatchKind | null>(null);
   const ref = sourceRefLabel(requirement);
+  const isPdf = hasPdfSource(requirement);
+  const sourceKind = sourceKindLabel(requirement);
 
   return (
     <div className="flex h-full flex-col">
@@ -1060,6 +1064,18 @@ function EvidencePane({
             excerpt={requirement.source_excerpt}
             onMatch={setMatch}
           />
+        ) : !isPdf ? (
+          <div className="flex h-full flex-col bg-paper-recessed p-6 shadow-[var(--depth-pressed)]">
+            <p className="font-mono text-[11px] uppercase tracking-wide text-ink-muted">
+              {sourceKind} source
+            </p>
+            <p className="mt-3 font-mono text-xs leading-relaxed text-accent">
+              &ldquo;{requirement.source_excerpt}&rdquo;
+            </p>
+            <p className="mt-auto pt-6 font-mono text-[11px] leading-relaxed text-ink-muted">
+              {ref}. This source is shown as text because it is not a PDF page.
+            </p>
+          </div>
         ) : (
           <div className="flex h-full items-center justify-center bg-paper-recessed p-6 shadow-[var(--depth-pressed)]">
             <p className="max-w-[36ch] text-center font-mono text-xs leading-relaxed text-ink-muted">

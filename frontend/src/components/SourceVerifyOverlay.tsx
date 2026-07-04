@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Requirement } from "@/types/requirement";
+import { sourceRefLabel } from "@/lib/source-doc";
 import { PdfSourceView, type MatchKind } from "./PdfSourceView";
 
 // The claim ↔ source split (graph-and-verification-deep-plan.md Part B, #1): click
@@ -36,9 +37,7 @@ export function SourceVerifyOverlay({
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [onClose]);
 
-  const ref = requirement.source_clause
-    ? `p.${requirement.source_page}, ${requirement.source_clause}`
-    : `p.${requirement.source_page}`;
+  const ref = sourceRefLabel(requirement);
   // "Open the page" escape hatch: the raw PDF at the right page, in a new tab.
   const openPageHref = pdfUrl ? `${pdfUrl}#page=${requirement.source_page}` : "";
 

@@ -16,6 +16,22 @@ import { RegisterPreview } from "./RegisterPreview";
 
 type UploadStage = "idle" | "extracting" | "done" | "error";
 
+const ACCEPTED_TENDER_EXTENSIONS = [".pdf", ".docx", ".xlsx", ".csv"];
+const ACCEPTED_TENDER_MIME = new Set([
+  "application/pdf",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "text/csv",
+]);
+
+function isAcceptedTenderFile(file: File): boolean {
+  const name = file.name.toLowerCase();
+  return (
+    ACCEPTED_TENDER_MIME.has(file.type) ||
+    ACCEPTED_TENDER_EXTENSIONS.some((ext) => name.endsWith(ext))
+  );
+}
+
 // Poll a background extraction job until it finishes, pushing each update to the
 // UI so the ProcessingView can show live progress. Resolves on done or error;
 // throws only on a network/HTTP failure (surfaced by the caller).
@@ -55,17 +71,15 @@ export function UploadDropzone() {
     if (all.length === 0) return;
     setErrorMessage(null);
 
-    const pdfs = all.filter(
-      (f) => f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf")
-    );
-    if (pdfs.length === 0) {
-      setFileName(all[0]?.name ?? null);
-      setErrorMessage("Use PDF tender documents. Other file types are not parsed yet.");
+    const unsupported = all.find((file) => !isAcceptedTenderFile(file));
+    if (unsupported) {
+      setFileName(unsupported.name);
+      setErrorMessage("Use PDF, Word, Excel or CSV tender documents.");
       setStage("error");
       return;
     }
 
-    const oversized = pdfs.find((f) => f.size > 50 * 1024 * 1024);
+    const oversized = all.find((f) => f.size > 50 * 1024 * 1024);
     if (oversized) {
       setFileName(oversized.name);
       setErrorMessage(
@@ -75,7 +89,7 @@ export function UploadDropzone() {
       return;
     }
 
-    setFileName(pdfs.length === 1 ? pdfs[0].name : `${pdfs.length} documents`);
+    setFileName(all.length === 1 ? all[0].name : `${all.length} documents`);
     setJob(null);
     setStage("extracting");
 
@@ -87,10 +101,10 @@ export function UploadDropzone() {
 
     // Live path: upload the pack → background job → poll for live progress → load.
     try {
-      const { jobId, tenderId } = await uploadTender(pdfs, pdfs[0].name);
+      const { jobId, tenderId } = await uploadTender(all, all[0].name);
       const finalJob = await pollJob(jobId, setJob);
       if (finalJob.status === "error") {
-        setErrorMessage(finalJob.detail || "We could not process this PDF.");
+        setErrorMessage(finalJob.detail || "We could not process this tender pack.");
         setStage("error");
         return;
       }
@@ -304,11 +318,11 @@ export function UploadDropzone() {
         </p>
         <p className="mt-2 max-w-[52ch] text-sm leading-relaxed text-ink-muted">
           {isApiEnabled()
-            ? "One PDF or the whole pack. We read them into a compliance matrix and flag the deal-breakers."
+            ? "One document or the whole tender pack. We read them into a compliance matrix and flag the deal-breakers."
             : "No live API is configured here, so upload opens the worked example honestly."}
         </p>
         <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-muted">
-          PDF · up to 50MB
+          PDF · Word · Excel · CSV · up to 50MB each
         </p>
       </div>
 
@@ -324,7 +338,7 @@ export function UploadDropzone() {
       <input
         ref={inputRef}
         type="file"
-        accept="application/pdf,.pdf"
+        accept=".pdf,.docx,.xlsx,.csv,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
         multiple
         className="hidden"
         onChange={(event) => handleFiles(event.target.files)}

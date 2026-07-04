@@ -1,4 +1,5 @@
 import type { CapabilityDoc, Requirement } from "@/types/requirement";
+import { sourceRefLabel } from "@/lib/source-doc";
 
 // Builders for the "Export response pack" menu. Content = the drafted answers
 // grouped by requirement, each with its evidence citations and any gap Q/A, in
@@ -33,8 +34,6 @@ interface Block {
 function toBlocks(input: ExportInput): Block[] {
   const docName = docNameLookup(input.capabilityDocs);
   return input.requirements.map((req) => {
-    const sourceBits = [`p.${req.source_page}`];
-    if (req.source_clause) sourceBits.push(req.source_clause);
     const answerText = (req.answer?.text ?? req.draft_answer ?? "").trim();
 
     const answered: { question: string; answer: string }[] = [];
@@ -46,7 +45,7 @@ function toBlocks(input: ExportInput): Block[] {
 
     return {
       requirement: req.text,
-      source: sourceBits.join(", "),
+      source: sourceRefLabel(req),
       answer: answerText.length > 0 ? answerText : null,
       evidence: (req.answer?.evidence_refs ?? []).map(
         (ref) => `Backed by ${docName(ref.doc_id)}, p.${ref.page}: “${ref.excerpt}”`

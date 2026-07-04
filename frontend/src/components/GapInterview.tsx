@@ -2,6 +2,7 @@
 
 import { useRequirements } from "@/context/RequirementsContext";
 import { CategoryTag } from "@/components/CategoryTag";
+import { sourceRefLabel } from "@/lib/source-doc";
 import { AnswerStateBadge } from "./AnswerStateBadge";
 import { OpenQuestionItem } from "./OpenQuestions";
 
@@ -78,7 +79,7 @@ export function GapInterview() {
               )}
               {req.answer && <AnswerStateBadge state={req.answer.state} />}
               <CategoryTag category={req.category} />
-              <span className="font-mono text-ink-muted">p.{req.source_page}</span>
+              <span className="font-mono text-ink-muted">{sourceRefLabel(req)}</span>
             </div>
             <p className="mb-3 max-w-[64ch] text-sm font-medium leading-snug text-ink">
               {req.text}

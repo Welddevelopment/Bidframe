@@ -1,8 +1,8 @@
 const STEPS: { n: string; title: string; body: string }[] = [
   {
     n: "01",
-    title: "Upload the tender",
-    body: "Drop in the PDF. Bidframe reads it and finds every requirement, with its source.",
+    title: "Upload the tender pack",
+    body: "Drop in the documents. Bidframe reads them and finds every requirement, with its source.",
   },
   {
     n: "02",

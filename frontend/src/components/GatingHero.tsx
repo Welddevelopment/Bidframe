@@ -2,6 +2,7 @@
 
 import { useRequirements } from "@/context/RequirementsContext";
 import { alsoCitedLabel, collapseDuplicates } from "@/lib/dedupe";
+import { sourceRefLabel } from "@/lib/source-doc";
 import type { Requirement } from "@/types/requirement";
 
 // The deal-breaker dossier (layout.md sections 3, 7; design-language). The one
@@ -157,8 +158,7 @@ export function GatingHero({
                     </span>
                   )}
                   <span className="mt-1 block font-mono text-xs text-ink-muted">
-                    p.{req.source_page}
-                    {req.source_clause ? ` · ${req.source_clause}` : ""}
+                    {sourceRefLabel(req)}
                     {alsoOn ? ` · ${alsoOn}` : ""}
                   </span>
                 </button>

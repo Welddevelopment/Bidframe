@@ -80,11 +80,11 @@ export function logout(): void {
   clearToken();
 }
 
-// Absolute URL to a source PDF in the tender pack, opened at a given page — browser
-// PDF viewers honour the #page fragment. Empty string when no live API is configured
-// (the mock/demo has no stored PDF), so callers can hide the link. `docId` selects the
-// document in the pack; the session token rides as a query param because a plain
-// <iframe>/link navigation can't set an Authorization header.
+// Absolute URL to a PDF source document in the tender pack, opened at a given
+// page. Browser PDF viewers honour the #page fragment. Empty string when no live
+// API is configured, so callers can hide the link. `docId` selects the document
+// in the pack; the session token rides as a query param because a plain
+// <iframe>/link navigation cannot set an Authorization header.
 export function tenderPdfPageUrl(
   tenderId: string,
   page: number,
@@ -109,10 +109,10 @@ const DEMO_PDFS: Record<string, string> = {
   "bradwell-grounds-itt.pdf": "/demo/bradwell-grounds-itt.pdf",
 };
 
-// The source PDF URL for the claim ↔ source verification view, WITHOUT the #page
-// fragment (PDF.js selects the page itself). A live tender streams from the backend
-// (owner-scoped, token as a query param); the mock/demo build falls back to a static
-// public copy for a known demo tender. Null when no PDF is available (excerpt-only).
+// The source PDF URL for the claim/source verification view, WITHOUT the #page
+// fragment (PDF.js selects the page itself). A live PDF tender streams from the
+// backend (owner-scoped, token as a query param); the mock/demo build falls back
+// to a static public copy for a known demo tender. Null when no PDF is available.
 export function sourceDocUrl(opts: {
   tenderId: string | null;
   docId?: string | null;
@@ -184,9 +184,10 @@ async function apiError(res: Response, fallback: string): Promise<ApiError> {
   return new ApiError(message, res.status);
 }
 
-// POST /tenders/upload — multipart form with the PDF. Extraction runs on a
-// background job; this returns { jobId, tenderId } immediately. Poll getJob(jobId)
-// for live progress, then load the tender once the job is done.
+// POST /tenders/upload — multipart form with the tender pack documents.
+// Extraction runs on a background job; this returns { jobId, tenderId }
+// immediately. Poll getJob(jobId) for live progress, then load the tender once
+// the job is done.
 export async function uploadTender(
   files: File[],
   title?: string

@@ -2,6 +2,7 @@
 
 import type { Requirement } from "@/types/requirement";
 import { hasDraft, isOpenDealBreaker } from "@/lib/answers";
+import { sourceRefLabel } from "@/lib/source-doc";
 import { AnswerPanel } from "./AnswerPanel";
 import { AnswerStateBadge } from "./AnswerStateBadge";
 import { CategoryTag } from "./CategoryTag";
@@ -44,7 +45,7 @@ export function AnswerCard({ requirement: req }: { requirement: Requirement }) {
           size="sm"
         />
         <AnswerStateBadge state={answer?.state ?? "empty"} />
-        <span className="font-mono text-ink-muted">p.{req.source_page}</span>
+        <span className="font-mono text-ink-muted">{sourceRefLabel(req)}</span>
       </div>
 
       <p className="mb-3 max-w-[64ch] text-sm font-medium leading-snug text-ink">
