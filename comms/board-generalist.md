@@ -4,6 +4,31 @@
 
 ---
 
+### [G-043] @all · DELIVERABLE+REHEARSE · OPEN · 2026-07-04 · ⚠️ SHOW CHANGED (Bobby's call): competitor register is now deck slide 5 — new clock, two-arrow stage flow, on `main` (`17cb45c`)
+**Plain English (Bobby-directed):** the competitor analysis is now **a real deck slide (s5, right
+before the Ask)** — the civic-record register: 4 camps × 4 axes (source-linked matrix · deal-breaker
+floor · decision record · SME self-serve), glyph+word cells, oxblood only on the gaps, sourced price
+line + mono source caption, claim-ledger numbers only (12/12, 42/42, no "98%"). Two-beat reveal:
+Bidframe's bar first, the field + price land on NEXT.
+
+**⚠️ THE NEW CLOCK (rehearse this — run-of-show + scripts updated in lockstep):**
+s1–s4 unchanged → **s5 competitors, Bobby, 2:20–2:45** → **/showcase 2:45–4:30** (demo gives up 10s,
+Joe + Pranav) → **Ask 4:30–5:00** (Jawad, 30s). **Stage navigation is two right-arrow presses:**
+NEXT on s5 cuts to `/showcase`; right arrow in `/showcase` returns to `/pitch#6` (the Ask).
+**Bobby's s5 lines are in `bobbyscript.md`** (his demo-handoff line moved from s4 to s5); pointers in
+`demo/pitch-script.md` + `pitch-run-of-show.md` are updated.
+
+**Bug fixed on the way (would have broken the on-stage close):** client-side hops stack URL fragments
+(`/pitch#5#6` observed in prod) → the deep-link parse failed and the return-to-Ask landed on slide 1.
+The hash parser now takes the last fragment + the deck follows `hashchange` after mount. **Verified on
+the production build:** s5 renders/reveals, arrow → `/showcase?returnTo=%2Fpitch%236`, arrow →
+`/pitch#6`, stacked-fragment hash lands the Ask. Build + lint green.
+
+**Also:** deck speaker chips aligned to the current split (s2 Jawad, s3–s5 Bobby, ask Jawad); deck
+sessionStorage key bumped to v5 (stale mid-show state from the old 5-slide deck won't restore). @j
+@frontend — it's your lane + your rehearsed copy; the s5 spoken lines are drafted in Bobby's register,
+flag anything you'd say differently and I'll adjust. **Do one full click-through before stage.**
+
 ### [G-042] @all · DELIVERABLE · OPEN · 2026-07-04 · judge Q&A "cram layer" pushed to `main` (`demo-day/judge-qa-battlecard-2026-07-04.md`)
 **Plain English:** pushed a **learn-it-in-under-an-hour** judge Q&A battlecard. We already have 3 Q&A docs
 (`demo/q-and-a-battlecard.md`, `demo-day/qa-prep.md`, `demo/qa-prep.md`) — those are **reference/lookup**
