@@ -53,6 +53,9 @@ export function SiteFooter() {
               <Link href="/demo" className={linkClass}>
                 See the demo
               </Link>
+              <Link href="/pack" className={linkClass}>
+                Tender pack
+              </Link>
               <Link href="/login" className={linkClass}>
                 Sign in
               </Link>

@@ -12,6 +12,7 @@ import { usePathname } from "next/navigation";
 const SECTIONS = [
   { href: "/tenders", label: "Tenders" },
   { href: "/upload", label: "Upload" },
+  { href: "/pack", label: "Pack demo" },
   { href: "/review", label: "Matrix" },
   { href: "/answers", label: "Answers" },
   { href: "/graph", label: "Graph" },

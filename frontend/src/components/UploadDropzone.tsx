@@ -47,6 +47,11 @@ function packLabel(files: File[]): string | null {
   return `${files.length} documents`;
 }
 
+function packDoneLabel(files: File[]): string {
+  if (files.length === 1) return files[0].name;
+  return `${files.length} documents`;
+}
+
 function fileKey(file: File): string {
   return `${file.name}:${file.size}:${file.lastModified}`;
 }
@@ -210,7 +215,9 @@ export function UploadDropzone() {
             <>
               Found <span className="font-medium text-ink">{found}</span>{" "}
               requirement{found === 1 ? "" : "s"} across{" "}
-              <span className="font-medium text-ink">{fileName}</span>
+              <span className="font-medium text-ink">
+                {packDoneLabel(stagedFiles)}
+              </span>
               {dealBreakers != null && dealBreakers > 0 ? (
                 <>
                   {", "}
@@ -283,7 +290,13 @@ export function UploadDropzone() {
   if (stage === "extracting") {
     // Live: the staged "watch it read your tender" view, driven by the polled job.
     if (isApiEnabled()) {
-      return <ProcessingView job={job} fileName={fileName} />;
+      return (
+        <ProcessingView
+          job={job}
+          fileName={fileName}
+          fileCount={stagedFiles.length}
+        />
+      );
     }
     // Mock: a brief sample-open moment (no live extraction to show).
     return (

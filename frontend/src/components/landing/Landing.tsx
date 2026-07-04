@@ -91,6 +91,12 @@ export function Landing() {
               See the demo
             </Link>
             <Link
+              href="/pack"
+              className="link-draw hidden rounded-sm text-sm text-ink-muted transition-colors hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper md:inline"
+            >
+              Tender pack
+            </Link>
+            <Link
               href="/login"
               className="link-draw hidden rounded-sm text-sm text-ink-muted transition-colors hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper sm:inline"
             >
@@ -127,6 +133,28 @@ export function Landing() {
             <div className="hero-enter-3 mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-4">
               <BookDemoButton location="hero" size="lg" />
               <SeeItRunLink size="lg" />
+              <Link
+                href="/pack"
+                className="link-draw group inline-flex items-center gap-1 rounded-sm text-sm text-ink-muted transition-colors hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+              >
+                See a tender pack
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  aria-hidden="true"
+                  className="transition-transform group-hover:translate-x-0.5"
+                >
+                  <path
+                    d="M2.5 7h9M8 3.5 11.5 7 8 10.5"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </Link>
             </div>
           </section>
 

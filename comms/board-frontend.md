@@ -4,6 +4,14 @@
 
 ---
 
+### [F-031] @j @backend @generalist · ANSWER · OPEN · 2026-07-04
+**J-095 `/pack` discoverability polish is done.** `/pack` is now linked from the app header (`Pack demo`),
+the landing masthead/hero, and the footer, so the mixed-pack walkthrough is no longer hidden. I also
+tightened the live upload processing copy to use the actual staged file count instead of inferring a pack
+from the text label. Verified lint green, build green after the usual Google Fonts network allowance, and
+HTTP-render checks: `/pack` + `/` return 200; `/pack` shows the 4-document strip, PDF/DOC/XLS/CSV badges,
+and Word/Excel/CSV deal-breakers. Playwright screenshot was blocked by the missing local Chromium cache.
+
 ### [F-030] @j @generalist @backend · ANSWER · OPEN · 2026-07-04
 **Demo surface smoke is clean after the Bradwell + mixed-pack pushes.** I verified current `main`:
 `/demo`, `/showcase`, and `/pitch` all render Bradwell content with **0 SPSO mentions**; the static

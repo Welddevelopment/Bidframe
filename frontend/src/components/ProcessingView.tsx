@@ -29,9 +29,11 @@ function stepState(index: number, current: number): StepState {
 export function ProcessingView({
   job,
   fileName,
+  fileCount = 1,
 }: {
   job: JobStatus | null;
   fileName: string | null;
+  fileCount?: number;
 }) {
   const stage = job?.stage ?? "queued";
   // "queued" (-1) resolves to 0 so "reading" reads as active straight away; "done"
@@ -41,13 +43,14 @@ export function ProcessingView({
   const progress = Math.max(0, Math.min(1, job?.progress ?? 0.02));
   const found = job?.requirementCount ?? job?.rawCount;
   const dealBreakers = job?.dealBreakerCount;
-  const isPack = Boolean(fileName?.includes("documents"));
+  const isPack = fileCount > 1;
+  const documentLabel = `${fileCount} document${fileCount === 1 ? "" : "s"}`;
 
   return (
     <div className="surface-grain w-full max-w-xl rounded-xl border border-hairline bg-paper-raised p-6 shadow-[var(--depth-sheet)]">
       <div className="flex items-baseline justify-between gap-3">
         <h2 className="text-base font-semibold text-ink">
-          {isPack ? `Reading ${fileName}` : "Reading your tender"}
+          {isPack ? `Reading ${documentLabel}` : "Reading your tender"}
         </h2>
         <span className="font-mono text-xs text-ink-muted">
           {Math.round(progress * 100)}%
@@ -57,7 +60,7 @@ export function ProcessingView({
         className="mt-0.5 truncate font-mono text-xs text-ink-muted"
         title={fileName ?? undefined}
       >
-        {fileName}
+        {isPack ? `${fileName ?? documentLabel} staged` : fileName}
         {job?.pageCount ? ` · ${job.pageCount} pages` : ""}
       </p>
 
@@ -74,7 +77,7 @@ export function ProcessingView({
             <>
               <span className="font-semibold">{found}</span> requirement
               {found === 1 ? "" : "s"} found
-              {isPack ? " across the pack" : ""}
+              {isPack ? ` across ${documentLabel}` : ""}
             </>
           )}
           {dealBreakers != null && dealBreakers > 0 && (
