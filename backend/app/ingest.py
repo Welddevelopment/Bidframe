@@ -246,3 +246,26 @@ def ingest_pdf(pdf_path: str | Path, *, enrich: bool = True) -> IngestedDoc:
 
     pages = [Page(number=i + 1, text=text) for i, text in enumerate(raw_pages)]
     return IngestedDoc(filename=path.name, pages=pages)
+
+
+_OFFICE_EXTENSIONS = {".docx", ".xlsx", ".csv"}
+SUPPORTED_EXTENSIONS = {".pdf", *_OFFICE_EXTENSIONS}
+
+
+def ingest_document(path: str | Path) -> IngestedDoc:
+    """Dispatch to the right reader by file extension — the single entry point
+    `run_pipeline_multi` uses so a tender pack can mix PDF, Word, Excel and CSV.
+    Raises PDFIngestError with the filename + extension on anything unsupported."""
+    path = Path(path)
+    ext = path.suffix.lower()
+    if ext == ".pdf":
+        return ingest_pdf(path)
+    if ext in _OFFICE_EXTENSIONS:
+        from . import ingest_office
+        reader = {
+            ".docx": ingest_office.ingest_docx,
+            ".xlsx": ingest_office.ingest_xlsx,
+            ".csv": ingest_office.ingest_csv,
+        }[ext]
+        return reader(path)
+    raise PDFIngestError(f"Unsupported file type '{ext}' for {path.name}")

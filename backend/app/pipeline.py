@@ -23,7 +23,7 @@ from . import extract_cache
 from .chunk import chunk_doc
 from .extract import extract_chunk_multi, get_extractor
 from .graph import build_graph
-from .ingest import ingest_pdf, PDFIngestError
+from .ingest import ingest_document, PDFIngestError
 from .schema import (
     Answer,
     CapabilityDoc,
@@ -283,7 +283,8 @@ def _attach_source_rects(requirements: "list[Requirement]", docs: "list[tuple[st
         import fitz
     except ImportError:
         return
-    paths = {doc_id: path for doc_id, path, _ in docs}
+    # PDF-only: DOCX/XLSX/CSV requirements keep source_rect=None (no fake highlight).
+    paths = {doc_id: path for doc_id, path, _ in docs if Path(path).suffix.lower() == ".pdf"}
     by_doc: dict[str, list] = {}
     for r in requirements:
         if r.source_doc_id:
@@ -319,7 +320,8 @@ def run_pipeline_multi(
     title: str,
     on_progress: "Optional[Callable[..., None]]" = None,
 ) -> TenderResponse:
-    """Extraction pipeline for a tender PACK (one or more PDFs) → TenderResponse.
+    """Extraction pipeline for a tender PACK (one or more tender documents — PDF,
+    Word, Excel or CSV) → TenderResponse.
 
     `docs` is a list of (doc_id, pdf_path, filename). Every document is ingested and
     extracted together, but reconciled INDEPENDENTLY so a requirement that appears in
@@ -352,7 +354,7 @@ def run_pipeline_multi(
         emit("reading", f"Reading {label}", 0.05 + 0.05 * (di / n),
              doc_index=di + 1, doc_total=n)
         try:
-            ingested.append((doc_id, ingest_pdf(path), filename))
+            ingested.append((doc_id, ingest_document(path), filename))
         except PDFIngestError as exc:
             print(f"[pipeline] skipping {filename}: {exc}")
             skipped.append(filename)

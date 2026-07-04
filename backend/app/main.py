@@ -31,7 +31,7 @@ from fastapi.responses import FileResponse
 
 from .auth import current_user
 from .extract import get_extractor
-from .ingest import ingest_pdf, PDFIngestError
+from .ingest import ingest_pdf, PDFIngestError, SUPPORTED_EXTENSIONS
 from .pipeline import run_pipeline, run_pipeline_multi
 from .schema import DecisionUpdate, Requirement, TenderResponse
 from . import auth, pipeline, store
@@ -212,12 +212,13 @@ async def upload_tender(
         all_files.append(file)
     all_files = [f for f in all_files if f and f.filename]
     if not all_files:
-        raise HTTPException(status_code=400, detail="Please upload at least one PDF.")
+        raise HTTPException(status_code=400, detail="Please upload at least one document.")
     for f in all_files:
-        if not f.filename.lower().endswith(".pdf"):
+        if Path(f.filename).suffix.lower() not in SUPPORTED_EXTENSIONS:
+            supported = ", ".join(sorted(SUPPORTED_EXTENSIONS))
             raise HTTPException(
                 status_code=400,
-                detail=f"'{f.filename}' is not a PDF. Please upload PDF documents.",
+                detail=f"'{f.filename}' is not a supported file type. Supported: {supported}.",
             )
 
     tender_id = f"tnd-{uuid.uuid4().hex[:8]}"
@@ -229,7 +230,8 @@ async def upload_tender(
     total_mb = 0.0
     for i, f in enumerate(all_files, start=1):
         doc_id = f"d{i}"
-        dest = folder / f"{doc_id}.pdf"
+        ext = Path(f.filename).suffix.lower()
+        dest = folder / f"{doc_id}{ext}"
         with dest.open("wb") as out:
             shutil.copyfileobj(f.file, out)
         mb = dest.stat().st_size / (1024 * 1024)

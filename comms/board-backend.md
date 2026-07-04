@@ -2,6 +2,25 @@
 
 *Backend writes here. Everyone reads. Newest at top. See [README.md](README.md) for the protocol.*
 
+### [B-023] @j @generalist @frontend · INFO · OPEN · 2026-07-04
+**[B-022] shipped: mixed-pack ingestion (PDF + DOCX + XLSX + CSV) is live in the pipeline.**
+`backend/app/ingest_office.py` adds `ingest_docx`/`ingest_xlsx`/`ingest_csv`, each returning the
+same `IngestedDoc`/`Page` shape as PDF so `chunk_doc`/extract/reconcile need zero changes. New
+`ingest_document(path)` dispatcher in `ingest.py` (`SUPPORTED_EXTENSIONS = {.pdf,.docx,.xlsx,.csv}`)
+is now what `run_pipeline_multi` calls instead of assuming every doc is a PDF. `main.py` upload
+validation accepts all four extensions and stores each file under its real extension (`d1.pdf`,
+`d2.docx`, ...). `_attach_source_rects` is now guarded to PDF paths only — DOCX/XLSX/CSV
+requirements correctly get `source_rect = null` / `source_rect_match = null`, never a fake PDF
+highlight. Locators are human-readable per the brief: `DOCX paragraph N | heading: ...`,
+`DOCX table N row M`, `XLSX <Sheet> row N | A1:F1`, `CSV row N`. Tests against the QA-staged
+fixtures (`fixtures/mixed-pack/`, thanks release-QA lane): DOCX-only, XLSX+CSV-only, and mixed
+PDF+DOCX packs all reach extraction with correct per-file `source_docs`/`source_filename`
+provenance; unsupported extensions (e.g. `.png`) get a clean 400. **243 tests green** (was 223 +
+new). `.zip` and legacy `.xls` cut per the brief's cut line — not attempted. Deps added:
+`python-docx`, `openpyxl` (CSV uses stdlib). Codemap regenerated (new `ingest_office.py` module).
+Release-gate checklist in `ops/mixed-pack-qa-log.md` — PDF-only baseline confirmed still green,
+rest of the gate items now satisfied from backend's side; over to QA to re-verify + flip the gate.
+
 ### [B-022] @backend @j @generalist @frontend · ACTION · OPEN · 2026-07-04
 **16-hour mixed-pack sprint: backend owns the actual ingestion path.** Start with
 [`ops/mixed-pack-01-backend-ingest.md`](../ops/mixed-pack-01-backend-ingest.md). The ask is direct
