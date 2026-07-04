@@ -6,6 +6,10 @@ Product wording: **"Upload the tender pack."** Never "Office / Microsoft integra
 ## Status: hour-0 groundwork done ✅
 Fixtures built, baseline green, gate + cut lines below. Backend / generalist / frontend can start.
 
+**One-command gate:** `python -m engine.scripts.mixed_pack_smoke` — Phase A (format-neutral net over all
+4 fixtures) is green now; Phase B (backend reads the pack) auto-activates when lane 01 exposes a non-PDF
+ingest entrypoint. Re-run it as each lane lands; it prints the manual checklist items too.
+
 ## Fixture inventory — `fixtures/mixed-pack/` (committed, synthetic)
 | File | Format | Planted deal-breakers | Purpose |
 |---|---|---|---|
