@@ -776,16 +776,7 @@ export function PitchDeck() {
               }`}
             >
               <div className="pitch-before-after__copy">
-                <h2>One clause. Five ways to lose the bid.</h2>
-                <p className="pitch-before-after__contrast">
-                  <span className="pitch-before-after__contrast-line pitch-before-after__contrast-line--before">
-                    A full day of reading. Miss one, the bid is binned.
-                  </span>
-                  <span className="pitch-before-after__contrast-line pitch-before-after__contrast-line--after">
-                    Weeks of expert work, one miss = a binned bid&ensp;→&ensp;
-                    minutes, every deal-breaker caught, every line traceable.
-                  </span>
-                </p>
+                <h2>{beat > 0 ? "After" : "Before"}</h2>
               </div>
               <div className="pitch-before-after__stage">
                 <figure
@@ -1008,14 +999,6 @@ export function PitchDeck() {
                     ))}
                   </tbody>
                 </table>
-                <p className="pitch-register__price">
-                  Incumbents: enterprise-priced, demo-gated. Bidframe: the
-                  first read an SME can afford.
-                </p>
-                <p className="pitch-register__source">
-                  Competitor cells: their published positioning, 4 Jul 2026 ·
-                  Bidframe: measured (claim ledger)
-                </p>
               </div>
             </div>
           ),
