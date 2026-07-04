@@ -17,10 +17,23 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
-export default function ShowcasePage() {
+type ShowcasePageProps = {
+  searchParams?: Promise<{ returnTo?: string | string[] }>;
+};
+
+function safeReturnTo(value: string | string[] | undefined) {
+  const target = Array.isArray(value) ? value[0] : value;
+  if (!target || !target.startsWith("/") || target.startsWith("//")) return null;
+  return target;
+}
+
+export default async function ShowcasePage({ searchParams }: ShowcasePageProps) {
+  const params = await searchParams;
+  const stageReturnHref = safeReturnTo(params?.returnTo);
+
   return (
     <RequirementsProvider initialTender={demoTender}>
-      <MatrixView title={demoTender.title} />
+      <MatrixView title={demoTender.title} stageReturnHref={stageReturnHref} />
     </RequirementsProvider>
   );
 }

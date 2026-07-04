@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -140,7 +141,13 @@ function toastRef(req: Requirement | undefined): string {
   );
 }
 
-export function MatrixView({ title }: { title: string }) {
+export function MatrixView({
+  title,
+  stageReturnHref = null,
+}: {
+  title: string;
+  stageReturnHref?: string | null;
+}) {
   const {
     requirements,
     tenderId,
@@ -574,6 +581,22 @@ export function MatrixView({ title }: { title: string }) {
       />
 
       <ControlPanel />
+
+      {stageReturnHref && (
+        <div className="border-b border-hairline bg-paper">
+          <div className="mx-auto flex max-w-[1160px] items-center justify-between gap-4 px-6 py-3">
+            <p className="font-mono text-xs uppercase tracking-wide text-ink-muted">
+              Live walkthrough
+            </p>
+            <Link
+              href={stageReturnHref}
+              className="font-mono text-xs uppercase tracking-wide text-forest underline decoration-forest/30 underline-offset-4 transition-colors hover:text-forest-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+            >
+              Back to final ask
+            </Link>
+          </div>
+        </div>
+      )}
 
       <AppMain>
         {isWide && selected && !focusMode ? (

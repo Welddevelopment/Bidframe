@@ -72,6 +72,12 @@ const PACE_STARTS = AUTOPLAY_SECONDS.map((_, i) =>
 );
 // v4: appendix and presenter notes removed — five main slides only.
 const PITCH_STATE_KEY = "bidframe.pitch.state.v4";
+const ASK_SLIDE_INDEX = MAIN_SLIDE_COUNT - 1;
+const SHOWCASE_HANDOFF_SLIDE_INDEX = ASK_SLIDE_INDEX - 1;
+const PITCH_RETURN_HREF = `/pitch#${ASK_SLIDE_INDEX + 1}`;
+const SHOWCASE_HANDOFF_HREF = `/showcase?returnTo=${encodeURIComponent(
+  PITCH_RETURN_HREF
+)}`;
 
 interface PitchStoredState {
   activeIndex: number;
@@ -280,10 +286,10 @@ export function PitchDeck() {
       setBeat(beat + 1);
       return;
     }
-    // Advancing past the Ask hands the stage to the live demo: straight to
-    // /showcase.
-    if (activeIndex === MAIN_SLIDE_COUNT - 1) {
-      router.push("/showcase");
+    // The live walkthrough now sits before the final Ask. Product hands the
+    // stage to /showcase, which returns to #5 for the close.
+    if (activeIndex === SHOWCASE_HANDOFF_SLIDE_INDEX) {
+      router.push(SHOWCASE_HANDOFF_HREF);
       return;
     }
     setBeat(0);
@@ -478,9 +484,9 @@ export function PitchDeck() {
     }
   }, [activeIndex, beat, elapsedSeconds, restored]);
 
-  // The Ask's NEXT press cuts to the live demo — have /showcase ready.
+  // The Product slide's NEXT press cuts to the live demo — have /showcase ready.
   useEffect(() => {
-    router.prefetch("/showcase");
+    router.prefetch(SHOWCASE_HANDOFF_HREF);
   }, [router]);
 
   useEffect(() => {
@@ -544,7 +550,10 @@ export function PitchDeck() {
     );
 
     const timeout = window.setTimeout(() => {
-      if (activeIndex === MAIN_SLIDE_COUNT - 1) {
+      if (activeIndex === SHOWCASE_HANDOFF_SLIDE_INDEX) {
+        setAutoplay(false);
+        router.push(SHOWCASE_HANDOFF_HREF);
+      } else if (activeIndex === MAIN_SLIDE_COUNT - 1) {
         setAutoplay(false);
       } else {
         setBeat(0);
@@ -557,7 +566,7 @@ export function PitchDeck() {
       beatTimeouts.forEach((id) => window.clearTimeout(id));
       window.clearTimeout(timeout);
     };
-  }, [activeIndex, autoplay]);
+  }, [activeIndex, autoplay, router]);
 
   const slides = useMemo(
     () =>
