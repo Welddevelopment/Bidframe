@@ -45,9 +45,16 @@ requirement recall is promising but still small-sample, so we don't put a headli
 Source: [HoC Library — Procurement statistics: a short guide (CBP-9317)](https://commonslibrary.parliament.uk/research-briefings/cbp-9317/).
 
 ## C2. Impact / £-saved claims — the headline speed-up number (Impact, 30%)
-> On the deck's Use Case slide: **"Days → minutes"**, backed by the £ below. Full sourcing in
-> [`incumbent-pricing-research.md`](incumbent-pricing-research.md). Bidframe replaces the **first-read
-> layer** (compliance analysis *before* writing) — **not** the whole ghost-written bid. Do not claim we replace the bid writer.
+> On the deck's Use Case slide: **"Weeks → minutes"** — read it as **weeks of bid work *at stake*,
+> protected by a first read Bidframe does in minutes**, NOT "we do weeks of work in minutes." Backed by the
+> £ below. Full sourcing in [`incumbent-pricing-research.md`](incumbent-pricing-research.md). Bidframe
+> replaces the **first-read layer** (compliance analysis *before* writing) — **not** the whole ghost-written
+> bid. Do not claim we replace the bid writer.
+>
+> ⚠️ **Honesty guardrail for "weeks":** a *bid* is 2–8 weeks of work (row below); the *first read itself* is
+> 1–2 days (row below). "Weeks → minutes" compresses the **stakes** (weeks of work one missed clause bins),
+> not the task. If a judge asks "weeks for a first read?", answer: *"Weeks is the bid at risk — the first
+> read is a day or two by hand, and Bidframe does it in minutes so that weeks-long bid isn't wasted."*
 >
 > ⏱️ **Future improvement (not done for this demo):** replace the sourced estimate with a real stopwatch
 > measurement — time a manual first-read of the Bradwell pack finding all 10 deal-breakers, vs Bidframe's
@@ -58,7 +65,7 @@ Source: [HoC Library — Procurement statistics: a short guide (CBP-9317)](https
 | An **outsourced tender first-read starts at £950** | [Glaxtons pricing](https://www.glaxtons.co.uk/pricing/) | Joel | **HIGH** — published price |
 | Done in-house the first read is **1–2 days of a bid writer (~£375–£750)** at the **£375/day** median | [IT Jobs Watch — Bid Writer](https://www.itjobswatch.co.uk/contracts/uk/bid%20writer.do) | Joel | **HIGH** |
 | A **full bid averages ~£4,000 and takes 2–8 weeks** — and **one missed deal-breaker bins all of it** | [Executive Compass](https://executivecompass.co.uk/blog/bid-management/what-is-the-cost-of-writing-a-tender/) | Joel | **HIGH** |
-| **Headline: "Days → minutes"** — Bidframe does the first read in minutes instead of a day or two | Composite of the three rows above + the live `/showcase` run | Joel / Bobby | **HIGH — it's a speed-up claim, not "we save you £X"** |
+| **Headline: "Weeks → minutes"** — a bid is weeks of work that one missed clause bins; Bidframe does the first read (where the bid-killers hide) in minutes | Composite of the three rows above + the live `/showcase` run | Joel / Bobby | **HIGH — "weeks" = the bid at stake, NOT the first-read time (that's 1–2 days). Never claim we do weeks of work in minutes.** |
 
 **Safe wording if pushed on ROI:** *"Directly, £400–£950 per tender on the first read, in minutes instead
 of a day or two. But the real number is not wasting a £4,000, multi-week bid on a deal-breaker you missed

@@ -53,14 +53,14 @@ function beatsAt(index: number) {
 
 // The manual process, stuck to the tender page at beat 0: the scraps a bid
 // manager actually juggles. Grounded in the Bradwell pack (insurance limits,
-// pricing statements, the Clovers Lane deadline) — swept away on reveal.
+// pricing statements, the Glovers Lane deadline) — swept away on reveal.
 const CHAOS_NOTES = [
   "34 pages — third read-through",
   "reqs_tracker_v12_FINAL(2).xlsx",
   "£5m PL or £10m EL — which goes where?",
   "did legal see clause 4.6?",
   "pricing statement… p.31?!",
-  "hard copy to Clovers Lane by Thu 17:00",
+  "hard copy to Glovers Lane by Thu 17:00",
   "one missed clause = binned bid",
 ] as const;
 
@@ -617,18 +617,18 @@ export function PitchDeck() {
                     <div className="pitch-journey__stat pitch-journey__stat--impact">
                       <span
                         className="pitch-journey__figure"
-                        aria-label="Days to minutes"
+                        aria-label="Weeks to minutes"
                       >
-                        Days
+                        Weeks
                         <span className="pitch-journey__arrow" aria-hidden="true">
                           →
                         </span>
                         minutes
                       </span>
                       <span className="pitch-journey__note">
-                        A careful first read of this 34-page pack is the better
-                        part of a day. Bidframe surfaces all 12 bid-killers in
-                        minutes.
+                        A bid like this is weeks of expert work, and one missed
+                        clause on page 31 bins all of it. Bidframe does the first
+                        read — where the bid-killers hide — in minutes.
                       </span>
                     </div>
                     <div className="pitch-journey__stat pitch-journey__stat--context">
@@ -695,7 +695,7 @@ export function PitchDeck() {
                     A full day of reading. Miss one, the bid is binned.
                   </span>
                   <span className="pitch-before-after__contrast-line pitch-before-after__contrast-line--after">
-                    Days of expert reading, one miss = a binned bid&ensp;→&ensp;
+                    Weeks of expert work, one miss = a binned bid&ensp;→&ensp;
                     minutes, every deal-breaker caught, every line traceable.
                   </span>
                 </p>

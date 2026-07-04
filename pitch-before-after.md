@@ -57,7 +57,7 @@ small-caps labels; one italic-serif accent on the contrast headline (§4) if it 
 ## 4. Exact on-screen copy (paste-ready)
 - **Before kicker (over the raw page):** `One clause. Five ways to lose the bid. None of them obvious.`
 - **The contrast headline (the before→after line — put it on the transition or under the matrix):**
-  `1–2 days of expert reading, one miss = a binned bid  →  minutes, every deal-breaker caught, every line traceable.`
+  `Weeks of expert work, one miss = a binned bid  →  minutes, every deal-breaker caught, every line traceable.`
 - **After label (over/under the matrix):** `Bidframe. Deal-breakers first. Every line back to its clause.`
 
 ## 5. Exact narration (word-for-word, timed ~90s — this is the demo criterion clock)

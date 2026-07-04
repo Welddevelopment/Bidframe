@@ -17,9 +17,9 @@ your response from your own evidence. The human approves every call.**
 > Beat = what we click. (Narration) = what J says. Keep it to ~90s; the catch + the click-to-source
 > are the two moments that must land.
 
-1. **The before.** *(One sentence, no screen.)* "A bid manager spends one to two days just on the *first
-   read* of a tender like this — before writing a word — hunting for the pass/fail clauses. Miss one and the
-   whole bid is thrown out: weeks of work, gone."
+1. **The before.** *(One sentence, no screen.)* "A bid on a tender like this is weeks of expert work — and
+   one missed pass/fail clause, buried on page 31, bins all of it. The slow, high-stakes part is the *first
+   read*, before you write a word."
 2. **Upload.** Drag the tender PDF in. (Let the judge pick it if we're confident.) "We drop in a real
    public-sector tender. 13 pages."
 3. **The matrix populates.** "In under a minute, every requirement — pulled out, classified, scored."
@@ -42,7 +42,7 @@ your response from your own evidence. The human approves every call.**
 
 | | Before | After (Bidframe) |
 |---|---|---|
-| Time | 1–2 days of expert first-read | minutes |
+| Time | weeks of bid work at stake; the first read is a day or two by hand | first read in minutes |
 | Disqualifier risk | a missed pass/fail = whole bid void | caught + surfaced first |
 | Trust | hope the checklist is complete | every requirement → its source clause, one click |
 | Uncertainty | invisible | flagged honestly (`needs_review`) |

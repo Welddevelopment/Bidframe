@@ -7,15 +7,15 @@ Full timeline: [../run-sheet.md](../run-sheet.md). Numbers locked in [`../../dem
 
 ### 1. OPEN — 0:00–0:15
 No screen needed yet — eyes on you.
-> "A bid manager spends one to two days just on the first read of a tender like this — before writing a
-> word — hunting for the pass/fail clauses. Miss one and the whole bid is thrown out: weeks of work,
-> gone. Bidframe turns that into a verified, source-linked checklist in minutes."
+> "A bid on a tender like this is weeks of expert work — and one missed clause, buried on page 31, bins
+> all of it. Bidframe does the slow first read, where those bid-killers hide, in minutes: a verified,
+> source-linked checklist."
 
 **Handoff line:** *"P, drop it in."*
 
 ### 2. CLOSE — 2:05–2:30
 Before/after (compressed):
-> "A day or two of expert reading and a disqualifier risk — down to minutes, every line verifiable, a
+> "Weeks of work and a disqualifier risk — the first read down to minutes, every line verifiable, a
 > drafted response waiting. The human approved every step."
 
 Conduct thesis-bridge — **say this one close to verbatim, it's the highest-leverage sentence in the
