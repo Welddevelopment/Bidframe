@@ -4063,7 +4063,7 @@ body {
   padding: 0;
   border-width: 0;
   opacity: 0;
-  transform: translateX(0.8rem);
+  transform: translate3d(0.8rem, 0, -80px) rotateY(-10deg);
   pointer-events: none;
   transition:
     opacity 420ms ease 80ms,
@@ -4076,7 +4076,7 @@ body {
   padding: clamp(0.75rem, 1.15vw, 1.05rem);
   border-width: 1px;
   opacity: 1;
-  transform: none;
+  transform: rotateY(-6deg);
   pointer-events: auto;
 }
 
@@ -5080,7 +5080,172 @@ body {
   }
 }
 
+/* --- The exhibit system: product planes tilted in perspective, the landing
+   hero's .hero-sheet language at stage scale. Every plane declares its rest
+   pose via custom properties; on slide arrival it settles from a deeper tilt
+   (pitch-tilt-settle). This block MUST stay after the pitch-rise rules —
+   planes that also match a pitch-rise selector (e.g. .pitch-sheet) rely on
+   the later animation declaration winning the cascade, otherwise pitch-rise's
+   `transform: none` fill would flatten the resting tilt. */
+.pitch-exhibit {
+  perspective: 1600px;
+}
+
+.pitch-exhibit__plane {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --plane-z: 0px;
+  --plane-scale: 1;
+  --plane-dim: 1;
+  --plane-delay: 0ms;
+  opacity: var(--plane-dim);
+  transform: translate3d(0, 0, var(--plane-z)) rotateX(var(--tilt-x))
+    rotateY(var(--tilt-y)) scale(var(--plane-scale));
+  box-shadow: var(--depth-hero-sheet);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pitch-slide.is-active .pitch-exhibit__plane {
+    animation: pitch-tilt-settle 900ms cubic-bezier(0.22, 1, 0.36, 1)
+      var(--plane-delay) both;
+  }
+
+  /* The solution slide's after panel owns its own reveal transition. */
+  .pitch-slide.is-active .pitch-before-after__panel--after {
+    animation: none;
+  }
+}
+
+@keyframes pitch-tilt-settle {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.1rem, calc(var(--plane-z) - 120px))
+      rotateX(calc(var(--tilt-x) + 7deg)) rotateY(calc(var(--tilt-y) - 7deg))
+      scale(calc(var(--plane-scale) * 0.97));
+  }
+  to {
+    opacity: var(--plane-dim);
+    transform: translate3d(0, 0, var(--plane-z)) rotateX(var(--tilt-x))
+      rotateY(var(--tilt-y)) scale(var(--plane-scale));
+  }
+}
+
+/* Journey exhibit: the route register keeps the front plane; two mockup
+   cards flank it from the outer thirds as depth dressing. They sit under
+   an ink tint (::after) instead of extra transparency so the stage grain
+   doesn't muddy the paper cards. */
+.pitch-exhibit--journey {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+}
+
+.pitch-exhibit--journey .pitch-journey {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+}
+
+.pitch-exhibit__satellite {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  width: clamp(15rem, 21vw, 20rem);
+  margin-top: calc(-0.5 * clamp(11rem, 15vw, 14rem));
+  pointer-events: none;
+}
+
+.pitch-exhibit__satellite::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 18, 11, 0.32);
+}
+
+.pitch-exhibit__satellite--left {
+  left: -1.5%;
+}
+
+.pitch-exhibit__satellite--right {
+  right: -1.5%;
+}
+
+/* Product exhibit: three planes — dimmed compact matrix behind, the live
+   gating sheet in front, an answer receipt floating off its lower corner. */
+.pitch-sheet-stack {
+  position: relative;
+  align-self: stretch;
+  min-height: 0;
+  display: grid;
+}
+
+.pitch-sheet-stack .pitch-sheet {
+  position: relative;
+  z-index: 1;
+  /* pull the hero sheet in from the top-right so the deeper plane peeks out */
+  margin: 6% 9% 0 0;
+  border-right: 1px solid rgba(33, 29, 23, 0.16);
+  min-height: 0;
+}
+
+.pitch-sheet-stack__matrix {
+  position: absolute;
+  z-index: 0;
+  inset: 0 0 26% 34%;
+  overflow: hidden;
+  border: 1px solid rgba(33, 29, 23, 0.2);
+  background: var(--color-paper);
+  pointer-events: none;
+}
+
+.pitch-sheet-stack__answer {
+  position: absolute;
+  z-index: 2;
+  left: -9%;
+  bottom: 2%;
+  width: min(24rem, 52%);
+  pointer-events: none;
+}
+
+/* Solution slide in depth: the clause page rests under the lamp; the reveal
+   swings it left-edge-forward while the deal-breaker panel arrives at an
+   opposing tilt. The tilt change rides `transition: transform` — the settle
+   animation is cancelled at reveal so the transition owns the move (these
+   rules must follow the exhibit block to win the cascade). */
+.pitch-before-after__stage {
+  perspective: 1600px;
+}
+
+.pitch-before-after.is-revealed .pitch-before-after__panel--before {
+  --tilt-y: 7deg;
+  animation: none;
+  transition: transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pitch-exhibit__plane {
+    animation: none;
+  }
+
+  .pitch-before-after.is-revealed .pitch-before-after__panel--before {
+    transition: none;
+  }
+}
+
 @media (max-width: 900px), (max-height: 620px) {
+  /* No 3D staging on phones: flatten planes, drop decorative layers. */
+  .pitch-exhibit__plane {
+    transform: none;
+    opacity: 1;
+    animation: none;
+  }
+
+  .pitch-exhibit__satellite,
+  .pitch-sheet-stack__matrix,
+  .pitch-sheet-stack__answer {
+    display: none;
+  }
+
   .pitch-shell {
     display: block;
     min-height: 100svh;
@@ -5302,6 +5467,26 @@ body {
   .pitch-stopsign__card em {
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  /* Exhibits print flat: planes lose perspective, decorative layers drop. */
+  .pitch-exhibit,
+  .pitch-before-after__stage {
+    perspective: none !important;
+  }
+
+  .pitch-exhibit__plane,
+  .pitch-before-after__panel--before,
+  .pitch-before-after__panel--after {
+    transform: none !important;
+    opacity: 1 !important;
+    animation: none !important;
+  }
+
+  .pitch-exhibit__satellite,
+  .pitch-sheet-stack__matrix,
+  .pitch-sheet-stack__answer {
+    display: none !important;
   }
 
   .pitch-before-after {

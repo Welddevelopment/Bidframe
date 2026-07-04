@@ -24,11 +24,18 @@ import {
 } from "@/components/pitch/TenderGlyph";
 import { TenderPageFacsimile } from "@/components/pitch/TenderPageFacsimile";
 import { AnimatedNumber } from "@/components/AnimatedNumber";
+import { ComplianceMatrix } from "@/components/ComplianceMatrix";
 import { GatingHero } from "@/components/GatingHero";
 import { GraphView } from "@/components/GraphView";
 import { MatrixView } from "@/components/MatrixView";
+import {
+  AnswerCard as AnswerCardShot,
+  ClauseCard,
+  DealBreakerCard,
+} from "@/components/landing/ProductShots";
 import { useRequirements } from "@/context/RequirementsContext";
 import { isBacked } from "@/lib/answers";
+import { deriveTriage } from "@/lib/triage";
 
 // The 3-minute deck: five slides, three speakers (Jawad, Bobby, Pranav).
 // Joel takes the mic after the Product slide for the 2-minute live demo.
@@ -284,6 +291,16 @@ export function PitchDeck() {
 
   const dealBreakers = useMemo(
     () => requirements.filter((req) => req.is_gating),
+    [requirements]
+  );
+  // The product slide's back plane: a dimmed, decorative compact matrix.
+  // Rows are capped because every slide stays mounted for the whole pitch.
+  const exhibitGroups = useMemo(
+    () =>
+      deriveTriage(requirements).groups.map((group) => ({
+        ...group,
+        items: group.items.slice(0, 6),
+      })),
     [requirements]
   );
   const splitDealBreakers = useMemo(
@@ -662,7 +679,36 @@ export function PitchDeck() {
             "Make the journey feel operational: read, sort, prove, decide.",
           ],
           body: (
-            <div className="pitch-journey">
+            <div className="pitch-exhibit pitch-exhibit--journey">
+              <aside
+                className="pitch-exhibit__satellite pitch-exhibit__satellite--left pitch-exhibit__plane"
+                aria-hidden="true"
+                style={
+                  {
+                    "--tilt-y": "9deg",
+                    "--plane-z": "-90px",
+                    "--plane-scale": "0.72",
+                    "--plane-delay": "140ms",
+                  } as React.CSSProperties
+                }
+              >
+                <ClauseCard />
+              </aside>
+              <aside
+                className="pitch-exhibit__satellite pitch-exhibit__satellite--right pitch-exhibit__plane"
+                aria-hidden="true"
+                style={
+                  {
+                    "--tilt-y": "-9deg",
+                    "--plane-z": "-90px",
+                    "--plane-scale": "0.72",
+                    "--plane-delay": "220ms",
+                  } as React.CSSProperties
+                }
+              >
+                <DealBreakerCard />
+              </aside>
+              <div className="pitch-journey">
               <div className="pitch-journey__head">
                 <p className="pitch-kicker">The use case</p>
                 <h2>The first read decides what happens next</h2>
@@ -699,6 +745,7 @@ export function PitchDeck() {
                   spend · new rules live since 24 Feb 2025
                 </span>
               </div>
+              </div>
             </div>
           ),
         },
@@ -726,7 +773,15 @@ export function PitchDeck() {
                 <h2>One clause. Five ways to lose the bid.</h2>
               </div>
               <div className="pitch-before-after__stage">
-                <figure className="pitch-before-after__panel pitch-before-after__panel--before">
+                <figure
+                  className="pitch-before-after__panel pitch-before-after__panel--before pitch-exhibit__plane"
+                  style={
+                    {
+                      "--tilt-x": "3deg",
+                      "--tilt-y": "-6deg",
+                    } as React.CSSProperties
+                  }
+                >
                   <figcaption className="pitch-before-after__label">
                     <span>The tender. 34 pages.</span>
                   </figcaption>
@@ -813,7 +868,38 @@ export function PitchDeck() {
                   Step inside the live product
                 </button>
               </div>
-              <div className="pitch-sheet">
+              <div className="pitch-sheet-stack pitch-exhibit">
+                <div
+                  className="pitch-sheet-stack__matrix pitch-exhibit__plane"
+                  aria-hidden="true"
+                  style={
+                    {
+                      "--tilt-y": "6deg",
+                      "--plane-z": "-140px",
+                      "--plane-dim": "0.55",
+                      "--plane-scale": "0.92",
+                    } as React.CSSProperties
+                  }
+                >
+                  <ComplianceMatrix
+                    groups={exhibitGroups}
+                    selectedId={null}
+                    onSelect={() => {}}
+                    onApprove={() => {}}
+                    activeFilter={null}
+                    density="compact"
+                  />
+                </div>
+                <div
+                  className="pitch-sheet pitch-exhibit__plane"
+                  style={
+                    {
+                      "--tilt-x": "2deg",
+                      "--tilt-y": "-5deg",
+                      "--plane-delay": "80ms",
+                    } as React.CSSProperties
+                  }
+                >
                 <div className="pitch-sheet__caption">
                   <span>First screen</span>
                   <strong>The risk is visible</strong>
@@ -851,6 +937,21 @@ export function PitchDeck() {
                     </div>
                   </div>
                 )}
+                </div>
+                <aside
+                  className="pitch-sheet-stack__answer pitch-exhibit__plane"
+                  aria-hidden="true"
+                  style={
+                    {
+                      "--tilt-y": "-9deg",
+                      "--plane-z": "50px",
+                      "--plane-scale": "0.6",
+                      "--plane-delay": "180ms",
+                    } as React.CSSProperties
+                  }
+                >
+                  <AnswerCardShot />
+                </aside>
               </div>
             </div>
           ),
@@ -1154,6 +1255,7 @@ export function PitchDeck() {
       beat,
       backedCount,
       dealBreakers,
+      exhibitGroups,
       openPortal,
       openQuestionCount,
       requirements,
