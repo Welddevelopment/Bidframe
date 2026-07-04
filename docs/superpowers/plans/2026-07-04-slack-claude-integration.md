@@ -30,14 +30,19 @@ Markdown docs — "broken" here means placeholder text (`<REPO_URL>` etc.) left 
 No files. Human does this in the Slack admin UI (~5 min).
 
 - [ ] **Step 1: Confirm the workspace is on a paid Slack plan.** Slack → workspace name →
-  Settings & administration → Billing. The @Claude app does NOT install on free Slack. If free:
-  upgrade to Pro (≈ £7/user/mo, 4 users).
+  Settings & administration → Billing. The @Claude app is only available to users on paid Slack
+  plans. If free: upgrade to Pro (≈ £7/user/mo, 4 users).
 - [ ] **Step 2: Create (or confirm) three channels:** `#standup` (digest lands here), `#ship`
   (release/shipping announcements), `#ai-playground` (experiments, no norms).
 - [ ] **Step 3: Report back** the workspace name and confirm the three channels exist. The agent
   records the workspace name in `slack-setup.md` in Task 2 (replace `<WORKSPACE>`).
 
 ### Task 2: Write the team setup + norms doc
+
+> ✅ **ALREADY DONE (2026-07-04).** `slack-setup.md` is authored and committed with real values (no
+> `<WORKSPACE>`/`<OWNER>` placeholders) plus the doc-verified corrections. Treat the committed file
+> as the source of truth; the inline draft below is the earlier version, kept for reference. Skip to
+> Task 4 unless you want to review it.
 
 **Files:**
 - Create: `slack-setup.md` (repo root — sits alongside `sourcing-playbook.md` etc.)
@@ -107,54 +112,17 @@ git pull --rebase && git push
 
 ### Task 3: Write the digest routine prompt
 
+> ✅ **ALREADY DONE (2026-07-04).** `prompts/standup-digest-routine.md` is authored and committed
+> with the real repo URL and the corrected prompt (verified against live docs). **Do NOT reuse the
+> early inline draft that used to live here** — verification caught two real errors in it: (1) it
+> assumed the GitHub connector can read commit history, but the read-only claude.ai file-sync
+> integration syncs file *contents* only, so the routine needs the repo cloned (`git log`) or a
+> commit-listing GitHub connector; and (2) it lacked a "post exactly once / ground only in retrieved
+> data" guard that an unattended daily run needs to avoid duplicate or hallucinated posts. The
+> committed file fixes both — read it directly.
+
 **Files:**
-- Create: `prompts/standup-digest-routine.md`
-
-- [ ] **Step 1: Determine the repo URL** — run `git remote -v` and use the team source-of-truth
-  remote (the Welddevelopment org repo, NOT the `cosmosmarkets/TenderBreak` deploy mirror).
-- [ ] **Step 2: Create `prompts/standup-digest-routine.md`** with exactly this content,
-  replacing `<REPO_URL>`:
-
-```markdown
-# Routine: daily standup digest → Slack
-
-- **Schedule:** daily 09:00 Europe/London
-- **Connectors required:** GitHub (repo read), Slack (post)
-- **Runs on:** the Generalist's claude.ai account — claude.ai/code/routines
-- **This file is the versioned source of the routine's prompt.** If you edit it, update the
-  routine in the claude.ai UI to match.
-
-## Prompt
-
-You are the Bidframe standup bot. Every run, do exactly this:
-
-1. Using the GitHub connector, inspect the last 24 hours of <REPO_URL>:
-   - commits on `main` (all authors),
-   - changes to `STATUS.md` and `comms/board-*.md`.
-2. Write a digest with exactly these sections:
-   - **Shipped** — one line per meaningful commit or push, grouped by person
-     (Backend / Generalist / Frontend / J). Skip trivial commits (typo fixes, merges).
-   - **Decisions & open questions** — new `comms/` board entries still marked OPEN, and any
-     decisions newly recorded in `STATUS.md`.
-   - **Blockers** — every non-empty "Blocked on" cell in the STATUS.md role table.
-   - **Quiet** — roles with no activity in the window, one neutral line, no shaming.
-3. Post the digest to the `#standup` channel via the Slack connector. Under 300 words. Use
-   Slack-friendly formatting (*bold* section lines, hyphen bullets — no `#` headers). If there
-   was zero activity, post a single line saying so — never skip the post entirely.
-
-Rules: do not @mention individual people; do not invent activity; if the GitHub connector fails,
-post "digest skipped — repo unreachable" so the failure is visible in-channel.
-```
-
-- [ ] **Step 3: Verify** `<REPO_URL>` was replaced and the file renders cleanly
-  (`git diff --cached` after adding, or just read it back).
-- [ ] **Step 4: Commit**
-
-```bash
-git add prompts/standup-digest-routine.md
-git commit -m "docs: standup digest routine prompt (Slack bridge)"
-git pull --rebase && git push
-```
+- Created: `prompts/standup-digest-routine.md` (already committed — source of truth for the prompt)
 
 ### Task 4: ⛔ HUMAN GATE — install the @Claude Slack app (Phase 1)
 
@@ -179,9 +147,13 @@ No files. Human does this in a browser (~5 min). These connectors power BOTH ad-
 
 - [ ] **Step 1:** Go to claude.ai → Settings → Connectors → add **Slack** → OAuth into the team
   workspace. (Alternative: run `/mcp` in an interactive `claude` CLI session and authorize the
-  Slack plugin there.)
-- [ ] **Step 2:** In the same Connectors page, confirm **GitHub** is connected and has access to
-  the team repo. If not, connect it.
+  Slack plugin there.) Note this Slack **connector** is separate from the @Claude Slack **app** in
+  Task 4. On Team/Enterprise an org Owner must enable the connector before members can authorize it.
+- [ ] **Step 2:** Arrange **commit-level** repo access for the digest routine. The standard
+  claude.ai GitHub connector only syncs file *contents* — it does NOT expose commit history, so it
+  alone can't drive the digest. Plan to either attach the repo to the routine so it clones and runs
+  `git log` (preferred), or connect a GitHub connector that lists commits. Confirm GitHub is
+  connected on the account either way; the exact attachment happens in Task 7.
 - [ ] **Step 3:** Tell the executing agent it's done, so it can run the Task 6 verification.
 
 ### Task 6: Verify Claude Code can reach Slack
@@ -203,11 +175,17 @@ No files (the prompt is already versioned by Task 3). Human, in browser (~10 min
 
 - [ ] **Step 1:** Go to claude.ai/code/routines → New routine.
 - [ ] **Step 2:** Paste the **Prompt** section of `prompts/standup-digest-routine.md` verbatim.
-- [ ] **Step 3:** Attach connectors: **Slack** and **GitHub** (authorized in Task 5).
-- [ ] **Step 4:** Set the schedule: daily, 09:00, timezone Europe/London.
-- [ ] **Step 5 (verify now, don't wait for tomorrow):** Trigger a manual run. Expected: a digest
-  appears in `#standup` within a few minutes covering the last 24h. If it silently does nothing,
-  check the routine's run log — headless connector-auth failures don't retry.
+- [ ] **Step 3:** Create it as a **Remote** routine (not "Local", which runs on your own machine).
+  Attach the **Slack** connector and give the routine commit-level repo access (clone the repo, or
+  a commit-listing GitHub connector — see Task 5 Step 2). A routine includes ALL your connected
+  connectors by default, so **remove any you don't need**. (Routines are in research preview and
+  need Claude Code on the web enabled.)
+- [ ] **Step 4:** Set the schedule: daily, 09:00, timezone Europe/London (min interval is 1 hour).
+- [ ] **Step 5 (verify now, don't wait for tomorrow):** Trigger a manual run, then **open the run's
+  transcript** — a green status dot only means the session started/exited; blocked calls and missing
+  connector tools show up in the transcript. Expected: a digest appears in `#standup` covering the
+  last 24h. If not, the transcript tells you which connector failed (usually one that was never
+  authorized — tokens themselves auto-refresh).
 - [ ] **Step 6 (verify tomorrow):** Confirm the 09:00 scheduled run posted. Add a recurring
   weekly 30-second glance at `#standup` (routine health check) to whoever runs standups (J).
 

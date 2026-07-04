@@ -47,12 +47,23 @@ a Slack mention.
 
 ## Risks / preconditions
 
-- **Paid Slack plan required** for the @Claude app — unconfirmed; Phase 0 checks it (upgrade
-  ≈ £7/user/mo on Pro if needed).
+> All items below were verified against live Anthropic/Slack docs on 2026-07-04 (three-lens
+> verification workflow). Corrections from that pass are folded into the plan + `slack-setup.md`.
+
+- **Paid Slack plan required** for the @Claude app — confirmed: the app is only available to users
+  on paid Slack plans. Phase 0 checks it (upgrade ≈ £7/user/mo on Pro if needed).
+- **GitHub file-sync connector can't read commits** — the digest needs the repo cloned into the
+  routine (`git log`) or a commit-listing GitHub connector; the read-only claude.ai file-sync
+  integration syncs file contents only. Reflected in the routine setup notes.
+- **Routine failures are quiet, not loud** — a failed connector call surfaces in the run
+  *transcript*, not on the green status dot, and OAuth tokens auto-refresh (a failure usually means
+  a connector was never authorized, not a lapsed token). Mitigation: a manual first run confirmed
+  via the transcript, plus a weekly human glance at #standup.
+- **Unattended-run safety** — the routine prompt must post exactly once and ground every line only
+  in data retrieved that run, or a headless daily run can double-post or invent activity. Guard is
+  baked into `prompts/standup-digest-routine.md`.
 - **Claude Tag transition 2026-08-03** — per-user app setups keep working until then; calendar
   note, not a blocker.
-- **Headless routine auth fails silently** if the Slack/GitHub connector token lapses — the plan
-  includes a manual first run and a weekly human glance at #standup.
 
 ## Success criteria
 
