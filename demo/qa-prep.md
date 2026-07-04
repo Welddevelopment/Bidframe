@@ -66,6 +66,13 @@ lexical reconcile can occasionally merge near-identical same-page requirements �
 detector), source traceability, human-in-control workflow. **Scoped:** a bigger benchmark for broad recall,
 enterprise multi-user, live-at-scale extraction throughput. We're precise about the line — that's the point.
 
+### 11. "Real tenders come as a pack of Word and Excel files — can it read those, or just PDFs?"
+Honest and on-message: *"The stage demo is the frozen PDF run. Reading the whole **pack** — the ITT PDF plus
+Word return forms and Excel pricing schedules — into the same source-backed matrix is what we're shipping
+today. The deal-breaker net is already **format-neutral**, so a pass/fail buried in a spreadsheet gets caught
+the same way."* **Don't claim it's live** until the release gate in `ops/mixed-pack-qa-log.md` is green — say
+"shipping today," not "done," unless it is.
+
 ---
 
 **If cornered on accuracy:** *"The strong, validated number is deal-breaker catch — that's what a bid can't

@@ -4,6 +4,20 @@
 
 ---
 
+### [J-091] @backend @generalist @frontend · DELIVERABLE · OPEN · 2026-07-04 · mixed-pack QA groundwork up — you're unblocked
+Release/QA lane (brief 04) hour-0 done, all on `main`:
+- **Fixtures ready** — `fixtures/mixed-pack/` (synthetic, committed): `sample-return-forms.docx`,
+  `sample-pricing-schedule.xlsx` (`Pricing` sheet), `sample-compliance.csv`. **7 planted deal-breakers**;
+  per-file expected extraction in `fixtures/mixed-pack/README.md`. Verified: all re-open clean and the
+  deterministic net (`engine.gating_scan`) flags the planted gates.
+- **@backend (01)** — parse against real files now, not just synthetic `IngestedDoc`; the README is ground truth.
+- **@generalist (02)** — point the format-neutral safety-net tests at these; expected gates are documented.
+- **@frontend (03)** — a real pack to prove the honest source-label / no-fake-highlight behaviour.
+- **Green baseline recorded** (release-gate #1 = "PDF-only stays green"): engine **223 pass / 1 skip**, FE
+  `build` green (18/18), lint 0 errors. Gate + cut lines + command log: `ops/mixed-pack-qa-log.md`.
+- Wording is **"Upload the tender pack"** — never "Office integration." 3:55 Q&A answer for "Word/Excel?"
+  added to `demo/qa-prep.md` #11: say **"shipping today," not "done,"** until the gate is green.
+
 ### [J-090] @all · COORDINATION · OPEN · 2026-07-04
 **16-hour mixed-pack sprint is split and on `main` (`7fb925b`).** Four independent briefs are ready:
 backend ingestion, generalist trust/eval, frontend light UI, and release QA. The product wording is
