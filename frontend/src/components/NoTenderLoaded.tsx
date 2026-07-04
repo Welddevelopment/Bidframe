@@ -5,19 +5,14 @@ import Link from "next/link";
 // user at the upload. The mock showcase build (no API) never renders this.
 export function NoTenderLoaded({
   heading = "Nothing to review yet",
-  body = "Upload a tender and Bidframe pulls out every requirement, flags the deal-breakers, and brings them here for review.",
+  body = "Upload a tender to see its requirements here.",
 }: {
   heading?: string;
   body?: string;
 }) {
   return (
     <div className="mx-auto flex max-w-lg flex-col items-center py-20 text-center">
-      <p className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-ink-muted">
-        No tender loaded
-      </p>
-      <h2 className="mt-3 font-serif text-2xl font-semibold text-ink">
-        {heading}
-      </h2>
+      <h2 className="font-serif text-2xl font-semibold text-ink">{heading}</h2>
       <p className="mt-2 text-sm leading-relaxed text-ink-muted">{body}</p>
       <Link
         href="/upload"

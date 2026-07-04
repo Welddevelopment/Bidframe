@@ -12,9 +12,7 @@ export default function TeamsPage() {
       <AppMain>
         <div className="mx-auto max-w-4xl pt-6">
           <p className="mb-8 max-w-[62ch] text-sm leading-relaxed text-ink-muted">
-            A team is a group you add teammates to once. Share a tender with the
-            team from its Share control and everyone on the team can open it,
-            decide on requirements, and discuss — with every action attributed.
+            Add teammates once, then share tenders with the whole team.
           </p>
           <TeamsManager />
         </div>

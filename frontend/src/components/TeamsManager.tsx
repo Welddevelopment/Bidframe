@@ -235,10 +235,9 @@ function TeamDetail({ team, onChanged }: { team: Team; onChanged: () => void }) 
         {team.name}
       </h2>
       <p className="mt-1 text-sm text-ink-muted">
-        Everyone here can open and decide on any tender shared with the team.
         {isOwner
-          ? " Add teammates by email — they need a Bidframe account first (signing in with Google creates one)."
-          : " Only the team owner can add or remove members."}
+          ? "Add teammates by email — they need a Bidframe account first."
+          : "Only the team owner can add or remove members."}
       </p>
 
       <ul className="mt-5 flex flex-col gap-2">

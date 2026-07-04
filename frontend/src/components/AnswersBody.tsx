@@ -76,7 +76,7 @@ export function AnswersBody() {
     return (
       <NoTenderLoaded
         heading="No answers to draft yet"
-        body="Upload a tender first. Bidframe drafts each answer from your own documents and lists the gaps it needs you to fill."
+        body="Upload a tender to draft answers from your documents."
       />
     );
   }

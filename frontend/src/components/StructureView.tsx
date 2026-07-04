@@ -140,7 +140,7 @@ export function StructureView() {
     return (
       <NoTenderLoaded
         heading="Nothing to map yet"
-        body="Upload a tender and Bidframe shows where the marks concentrate, where the deal-breakers sit, and what has to be answered in order."
+        body="Upload a tender to map its requirements."
       />
     );
   }
