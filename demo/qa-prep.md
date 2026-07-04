@@ -4,6 +4,8 @@
 > **one breath**. Numbers are locked in [`../demo-claim-ledger.md`](../demo-claim-ledger.md); the
 > deal-breaker floor is reproducible via `python -m engine.scripts.net_floor` (26/26, no key).
 > Rule under pressure: **cite the deal-breaker catch, never a headline overall accuracy %.**
+> For the fuller **role-routed** version (who owns each answer + engineering depth), see
+> [`../demo-day/qa-prep.md`](../demo-day/qa-prep.md).
 
 ---
 

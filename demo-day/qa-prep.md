@@ -1,5 +1,8 @@
 # Q&A Prep
 
+> **Two sheets:** this is the **detailed, role-routed reference** (who answers what). For the tight
+> **one-breath drill card** (10 questions, memorise these), see [`../demo/qa-prep.md`](../demo/qa-prep.md).
+
 Conduct's "Make Legacy Move" track scores on **real process · real speed-up · user in control · clear
 demo** (per `tender-master-plan.md`), with the engineering bar — surviving messy real tenders and flagging
 uncertainty instead of guessing — underneath. Route each question to whoever actually owns the answer;
@@ -16,7 +19,8 @@ don't let one person try to cover all four lanes.
 > Deterministic eval harness (no LLM grading its own homework), scored against hand-labelled gold sets, plus
 > an 18-test adversarial suite specifically designed to break each of the four trust claims. The strongest
 > answer to "cherry-picked": **the on-stage tender (Bradwell) was a held-out test — 10/10 deal-breakers
-> caught on a tender the pipeline had never seen**, and 12/12 on gold is deterministic (no model, re-runnable).
+> caught on a tender the pipeline had never seen**. The deterministic net catches **26/26** hand-labelled
+> disqualifiers across all four validated golds (no model) — reproduce it live: `python -m engine.scripts.net_floor`.
 > Every stage claim, its source, and its defender: `demo-claim-ledger.md` — if a number isn't in the ledger,
 > don't say it. Mention the one honestly-documented limitation (lexical reconcile could, in theory, merge two
 > distinct requirements that share the exact same page *and* clause) if asked for a weakness — having one

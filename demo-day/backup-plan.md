@@ -3,6 +3,25 @@
 Hackathon wifi and free-tier hosting both fail in predictable ways. Decide these responses *before* you're
 on stage — the goal is nobody has to improvise a recovery in front of judges.
 
+## ⚡ 5-second failure tree (default path = frozen `/showcase`, fully offline)
+
+The stage default is **`/showcase`** on the deployed Vercel build — the real Bradwell run is baked into the
+build, so once the page has loaded it needs **no backend, no API key, no live network**. That removes almost
+every classic failure below. If something still breaks, go DOWN this list, fast:
+
+1. **`/showcase` won't load** → open **`/demo`** (same frozen Bradwell run, guided).
+2. **`/demo` also broken** → **static screenshots**, narrate the beats:
+   `pitch-assets/canva/screenshots/demo-matrix-dealbreaker.png` (deal-breakers first) →
+   `demo-source-proof.png` (source proof) → `answers-receipts-card.png` (drafted answer + citation) →
+   `graph-marks.png` (structure).
+3. **Laptop / projector dead** → **backup video** on a phone/tablet, narrate live.
+4. **Wifi drops mid-demo** → **ignore it.** `/showcase` and `/pitch` are already loaded and offline-safe —
+   a page **refresh** is the only thing that needs the network again, so don't refresh.
+
+The **"See it in the document" proof** (the green PDF highlight) also runs fully offline — the tender PDF is
+a static asset. No tier below drops that beat. The Render/live-key detail further down only matters for the
+**mode-B live-upload stretch**; the default stage demo never touches it.
+
 ## Tiered fallback (pick the deepest tier that still works)
 
 1. **Best: hosted site, pre-baked data.** The default plan — **`/demo`** served from the deployed

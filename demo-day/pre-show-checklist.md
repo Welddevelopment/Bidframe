@@ -61,6 +61,19 @@ Write the chosen mode here before the final dry run: `A / B / C = ______`.
 - [ ] Do one full dry run of the run-sheet, out loud, with handoffs, on the actual laptop and actual wifi
       you'll use on stage.
 
+## Preload before you walk on (then stop touching the network)
+
+- [ ] Open, in the **presentation** browser window, in this order: **`/pitch`**, **`/showcase`**,
+      **`/demo`** (backup). Confirm each actually rendered — don't assume.
+- [ ] On **`/showcase`**, pre-click the **first deal-breaker → "See it in the document"** once; confirm the
+      **green highlight** lands on the real page, then close it — so the first live click on stage is warm.
+- [ ] On **`/pitch`**, press **`Home`** to reset the elapsed timer to 0:00, and **`F`** once to confirm
+      fullscreen works on this projector.
+- [ ] Have the **backup screenshots** (`pitch-assets/canva/screenshots/`) and the **backup video** open in a
+      background tab / window, so tiers 2–3 of [backup-plan.md](backup-plan.md) are one click away.
+- [ ] Once everything is loaded: **stop touching the network.** The frozen build doesn't need it; a refresh
+      is the only thing that can break an offline-safe run.
+
 ## 5 minutes before
 
 - [ ] Re-check `/health` one more time — if it's gone cold again, hit it now.
