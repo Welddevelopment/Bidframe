@@ -32,6 +32,7 @@ import { ComplianceMatrix } from "./ComplianceMatrix";
 import { DocumentHeader } from "./DocumentHeader";
 import { FocusMode } from "./FocusMode";
 import { GatingHero } from "./GatingHero";
+import { ControlPanel } from "./ControlPanel";
 import { NoTenderLoaded } from "./NoTenderLoaded";
 import { PdfSourceView, type MatchKind } from "./PdfSourceView";
 import { RequirementDrawer } from "./RequirementDrawer";
@@ -570,6 +571,8 @@ export function MatrixView({ title }: { title: string }) {
           onSortChange: setSortBy,
         }}
       />
+
+      <ControlPanel />
 
       <AppMain>
         {isWide && selected && !focusMode ? (
