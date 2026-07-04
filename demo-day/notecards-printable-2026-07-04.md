@@ -2,6 +2,8 @@
 
 Print this and cut on the `---` lines. Bring blank cards and pens as backup.
 
+Latest split: **Bobby + Jawad drive the deck. Joel + Pranav drive the `/showcase` demo.**
+
 ---
 
 ## Card 1 - Thesis
@@ -14,115 +16,198 @@ Drafts only from evidence.
 Asks when evidence is missing.
 Human stays in control.
 
----
-
-## Card 2 - Jawad Hook, 0:00-0:35
-
-A public-sector tender is 100-plus pages of legal text.
-
-Hidden inside are pass/fail rules.
-
-Miss one after days of work, and the bid is binned.
-
-Today: show the first read becoming a checkable matrix.
+Trust layer, not PDF chatbot.
 
 ---
 
-## Card 3 - Bobby Wedge, 0:35-1:05
+## Card 2 - Jawad Opener, 0:00-0:25
+
+Public procurement is hundreds of billions of pounds.
+
+The stupidest way to lose:
+one mandatory requirement, buried deep in the tender, missed.
+
+Weeks of expert work.
+Bid thrown out unread.
+
+Bidframe exists so that never happens quietly.
+
+---
+
+## Card 3 - Bobby Use Case, 0:25-0:55
 
 The first read is the bottleneck.
 
-Before a bid manager writes a word, they must find:
+Before writing starts, a bid manager needs:
 
 - mandatory rules
 - pass/fail clauses
 - evidence gaps
 - source references
 
-Bidframe compresses that read while keeping the expert in control.
+Bidframe reads first.
+The expert stays at the wheel.
 
 ---
 
-## Card 4 - Pranav Before/After, 1:05-1:35
+## Card 4 - Jawad Before/After, 0:55-1:25
 
 Real Bradwell tender.
 
-One dense rejection clause.
+Dense legal clauses.
+Easy to miss:
+insurance thresholds, automatic disqualification, collusion, missing forms, page-31 pricing landmine.
 
-Five ways to lose:
-price fixing, bribery, canvassing, unsigned form, missing information.
+Bidframe lifts the bid-killers into the matrix.
 
-Bidframe finds them in the source and lifts them into the matrix.
-
----
-
-## Card 5 - Joel Product, 1:35-3:30
-
-On `/showcase`:
-
-1. Point to ControlPanel.
-2. "Zero approved."
-3. Open insurance deal-breaker.
-4. Show source proof.
-5. Show evidence-backed answer.
-6. Approve with `CONFIRM`.
-7. Edit one draft.
-8. Flag one row.
-9. Open question: "it asks instead of guessing."
+Marked trail, not a summary.
 
 ---
 
-## Card 6 - Control Line
+## Card 5 - Bobby Product Frame, 1:25-1:55
 
-The AI proposes.
+Deal-breakers on top in oxblood.
 
-The bid manager decides.
+Rows carry:
+page, clause, source excerpt, answer state, review status.
 
-Nothing is approved, submitted, or hidden.
+Human actions:
+approve, edit, flag, answer gaps.
 
-Every decision becomes part of the audit trail.
+Nothing submitted.
+Nothing hidden.
+Every decision becomes audit trail.
+
+Hand to Joel:
+"Joel, show them the control surface."
 
 ---
 
-## Card 7 - Bobby Proof, 3:30-4:20
+## Card 6 - Joel Control Start, 1:55-2:10
 
-Safe claims:
+On `/showcase`, point to ControlPanel.
 
-- 12/12 deal-breakers on SPSO + museum.
+"Before I touch anything, notice what the tool has and has not done."
+
+It read.
+It found.
+It flagged.
+It drafted where it had evidence.
+It left gaps for me.
+
+Zero approved.
+Nothing decided.
+I am at the wheel.
+
+---
+
+## Card 7 - Pranav Catch + Numbers, 2:10-3:20
+
+Bradwell: 34 pages.
+Cached output of a real pipeline run.
+12 deal-breakers pinned.
+
+12 vs 10 line:
+10 hand-labelled bid-killers caught.
+2 lower-confidence review flags.
+Visible over-flag, never silent miss.
+
+Safe numbers:
+
+- 12/12 deterministic on SPSO + museum.
+- 26/26 hand-labelled disqualifiers across 4 gold sets.
 - Bradwell held out: 10/10.
-- Duffield: zero deal-breakers missed.
+- Duffield: zero missed.
 - 101/101 synthetic phrasing bank.
-- 223-plus tests.
 
-Do not say "100 percent accurate."
+No headline all-requirement accuracy.
 
 ---
 
-## Card 8 - Joel Close, 4:20-5:00
+## Card 8 - Joel Proof + Control, 2:30-3:55
 
-The goal is not to replace the bid manager.
+Show source proof:
+"The proof is in their document, not our dashboard."
 
-It is to make them 10 times faster while their judgement stays in the work.
+Show evidence-backed answer:
+"Where it can draft from evidence, it cites that evidence."
 
-We are looking for design partners and pilots.
+Show open question:
+"Where it cannot, it asks instead of guessing."
 
+Approve with `CONFIRM` if rehearsed.
+Edit one draft.
+Flag one row.
+
+"Every decision is captured. The expert stays in control."
+
+---
+
+## Card 9 - Competitor / Difference, 3:55-4:25
+
+Not another PDF chatbot.
+
+Chatbot summarizes.
+Bidframe measures, traces, and controls.
+
+Source-linked matrix.
+Deterministic deal-breaker floor.
+Evidence-backed answers.
+Human approval trail.
+
+Keep short if time is tight.
+
+---
+
+## Card 10 - Jawad Close, 4:25-5:00
+
+Conduct thesis:
+legacy moves when expert decision context moves with the work.
+
+Bidframe captures:
+approve, edit, flag, gap answers, evidence links.
+
+The matrix is the surface.
+The decision record is the moat.
+
+Ask:
+pilot SMEs and design partners.
+Bring us a public-sector tender.
 bidframe.org
 
 ---
 
-## Card 9 - Q&A Guardrails
+## Card 11 - Final Two Sentences
 
-If asked accuracy:
+Weeks of expert reading, a disqualifier risk, and a blank page - down to minutes, with the killer requirement caught, every line checkable against the document, and a human approving every step.
 
-"The validated headline is deal-breaker catch. Broader recall is promising, but small-sample, so we do not overclaim it."
-
-If asked live upload:
-
-"After the pitch, yes. On stage we use a frozen real run so it is repeatable."
+We did not build an AI that writes bids; we built the layer that makes it safe to use one.
 
 ---
 
-## Card 10 - Bring
+## Card 12 - Q&A Guardrails
+
+12 vs 10:
+"Ten labelled bid-killers caught; two lower-confidence review flags."
+
+Accuracy:
+"The validated headline is deal-breaker catch. Broader recall is promising, but small-sample."
+
+Live upload:
+"On stage, cached output of a real pipeline run. Live upload after the pitch."
+
+ChatGPT:
+"Pipeline, source proof, deterministic net, eval harness."
+
+Hallucination:
+"42/42 citations verified, zero fabrications."
+
+Never say:
+accuracy superlatives, signed users, live API/model call, real-tender phrasing bank.
+
+---
+
+## Card 13 - Bring
 
 - Laptop and charger.
 - Phone hotspot.
@@ -130,4 +215,3 @@ If asked live upload:
 - Pens.
 - Backup video or `/demo`.
 - Tabs open: `/pitch`, `/showcase`, `/demo`, claim ledger.
-

@@ -1,149 +1,226 @@
-# Pitch Script — Bidframe (spoken, judge-facing)
+# Pitch Script - Bidframe (spoken, judge-facing)
 
-> The 3-minute deck script, word-for-word, mapped to the **built 5-slide deck** (`/pitch`): two deck
-> speakers (Jawad opens and closes; Pranav owns Solution + Product), then **Joel's 2-minute live demo**
-> on `/showcase`, then Jawad's close. Slide budgets 24 / 30 / 40 / 46 / 30s — the deck's pace ghost
-> (next to the timer) tracks them live, and beat dots next to the counter show how many NEXT presses a
-> slide holds. Numbers per `demo-claim-ledger.md` §B only. Wording may flex on stage; the beats, the
-> numbers, and the opener/closer should not. Clock + handoffs: `pitch-run-of-show.md`. Joel's control
-> beat: `control-demo-script.md`. If the pace ghost goes amber, cut the *[bracketed]* lines first.
-
----
-
-## EXACT OPENER (Jawad, slide 1 — Problem · 24s — deliver before touching the keyboard)
-
-> **"Last year the UK public sector bought over three hundred billion pounds of goods and services —
-> and the small firms bidding for that work lose it in the stupidest possible way: one mandatory
-> requirement, buried on page 31 of a tender, missed. The whole bid — weeks of expert work —
-> thrown out, unread. Bidframe exists so that never happens again."**
-
-*(Beat. Then NEXT:)* "Let me show you what a tender actually looks like to the person who has to
-answer it."
-
-## Slide 2 — Use Case (Jawad · 30s · FOUR beats, ~7s each)
-
-> **Mechanic:** each NEXT lights the next register station and swaps the proof card below.
-
-**Beat 1 — Open tender (Days → minutes + £341bn on screen):**
-> "This is the job: a thirty, sixty, sometimes hundred-and-fifty-page document, read line by line,
-> building a checklist by hand. Days of senior time per bid — and 'hope' is the quality control."
-
-**NEXT — Beat 2 — Find risks (deal-breaker register):**
-> "Bidframe reads it first. Every pass-fail clause surfaces immediately — deal-breakers pinned to
-> the top."
-
-**NEXT — Beat 3 — Build matrix (source trace):**
-> "Every requirement becomes a row with its source attached — the exact clause, the exact page."
-
-**NEXT — Beat 4 — Draft safely (evidence-backed answer):**
-> "And where it drafts an answer, it drafts with a citation — the expert stays at the wheel."
-
-**NEXT → slide 3. Hand to Pranav.**
-
-## Slide 3 — Solution (Pranav · 40s · TWO beats)
-
-*(Beat 1 — the slide lands on the typeset page 7, clause 4.6 buried in the legalese. Read it aloud
-into the pause, ~18s:)*
-> "'A Tender will be rejected where the tenderer fixes or adjusts the prices shown in its Tender by
-> agreement with any other party…' — clause 4.6, page seven of a real tender. It reads like every
-> other paragraph. Hidden inside it are **five separate ways to be disqualified outright.** [A tired
-> human on day two of reading misses this.]"
-
-*(NEXT — the five disqualifiers light up oxblood and the deal-breaker view splits in. Then, ~22s:)*
-> "Bidframe doesn't. Same tender, one pass: twelve deal-breakers surfaced before writing starts —
-> these five included — each linked to its exact clause and page, uncertainty flagged honestly. A
-> marked trail through the document, not a summary you have to trust."
-
-**NEXT → slide 4. Pranav continues.**
-
-## Slide 4 — Product (Pranav · 46s)
-
-> **On screen:** the live product tilted in the exhibit stack — GatingHero front, compliance matrix
-> behind, answer receipt floating. **Optional flourish:** press **P** to step inside the real
-> product in-stage; **Esc** walks back. (If you've clicked Source proof, click empty slide space
-> first — the button keeps keyboard focus.)
-
-> "This is the real product on that same tender — not a mockup. Deal-breakers sit at the top in
-> oxblood — you cannot scroll past them. Click any line —" *(click Source proof)* "— and it shows
-> you the exact sentence on the exact page it came from. [Where it drafts an answer, it drafts from
-> your own capability documents, with the citation attached — and where it can't, it asks you a
-> question instead of guessing.] Nothing ships without a human: approve, edit, or flag, on every
-> single requirement. **The human approves every step** — and Joel's going to prove it. Joel."
-
-**Hand the mic to Joel. Switch to `/showcase`** (or press P and drive the in-stage portal).
-
-## Live demo (Joel · 2:00 · `/showcase`)
-
-> Full beats in `control-demo-script.md`; this is the spoken skeleton. This is where the proof
-> numbers land, in Joel's voice, over the real thing:
-
-1. **Deal-breakers first (0:00–0:25):** "Twelve deal-breakers on this tender, pinned before I've
-   read a page. On stage today it's the Bradwell grounds-maintenance tender — thirty-four pages,
-   cached output of a real pipeline run, because we don't bet your attention on venue wifi."
-2. **Source trace (0:25–0:55):** "One click — the real PDF, the exact line highlighted. I'm not
-   trusting a model; I'm reading the tender." *(open the page-31 pricing landmine)* "This one was
-   buried on page thirty-one."
-3. **The held-out number (0:55–1:20):** "And Bradwell matters for one reason: it was our
-   **held-out test**. The pipeline had never seen it — it caught **all ten** hand-labelled
-   deal-breakers. On our gold tenders it's twelve for twelve, **deterministically — no model in the
-   loop** — plus a synthetic bank of a hundred and one worst-case phrasings, a hundred and one
-   caught." *(show the answer beat)* "The drafted answers never bluff — forty-two of forty-two
-   citations verified, zero fabrications."
-4. **Control beat (1:20–2:00):** *(approve a deal-breaker → named-confirm)* "It won't let me
-   rubber-stamp a bid-killer — I have to sign for it." *(answer the open question)* "Where it
-   couldn't back an answer, it asked me instead of guessing. Every decision lands in this tally —
-   I'm at the wheel."
-
-**Back to the deck — slide 5 is one NEXT from where Pranav left it. Hand to Jawad.**
-
-## Slide 5 — Ask + EXACT CLOSER (Jawad · 30s)
-
-> "Where this goes: every approve, every edit, every flag is a bid manager's judgment — captured,
-> structured, reusable. Conduct's thesis is that legacy moves when you capture the **context of an
-> expert's decisions**. That's literally what this is. [The matrix is the surface; the decision
-> record is the moat — and it compounds with every bid.]"
-
-*(The ask:)* "We're looking for pilot SMEs and design partners — the outreach list is built and the
-conversations are starting. bidframe.org — the demo's live right there."
-
-> **CLOSER — final two sentences, verbatim:**
-> **"Weeks of expert reading, a disqualifier risk, and a blank page — down to minutes, with the
-> killer requirement caught, every line checkable against the document, and a human approving every
-> step. We didn't build an AI that writes bids; we built the layer that makes it safe to use one."**
-
-> **Careful:** one more NEXT on this slide cuts straight to `/showcase` — that's the escape hatch
-> for Q&A, not part of the close.
+> **Canonical script for Demo Day, 4 July 2026.** This reflects the latest role split from
+> `comms/board-j.md` J-089: **Bobby + Jawad own the deck** and **Joel + Pranav own the live
+> `/showcase` demo**. Bradwell is the hero tender. `/showcase` is the primary product surface.
+> `/demo` is backup/cinematic proof only. Numbers must come from `demo-claim-ledger.md`.
+>
+> Target: **5 minutes total**. Deck: about 3 minutes. Live demo: about 2 minutes. If you need to cut,
+> cut detail, not the source proof or the control beat.
 
 ---
 
-## The 90-second solo version (Jawad, if the slot collapses)
+## Guardrails
 
-Opener (above, compressed to two sentences) → "watch it read one" → `/showcase` worked example:
-point at the deal-breaker wall ("twelve on this tender — held-out, ten out of ten caught") → the
-proof click ("the exact sentence, on the exact page") → the flag ("where it's unsure, it says so —
-and its answers cite your own documents or ask; zero bluffs, forty-two of forty-two verified") →
-closer (verbatim, above).
+- Say **"cached output of a real pipeline run"**, never imply a live API/model call.
+- Say **"pilots"** or **"design partners"**, never imply signed users.
+- Say **"101 out of 101 on a synthetic phrasing bank"**, never imply those are real tenders.
+- Do not use accuracy superlatives or a headline all-requirement recall/precision number.
+- If challenged on a number: "Every claim on this stage is in our claim ledger with its source. Happy to walk any of them after."
 
-## Q&A pocket — the old Tech slide, now the Architecture appendix (press Q, last card)
+## Exact Opener - Jawad, Slide 1, Problem, 0:00-0:25
 
-If asked "how does it work under the hood?":
-> "It's a pipeline, not a prompt: ingest, chunk, extract, classify, then a conservative reconcile
-> that would rather show you two similar rows than silently merge away a requirement — a wrong
-> merge is a silent miss, and a silent miss is the one failure this product exists to kill. Around
-> it: a deterministic eval harness, four hand-labelled gold tenders, an adversarial suite that
-> tries to break our own claims. We're honest about what's still small-sample. **It's a trust
-> layer, not a PDF chatbot.**"
+> "Last year, UK public procurement was worth hundreds of billions of pounds. For the teams bidding
+> into it, the stupidest way to lose is also one of the most common: a mandatory requirement buried
+> deep in the tender gets missed. Weeks of expert work, and the bid is thrown out unread.
+>
+> Bidframe exists so that never happens quietly."
 
-## Delivery notes
+NEXT.
 
-- The two moments that must land: **the catch** (slide 3's five clauses lighting up) and **the
-  proof click** (exact line in the real PDF, Joel's demo). Pause after each — let the room read.
-- Say "synthetic" with the 101/101. Say "pilots", never "customers". Never a headline recall %.
-- The thesis-bridge (slide 5, first paragraph) is near-verbatim from `demo-narrative.md` — don't
-  paraphrase it away; it mirrors Conduct's own language back at the judges.
-- If a number gets challenged mid-flow: "every claim on this stage is in our claim ledger with its
-  source — happy to walk any of them after." Then continue.
-- "Why 12 not 10?" → "ten hard bid-killers plus two it flagged for a human to check — recall-first,
-  we'd rather over-flag than miss one."
-- Rehearse once with **R** (rehearsal mode): autoplay at the real budgets with speaker name +
-  per-slide countdown on screen.
+> "This is the first read of a tender, turned into a controlled review workflow."
+
+## Use Case - Bobby, Slide 2, 0:25-0:55
+
+> "Before a bid manager writes a word, they have to turn a long legal pack into a risk register:
+> mandatory rules, pass/fail clauses, evidence gaps, source references.
+>
+> Today that is slow, manual work. Bidframe reads first. It does not replace the bid manager; it gives
+> them the checklist they need to stay in control."
+
+NEXT through the slide beats:
+
+> "Deal-breakers first. Every row back to source. Drafts only where there is evidence. Questions where
+> evidence is missing."
+
+## Solution / Before-After - Jawad, Slide 3, 0:55-1:25
+
+> "Here is the before: a real Bradwell grounds-maintenance tender. Clause after clause, all in the
+> same legal voice. One section can hide insurance thresholds, automatic disqualification, collusion,
+> missing-form rules, and a pricing landmine on page 31.
+>
+> The after is the important part: Bidframe lifts those bid-killers into a matrix before writing starts.
+> It is not a summary you have to trust. It is a marked trail through the document."
+
+Pause after the catch lands. Let the room read the marked clauses.
+
+## Product / Control Frame - Bobby, Slide 4, 1:25-1:55
+
+> "This is the product on the same tender. Deal-breakers sit at the top, in oxblood. The rows carry
+> their page, clause, confidence, source excerpt, answer state, and review status.
+>
+> The human stays at the wheel: approve, edit, flag, or answer the open question. Nothing is submitted.
+> Nothing is hidden. Every decision becomes part of the audit trail."
+
+Hand to Joel:
+
+> "Joel, show them the control surface."
+
+## Live Demo - Joel + Pranav, `/showcase`, 1:55-3:55
+
+### Beat 1 - Joel, Control Model, 1:55-2:10
+
+Screen: `/showcase`, point at the ControlPanel strip.
+
+> "Before I touch anything, notice what the tool has and has not done. It read the tender, found the
+> requirements, flagged the deal-breakers, drafted answers where it had evidence, and left gaps for me.
+>
+> Zero approved. Nothing decided. Nothing submitted. I am at the wheel."
+
+### Beat 2 - Pranav, The Catch, 2:10-2:30
+
+Screen: Bradwell deal-breaker wall.
+
+> "This is the Bradwell tender: 34 pages, cached output from the real ingest, chunk, extract, reconcile,
+> and autofill pipeline. Twelve deal-breakers are pinned at the top.
+>
+> Ten are the hand-labelled bid-killers from our held-out Bradwell test. The other two are lower-confidence
+> review flags. That is the failure mode we want: over-flag visibly, never silently miss the thing that kills a bid."
+
+### Beat 3 - Joel, Source Proof, 2:30-2:55
+
+Screen: open the insurance gate, then source proof / PDF highlight. If the PDF proof button is unavailable,
+point to the page and excerpt in the row and say the same line without pretending the overlay is present.
+
+> "Never take our word for it. The proof is in their document, not our dashboard.
+>
+> Here is the insurance requirement. Here is the exact page and clause. This is what makes it usable in
+> a real review: every line can be checked."
+
+If rehearsed, briefly show the page-31 pricing landmine:
+
+> "And this one was buried on page 31. That is the kind of line people miss when they are tired."
+
+### Beat 4 - Pranav, Numbers, 2:55-3:20
+
+Screen: stay on the matrix or source proof.
+
+> "The deal-breaker catch is engineered, not hoped for. Across SPSO and museum, our deterministic net
+> catches 12 out of 12 deal-breakers without the model. Across all four validated gold sets, it catches
+> 26 out of 26 hand-labelled disqualifiers.
+>
+> Bradwell was held out: the pipeline had never seen it, and it caught all ten. Duffield was also held
+> out, with zero deal-breakers missed. And our worst-case synthetic phrasing bank is 101 out of 101."
+
+Optional if time remains:
+
+> "We do not headline all-requirement accuracy yet. The strong, validated claim is the one a bid cannot
+> afford to miss: deal-breakers."
+
+### Beat 5 - Joel, Evidence + Open Question, 3:20-3:40
+
+Screen: show the evidence-backed answer, then the open question row.
+
+> "Where Bidframe can draft from evidence, it cites that evidence. Where it cannot, it does not invent.
+> It asks.
+>
+> Our groundedness eval verified 42 out of 42 citations, zero fabrications. The product's job is to make
+> the bid manager faster without making them less careful."
+
+### Beat 6 - Joel, Control Beat, 3:40-3:55
+
+Screen: approve a deal-breaker with CONFIRM if rehearsed; otherwise point to the control contract and tally.
+
+> "If I approve a deal-breaker, it stops me. I have to explicitly confirm before a bid-killer is signed off.
+> I can edit a draft, flag a row, or answer the gap myself.
+>
+> Every decision is captured. The expert stays in control."
+
+Hand back:
+
+> "Jawad, bring us home."
+
+## Competitors / Differentiation - Bobby or Jawad, Slide 5, 3:55-4:25
+
+> "This is why Bidframe is not just another PDF chatbot. A chatbot summarizes. Bidframe measures,
+> traces, and controls.
+>
+> Incumbent bid tools help write or manage responses, but they are expensive, demo-gated, and usually
+> do not prove the first-read risk. NotebookLM can talk about a PDF, but it does not give you a
+> source-linked compliance matrix, a deterministic deal-breaker floor, or an auditable decision record."
+
+Keep this slide short. If time is tight, use only:
+
+> "The wedge is measured trust: source-linked requirements, deterministic deal-breaker catch, and a
+> human approval trail."
+
+## Ask + Exact Closer - Jawad, Final Slide, 4:25-5:00
+
+> "Conduct's thesis is that legacy moves when the context of expert decisions moves with the work.
+> That is exactly what Bidframe captures: every approve, every edit, every flag, every gap answer, every
+> evidence link.
+>
+> The matrix is the surface. The decision record is the moat."
+
+Ask:
+
+> "We are looking for pilot SMEs and design partners. Bring us a public-sector tender; we will have the
+> deal-breaker checklist ready before the call. bidframe.org."
+
+Final two sentences, verbatim:
+
+> **"Weeks of expert reading, a disqualifier risk, and a blank page - down to minutes, with the killer
+> requirement caught, every line checkable against the document, and a human approving every step.
+> We did not build an AI that writes bids; we built the layer that makes it safe to use one."**
+
+---
+
+## 90-Second Collapse Version
+
+Jawad:
+> "A tender can be 100 pages of legal text. Miss one mandatory requirement and the bid is thrown out.
+> Bidframe turns that first read into a source-linked checklist."
+
+Joel opens `/showcase`:
+> "This is Bradwell, cached output of a real pipeline run. Twelve deal-breakers are pinned before I read
+> a page."
+
+Pranav:
+> "Bradwell was held out: ten out of ten labelled deal-breakers caught. Across four validated gold sets:
+> 26 out of 26 hand-labelled disqualifiers. And the 101-case phrasing bank is synthetic, worst-case, and
+> all caught."
+
+Joel:
+> "Here is the source proof. Here is an evidence-backed answer. Here is where it asks instead of guessing.
+> And when I approve a bid-killer, I have to confirm. The AI proposes; the bid manager decides."
+
+Jawad:
+> "We did not build an AI that writes bids. We built the control layer that makes it safe to use one."
+
+## Q&A Pocket
+
+**Why 12 on screen but 10/10 spoken?**
+> "Ten are the hand-labelled Bradwell bid-killers, all caught. The other two are lower-confidence review
+> flags. That is the safe failure mode: a visible over-flag, not a silent miss."
+
+**Is this just ChatGPT on a PDF?**
+> "No. It is a pipeline: ingest, chunk, extract, classify, reconcile, deterministic deal-breaker net,
+> source proof, evidence-grounded drafting, persistence, tests, and an eval harness. It is a trust layer,
+> not a PDF chatbot."
+
+**Is the demo live?**
+> "It is cached output of a real pipeline run, frozen so stage conditions do not affect the result. Same
+> schema, same product surface, no live upload risk."
+
+**What about hallucination?**
+> "Where it has evidence, it cites it. Where it does not, it asks. Our eval verified 42 out of 42 citations
+> and zero fabrications."
+
+## Delivery Notes
+
+- First 15 seconds must land the missed mandatory requirement problem.
+- The two moments that must land are the **source proof** and the **control beat**.
+- Keep the competitor slide short unless the room is clearly with you.
+- Do not open `/answers` on stage.
+- Do not click rows on `/demo`; it is read-only. Use `/showcase` for live control.
+- If `/showcase` misbehaves, switch to `/demo` and say: "Same frozen Bradwell run, guided version."
