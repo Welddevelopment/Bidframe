@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BrandLogo } from "@/components/BrandLogo";
+import { SiteHeader } from "@/components/SiteHeader";
 
 // The post-booking landing (design uplift, change C). Cal.com redirects here on a
 // successful booking (its "Redirect on booking" / successRedirectUrl, set to
@@ -18,17 +18,7 @@ export const metadata: Metadata = {
 export default function ThankYouPage() {
   return (
     <div className="min-h-screen bg-paper paper-grid">
-      <header className="border-b-2 border-ink bg-paper">
-        <div className="mx-auto flex max-w-[1160px] items-center justify-between px-6 py-4">
-          <Link
-            href="/"
-            aria-label="Bidframe — home"
-            className="rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
-          >
-            <BrandLogo className="h-7 w-auto" />
-          </Link>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main className="mx-auto flex max-w-[1160px] flex-col items-center px-6 py-20 text-center sm:py-28">
         <p className="hero-enter font-mono text-xs font-medium uppercase tracking-wide text-ink-muted">

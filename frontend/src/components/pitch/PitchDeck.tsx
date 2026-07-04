@@ -1065,6 +1065,61 @@ export function PitchDeck() {
             .pitch-scope .pitch-story {
               display: none !important;
             }
+
+            .pitch-scope .pitch-trailmap,
+            .pitch-scope .pitch-controls,
+            .pitch-scope .pitch-help,
+            .pitch-scope .pitch-rehearsal {
+              display: none !important;
+            }
+
+            .pitch-scope .pitch-slide {
+              padding-bottom: clamp(1.05rem, 1.75vw, 2rem);
+            }
+
+            .pitch-scope .pitch-trailsteps__index,
+            .pitch-scope .pitch-trailsteps__step strong,
+            .pitch-scope .pitch-trailsteps__copy,
+            .pitch-scope .pitch-journey__stats,
+            .pitch-scope .pitch-before-after__contrast,
+            .pitch-scope .pitch-before-after__label,
+            .pitch-scope .pitch-before-after__summary div,
+            .pitch-scope .pitch-before-after__rows,
+            .pitch-scope .pitch-copy p,
+            .pitch-scope .pitch-mini-metrics,
+            .pitch-scope .pitch-portal-hint,
+            .pitch-scope .pitch-sheet__caption,
+            .pitch-scope .pitch-source-peek,
+            .pitch-scope .pitch-cta-row {
+              display: none !important;
+            }
+
+            .pitch-scope
+              :is(
+                .pitch-journey__proof,
+                .pitch-before-after__stage,
+                .pitch-sheet-stack
+              )
+              :is(
+                a,
+                button,
+                figcaption,
+                h1,
+                h2,
+                h3,
+                h4,
+                label,
+                li,
+                p,
+                span,
+                strong,
+                em,
+                th,
+                td
+              ) {
+              color: transparent !important;
+              text-shadow: none !important;
+            }
           `}</style>
 
           <button

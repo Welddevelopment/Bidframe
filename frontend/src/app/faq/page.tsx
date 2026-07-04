@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BrandLogo } from "@/components/BrandLogo";
-import { BookDemoButton } from "@/components/landing/BookDemoButton";
+import { SiteHeader } from "@/components/SiteHeader";
 import {
   absoluteUrl,
   BOOKING_URL,
@@ -97,35 +96,7 @@ export default function FaqPage() {
         dangerouslySetInnerHTML={{ __html: jsonLd(faqStructuredData) }}
       />
 
-      <header className="border-b-2 border-ink bg-paper">
-        <div className="mx-auto flex max-w-[1160px] items-center justify-between gap-4 px-6 py-4">
-          <Link
-            href="/"
-            aria-label="Bidframe home"
-            className="rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
-          >
-            <BrandLogo className="h-7 w-auto" />
-          </Link>
-          <nav
-            aria-label="FAQ navigation"
-            className="flex min-w-0 items-center gap-4 sm:gap-6"
-          >
-            <Link
-              href="/"
-              className="link-draw hidden rounded-sm text-sm text-ink-muted transition-colors hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper sm:inline"
-            >
-              Home
-            </Link>
-            <Link
-              href="/demo"
-              className="link-draw hidden rounded-sm text-sm text-ink-muted transition-colors hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper sm:inline"
-            >
-              See the demo
-            </Link>
-            <BookDemoButton location="faq-masthead" className="shrink-0" />
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main className="mx-auto w-full max-w-[980px] px-6 py-16 sm:py-24">
         <p className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-forest">

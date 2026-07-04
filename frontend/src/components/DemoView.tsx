@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import Link from "next/link";
 import { useRequirements } from "@/context/RequirementsContext";
 import { GROUP_ORDER, deriveTriage } from "@/lib/triage";
 import { sourceDocUrl } from "@/lib/api";
@@ -22,7 +21,7 @@ import { FernFrond } from "@/components/landing/art/FernFrond";
 import { TreelineDivider } from "@/components/landing/art/TreelineDivider";
 import { Reveal } from "@/components/landing/Reveal";
 import { SiteFooter } from "@/components/landing/SiteFooter";
-import { BrandLogo } from "@/components/BrandLogo";
+import { SiteHeader } from "@/components/SiteHeader";
 
 // A read-only walkthrough of the product for cold visitors arriving from the
 // landing "See the demo" links. It opens with a CINEMATIC SCROLL (DemoScrolly):
@@ -82,27 +81,9 @@ export function DemoView() {
 
   return (
     <div className="landing-scope min-h-screen bg-paper paper-grid">
-      {/* A minimal masthead, not the product SectionNav (no Upload/Answers/Graph). */}
-      <header className="border-b-2 border-ink bg-paper">
-        <div className="mx-auto flex max-w-[1160px] items-center justify-between px-6 py-4">
-          <Link
-            href="/"
-            aria-label="Bidframe, home"
-            className="rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
-          >
-            <BrandLogo className="h-7 w-auto" />
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/pack"
-              className="hidden rounded-sm font-mono text-xs text-ink-muted transition-colors hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper sm:inline"
-            >
-              Mixed-pack demo
-            </Link>
-            <BookDemoButton location="demo-masthead" variant="link" />
-          </div>
-        </div>
-      </header>
+      {/* The one shared marketing masthead — same fixed-height letterhead as
+          the landing page. */}
+      <SiteHeader />
 
       {/* The cinematic scroll: pinned stage + stepping narrative. The intro
           copy lives INSIDE the scrolly (via the `intro` prop) as the first
@@ -111,7 +92,7 @@ export function DemoView() {
       <DemoTitleCard />
       <section
         aria-label="How Bidframe works, step by step"
-        className="demo-scrolly-chapter border-b border-moss-line"
+        className="demo-scrolly-chapter"
       >
         <DemoScrolly
           intro={

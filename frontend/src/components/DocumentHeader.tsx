@@ -1,22 +1,28 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { GROUP_LABELS, type GroupKey, type SortKey } from "@/lib/triage";
 import { categoryStyle } from "@/lib/categoryStyle";
 import { useRequirements } from "@/context/RequirementsContext";
-import { AccountMenu } from "./AccountMenu";
-import { BrandLogo } from "./BrandLogo";
-import { SectionNav } from "./SectionNav";
+import { SiteHeader } from "./SiteHeader";
 
-// The document header (layout.md section 2; design-language section 1: the
-// masthead). A thin nameplate, not a marketing bar. The title zone stacks the
-// running head "BIDFRAME", the section switcher, the tender title in Fraunces,
-// and a reference line in mono drawn from real tender metadata (the requirement
-// count, and the tender id when a live tender is loaded, never an invented
-// reference). Centre is the section switcher. Right is exactly one primary
-// action, Next. Beneath the whole header
-// sits the one 2px ink rule (--rule-strong). On views without a worklist
-// (answers, graph) only the title zone renders.
+// The app-page header: the shared fixed-height SiteHeader (logo, four-link
+// SectionNav, account control, the one 2px ink rule) with a title row beneath
+// it. The title row carries the page title in Fraunces — full width, allowed
+// to wrap, never truncated — the mono reference line drawn from real tender
+// metadata (requirement count + tender id, never invented), the per-tender
+// view switcher (Review · Answers · Graph) on workspace views, and the page's
+// controls (filter, sort, Next) on views with a worklist.
+
+// The per-tender views that live below the masthead: siblings of the loaded
+// tender, not global destinations, so they sit in the title row instead of
+// the four-link SectionNav.
+const TENDER_VIEWS = [
+  { href: "/review", label: "Review" },
+  { href: "/answers", label: "Answers" },
+  { href: "/graph", label: "Graph" },
+];
 
 interface TriageHeader {
   counts: Record<GroupKey, number>;
@@ -49,6 +55,7 @@ export function DocumentHeader({
   showReference?: boolean;
 }) {
   const { requirements, tenderId } = useRequirements();
+  const pathname = usePathname();
   const count = requirements.length;
   const reference =
     count > 0
@@ -56,40 +63,70 @@ export function DocumentHeader({
           tenderId ? ` · ${tenderId}` : ""
         }`
       : null;
+  const showViews = TENDER_VIEWS.some((view) => pathname.startsWith(view.href));
 
   return (
-    <header className="border-b-2 border-ink bg-paper-raised">
-      <div className="mx-auto max-w-[1160px] px-6 py-4">
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4">
-          {/* LEFT: the masthead. The Bidframe lockup over the page title and the
-              mono reference line. The section switcher has moved to the centre
-              pill, so the title owns the nameplate. */}
-          <div className="flex min-w-0 flex-col gap-1.5">
-            <Link href="/tenders" aria-label="Bidframe home" className="w-fit">
-              <BrandLogo className="h-9 w-auto sm:h-10" />
-            </Link>
-            <h1 className="truncate font-serif text-2xl font-semibold leading-tight tracking-tight text-ink">
+    <>
+      <SiteHeader variant="app" />
+
+      {/* The title row: nameplate on the left (title never truncates — it may
+          wrap), the page's controls gathered on the right. A hairline rule
+          closes it; the 2px ink rule belongs to the masthead above. */}
+      <div className="border-b border-hairline bg-paper-raised">
+        <div className="mx-auto flex max-w-[1160px] flex-wrap items-center justify-between gap-x-6 gap-y-3 px-6 py-4">
+          <div className="flex min-w-0 flex-col gap-1">
+            <h1 className="font-serif text-2xl font-semibold leading-tight tracking-tight text-ink">
               {title}
             </h1>
-            {showReference && reference && (
-              <span className="font-mono text-[11px] text-ink-muted">
-                {reference}
-              </span>
-            )}
-          </div>
-
-          {/* CENTRE: the section switcher, gathered into one frosted pill so the
-              nav reads as a single control and the masthead keeps its room. */}
-          <div className="justify-self-center">
-            <div className="rounded-full border border-hairline bg-paper-raised/70 px-4 py-1.5 shadow-[var(--depth-control)] backdrop-blur-md supports-[backdrop-filter]:bg-paper-raised/55">
-              <SectionNav />
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              {showReference && reference && (
+                <span className="font-mono text-[11px] text-ink-muted">
+                  {reference}
+                </span>
+              )}
+              {showViews && (
+                <nav
+                  aria-label="Tender views"
+                  className="flex items-center gap-2 font-mono text-[11px]"
+                >
+                  {TENDER_VIEWS.map((view, i) => (
+                    <span key={view.href} className="flex items-center gap-2">
+                      {i > 0 && (
+                        <span aria-hidden className="text-hairline">
+                          ·
+                        </span>
+                      )}
+                      <Link
+                        href={view.href}
+                        aria-current={
+                          pathname.startsWith(view.href) ? "page" : undefined
+                        }
+                        className={
+                          pathname.startsWith(view.href)
+                            ? "font-medium text-ink underline decoration-forest decoration-2 underline-offset-4"
+                            : "text-ink-muted transition-colors hover:text-ink"
+                        }
+                      >
+                        {view.label}
+                      </Link>
+                    </span>
+                  ))}
+                </nav>
+              )}
             </div>
           </div>
 
-          {/* RIGHT: the one primary action (Next, when there's a worklist), with
-              the quiet account control alongside it. */}
-          <div className="flex items-center justify-end gap-4">
-            {triage && (
+          {/* Controls: the filter and sort in the header register, then the one
+              primary action, Next. */}
+          {triage && (
+            <div className="flex flex-wrap items-center gap-3">
+              <MatrixFilterControl triage={triage} />
+              {triage.sortBy && triage.onSortChange && (
+                <SortControl
+                  sortBy={triage.sortBy}
+                  onSortChange={triage.onSortChange}
+                />
+              )}
               <button
                 type="button"
                 onClick={triage.onNext}
@@ -97,26 +134,11 @@ export function DocumentHeader({
               >
                 {triage.nextLabel}
               </button>
-            )}
-            <AccountMenu />
-          </div>
+            </div>
+          )}
         </div>
-
-        {/* Matrix controls: one filter select instead of a row of chip toggles,
-            with the existing sort beside it. */}
-        {triage && (
-          <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
-            <MatrixFilterControl triage={triage} />
-            {triage.sortBy && triage.onSortChange && (
-              <SortControl
-                sortBy={triage.sortBy}
-                onSortChange={triage.onSortChange}
-              />
-            )}
-          </div>
-        )}
       </div>
-    </header>
+    </>
   );
 }
 

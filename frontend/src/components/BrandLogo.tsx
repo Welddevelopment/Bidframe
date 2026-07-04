@@ -10,7 +10,7 @@ export function BrandLogo({
 }) {
   return (
     <svg
-      viewBox="0 0 292 64"
+      viewBox="0 0 282 64"
       className={className}
       role="img"
       aria-label="Bidframe"
@@ -32,13 +32,15 @@ export function BrandLogo({
         strokeLinecap="square"
         d="M18 27H44M18 38H48"
       />
+      {/* The wordmark fills its box: bold Fraunces at 46px in a 64px viewBox,
+          so the lockup reads at a distance instead of floating in whitespace. */}
       <text
-        x="78"
-        y="44"
+        x="76"
+        y="47"
         fontFamily="var(--font-head), Fraunces, Georgia, serif"
-        fontWeight="600"
-        fontSize="40"
-        letterSpacing="0"
+        fontWeight="700"
+        fontSize="46"
+        letterSpacing="-0.5"
         fill={reversed ? "#f6f2e9" : "#211d17"}
       >
         Bidframe

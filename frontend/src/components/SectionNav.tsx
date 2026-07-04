@@ -9,13 +9,14 @@ import { usePathname } from "next/navigation";
 // marked by weight and a thin forest underline. No pills, no icons, no filled
 // tab, nothing that reads as a dashboard nav.
 
+// Exactly three sections — the working loop. Answers and Graph are per-tender
+// views reached from inside the workspace, not global destinations, so they
+// stay out of the masthead. Tenders = /upload: one page to add a tender and
+// reopen a previous one (/tenders redirects there).
 const SECTIONS = [
-  { href: "/tenders", label: "Tenders" },
-  { href: "/upload", label: "Upload" },
-  { href: "/review", label: "Matrix" },
+  { href: "/upload", label: "Tenders" },
+  { href: "/review", label: "Review" },
   { href: "/pack", label: "Pack" },
-  { href: "/answers", label: "Answers" },
-  { href: "/graph", label: "Graph" },
 ];
 
 export function SectionNav() {

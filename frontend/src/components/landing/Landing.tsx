@@ -6,7 +6,7 @@ import { HeroResolve } from "./HeroResolve";
 import { Reveal } from "./Reveal";
 import { DrawOn } from "./DrawOn";
 import { ConfidenceIndicator } from "@/components/ConfidenceIndicator";
-import { BrandLogo } from "@/components/BrandLogo";
+import { SiteHeader } from "@/components/SiteHeader";
 import {
   DealBreakerCard,
   ClauseCard,
@@ -78,34 +78,9 @@ const COMPARISON_ROWS = [
 export function Landing() {
   return (
     <div className="landing-scope bg-paper">
-      {/* Masthead: a slim warm letterhead carrying the one 2px ink rule and the
-          prominent forest CTA. */}
-      <header className="landing-masthead sticky border-b-2 border-ink bg-paper/90 backdrop-blur-sm">
-        <div className={`${CONTAINER} flex items-center justify-between py-3`}>
-          <BrandLogo className="h-6 w-auto max-w-[8.25rem] sm:h-7 sm:max-w-none" />
-          <div className="flex min-w-0 items-center gap-3 sm:gap-5">
-            <Link
-              href="/demo"
-              className="link-draw hidden rounded-sm text-sm text-ink-muted transition-colors hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper sm:inline"
-            >
-              See the demo
-            </Link>
-            <Link
-              href="/pack"
-              className="link-draw hidden rounded-sm text-sm text-ink-muted transition-colors hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper md:inline"
-            >
-              Tender pack
-            </Link>
-            <Link
-              href="/login"
-              className="link-draw hidden rounded-sm text-sm text-ink-muted transition-colors hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-paper sm:inline"
-            >
-              Sign in
-            </Link>
-            <BookDemoButton location="masthead" className="shrink-0" />
-          </div>
-        </div>
-      </header>
+      {/* Masthead: the one shared letterhead (SiteHeader) — fixed height, the
+          2px ink rule, and the prominent forest CTA. */}
+      <SiteHeader />
 
       <main>
         {/* The hero fold: a forest-tinted record backdrop, with the real product

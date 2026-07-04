@@ -11,7 +11,7 @@ import { SITE_URL } from "@/lib/site";
 // IBM Plex Mono for evidence and source references.
 const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["500", "600"],
+  weight: ["500", "600", "700"],
   variable: "--font-head",
   display: "swap",
 });

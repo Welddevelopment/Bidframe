@@ -1,19 +1,7 @@
-import { AppMain } from "@/components/AppMain";
-import { DocumentHeader } from "@/components/DocumentHeader";
-import { TendersList } from "@/components/TendersList";
+import { redirect } from "next/navigation";
 
-export const metadata = { title: "Your tenders · Bidframe" };
-
+// The tenders list now lives on /upload (one page to add a tender and reopen
+// one). Kept as a redirect so old links and bookmarks keep working.
 export default function TendersPage() {
-  return (
-    <>
-      <DocumentHeader title="Your tenders" />
-      <AppMain>
-        <p className="mb-6 max-w-[60ch] text-sm text-ink-muted">
-          Every tender you have uploaded, ready to reopen where you left off.
-        </p>
-        <TendersList />
-      </AppMain>
-    </>
-  );
+  redirect("/upload");
 }

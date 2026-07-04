@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { ApiError, isApiEnabled } from "@/lib/api";
-import { BrandLogo } from "@/components/BrandLogo";
+import { SiteHeader } from "@/components/SiteHeader";
 
 // The sign-in page. Bidframe is invite-only, so there is no registration here — an
 // account is created for a customer by an admin. On success we return the person to
@@ -55,19 +54,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-paper paper-grid">
-      <header className="border-b-2 border-ink bg-paper/85">
-        <div className="mx-auto flex w-full max-w-[1160px] items-center justify-between px-6 py-3">
-          <Link href="/" aria-label="Bidframe home">
-            <BrandLogo className="h-7 w-auto" />
-          </Link>
-          <Link
-            href="/"
-            className="text-sm text-ink-muted underline decoration-hairline decoration-1 underline-offset-4 transition-colors hover:text-ink"
-          >
-            Back to site
-          </Link>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main className="flex flex-1 items-center justify-center px-6 py-16">
         <div className="w-full max-w-sm">
