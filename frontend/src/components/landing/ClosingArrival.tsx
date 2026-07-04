@@ -21,12 +21,10 @@ import { TreelineDivider } from "./art/TreelineDivider";
 const CONTAINER = "mx-auto w-full max-w-[1160px] px-4 sm:px-6";
 
 export function ClosingArrival({
-  kicker = "You've reached the clearing",
   heading = "See it on a tender you already know",
   body = "Bring a tender you have already bid. In fifteen minutes, you will see the gates, sources, and answer record resolve in front of you.",
   ctaLocation = "closing",
 }: {
-  kicker?: string;
   heading?: string;
   body?: string;
   ctaLocation?: string;
@@ -87,9 +85,6 @@ export function ClosingArrival({
           <div className="closing-card-frame relative z-10 mx-auto max-w-[720px]">
             <span aria-hidden className="closing-forest__halo" />
             <div className="surface-grain closing-card relative rounded-lg border border-hairline bg-paper-raised p-8 text-center shadow-[var(--depth-sheet)] sm:p-11">
-              <p className="mx-auto mb-4 font-mono text-xs uppercase tracking-[0.2em] text-forest/85">
-                {kicker}
-              </p>
               <h2 className="mx-auto max-w-[18ch] text-balance font-serif text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
                 {heading}
               </h2>

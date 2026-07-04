@@ -639,6 +639,10 @@ body {
    and no-JS all land on the finished engraving, since the hidden state never
    applies without the media query and the observer. */
 @media (prefers-reduced-motion: no-preference) {
+  .draw-on__inner {
+    display: inline-block;
+    transform-origin: center;
+  }
   .art-draw path,
   [data-draw] .art-lines path {
     stroke-dasharray: 1;
@@ -656,6 +660,17 @@ body {
   [data-draw="hidden"] .art-lines path {
     stroke-dashoffset: 1;
     fill-opacity: 0;
+  }
+  [data-draw="scroll"] .draw-on__inner {
+    opacity: var(--draw-opacity, 1);
+    transform: translate3d(0, var(--draw-y, 0px), 0)
+      rotate(var(--draw-rotate, 0deg)) scale(var(--draw-scale, 1));
+    will-change: opacity, transform;
+  }
+  [data-draw="scroll"] .art-lines path {
+    transition: none;
+    stroke-dashoffset: calc(1 - var(--draw-progress, 1));
+    fill-opacity: var(--draw-fill, 0.08);
   }
 }
 

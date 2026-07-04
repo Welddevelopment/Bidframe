@@ -363,7 +363,10 @@ function FeatureSection({
   return (
     <Band surface={surface} space="air">
       <div className="mx-auto max-w-[760px] text-center">
-        <DrawOn className="mx-auto mb-5 flex h-10 w-10 items-center justify-center text-forest/35">
+        <DrawOn
+          mode="scroll"
+          className="mx-auto mb-5 flex h-10 w-10 items-center justify-center text-forest/35"
+        >
           <PressedLeaf
             variant={tilt === "left" ? "fern" : "oak"}
             className="h-10 w-10"

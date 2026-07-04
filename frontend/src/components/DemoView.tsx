@@ -91,7 +91,12 @@ export function DemoView() {
         <DemoScrolly
           intro={
             <div className="hero-enter relative">
-              <BotanicalSprig className="pointer-events-none absolute -left-3 -top-3 hidden h-14 w-14 text-forest/30 sm:block" />
+              <DrawOn
+                mode="scroll"
+                className="pointer-events-none absolute -left-3 -top-3 hidden text-forest/30 sm:block"
+              >
+                <BotanicalSprig className="h-14 w-14" />
+              </DrawOn>
               <p className="font-mono text-xs uppercase tracking-wide text-forest">
                 The product, end to end
               </p>
@@ -136,7 +141,12 @@ export function DemoView() {
 
         {/* The worklist on a grainy raised sheet, frozen (read-only). */}
         <div className="relative mt-8">
-          <BotanicalSprig className="pointer-events-none absolute -right-3 -top-4 z-10 hidden h-16 w-16 rotate-180 text-forest/40 sm:block" />
+          <DrawOn
+            mode="scroll"
+            className="pointer-events-none absolute -right-3 -top-4 z-10 hidden rotate-180 text-forest/40 sm:block"
+          >
+            <BotanicalSprig className="h-16 w-16" />
+          </DrawOn>
           <MountOnView enabled minHeight={760}>
             <div className="surface-grain rounded-xl border border-hairline bg-paper-raised p-5 shadow-[var(--depth-sheet)] sm:p-7">
               <h3 className="mb-5 border-b border-hairline pb-3 font-serif text-lg font-semibold text-ink">
@@ -213,7 +223,6 @@ export function DemoView() {
       )}
 
       <ClosingArrival
-        kicker="The clearing"
         heading="See it on a tender you already know"
         body="The quickest way to judge Bidframe is to watch it read a tender you have already bid. Book fifteen minutes and bring one."
         ctaLocation="demo-closing"

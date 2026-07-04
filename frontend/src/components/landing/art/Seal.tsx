@@ -22,9 +22,9 @@ export function Seal({
 }) {
   return (
     <div aria-hidden="true" className={className}>
-      {/* art-lines admits the ring strokes (which carry pathLength) to the
-          draw-on rules; the overlaid sprig is its own svg without the class,
-          so its unmeasured paths are never armed */}
+      {/* art-lines admits the ring strokes to the draw-on rules. The overlaid
+          sprig is its own measured svg, so it can share the same engraving
+          animation if a future seal is wrapped in DrawOn. */}
       <svg
         viewBox="0 0 160 160"
         fill="none"
