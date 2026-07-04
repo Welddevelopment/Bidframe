@@ -44,8 +44,8 @@
 
 ## SLIDE 5 — Competitor analysis (BAR → REST)
 
-> "Competitor analysis. Top row is us: source-linked, deal-breakers caught, decisions recorded — a
-> price an SME can reach."
+*(Point along the row, one word per tick:)*
+> "Competitor analysis. Top row is us — four ticks. **Sourced. Caught. Recorded. Affordable.**"
 
 **PRESS 4** *(field lands)*
 > "The others extract too — as a black box. You can't click their output back to the clause, and no
