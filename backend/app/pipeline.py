@@ -314,6 +314,39 @@ def _attach_source_rects(requirements: "list[Requirement]", docs: "list[tuple[st
             print(f"[pipeline] source_rect skipped for {doc_id} ({exc})")
 
 
+def _clean_office_source_clause(
+    clause: str | None,
+    excerpt: str,
+    filename: str,
+) -> str | None:
+    """Turn locator prefixes from Office ingest into compact UI-facing clauses.
+
+    The extractor sees page text like "[XLSX Pricing row 6 | A6:E6]" and often
+    echoes that whole tag as source_clause. Keep the raw text in source_excerpt,
+    but make the final clause read like a source locator: "Pricing!A6", "CSV row 2",
+    or "DOCX paragraph 7". PDF clauses are left untouched.
+    """
+    ext = Path(filename).suffix.lower()
+    if ext not in {".docx", ".xlsx", ".csv"}:
+        return clause
+    haystack = " ".join(p for p in [clause or "", excerpt or ""] if p)
+    if ext == ".xlsx":
+        m = re.search(r"XLSX\s+(.+?)\s+row\s+(\d+)(?:\s+\|\s+([A-Z]+\d+))?", haystack, re.I)
+        if m:
+            sheet = m.group(1).strip()
+            cell = m.group(3) or f"A{m.group(2)}"
+            return f"{sheet}!{cell}"
+    if ext == ".csv":
+        m = re.search(r"CSV\s+row\s+(\d+)", haystack, re.I)
+        if m:
+            return f"CSV row {m.group(1)}"
+    if ext == ".docx":
+        m = re.search(r"DOCX\s+(paragraph\s+\d+|table\s+\d+\s+row\s+\d+)", haystack, re.I)
+        if m:
+            return f"DOCX {m.group(1)}"
+    return clause
+
+
 def run_pipeline_multi(
     docs: "list[tuple[str, str, str]]",
     tender_id: str,
@@ -441,7 +474,11 @@ def run_pipeline_multi(
                     id=f"{tender_id}-r{seq:04d}",
                     text=r["text"],
                     source_page=r["source_page"],
-                    source_clause=r.get("source_clause"),
+                    source_clause=_clean_office_source_clause(
+                        r.get("source_clause"),
+                        r.get("source_excerpt") or "",
+                        filename,
+                    ),
                     source_excerpt=r["source_excerpt"],
                     type=r["type"],
                     is_gating=r["is_gating"],

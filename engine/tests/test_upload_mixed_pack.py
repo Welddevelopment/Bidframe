@@ -82,6 +82,27 @@ def test_xlsx_and_csv_only_upload_reaches_extraction(client):
     assert filenames == {"sample-pricing-schedule.xlsx", "sample-compliance.csv"}
 
 
+def test_office_source_clauses_are_clean_locators():
+    from backend.app.pipeline import _clean_office_source_clause
+
+    assert _clean_office_source_clause(
+        "XLSX Pricing row 6 | A6:E6",
+        "[XLSX Pricing row 6 | A6:E6]\nPublic Liability",
+        "pricing.xlsx",
+    ) == "Pricing!A6"
+    assert _clean_office_source_clause(
+        None,
+        "[CSV row 2]\nMandatory, Signed declaration",
+        "compliance.csv",
+    ) == "CSV row 2"
+    assert _clean_office_source_clause(
+        "DOCX paragraph 7 | heading: Section B",
+        "Tenderers must hold insurance.",
+        "forms.docx",
+    ) == "DOCX paragraph 7"
+    assert _clean_office_source_clause("Appendix A", "Text", "itt.pdf") == "Appendix A"
+
+
 def test_async_job_reports_per_file_progress(client, monkeypatch):
     def fake_run_pipeline_multi(docs, tender_id, title, on_progress=None):
         if on_progress:
