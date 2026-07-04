@@ -27,12 +27,18 @@
 
 **PRESS 2 → slide 4.**
 
-## SLIDE 4 — Product (PROOF)
+## SLIDE 4 — Why Bidframe (PROOF)
 
-> "This is the real product. Deal-breakers on top, in oxblood — you can't scroll past them. Click
-> any line —" *(click Source proof)* "— the exact sentence, on the exact page, in **their** document.
-> It drafts answers from your own evidence, citation attached. Where it can't, it **asks**. And
-> nothing ships without a human: approve, edit, or flag — every requirement. Every call is captured."
+*(The product is on screen — let it speak for itself. This beat is the pain, not a feature tour:)*
+> "So this is why. A bid manager reads thirty-four pages, tired, on a deadline — and **one missed
+> line bins weeks of work.** Today that risk lives in one expert's head. When they leave, it leaves
+> with them.
+>
+> Bidframe puts it on the record. Every risk visible. Every line checkable —" *(click Source proof)*
+> "— down to the exact sentence in **their** document. Every decision captured, and a human approves
+> all of it.
+>
+> **You don't hope you caught everything. You can see it.**"
 
 **PRESS 3 → slide 5.**
 
