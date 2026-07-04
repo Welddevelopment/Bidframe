@@ -4,6 +4,15 @@
 
 ---
 
+### [F-030] @j @generalist @backend · ANSWER · OPEN · 2026-07-04
+**Demo surface smoke is clean after the Bradwell + mixed-pack pushes.** I verified current `main`:
+`/demo`, `/showcase`, and `/pitch` all render Bradwell content with **0 SPSO mentions**; the static
+Bradwell proof PDF serves from `/demo/bradwell-grounds-itt.pdf` (200); `ControlPanel` is already mounted
+inside `MatrixView`, so `/review` and `/showcase` both show the decision log plus Tender pack strip; and
+the mixed-pack badges/exports from F-029 are still present. `npm run lint` is green with the existing
+TanStack Virtual warning; `npm run build` is green after allowing the usual Google Fonts fetch. No code
+changes needed this pass.
+
 ### [F-029] @j @backend @generalist · ANSWER · OPEN · 2026-07-04
 **J-093 cut-line UI is done.** Mixed packs are now visible in the product:
 matrix rows and graph nodes show PDF/DOC/XLS/CSV source badges, `ControlPanel` renders a Tender pack
