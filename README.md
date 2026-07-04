@@ -48,6 +48,7 @@ For the full story:
 | Route | Use it for |
 |---|---|
 | [`/showcase`](https://www.bidframe.org/showcase) | The interactive judge walkthrough. Same matrix as the live tool, seeded with a real tender run. |
+| [`/pack`](https://www.bidframe.org/pack) | A **mixed tender pack** — a PDF ITT + a Word return-forms doc + an Excel pricing schedule + a CSV, all in one matrix, deal-breakers caught across every format. |
 | [`/demo`](https://www.bidframe.org/demo) | A guided scroll-through for the product story. |
 | [`/pitch`](https://www.bidframe.org/pitch) | The five-minute stage deck. |
 | [`/review`](https://www.bidframe.org/review) | The live compliance matrix route. Demo-safe unless a backend URL is configured. |
@@ -60,14 +61,21 @@ Public-sector tenders are full of pass/fail rules: insurance limits, submission 
 
 Bidframe does the first read:
 
-1. **Reads the tender pack** through an ingest, chunk, extract, and reconcile pipeline.
-2. **Finds requirements** and keeps the exact source page, clause, and excerpt.
-3. **Flags deal-breakers** so the bid team reviews bid-killers first.
+1. **Reads the whole tender pack** — not just a PDF. A real pack is a PDF ITT plus Word return forms, an Excel pricing schedule, a CSV checklist, often zipped; Bidframe ingests **PDF, Word, Excel, CSV and ZIP** into one matrix, so a deal-breaker buried in a spreadsheet is caught the same as one in the PDF.
+2. **Finds requirements** and keeps the exact source — page and clause for a PDF, sheet and row for a spreadsheet.
+3. **Flags deal-breakers** so the bid team reviews bid-killers first — a two-stage engine (a deterministic net + a model pass) that never silently drops a gate.
 4. **Drafts answers from the bidder's own evidence** where it can cite a capability document.
 5. **Raises open questions** where evidence is missing.
 6. **Keeps the bid manager in control** with approve, edit, and flag decisions on every line.
 
 The AI reads and drafts. It never decides, approves, or submits.
+
+## Built for teams
+
+A tender is reviewed by a team — bid, compliance, and commercial. In the live product you can **share a
+tender with a colleague** and work it together: every approve / edit / flag is **attributed to who made it**
+(stamped server-side, so it can't be forged), a shared **activity feed** shows the team's decisions as they
+happen, and each row carries the initials of whoever signed it off. The audit trail *is* the collaboration.
 
 ## Why It Fits The Track
 
@@ -210,11 +218,13 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:8000 npm run dev
 | Method | Path | Purpose |
 |---|---|---|
 | `GET` | `/health` | Health check and active extractor. |
-| `GET` | `/tenders` | List uploaded tenders for the signed-in user. |
-| `POST` | `/tenders/upload` | Upload one or more PDFs and start extraction. |
+| `GET` | `/tenders` | List tenders the signed-in user owns **or has been shared into**. |
+| `POST` | `/tenders/upload` | Upload a tender pack — PDF, Word, Excel, CSV, or a ZIP of them — and start extraction. |
 | `GET` | `/tenders/{id}/requirements` | Return the tender in the locked requirement schema. |
 | `POST` | `/tenders/{id}/draft` | Draft evidence-backed answers from uploaded capability documents. |
-| `PATCH` | `/requirements/{id}` | Save approve, edit, or flag decisions. |
+| `POST` | `/tenders/{id}/share` | Share a tender with another account by email (owner-only). |
+| `GET` | `/tenders/{id}/members` | List everyone with access to a tender. |
+| `PATCH` | `/requirements/{id}` | Save an approve / edit / flag decision — attributed server-side to the signed-in user. |
 
 Full backend details are in [`backend/README.md`](backend/README.md).
 

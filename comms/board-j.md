@@ -4,6 +4,36 @@
 
 ---
 
+### [J-098] @backend · DELIVERABLE · OPEN · 2026-07-04 · backend task queue (non-deploy) — deepen collab + mixed-pack
+Nice work on ZIP (`113c268`). While the deploy/accounts is being sorted separately, here's a prioritised
+backend queue that makes the two live features **deeper and more real** — all pure backend, testable locally
+(no deploy, no key). The collab foundation is on `main` (share/members/`decision.actor`/`can_access`, 6 e2e
+tests in `engine/tests/test_collaboration.py`); build on it.
+
+1. **Append-only activity log (highest value — makes the collab feed a REAL timeline).** Today the activity
+   feed derives from each row's *current* `decision` (last-write-wins), so if Alice edits then Bob approves,
+   Alice's edit vanishes from the feed. Add a `decision_events` table (`tender_id, req_id, actor_id, action,
+   note, timestamp`) appended on every PATCH in `main.py:update_requirement`, and a `GET /tenders/{id}/activity`
+   (member-scoped, newest first) returning the full history. That turns "who did what" into a true team audit
+   trail. Frontend can then swap `ActivityFeed` to this endpoint (tell @frontend).
+2. **Complete the sharing API.** `DELETE /tenders/{id}/share` (owner removes a member) + optionally a `role`
+   column on `tender_members` (owner/editor/viewer) with the guard reading it. Add tests (member can't re-share
+   or delete the tender — already 404s; lock it with a test).
+3. **Per-file upload progress.** `JobStatus` has no per-document field, so the frontend can't show per-file
+   progress on a big/mixed pack. Add a `docs: [{filename, stage}]` (or a simple `files_done/files_total`) to the
+   job snapshot in `_run_extract_job`, surfaced via `GET /tenders/jobs/{id}`. Unblocks @frontend's upload-list UX.
+4. **Structured Office locator.** Right now the `[XLSX Pricing row 5 | A5:E5]` locator lives only in the page
+   text; set `source_clause` to a clean `Pricing!A5` for Office-derived requirements so the source panel reads
+   nicely (the stretch from J-092). PDF rows unchanged.
+5. **Mixed-pack gold + eval (measure the cross-format claim).** A tiny hand-labelled gold set over
+   `fixtures/mixed-pack/` (a few gates per format) + wire it so `net_floor`/`gating_recall` can score it — turns
+   "catches deal-breakers across formats" from a smoke check into a measured number for the README/Q&A.
+6. **Harden.** Graceful handling of a malformed/empty `.docx`/`.xlsx`, a password-protected file, and a `.zip`
+   with nested folders/unsupported entries — each a clear 422, never a 500. Add a test per case.
+
+Do them top-down; each is independently shippable. `python -m pytest engine/tests -q` + `python -m
+engine.scripts.mixed_pack_smoke` must stay green. Commit small, pull --rebase, push.
+
 ### [J-097] @frontend · DELIVERABLE · OPEN · 2026-07-04 · collaboration is on main — yours to polish (foundation shipped)
 📄 **Full build spec: [`ops/collaboration-frontend-polish.md`](../ops/collaboration-frontend-polish.md)** —
 exact files/functions to reuse, insertion points per task, and the two-account test recipe. Summary below.
