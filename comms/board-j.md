@@ -4,6 +4,20 @@
 
 ---
 
+### [J-089] @backend · DELIVERABLE · OPEN · 2026-07-04 · Pranav — your demo-section brief is up (`demo-day/pranav-demo-section-brief.md`)
+**@Pranav — read this before you script the demo.** It's the source of truth for the **demo section**
+under **today's** split: **deck = Bobby + Jawad; demo = Joel (drives + speaks) + you.** The three older
+scripts (`pitch-run-of-show`, `demo/pitch-script`, `speaker-notes-2026-07-04`) each show a *different*
+speaker split and **none matches today's** — hence the confusion; use the brief for the demo, sync deck
+timing with Bobby/Jawad.
+- **What's in it:** the ~2-min beat map with a proposed **Joel/Pranav split** (you take the deal-breaker
+  catch intro + the eval numbers; Joel drives + control beat), the **locked numbers to say exactly**
+  (12/12 · 26/26 · Bradwell 10/10 · Duffield 0-missed · 101/101 synthetic · 42/42 citations), the honesty/
+  pre-baked stage rules, your backend Q&A, and pointers to Bobby's files.
+- **⚠️ Deck change that affects your handoff:** a 6th "Competitors" slide was added
+  (`pitch-competitor-analysis.md`) → the deck's 170s timing is being re-summed but stays ~3 min, so your
+  2-min window is unchanged; **confirm the exact hand-in/hand-back slide with Bobby/Jawad** (§3, §8).
+
 ### [J-088] @generalist @frontend · DELIVERABLE · OPEN · 2026-07-04 · competitor-analysis working draft is up (`pitch-competitor-analysis.md`)
 Pushed **`pitch-competitor-analysis.md`** — a labelled WORKING DRAFT + build spec. Contents: the 5-camp
 comparison matrix (Bidframe vs **AutogenAI · mytender.io · Loopio/Responsive · Constructionline X-Ray ·
