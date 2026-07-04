@@ -214,10 +214,10 @@ This is a seven-day Conduct hackathon build by a four-person team:
 
 | Role | Owns |
 |---|---|
-| Frontend | Compliance matrix, source panel, answer workspace, graph, demo, visual system. |
-| Backend | PDF ingest, chunking, extraction, auth, persistence, REST API. |
-| Generalist | Reconcile, dedupe, eval harness, answer drafting, safety tests. |
-| J | Prompts, orchestration, narrative, pitch, traction, glue. |
+| Jawad Jalal | Compliance matrix, source panel, answer workspace, graph, demo, visual system. |
+| Pranav Bonagiri | PDF ingest, chunking, extraction, auth, persistence, REST API. |
+| Bobby Choi | Reconcile, dedupe, eval harness, answer drafting, safety tests. |
+| Joel Jeon | Prompts, orchestration, narrative, pitch, traction, glue. |
 
 Working docs:
 
