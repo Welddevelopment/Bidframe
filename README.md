@@ -134,7 +134,23 @@ The whole repo map is generated at [`CODEMAP.md`](CODEMAP.md), with an interacti
 
 ## Proof We Can Defend
 
-Bidframe is built around the risk that matters most: **do not miss a deal-breaker**.
+Bidframe is built around the risk that matters most: **do not miss a deal-breaker**. So the engine is **two-stage, not a prompt wrapper**: a deterministic disqualifier net (a regex over pass/fail language — *no model*) sets a recall floor, then the model pass removes false flags. The floor is what makes the guarantee reproducible.
+
+**Reproduce the deal-breaker floor in seconds — no API key, no PDFs:**
+
+```bash
+python -m engine.scripts.net_floor
+```
+
+| Validated gold tender | Deterministic net catches |
+|---|---:|
+| SPSO Cleaning ITT | 2 / 2 |
+| MAC Museum Cleaning ITT | 10 / 10 |
+| Bradwell Grounds ITT *(held-out)* | 10 / 10 |
+| Duffield Grounds ITT *(held-out)* | 4 / 4 |
+| **Total** | **26 / 26** |
+
+Every hand-labelled disqualifier across four validated tenders — two of them held out — flagged by the net with no model. (The in-progress WLWA gold set is excluded, same as `eval_all`.)
 
 What we can safely say:
 
@@ -143,7 +159,7 @@ What we can safely say:
 - The eval harness is deterministic. It does not use an LLM as the judge.
 - Broader all-requirement recall is still small-sample, so we do not headline a single overall accuracy percentage.
 
-Useful checks:
+More checks:
 
 ```bash
 # Deal-breaker safety and trust invariants
@@ -152,11 +168,11 @@ python -m pytest engine/tests/test_adversarial_safety.py
 # Aggregate extraction evaluation across labelled tenders
 python -m engine.scripts.eval_all
 
-# Deal-breaker recall with the safety net applied
+# End-to-end deal-breaker recall with the safety net (needs OPENAI_API_KEY for embeddings)
 python -m engine.scripts.gating_recall
 ```
 
-Note: `eval_all` scores the raw extraction path. The deal-breaker safety net is measured separately because it is deliberately a second layer.
+Note: `net_floor` is the deterministic guarantee under the model; `eval_all` scores the raw extraction path. The safety net is measured separately because it is deliberately a second layer.
 
 ## Run It Locally
 
