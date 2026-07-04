@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Readable Bidframe demo-day Q&A battlecard for judge questions.">
+  <title>Bidframe Q&amp;A Battlecard</title>
+  <style>
+:root {
+  --paper: #f7f0e4;
+  --sheet: #fffaf1;
+  --ink: #201815;
+  --muted: #6f6257;
+  --line: #ded0bd;
+  --line-strong: #c4ad94;
+  --forest: #214e3a;
+  --forest-soft: #e5eee8;
+  --oxblood: #9e2f27;
+  --oxblood-soft: #f5dfdc;
+  --gold: #b7832f;
+  --gold-soft: #f5ead7;
+  --shadow: 0 18px 60px rgba(42, 28, 18, 0.10);
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+body {
+  margin: 0;
+  font: 17px/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(158, 47, 39, 0.08), transparent 34rem),
+    linear-gradient(180deg, #fbf5ea 0%, var(--paper) 44%, #f4eadb 100%);
+}
+
+a { color: var(--forest); text-decoration-thickness: 0.08em; text-underline-offset: 0.18em; }
+
+.page {
+  width: min(1180px, calc(100vw - 32px));
+  margin: 0 auto;
+  padding: 28px 0 64px;
+}
+
+.hero {
+  border: 1px solid var(--line);
+  background: rgba(255, 250, 241, 0.94);
+  border-radius: 28px;
+  padding: clamp(24px, 4vw, 46px);
+  box-shadow: var(--shadow);
+}
+
+.eyebrow {
+  color: var(--oxblood);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+h1, h2, h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.08;
+  margin: 0;
+}
+
+h1 {
+  max-width: 820px;
+  margin-top: 10px;
+  font-size: clamp(2.35rem, 7vw, 5.7rem);
+  letter-spacing: -0.055em;
+}
+
+.subtitle {
+  max-width: 780px;
+  margin: 20px 0 0;
+  color: var(--muted);
+  font-size: clamp(1.05rem, 2.4vw, 1.28rem);
+}
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fffdf7;
+  color: var(--ink);
+  padding: 8px 12px;
+  font-size: 0.86rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.pill strong { color: var(--forest); }
+
+.source-note {
+  margin-top: 24px;
+  border-left: 5px solid var(--forest);
+  background: var(--forest-soft);
+  color: #173629;
+  border-radius: 16px;
+  padding: 16px 18px;
+  font-size: 0.96rem;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 254px minmax(0, 1fr);
+  gap: 24px;
+  margin-top: 26px;
+  align-items: start;
+}
+
+.toc {
+  position: sticky;
+  top: 18px;
+  border: 1px solid var(--line);
+  background: rgba(255, 250, 241, 0.86);
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(42, 28, 18, 0.06);
+}
+
+.toc h2 {
+  margin-bottom: 12px;
+  font-size: 1.02rem;
+  letter-spacing: -0.02em;
+}
+
+.toc a {
+  display: block;
+  border-radius: 12px;
+  color: var(--ink);
+  padding: 8px 10px;
+  text-decoration: none;
+  font-size: 0.92rem;
+}
+
+.toc a:hover, .toc a:focus {
+  background: var(--gold-soft);
+  outline: none;
+}
+
+.print-button {
+  width: 100%;
+  margin-top: 14px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--ink);
+  color: #fffaf1;
+  cursor: pointer;
+  padding: 11px 13px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.section {
+  scroll-margin-top: 20px;
+  margin-bottom: 28px;
+}
+
+.section > h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0 14px;
+  color: var(--ink);
+  font-size: clamp(1.55rem, 3.4vw, 2.35rem);
+  letter-spacing: -0.04em;
+}
+
+.section > h2::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--oxblood);
+  box-shadow: 0 0 0 6px var(--oxblood-soft);
+  flex: 0 0 auto;
+}
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: rgba(255, 250, 241, 0.96);
+  box-shadow: 0 8px 26px rgba(42, 28, 18, 0.07);
+  padding: clamp(18px, 3vw, 26px);
+  margin-bottom: 14px;
+}
+
+.card.priority {
+  border-color: var(--oxblood);
+  background: linear-gradient(135deg, #fffaf1 0%, #fff7ef 58%, var(--oxblood-soft) 100%);
+}
+
+.question-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.question {
+  margin: 0;
+  font-size: clamp(1.12rem, 2.2vw, 1.48rem);
+  font-weight: 950;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+}
+
+.owner {
+  flex: 0 0 auto;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: #fffdf8;
+  color: var(--forest);
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  font-weight: 950;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.answer {
+  border-left: 5px solid var(--forest);
+  background: #fffffb;
+  border-radius: 16px;
+  margin: 0;
+  padding: 16px 18px;
+  color: #2d211b;
+}
+
+.answer p { margin: 0; }
+
+.section > p,
+.card p {
+  margin: 0 0 12px;
+}
+
+.route-list,
+.guardrail-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.route-list li {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fffdf8;
+  padding: 16px 18px;
+}
+
+.route-list strong {
+  color: var(--forest);
+  font-weight: 950;
+}
+
+.route-list em {
+  color: var(--oxblood);
+  font-style: normal;
+  font-weight: 950;
+}
+
+.guardrail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fffdf8;
+}
+
+.guardrail div {
+  padding: 15px 17px;
+}
+
+.guardrail .bad {
+  border-right: 1px solid var(--line);
+  background: var(--oxblood-soft);
+}
+
+.guardrail .good {
+  background: var(--forest-soft);
+}
+
+.label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.bad .label { color: var(--oxblood); }
+.good .label { color: var(--forest); }
+
+code {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #fff7ea;
+  padding: 0.08em 0.32em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.92em;
+}
+
+footer {
+  margin-top: 34px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 820px) {
+  .page { width: min(100vw - 22px, 680px); padding-top: 12px; }
+  .layout { grid-template-columns: 1fr; }
+  .toc { position: static; }
+  .question-line { display: block; }
+  .owner { display: inline-flex; margin-top: 12px; }
+  .guardrail { grid-template-columns: 1fr; }
+  .guardrail .bad { border-right: 0; border-bottom: 1px solid var(--line); }
+}
+
+@media print {
+  html, body { background: #fff; }
+  body { font-size: 12pt; }
+  .page { width: auto; padding: 0; }
+  .hero, .card, .toc, .route-list li, .guardrail { box-shadow: none; }
+  .layout { display: block; }
+  .toc, .print-button { display: none; }
+  .section { break-inside: avoid; page-break-inside: avoid; }
+  .card { break-inside: avoid; page-break-inside: avoid; }
+  a { color: inherit; text-decoration: none; }
+}
+</style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div class="eyebrow">Bidframe · Demo Day · Judge Q&amp;A</div>
+      <h1>Q&amp;A Battlecard</h1>
+      <p class="subtitle">Use the first sentence as the answer. Use the rest only if the judge keeps pushing. Route technical depth to the named owner.</p>
+      <div class="meta-row" aria-label="Key proof points">
+        <span class="pill"><strong>10/10</strong> Bradwell labelled deal-breakers caught</span>
+        <span class="pill"><strong>12/12</strong> deterministic gold catch</span>
+        <span class="pill"><strong>42/42</strong> citations verified</span>
+        <span class="pill"><strong>0</strong> bluffs</span>
+        <span class="pill">Cached real run, not venue-wifi luck</span>
+      </div>
+      <div class="source-note">Extends Pranav&#x27;s <a href="../demo-day/qa-prep.md"><code>demo-day/qa-prep.md</code></a> (route questions to their owner; full versions there). Numbers ONLY from <a href="../demo-claim-ledger.md"><code>demo-claim-ledger.md</code></a>. This file adds the sharper, judge-facing short forms + the strategic questions qa-prep doesn&#x27;t cover. House rule: if nobody knows — &quot;Good question. We haven&#x27;t tested that yet; here&#x27;s how we&#x27;d approach it.&quot; (Consistent with the product&#x27;s own flag-don&#x27;t-guess pitch.)</div>
+    </header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="Table of contents">
+        <h2>Battlecard map</h2>
+        <a href="#the-on-stage-arithmetic-question-rehearse-this-it-s-visible-on-the-screen">The on-stage arithmetic question (rehearse this — it&#x27;s visible on the screen)</a>
+<a href="#the-five-they-will-almost-certainly-ask">The five they will almost certainly ask</a>
+<a href="#conduct-track-fit-questions">Conduct / track-fit questions</a>
+<a href="#technical-depth-owners">Technical depth (owners)</a>
+<a href="#strategy-questions">Strategy questions</a>
+<a href="#do-not-say-ledger-guardrails">Do NOT say (ledger guardrails)</a>
+        <button class="print-button" type="button" onclick="window.print()">Print / Save PDF</button>
+      </aside>
+
+      <main>
+        <section class="section priority-section" id="the-on-stage-arithmetic-question-rehearse-this-it-s-visible-on-the-screen">
+<h2>The on-stage arithmetic question (rehearse this — it&#x27;s visible on the screen)</h2>
+<article class="card priority">
+<div class="question-line">
+<p class="question">&quot;Your screen shows 12 deal-breakers but you said 10/10 — which is it?&quot;</p>
+<span class="owner">Bobby</span>
+</div>
+<blockquote class="answer"><p>Both, and the difference is the product working as designed. Ten are the hand-labelled gold deal-breakers — all ten caught. The other two are lower-confidence candidates the system surfaced and <strong>flagged for review instead of silently deciding</strong> — that&#x27;s the honesty mechanism on screen. Our failure mode is a visible over-flag, never a silent miss; for a bid, that&#x27;s the only safe way round. <em>(J-081 put those 2 <code>needs_review</code> rows there deliberately so we can say exactly this.)</em></p></blockquote>
+</article>
+</section>
+<section class="section" id="the-five-they-will-almost-certainly-ask">
+<h2>The five they will almost certainly ask</h2>
+<article class="card">
+<div class="question-line">
+<p class="question">&quot;What did you actually build this week?&quot;</p>
+<span class="owner">P, then Bobby</span>
+</div>
+<blockquote class="answer"><p>A full pipeline, not a wrapper: PDF ingest → chunk → extract → classify → reconcile/dedupe → confidence routing → REST API → the review UI. Plus the part most teams skip: a deterministic eval harness with four hand-labelled gold tenders, an 18-test adversarial suite, and a groundedness checker for drafted answers. ~216 backend tests, 116+ engine tests, live deploy. The eval harness IS the product story: we can measure the claim we make on stage.</p></blockquote>
+</article>
+<article class="card">
+<div class="question-line">
+<p class="question">&quot;Isn&#x27;t this just ChatGPT/NotebookLM on a PDF?&quot;</p>
+<span class="owner">Joel</span>
+</div>
+<blockquote class="answer"><p>Three differences. One: we&#x27;re deterministic where it matters — the deal-breaker catch runs <strong>without the model</strong> (12/12 on gold, re-runnable). Two: everything is auditable — every requirement links to its exact clause and page, every drafted answer cites the bidder&#x27;s own evidence or asks instead of guessing. Three: it&#x27;s measured — hand-labelled gold sets, held-out tenders, an adversarial suite. A chat window gives you none of those.</p></blockquote>
+</article>
+<article class="card">
+<div class="question-line">
+<p class="question">&quot;How do I know your numbers aren&#x27;t cherry-picked?&quot;</p>
+<span class="owner">Bobby</span>
+</div>
+<blockquote class="answer"><p>The tender on screen — Bradwell — was a <strong>held-out test</strong>: the pipeline had never seen it and caught all ten labelled deal-breakers. The 12/12 on gold is deterministic, no model, re-runnable. And we publish the limitation: broader requirement recall is promising but small-sample, so we don&#x27;t put a headline percentage on it. (If pushed: the ~20% &quot;precision&quot; figure is a sparse-gold artifact — only 5 of ~586 flagged items were actual junk; the gold keys under-label.)</p></blockquote>
+</article>
+<article class="card">
+<div class="question-line">
+<p class="question">&quot;What about hallucination?&quot;</p>
+<span class="owner">Bobby</span>
+</div>
+<blockquote class="answer"><p>Purpose-built groundedness eval: 42/42 citations verified on our eval run, zero bluffs, and the detector catches a deliberately planted fake citation. Where there&#x27;s no evidence, the product asks a question instead of writing an answer. It never bluffs — that&#x27;s tested, not aspirational.</p></blockquote>
+</article>
+<article class="card">
+<div class="question-line">
+<p class="question">&quot;Who pays for this?&quot;</p>
+<span class="owner">Joel</span>
+</div>
+<blockquote class="answer"><p>SME bidders in UK public procurement — hundreds of billions a year in spend, with government policy actively pushing SME share (~33% target), and the Procurement Act 2023 live since Feb 2025 changing the rules everyone bids under. We&#x27;ve built a verified CRM of ~19 targets across care, cleaning, security, IT, grounds — outreach is starting, honestly framed as pilots, not customers.</p></blockquote>
+</article>
+</section>
+<section class="section" id="conduct-track-fit-questions">
+<h2>Conduct / track-fit questions</h2>
+<article class="card">
+<div class="question-line">
+<p class="question">&quot;How is this &#x27;Make Legacy Move&#x27;?&quot;</p>
+<span class="owner">Joel (the thesis-bridge, near-verbatim)</span>
+</div>
+<blockquote class="answer"><p>Conduct captures the context of an expert&#x27;s decisions so legacy knowledge moves with the work. Bidframe does exactly that for the bid manager: every approve/edit/flag, every gap answer, every evidence link is a captured judgment call that today evaporates when the bid ships. The matrix is the surface; the decision record is the moat.</p></blockquote>
+</article>
+<article class="card">
+<div class="question-line">
+<p class="question">&quot;Where&#x27;s the human in control, concretely?&quot;</p>
+<span class="owner">Jawad</span>
+</div>
+<blockquote class="answer"><p>Approve / edit / flag on every requirement; nothing auto-applies. Decisions persist via the API with a timestamped note. &quot;The human approves every step&quot; — literally the scored criterion, and we say it on stage because it&#x27;s true in the schema (<code>decision</code>, <code>status</code>, <code>needs_review</code>).</p></blockquote>
+</article>
+<article class="card">
+<div class="question-line">
+<p class="question">&quot;Regulatory/compliance risk of AI-drafted bids?&quot;</p>
+<span class="owner">Joel, pivot to Bobby</span>
+</div>
+<blockquote class="answer"><p>We deliberately never submit anything: Bidframe produces a <em>reviewed</em> compliance record and drafted answers with citations a human approves. The audit trail is the point — arguably it makes the process MORE defensible than the status quo (no record of why a clause was read a certain way). Procurement Act 2025 transparency direction favors exactly this kind of traceability.</p></blockquote>
+</article>
+</section>
+<section class="section" id="technical-depth-owners">
+<h2>Technical depth (owners)</h2>
+<ul class="route-list">
+<li><strong>Pipeline walk-through</strong> → <em>P</em> (30s version in qa-prep; go as deep as asked).</li>
+<li><strong>Scanned/corrupt/huge PDFs</strong> → <em>P</em>: OCR flagging, clean 422s, 50MB cap; 7/7 ugliest real tenders</li>
+</ul>
+<p>survive end-to-end (66pp NHS, 472 reqs, no crash).</p>
+<ul class="route-list">
+<li><strong>Reconcile/dedupe</strong> → <em>Bobby</em>: conservative AND-gate merge; a wrong merge is a silent miss, so it</li>
+</ul>
+<p>errs toward keeping rows separate; gating rows never fuzzy-merge; numeric-conflict guard (£5m ≠ £10m).</p>
+<ul class="route-list">
+<li><strong>&quot;Why does recall wiggle?&quot;</strong> → <em>Bobby</em>: gpt-4o run-to-run noise on ordinary requirements</li>
+</ul>
+<p>(~0.79–0.95); the stable numbers are the deal-breaker catch and groundedness — the failure modes</p>
+<p>that actually kill bids. Naming this unprompted reads as rigor.</p>
+<ul class="route-list">
+<li><strong>&quot;Is the demo live?&quot;</strong> → <em>P</em>: cached output of a real pipeline run, by choice — we don&#x27;t bet the</li>
+</ul>
+<p>core claim on venue wifi. Same schema, same API shape, live path exists and runs after the pitch.</p>
+<ul class="route-list">
+<li><strong>&quot;One honest limitation?&quot;</strong> → <em>Bobby</em>: lexical reconcile could in theory merge two distinct</li>
+</ul>
+<p>requirements sharing the exact same page AND clause — documented, tested-for, not yet hit. Having a</p>
+<p>named, tested limitation beats claiming none.</p>
+</section>
+<section class="section" id="strategy-questions">
+<h2>Strategy questions</h2>
+<article class="card">
+<div class="question-line">
+<p class="question">&quot;Why now?&quot;</p>
+<span class="owner">Joel</span>
+</div>
+<blockquote class="answer"><p>Procurement Act 2023 went live 24 Feb 2025 — new rules, new transparency duties, everyone re-learning the process. LLMs finally read 30-plus-page documents reliably enough to draft — but not reliably enough to trust unaudited. The gap between those two facts IS the product: the trust layer.</p></blockquote>
+</article>
+<article class="card">
+<div class="question-line">
+<p class="question">&quot;Why you?&quot;</p>
+<span class="owner">Joel</span>
+</div>
+<blockquote class="answer"><p>In seven days, four people built the pipeline, the review UI, a live deploy, AND the measurement apparatus to prove the one claim that matters. We didn&#x27;t build a demo that looks right; we built an eval harness that shows it IS right on tenders it had never seen. That discipline is the company.</p></blockquote>
+</article>
+<article class="card">
+<div class="question-line">
+<p class="question">&quot;What&#x27;s defensible?&quot;</p>
+<span class="owner">Joel</span>
+</div>
+<blockquote class="answer"><p>Not the LLM call. Three compounding assets: (1) the eval/gold-set apparatus — every tender we label makes the catch guarantee stronger and is expensive to copy honestly; (2) the captured decision graph — every reviewed bid becomes reusable context for the next one (switching cost); (3) the niche wedge — deal-breaker detection for UK public ITTs is a named, felt failure mode, not generic &quot;document AI&quot;.</p></blockquote>
+</article>
+<article class="card">
+<div class="question-line">
+<p class="question">&quot;What happens after the hackathon?&quot;</p>
+<span class="owner">Joel</span>
+</div>
+<blockquote class="answer"><p>Outreach list is built and verified (~19 CRM targets); we&#x27;re booking pilot conversations now. Next milestone: 2–3 SMEs running a real tender through it with us in the room, expanding the gold set and the decision graph as we go. The ask on the last slide is pilots and design partners.</p></blockquote>
+</article>
+<article class="card">
+<div class="question-line">
+<p class="question">&quot;Why public procurement, not contracts generally?&quot;</p>
+<span class="owner">Joel</span>
+</div>
+<blockquote class="answer"><p>Public ITTs have a consistent structure, a published legal framework, and a <em>named</em> catastrophic failure mode — the missed mandatory requirement that voids weeks of work. That&#x27;s a wedge you can measure (we do), a buyer who already fears it, and documents that are public so we can build gold sets without NDAs. Generic contract AI has none of those advantages.</p></blockquote>
+</article>
+</section>
+<section class="section" id="do-not-say-ledger-guardrails">
+<h2>Do NOT say (ledger guardrails)</h2>
+<ul class="guardrail-list">
+<li class="guardrail"><div class="bad"><span class="label">Do not say</span>&quot;100% accurate&quot; / &quot;never misses anything&quot;</div><div class="good"><span class="label">Say instead</span>&quot;catches every deal-breaker on our tested tenders.&quot;</div></li>
+<li class="guardrail"><div class="bad"><span class="label">Do not say</span>any headline recall/precision % for all requirements</div><div class="good"><span class="label">Say instead</span>deal-breaker numbers + honest caveat.</div></li>
+<li class="guardrail"><div class="bad"><span class="label">Do not say</span>&quot;101/101 on real tenders&quot;</div><div class="good"><span class="label">Say instead</span>&quot;a synthetic worst-case phrasing bank.&quot;</div></li>
+<li class="guardrail"><div class="bad"><span class="label">Do not say</span>&quot;customers&quot;</div><div class="good"><span class="label">Say instead</span>&quot;pilots / targets / outreach.&quot;</div></li>
+<li class="guardrail"><div class="bad"><span class="label">Do not say</span>&quot;the model is running live&quot; (on the prebake)</div><div class="good"><span class="label">Say instead</span>&quot;cached output of a real pipeline run.&quot;</div></li>
+<li class="guardrail"><div class="bad"><span class="label">Do not say</span>an uncited market figure</div><div class="good"><span class="label">Say instead</span>&quot;hundreds of billions a year&quot; (House of Commons Library for £341bn).</div></li>
+</ul>
+</section>
+      </main>
+    </div>
+
+    <footer>
+      Rendered from <code>demo/q-and-a-battlecard.md</code>. Edit the markdown source first, then rerun
+      <code>python3 scripts/render_battlecard_html.py</code>.
+    </footer>
+  </div>
+</body>
+</html>
