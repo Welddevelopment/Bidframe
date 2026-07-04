@@ -28,7 +28,7 @@ def _now_iso() -> str:
     return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
 
-def _create_user(email: str, password: str) -> int:
+def _create_user(email: str, password: str, name: str | None = None) -> int:
     email = email.strip()
     if "@" not in email:
         print(f"error: '{email}' does not look like an email address", file=sys.stderr)
@@ -43,6 +43,7 @@ def _create_user(email: str, password: str) -> int:
             email=email,
             password_hash=hash_password(password),
             created_at=_now_iso(),
+            name=(name.strip() if name else None),
         )
     except sqlite3.IntegrityError:
         print(f"error: an account already exists for {email}", file=sys.stderr)
@@ -76,7 +77,7 @@ def _list_users() -> int:
         print("(no accounts yet)")
         return 0
     for u in users:
-        print(f"{u['email']:40}  {u['created_at']}  {u['id']}")
+        print(f"{u['email']:40}  {(u.get('name') or '-'):20}  {u['created_at']}  {u['id']}")
     return 0
 
 
@@ -93,6 +94,7 @@ def main(argv: list[str] | None = None) -> int:
     p_create = sub.add_parser("create-user", help="create a new account")
     p_create.add_argument("email")
     p_create.add_argument("--password", help="omit to be prompted securely")
+    p_create.add_argument("--name", help="display name for collaboration attribution (optional)")
 
     p_pw = sub.add_parser("set-password", help="reset an account's password")
     p_pw.add_argument("email")
@@ -102,7 +104,7 @@ def main(argv: list[str] | None = None) -> int:
 
     args = parser.parse_args(argv)
     if args.cmd == "create-user":
-        return _create_user(args.email, _resolve_password(args))
+        return _create_user(args.email, _resolve_password(args), getattr(args, "name", None))
     if args.cmd == "set-password":
         return _set_password(args.email, _resolve_password(args))
     if args.cmd == "list-users":

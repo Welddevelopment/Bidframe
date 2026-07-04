@@ -35,7 +35,7 @@ from .auth import current_user
 from .extract import get_extractor
 from .ingest import ingest_pdf, PDFIngestError, SUPPORTED_EXTENSIONS
 from .pipeline import run_pipeline, run_pipeline_multi
-from .schema import DecisionUpdate, Requirement, TenderResponse
+from .schema import Actor, DecisionUpdate, Requirement, ShareRequest, TenderResponse
 from . import auth, pipeline, store
 
 # The generalist's autofill answerers (engine.answer). Guarded like the pipeline import:
@@ -354,14 +354,39 @@ def get_job(job_id: str, user: dict = Depends(current_user)):
 
 @app.get("/tenders/{tender_id}/requirements", response_model=TenderResponse)
 def get_requirements(tender_id: str, user: dict = Depends(current_user)):
-    """Return { tender_id, title, requirements: [...] } in the locked schema — only if
-    the tender belongs to the signed-in user (else 404, so ownership can't be probed)."""
-    if store.get_tender_owner(tender_id) != user["id"]:
+    """Return { tender_id, title, requirements: [...] } in the locked schema — only if the
+    signed-in user owns the tender OR has been shared into it (else 404, so it can't be probed)."""
+    if not store.can_access(tender_id, user["id"]):
         raise HTTPException(status_code=404, detail="Tender not found.")
     resp = store.get_tender(tender_id)
     if resp is None:
         raise HTTPException(status_code=404, detail="Tender not found.")
     return resp
+
+
+@app.get("/tenders/{tender_id}/members")
+def list_tender_members(tender_id: str, user: dict = Depends(current_user)):
+    """Everyone with access to a tender — the owner + shared members (with names). Any member
+    can view the list so collaborators can see who else is on the tender."""
+    if not store.can_access(tender_id, user["id"]):
+        raise HTTPException(status_code=404, detail="Tender not found.")
+    return {"members": store.list_members(tender_id)}
+
+
+@app.post("/tenders/{tender_id}/share")
+def share_tender(tender_id: str, body: ShareRequest, user: dict = Depends(current_user)):
+    """Grant a registered user access to this tender by email (owner-only). Returns the updated
+    member list. 404 if you don't own it (so ownership can't be probed); clear 404 if the email
+    isn't a Bidframe account (invite-only — no silent share)."""
+    if store.get_tender_owner(tender_id) != user["id"]:
+        raise HTTPException(status_code=404, detail="Tender not found.")
+    target = store.get_user_by_email(body.email)
+    if target is None:
+        raise HTTPException(status_code=404, detail=f"No Bidframe account for {body.email}.")
+    if target["id"] == user["id"]:
+        raise HTTPException(status_code=400, detail="You already own this tender.")
+    store.add_member(tender_id, target["id"], time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
+    return {"members": store.list_members(tender_id)}
 
 
 @app.get("/tenders/{tender_id}/pdf")
@@ -389,7 +414,7 @@ def get_tender_pdf(
     # Ids look like "tnd-<hex>" and doc like "d<n>"; guard against path traversal.
     if not tender_id.replace("-", "").isalnum() or not doc.isalnum():
         raise HTTPException(status_code=400, detail="Invalid id.")
-    if store.get_tender_owner(tender_id) != user["id"]:
+    if not store.can_access(tender_id, user["id"]):
         raise HTTPException(status_code=404, detail="Source PDF not available for this tender.")
     path = UPLOAD_DIR / tender_id / f"{doc}.pdf"
     if not path.is_file():
@@ -421,7 +446,7 @@ async def draft_tender(
     (gating first) for a fast live demo, leaving the rest with their upload-time drafts."""
     if not pipeline._HAVE_ANSWER or not _HAVE_ANSWER_API:
         raise HTTPException(status_code=503, detail="Autofill engine not on this deployment's path.")
-    if store.get_tender_owner(tender_id) != user["id"]:
+    if not store.can_access(tender_id, user["id"]):
         raise HTTPException(status_code=404, detail="Tender not found.")
     resp = store.get_tender(tender_id)
     if resp is None:
@@ -449,9 +474,15 @@ async def draft_tender(
 @app.patch("/requirements/{req_id}", response_model=Requirement)
 def update_requirement(req_id: str, update: DecisionUpdate,
                        user: dict = Depends(current_user)):
-    """Update status + decision for one requirement — only on a tender the user owns."""
-    if store.get_requirement_owner(req_id) != user["id"]:
+    """Update status + decision for one requirement — on a tender the user owns OR is shared
+    into. The decision's `actor` is stamped server-side from the signed-in user (never trusted
+    from the client), so collaboration attribution ("Approved by …") can't be forged."""
+    if not store.can_access_requirement(req_id, user["id"]):
         raise HTTPException(status_code=404, detail="Requirement not found.")
+    if update.decision is not None:
+        update.decision.actor = Actor(
+            id=user["id"], email=user["email"], name=user.get("name")
+        )
     req = store.update_requirement(req_id, update)
     if req is None:
         raise HTTPException(status_code=404, detail="Requirement not found.")

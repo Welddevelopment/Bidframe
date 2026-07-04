@@ -16,10 +16,24 @@ RequirementStatus = Literal["pending", "accepted", "edited", "flagged"]
 AnswerState = Literal["auto", "needs_input", "human_edited", "empty"]
 
 
+class Actor(BaseModel):
+    """Who made a decision (collaboration attribution). Stamped server-side from the signed-in
+    user on PATCH — never trusted from the client. Additive/nullable: legacy decisions have none."""
+    id: str
+    email: str
+    name: Optional[str] = None
+
+
+class ShareRequest(BaseModel):
+    """Body for POST /tenders/{id}/share — grant a registered user access to a tender."""
+    email: str
+
+
 class Decision(BaseModel):
     action: str
     note: str = ""
     timestamp: str
+    actor: Optional[Actor] = None
 
 
 class EvidenceRef(BaseModel):

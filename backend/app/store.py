@@ -59,6 +59,13 @@ def init_db() -> None:
                 password_hash TEXT NOT NULL,
                 created_at    TEXT NOT NULL
             );
+            CREATE TABLE IF NOT EXISTS tender_members (
+                tender_id TEXT NOT NULL,
+                user_id   TEXT NOT NULL,
+                added_at  TEXT NOT NULL,
+                PRIMARY KEY (tender_id, user_id),
+                FOREIGN KEY (tender_id) REFERENCES tenders(id)
+            );
             """
         )
         # Additive migration: the bidder's capability docs (autofill envelope). Idempotent,
@@ -76,6 +83,10 @@ def init_db() -> None:
         # Additive migration: published award criteria (#27 — real name/weight for the graph).
         if "award_criteria" not in cols:
             c.execute("ALTER TABLE tenders ADD COLUMN award_criteria TEXT")
+        # Additive migration: user display name (collaboration attribution — "Approved by …").
+        ucols = [row["name"] for row in c.execute("PRAGMA table_info(users)").fetchall()]
+        if "name" not in ucols:
+            c.execute("ALTER TABLE users ADD COLUMN name TEXT")
 
 
 def _caps_json(resp: TenderResponse) -> str:
@@ -151,8 +162,9 @@ def get_tender(tender_id: str) -> TenderResponse | None:
 
 
 def list_tenders(owner: str | None = None) -> list[dict]:
-    """Return a summary of the owner's tenders (id, title, requirement count). With no
-    owner, returns all tenders (used only by trusted callers / eval, never by the API)."""
+    """Return a summary of the tenders a user can see — ones they OWN or have been SHARED into
+    (id, title, requirement count). With no `owner`, returns all tenders (trusted callers / eval
+    only, never the API)."""
     with _conn() as c:
         base = (
             "SELECT t.id, t.title, COUNT(r.id) as req_count "
@@ -160,7 +172,10 @@ def list_tenders(owner: str | None = None) -> list[dict]:
         )
         if owner is not None:
             rows = c.execute(
-                base + "WHERE t.owner = ? GROUP BY t.id ORDER BY t.id DESC", (owner,)
+                base
+                + "WHERE t.owner = ? OR t.id IN (SELECT tender_id FROM tender_members WHERE user_id = ?) "
+                + "GROUP BY t.id ORDER BY t.id DESC",
+                (owner, owner),
             ).fetchall()
         else:
             rows = c.execute(base + "GROUP BY t.id ORDER BY t.id DESC").fetchall()
@@ -189,19 +204,20 @@ def get_requirement_owner(req_id: str) -> str | None:
 
 # ---- Users (invite-only auth) ------------------------------------------------
 
-def create_user(user_id: str, email: str, password_hash: str, created_at: str) -> None:
+def create_user(user_id: str, email: str, password_hash: str, created_at: str,
+                 name: str | None = None) -> None:
     """Insert a user. Raises sqlite3.IntegrityError if the email already exists."""
     with _conn() as c:
         c.execute(
-            "INSERT INTO users (id, email, password_hash, created_at) VALUES (?, ?, ?, ?)",
-            (user_id, email.strip(), password_hash, created_at),
+            "INSERT INTO users (id, email, password_hash, created_at, name) VALUES (?, ?, ?, ?, ?)",
+            (user_id, email.strip(), password_hash, created_at, name),
         )
 
 
 def get_user_by_email(email: str) -> dict | None:
     with _conn() as c:
         row = c.execute(
-            "SELECT id, email, password_hash FROM users WHERE email = ?", (email.strip(),)
+            "SELECT id, email, password_hash, name FROM users WHERE email = ?", (email.strip(),)
         ).fetchone()
     return dict(row) if row is not None else None
 
@@ -209,7 +225,7 @@ def get_user_by_email(email: str) -> dict | None:
 def get_user_by_id(user_id: str) -> dict | None:
     with _conn() as c:
         row = c.execute(
-            "SELECT id, email FROM users WHERE id = ?", (user_id,)
+            "SELECT id, email, name FROM users WHERE id = ?", (user_id,)
         ).fetchone()
     return dict(row) if row is not None else None
 
@@ -217,9 +233,69 @@ def get_user_by_id(user_id: str) -> dict | None:
 def list_users() -> list[dict]:
     with _conn() as c:
         rows = c.execute(
-            "SELECT id, email, created_at FROM users ORDER BY created_at"
+            "SELECT id, email, name, created_at FROM users ORDER BY created_at"
         ).fetchall()
     return [dict(r) for r in rows]
+
+
+# ---- Tender sharing / membership (collaboration) -----------------------------
+
+def add_member(tender_id: str, user_id: str, added_at: str) -> None:
+    """Grant a user access to a tender (idempotent)."""
+    with _conn() as c:
+        c.execute(
+            "INSERT OR IGNORE INTO tender_members (tender_id, user_id, added_at) VALUES (?, ?, ?)",
+            (tender_id, user_id, added_at),
+        )
+
+
+def is_member(tender_id: str, user_id: str) -> bool:
+    with _conn() as c:
+        row = c.execute(
+            "SELECT 1 FROM tender_members WHERE tender_id = ? AND user_id = ?",
+            (tender_id, user_id),
+        ).fetchone()
+    return row is not None
+
+
+def can_access(tender_id: str, user_id: str) -> bool:
+    """A user may access a tender if they own it OR have been shared into it. The single
+    replacement for the old `owner == user` equality wall — owner still passes, others 404."""
+    return get_tender_owner(tender_id) == user_id or is_member(tender_id, user_id)
+
+
+def can_access_requirement(req_id: str, user_id: str) -> bool:
+    """Can this user access the tender a requirement belongs to (owner or shared member)?
+    Requirement-level equivalent of can_access, for the PATCH guard."""
+    with _conn() as c:
+        row = c.execute(
+            "SELECT t.id AS tid, t.owner FROM requirements r JOIN tenders t ON r.tender_id = t.id "
+            "WHERE r.id = ?",
+            (req_id,),
+        ).fetchone()
+    if row is None:
+        return False
+    return row["owner"] == user_id or is_member(row["tid"], user_id)
+
+
+def list_members(tender_id: str) -> list[dict]:
+    """Everyone with access to a tender: the owner first, then shared members, with names."""
+    with _conn() as c:
+        owner_id = get_tender_owner(tender_id)
+        rows = c.execute(
+            "SELECT u.id, u.email, u.name, m.added_at "
+            "FROM tender_members m JOIN users u ON u.id = m.user_id "
+            "WHERE m.tender_id = ? ORDER BY m.added_at",
+            (tender_id,),
+        ).fetchall()
+        members = [{**dict(r), "role": "member"} for r in rows]
+        if owner_id:
+            owner = c.execute(
+                "SELECT id, email, name FROM users WHERE id = ?", (owner_id,)
+            ).fetchone()
+            if owner is not None:
+                members.insert(0, {**dict(owner), "added_at": None, "role": "owner"})
+    return members
 
 
 def update_requirement(req_id: str, update: DecisionUpdate) -> Requirement | None:
