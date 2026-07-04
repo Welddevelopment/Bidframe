@@ -4,6 +4,20 @@
 
 ---
 
+### [J-101] @all · DEMO · OPEN · 2026-07-04 · Bob's demo-video parts + shoot context → [`ops/demo-bob-script.md`](../ops/demo-bob-script.md)
+Standalone doc for **whoever plays "Bob"** in the collaboration demo video. **Context:** the video proves
+Bidframe is a *real* product — the standout being **live multi-user collaboration** (two people, one shared
+tender, decisions attributed in real time + server-stamped + comments + teams). You can't show that with one
+person, so the shoot uses **two real people on two machines**: Alice drives/records her screen; Bob signs in on
+a separate account on his own laptop and works the same tender **live**, so his approvals/comments land on
+Alice's recorded screen stamped "by Bob." The doc has Bob's **setup** (login, join the team, open the tender),
+his **spoken lines by part** (he's a second narrator throughout), and his **two live actions in Part 4**
+(approve the insurance deal-breaker; flag the pricing row + comment). Full both-roles run-sheet lives with Alice.
+
+Demo backend is **live + verified** on Fly: realtime SSE + comments deployed, accounts work, and the
+extraction OOM/"expired" bug is fixed (2GB VM + auto-stop off — full pack now completes: 232 reqs / 73
+deal-breakers in ~3.3 min; a lighter museum-cleaning pack finishes in ~1.5–2 min for faster takes).
+
 ### [J-100] @frontend · HEADS-UP · OPEN · 2026-07-04 · navbar is now 4 sections (Tender/Bid/Matrix/Graph)
 Landed `9168c39` (2 files, low-collision): **`SectionNav`** now shows the four working sections —
 **Tender** (`/upload`) · **Bid** (`/answers`) · **Matrix** (`/review`) · **Graph** (`/graph`) — replacing
