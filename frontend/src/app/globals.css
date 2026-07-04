@@ -2870,12 +2870,10 @@ body {
       transparent 55%,
       rgba(6, 18, 11, 0.18) 100%
     ),
-    linear-gradient(rgba(246, 242, 233, 0.045) 50%, transparent 50%),
     radial-gradient(circle at 22% 18%, rgba(246, 242, 233, 0.13), transparent 34%),
     radial-gradient(circle at 78% 86%, rgba(17, 26, 19, 0.16), transparent 36%);
   background-size:
     100% 100%,
-    100% 3px,
     100% 100%,
     100% 100%;
   opacity: 0.82;
@@ -3908,7 +3906,7 @@ body {
   top: clamp(0.8rem, 1.3vw, 1.5rem);
   left: 50%;
   transform: translateX(-50%);
-  display: grid;
+  display: none;
   justify-items: center;
   gap: 0.3rem;
   color: var(--color-paper);

@@ -580,11 +580,7 @@ export function PitchDeck() {
           glyph: "pdf",
           body: (
             <div className="pitch-poster pitch-poster--center">
-              <p className="pitch-kicker">A tender, in plain English</p>
               <h1>One missed deal&#8209;breaker kills the bid</h1>
-              <p className="pitch-poster__line">
-                Somewhere in the pack is a clause that ends it.
-              </p>
             </div>
           ),
         },
@@ -598,7 +594,6 @@ export function PitchDeck() {
           body: (
             <div className="pitch-journey">
               <div className="pitch-journey__head">
-                <p className="pitch-kicker">The use case</p>
                 <h2>The first read decides what happens next</h2>
               </div>
               <TrailSteps
@@ -694,7 +689,6 @@ export function PitchDeck() {
               }`}
             >
               <div className="pitch-before-after__copy">
-                <p className="pitch-kicker">The solution</p>
                 <h2>One clause. Five ways to lose the bid.</h2>
                 <p className="pitch-before-after__contrast">
                   <span className="pitch-before-after__contrast-line pitch-before-after__contrast-line--before">
@@ -799,7 +793,6 @@ export function PitchDeck() {
           body: (
             <div className="pitch-spread">
               <div className="pitch-copy">
-                <p className="pitch-kicker">The product</p>
                 <h2>The tender, mapped.</h2>
                 <p>Every line shows where it came from.</p>
                 <div className="pitch-mini-metrics">
@@ -901,12 +894,7 @@ export function PitchDeck() {
           glyph: "seal",
           body: (
             <div className="pitch-poster pitch-poster--center">
-              <p className="pitch-kicker">The ask</p>
               <h2>Help us scale the first&#8209;read layer</h2>
-              <p className="pitch-poster__line">
-                The slowest, highest-stakes step of a public-sector bid, made
-                fast. Invest, advise, or introduce us.
-              </p>
               <div className="pitch-cta-row">
                 <a href="https://bidframe.org">bidframe.org</a>
                 <Link href="/demo">Help us scale</Link>
@@ -965,6 +953,19 @@ export function PitchDeck() {
             light={activeSlide.light}
             step={activeIndex}
           />
+          <style>{`
+            .pitch-scope .pitch-stage::after {
+              background:
+                radial-gradient(ellipse at 50% 48%, transparent 0%, transparent 55%, rgba(6, 18, 11, 0.18) 100%),
+                radial-gradient(circle at 22% 18%, rgba(246, 242, 233, 0.13), transparent 34%),
+                radial-gradient(circle at 78% 86%, rgba(17, 26, 19, 0.16), transparent 36%);
+              background-size: 100% 100%, 100% 100%, 100% 100%;
+            }
+
+            .pitch-scope .pitch-story {
+              display: none !important;
+            }
+          `}</style>
 
           <button
             type="button"
@@ -996,9 +997,6 @@ export function PitchDeck() {
                   reversed={zoneIsDark(slide.zone)}
                   className="h-8 w-auto"
                 />
-                <div>
-                  <span>{slide.bucket}</span>
-                </div>
               </div>
               <div className="pitch-slide-body">{slide.body}</div>
             </section>
