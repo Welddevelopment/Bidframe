@@ -26,6 +26,43 @@ function stepState(index: number, current: number): StepState {
   return "pending";
 }
 
+function fileBadge(filename: string): string {
+  const lower = filename.toLowerCase();
+  if (lower.endsWith(".zip")) return "ZIP";
+  if (lower.endsWith(".docx")) return "DOC";
+  if (lower.endsWith(".xlsx")) return "XLS";
+  if (lower.endsWith(".csv")) return "CSV";
+  return "PDF";
+}
+
+function docStageLabel(stage: string): string {
+  const normalized = stage.toLowerCase();
+  if (normalized === "queued") return "Waiting";
+  if (normalized === "reading" || normalized === "read") return "Read";
+  if (normalized === "chunking") return "Sectioned";
+  if (normalized === "extract") return "Extracting";
+  if (normalized === "reconcile") return "Merged";
+  if (normalized === "graph") return "Mapped";
+  if (normalized === "autofill") return "Drafting";
+  if (normalized === "done") return "Done";
+  if (normalized === "error") return "Error";
+  return stage || "Waiting";
+}
+
+function docStageClass(stage: string): string {
+  const normalized = stage.toLowerCase();
+  if (normalized === "done") {
+    return "border-forest/35 bg-forest/10 text-forest";
+  }
+  if (normalized === "queued") {
+    return "border-hairline bg-paper text-ink-muted";
+  }
+  if (normalized === "error") {
+    return "border-signal-oxblood/35 bg-signal-oxblood/10 text-signal-oxblood";
+  }
+  return "border-amber-ink/35 bg-paper text-amber-ink";
+}
+
 export function ProcessingView({
   job,
   fileName,
@@ -52,6 +89,8 @@ export function ProcessingView({
     : isPack
       ? `Reading ${documentLabel}`
       : "Reading your tender";
+  const docs = job?.docs?.filter((doc) => doc.filename) ?? [];
+  const showDocs = docs.length > 1 || (job?.filesTotal ?? 0) > 1;
 
   return (
     <div className="surface-grain w-full max-w-xl rounded-xl border border-hairline bg-paper-raised p-6 shadow-[var(--depth-sheet)]">
@@ -99,6 +138,41 @@ export function ProcessingView({
             </>
           )}
         </p>
+      )}
+
+      {showDocs && (
+        <div className="mt-4 rounded-lg border border-hairline bg-paper p-3 shadow-[var(--depth-pressed)]">
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <p className="font-mono text-[11px] font-medium uppercase tracking-wide text-ink-muted">
+              Tender pack
+            </p>
+            {job?.filesTotal ? (
+              <p className="font-mono text-[11px] text-ink-muted">
+                {job.filesDone ?? 0} of {job.filesTotal} read
+              </p>
+            ) : null}
+          </div>
+          <ul className="flex flex-col gap-2">
+            {docs.map((doc) => (
+              <li
+                key={doc.docId || doc.filename}
+                className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 text-sm"
+              >
+                <span className="inline-flex h-6 min-w-8 items-center justify-center rounded border border-hairline bg-paper-raised px-1.5 font-mono text-[10px] font-semibold text-ink-muted">
+                  {fileBadge(doc.filename)}
+                </span>
+                <span className="truncate text-ink" title={doc.filename}>
+                  {doc.filename}
+                </span>
+                <span
+                  className={`rounded border px-2 py-0.5 font-mono text-[10px] uppercase tracking-wide ${docStageClass(doc.stage)}`}
+                >
+                  {docStageLabel(doc.stage)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
 
       <ul className="mt-4 flex flex-col gap-2.5">

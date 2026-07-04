@@ -1,20 +1,34 @@
 "use client";
 
-// Collaboration activity: who did what, newest first. Live tenders read the backend's
-// append-only activity timeline; mock/frozen tenders derive a small personal log from
-// each requirement's latest decision.
+// Collaboration activity: who did what, newest first. Live tenders read the
+// backend's append-only activity timeline; mock/frozen tenders derive a small
+// personal log from each requirement's latest decision.
 
 import { useEffect, useMemo, useState } from "react";
 import { useRequirements } from "@/context/RequirementsContext";
 import { useAuth } from "@/context/AuthContext";
-import { isApiEnabled, listTenderActivity, type TenderActivityEvent } from "@/lib/api";
+import {
+  isApiEnabled,
+  listTenderActivity,
+  type TenderActivityEvent,
+} from "@/lib/api";
 import { actorLabel, collaboratorFor } from "@/lib/collaborators";
+import type { Actor } from "@/types/requirement";
 
 const VERB: Record<string, string> = {
   approve: "approved",
   edit: "edited",
   flag: "flagged",
 };
+
+interface FeedEntry {
+  id: string;
+  text: string;
+  action: string;
+  note?: string | null;
+  timestamp: string;
+  actor?: Actor | null;
+}
 
 function timeAgo(iso: string): string {
   const then = new Date(iso).getTime();
@@ -61,33 +75,34 @@ export function ActivityFeed() {
     };
   }, [tenderId, decisionRefreshKey]);
 
-  const derivedEntries = requirements
+  const derivedEntries: FeedEntry[] = requirements
     .filter((r) => r.decision)
     .map((r) => ({
       id: r.id,
-      reqId: r.id,
       text: r.text,
       action: r.decision!.action,
+      note: r.decision!.note,
       timestamp: r.decision!.timestamp,
       actor: r.decision!.actor ?? null,
     }))
     .sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
 
   const liveEvents = activity?.tenderId === tenderId ? activity.events : null;
-  const serverEntries =
+  const serverEntries: FeedEntry[] | null =
     liveEvents?.map((event) => {
       const req = requirementsById.get(event.req_id);
       return {
         id: event.id,
-        reqId: event.req_id,
         text: req?.text ?? event.req_id,
         action: event.action,
+        note: event.note,
         timestamp: event.timestamp,
         actor: event.actor ?? null,
       };
     }) ?? null;
 
-  const entries = serverEntries && serverEntries.length > 0 ? serverEntries : derivedEntries;
+  const entries =
+    serverEntries && serverEntries.length > 0 ? serverEntries : derivedEntries;
 
   if (entries.length === 0) return null;
 
@@ -113,31 +128,44 @@ export function ActivityFeed() {
         </button>
       </div>
       {open && (
-      <ul className="flex max-h-52 flex-col gap-2.5 overflow-y-auto px-4 pb-4">
-        {entries.slice(0, 12).map((entry) => {
-          const who = actorLabel(entry.actor, user?.id);
-          const collab = entry.actor ? collaboratorFor(entry.actor) : null;
-          return (
-            <li key={entry.id} className="flex items-start gap-2.5">
-              <span
-                aria-hidden="true"
-                className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold text-paper"
-                style={{ backgroundColor: collab?.color ?? "var(--color-ink-muted)" }}
-              >
-                {collab?.initials ?? "•"}
-              </span>
-              <p className="min-w-0 text-sm leading-snug text-ink">
-                <span className="font-medium">{who}</span>{" "}
-                <span className="text-ink-muted">{VERB[entry.action] ?? entry.action}</span>{" "}
-                <span className="italic">
-                  &ldquo;{entry.text.length > 64 ? `${entry.text.slice(0, 64)}...` : entry.text}&rdquo;
+        <ul className="flex max-h-52 flex-col gap-2.5 overflow-y-auto px-4 pb-4">
+          {entries.slice(0, 12).map((entry) => {
+            const who = actorLabel(entry.actor, user?.id);
+            const collab = entry.actor ? collaboratorFor(entry.actor) : null;
+            const clipped =
+              entry.text.length > 64
+                ? `${entry.text.slice(0, 64)}...`
+                : entry.text;
+            return (
+              <li key={entry.id} className="flex items-start gap-2.5">
+                <span
+                  aria-hidden="true"
+                  className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold text-paper"
+                  style={{
+                    backgroundColor: collab?.color ?? "var(--color-ink-muted)",
+                  }}
+                >
+                  {collab?.initials ?? "-"}
                 </span>
-                <span className="ml-1 font-mono text-[11px] text-ink-muted">· {timeAgo(entry.timestamp)}</span>
-              </p>
-            </li>
-          );
-        })}
-      </ul>
+                <p className="min-w-0 text-sm leading-snug text-ink">
+                  <span className="font-medium">{who}</span>{" "}
+                  <span className="text-ink-muted">
+                    {VERB[entry.action] ?? entry.action}
+                  </span>{" "}
+                  <span className="italic">&ldquo;{clipped}&rdquo;</span>
+                  <span className="ml-1 font-mono text-[11px] text-ink-muted">
+                    · {timeAgo(entry.timestamp)}
+                  </span>
+                  {entry.note ? (
+                    <span className="block truncate text-xs text-ink-muted">
+                      {entry.note}
+                    </span>
+                  ) : null}
+                </p>
+              </li>
+            );
+          })}
+        </ul>
       )}
     </section>
   );
