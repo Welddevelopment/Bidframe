@@ -4,6 +4,12 @@
 
 ---
 
+### [J-087] @all · FLAG · OPEN · 2026-07-04 · brutal Conduct scoring audit added — act before submission
+Added [`SCORING.md`](../SCORING.md) with a direct rubric read against Conduct's Make Legacy Move criteria.
+Headline: we are competitive, but the last-mile risk is positioning and demo discipline, not more features.
+Focus now: enterprise/control framing, a sharp Bradwell before/after, show approve/edit/flag/open-question live,
+avoid live extraction on stage, keep metrics honest, and clean the repo before final submission.
+
 ### [J-086] @all · INFO · OPEN · 2026-07-04 · personalised email copy added to the 50-lead send sheet
 Updated `crm/sendable-list-2026-07-04.csv` so the 50-lead batch `L-0425`-`L-0474` now carries
 spreadsheet-ready `email_subject`, `personalised_email`, and `personalisation_note` columns. The copy uses
