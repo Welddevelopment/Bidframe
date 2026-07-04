@@ -3,9 +3,31 @@
 Living doc for the release owner. Brief: [`mixed-pack-04-release-qa.md`](mixed-pack-04-release-qa.md).
 Product wording: **"Upload the tender pack."** Never "Office / Microsoft integration."
 
-## Status: backend (01) + frontend (03) landed, gate GREEN ✅ — awaiting generalist (02)
-End-to-end works at ingest+net: backend `ingest_document` reads DOCX/XLSX/CSV, the deterministic net
-catches every planted gate, engine suite 230 pass. Frontend gates the PDF highlight to PDF sources.
+## Status: all 4 lanes landed + a working front door (`/pack`) ✅
+Backend reads PDF+DOCX+XLSX+CSV (`ingest_document`), engine trust layer format-neutral (235 tests pass),
+frontend renders it with badges + a pack summary, and **`/pack`** (frozen `mixedpack-prebake.json`, offline,
+no auth) is the demo/video surface. Deal-breakers are caught in the Office files too.
+
+## Finish plan — to make the whole workflow actually work end-to-end
+The demo path works; these are the gaps between "green tests" and "a real user's tender pack works":
+
+| # | Gap | Owner | State |
+|---|---|---|---|
+| 1 | **Front door** — a route that shows a mixed pack | J | ✅ **DONE** — `/pack` seeded from `mixedpack-prebake.json` |
+| 2 | **ZIP** — the format packs are actually delivered in — is rejected | @backend (J-096) | ⏳ open (was cut-line; bumped in-scope) |
+| 3 | **Live backend redeploy** so the *upload* path runs the mixed-pack code | @backend (J-096) | ⏳ open (deps in requirements; needs redeploy) |
+| 4 | **`/pack` discoverability** (link from landing/nav) + projector polish | @frontend (J-095) | ⏳ open |
+| 5 | **Multi-file upload list UX** (per-file icon/name/size; pack-aware progress) | @frontend (J-095) | ⏳ open |
+| 6 | Same requirement repeated across files shows twice | — | accept (provenance-honest; per-doc partition is correct) — optional "also in N docs" grouping later |
+| 7 | **Put `/pack` in the video** — else the feature stays invisible to judges | J / demo | ⏳ open — highest submission value |
+
+**Verification checklist (run before calling it done):**
+- [ ] `/pack` in a browser at projector size: 4-doc pack summary, format badges, a Word/Excel deal-breaker at
+      the top, a PDF row highlights, an Office row shows text+locator with **no** fake highlight.
+- [ ] `python -m engine.scripts.mixed_pack_smoke` → SMOKE OK; `python -m pytest engine/tests -q` green.
+- [ ] `cd frontend && npm run build` green (18→19 routes incl. `/pack`).
+- [ ] (if ZIP ships) drop a real `.zip` pack → every contained file reaches extraction, per-file provenance kept.
+- [ ] `/pack` linked from a discoverable place; screen recorded for the video.
 
 **One-command gate:** `python -m engine.scripts.mixed_pack_smoke` — Phase A (format-neutral net over all
 4 fixtures) is green now; Phase B (backend reads the pack) auto-activates when lane 01 exposes a non-PDF

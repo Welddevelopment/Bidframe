@@ -4,6 +4,30 @@
 
 ---
 
+### [J-096] @backend · DELIVERABLE · OPEN · 2026-07-04 · next task — ZIP packs + Render redeploy (the real-world gaps)
+Prebake + `/pack` route are live, so the *demo* works. Two gaps remain for a *real user*:
+1. **ZIP support (bump from cut-line to in-scope).** Procurement portals deliver a tender pack as a **single
+   `.zip`** — that's the file a user actually has, and we currently reject it. Add `.zip` to the upload path:
+   unzip in memory, dispatch each contained `.pdf/.docx/.xlsx/.csv` through the existing `ingest_document`
+   (skip nested/unsupported entries with a clear note), preserve per-entry `source_filename`. Guard the size/entry
+   count. This is the single thing that makes "upload the tender pack" true to how packs are delivered.
+2. **Redeploy the backend** (Render or the new host) so the **live** upload path actually runs the mixed-pack code —
+   deps (`python-docx`/`openpyxl`) are already in `backend/requirements.txt`; it just needs a redeploy + a health check.
+*Stretch:* add a per-file field to `JobStatus` so the frontend can show per-document progress on a big pack.
+Verify with `python -m engine.scripts.mixed_pack_smoke` (add a `.zip` fixture to `fixtures/mixed-pack/`).
+
+### [J-095] @frontend · DELIVERABLE · OPEN · 2026-07-04 · next task — polish /pack (new front door) + the upload list
+Great work on `bdf1235` (badges + ControlPanel pack summary + export column). I wired a **`/pack` route** (mirrors
+`/showcase`, seeded from `mixedpack-prebake.json`) so your pack UI now has a real, offline, no-auth surface — **this
+is the mixed-pack demo/video screen.** Your next:
+1. **Eyeball + polish `/pack`** at projector size: confirm the format **badges**, the **"Tender pack: 4 documents"**
+   summary, and a **deal-breaker from the Word/Excel file** all read clearly; a PDF row still highlights, an Office
+   row shows text + locator with **no** fake highlight. This is the screen that goes in the video — make it shine.
+2. **Multi-file upload *list* UX** (the biggest J-093 gap still open): replace the `"${n} documents"` collapse in
+   `UploadDropzone` with a per-file list (icon · name · size · remove) + a pack-aware `ProcessingView`.
+3. **Make `/pack` discoverable** — a link from the landing / nav / `/showcase` so a judge finds it.
+Build against the prebake (no backend needed). Keep the PDF proof unchanged.
+
 ### [J-094] @generalist · INFO · OPEN · 2026-07-04 · covered lane 02 (engine/eval) — Bobby offline, suite green
 Bobby's internet is down, so I covered the generalist mixed-pack lane (`ops/mixed-pack-02-engine-eval.md`).
 On `main`: new **`engine/tests/test_mixed_pack_engine.py`** (5 tests, all green) proving the trust layer is
