@@ -68,6 +68,38 @@
 > process MORE defensible than the status quo (no record of why a clause was read a certain way).
 > Procurement Act 2025 transparency direction favors exactly this kind of traceability.
 
+## Jawad quick hits — frontend + outreach
+
+**"What did you personally build?"** — *Jawad*
+> The working review surface: the compliance matrix, source panel, decision controls, answer/evidence
+> panel, gap-question flow, and the judge-safe demo/pitch surfaces. The frontend is not decoration here;
+> it is where the trust rules become behaviour — deal-breakers first, uncertainty visible, source proof
+> one click away, and every AI draft routed through human review.
+
+**"How do you know a bid manager can actually use this?"** — *Jawad*
+> We kept the shape they already know: a compliance matrix. Bidframe does not ask them to change into a
+> chat workflow; it gives them the spreadsheet they would have built by hand, but with source links,
+> evidence receipts, open questions, and approve/edit/flag controls. The product meets the expert where
+> their work already happens, then makes the risky parts harder to miss.
+
+**"Why does the product look like an official record, not a shiny AI app?"** — *Jawad*
+> Because the output has to be defensible. The "civic record" design is deliberate: mono refs for pages
+> and clauses, oxblood only for bid-killing risk, forest only for approved decisions, confidence as a
+> visual signal instead of a raw score. It should feel less like a chatbot and more like a file you could
+> hand to a bid lead and say, "this is why we made that call."
+
+**"What have you done on outreach, not just product?"** — *Jawad*
+> We built the go-to-market around a concrete ask: bring us one public-sector tender and we will prepare
+> the deal-breaker checklist before the call. The outreach work is targeted and honest — named SME
+> bidder segments, personalised drafts, no fake contacts, no "customers" claim before a pilot exists.
+> The point is to turn the demo into design-partner conversations fast.
+
+**"What do you want from the first pilots?"** — *Jawad*
+> A real tender, their current first-read spreadsheet, and blunt feedback on what would make this usable
+> in their bid process. Each pilot gives us three assets: better product workflow, more labelled tender
+> examples for the eval set, and reusable decision context for the next bid. That is how the product gets
+> stronger without pretending the first version knows everything.
+
 ## Technical depth (owners)
 
 - **Pipeline walk-through** → *P* (30s version in qa-prep; go as deep as asked).
