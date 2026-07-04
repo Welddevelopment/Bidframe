@@ -43,6 +43,26 @@ requirement recall is promising but still small-sample, so we don't put a headli
 
 Source: [HoC Library — Procurement statistics: a short guide (CBP-9317)](https://commonslibrary.parliament.uk/research-briefings/cbp-9317/).
 
+## C2. Impact / £-saved claims — the headline speed-up number (Impact, 30%)
+> On the deck's Use Case slide: **"Days → minutes"**, backed by the £ below. Full sourcing in
+> [`incumbent-pricing-research.md`](incumbent-pricing-research.md). Bidframe replaces the **first-read
+> layer** (compliance analysis *before* writing) — **not** the whole ghost-written bid. Do not claim we replace the bid writer.
+>
+> ⏱️ **Future improvement (not done for this demo):** replace the sourced estimate with a real stopwatch
+> measurement — time a manual first-read of the Bradwell pack finding all 10 deal-breakers, vs Bidframe's
+> real run. Turns the "1–2 days" from an industry estimate into our own measured number.
+
+| Claim | Source | Defender | Confidence |
+|---|---|---|---|
+| An **outsourced tender first-read starts at £950** | [Glaxtons pricing](https://www.glaxtons.co.uk/pricing/) | Joel | **HIGH** — published price |
+| Done in-house the first read is **1–2 days of a bid writer (~£375–£750)** at the **£375/day** median | [IT Jobs Watch — Bid Writer](https://www.itjobswatch.co.uk/contracts/uk/bid%20writer.do) | Joel | **HIGH** |
+| A **full bid averages ~£4,000 and takes 2–8 weeks** — and **one missed deal-breaker bins all of it** | [Executive Compass](https://executivecompass.co.uk/blog/bid-management/what-is-the-cost-of-writing-a-tender/) | Joel | **HIGH** |
+| **Headline: "Days → minutes"** — Bidframe does the first read in minutes instead of a day or two | Composite of the three rows above + the live `/showcase` run | Joel / Bobby | **HIGH — it's a speed-up claim, not "we save you £X"** |
+
+**Safe wording if pushed on ROI:** *"Directly, £400–£950 per tender on the first read, in minutes instead
+of a day or two. But the real number is not wasting a £4,000, multi-week bid on a deal-breaker you missed
+on page 31."* Do **not** say "we save you £4,000" — that figure is what we *protect*, not what we replace.
+
 ---
 
 ## Ready-to-use: Eval field-note appendix (drop-in slide copy for Jawad)

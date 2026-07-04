@@ -3720,11 +3720,45 @@ body {
   opacity: 0.72;
 }
 
+.pitch-journey__stats {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: clamp(1.2rem, 3vw, 3.2rem);
+}
+
 .pitch-journey__stat {
   display: flex;
   align-items: baseline;
   justify-content: center;
   gap: clamp(0.9rem, 1.6vw, 1.6rem);
+}
+
+/* Inside the paired block each stat stacks its figure over its note, and the
+   market figure recedes to context beside the headline speed-up number. */
+.pitch-journey__stats .pitch-journey__stat {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+}
+
+.pitch-journey__stat--context {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.pitch-journey__arrow {
+  margin: 0 0.12em;
+  color: var(--color-forest);
+}
+
+.pitch-slide--ondark .pitch-journey__arrow {
+  color: var(--color-signal-amber);
+}
+
+.pitch-journey__figure--sm {
+  font-size: clamp(2rem, 3.6vw, 3.6rem);
+  opacity: 0.82;
 }
 
 .pitch-journey__figure {
@@ -5310,6 +5344,16 @@ body {
   .pitch-journey__stat {
     flex-direction: column;
     gap: 0.5rem;
+  }
+
+  .pitch-journey__stats {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .pitch-journey__stat--context {
+    align-items: flex-start;
+    text-align: left;
   }
 
   .pitch-copy h1,

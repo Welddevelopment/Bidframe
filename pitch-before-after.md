@@ -93,7 +93,7 @@ Small, paste-ready lines so all four criteria are *named*, not just implied.
 
 - **Impact & speed-up (30%) — the hard number (researched, sourced in `incumbent-pricing-research.md`):**
   `An outsourced tender review starts at £950; a full bid averages ~£4,000 and takes 2–8 weeks — all wasted
-  if one deal-breaker is missed. Bidframe does the first read in hours, so a small firm gets that safety net
+  if one deal-breaker is missed. Bidframe does the first read in minutes, so a small firm gets that safety net
   without a £35–50k-a-year bid writer.` Fallback one-liner: *"£400–£950 saved per tender on the first read —
   but the real number is not wasting a £4,000, multi-week bid on a rule you missed."*
 - **User stays in control (20%) — SHOW it, don't just say it.** In the after walkthrough, explicitly surface

@@ -727,23 +727,43 @@ export function PitchDeck() {
                   },
                 ]}
               />
-              <div className="pitch-journey__stat">
-                <span
-                  className="pitch-journey__figure"
-                  aria-label="341 billion pounds"
-                >
-                  £
-                  <AnimatedNumber
-                    key={activeIndex === 1 ? "gbp-active" : "gbp-idle"}
-                    value={341}
-                    from={activeIndex === 1 ? 0 : 341}
-                  />
-                  bn
-                </span>
-                <span className="pitch-journey__note">
-                  UK public procurement, 2023/24 · about a third of public
-                  spend · new rules live since 24 Feb 2025
-                </span>
+              <div className="pitch-journey__stats">
+                <div className="pitch-journey__stat pitch-journey__stat--impact">
+                  <span
+                    className="pitch-journey__figure"
+                    aria-label="Days to minutes"
+                  >
+                    Days
+                    <span className="pitch-journey__arrow" aria-hidden="true">
+                      →
+                    </span>
+                    minutes
+                  </span>
+                  <span className="pitch-journey__note">
+                    A first read of a pack like this is one to two days of
+                    expert time — £375 to £950 outsourced. Bidframe does it in
+                    minutes, and by catching every deal-breaker it protects the
+                    £4,000, two-to-eight-week bid it sits inside.
+                  </span>
+                </div>
+                <div className="pitch-journey__stat pitch-journey__stat--context">
+                  <span
+                    className="pitch-journey__figure pitch-journey__figure--sm"
+                    aria-label="341 billion pounds"
+                  >
+                    £
+                    <AnimatedNumber
+                      key={activeIndex === 1 ? "gbp-active" : "gbp-idle"}
+                      value={341}
+                      from={activeIndex === 1 ? 0 : 341}
+                    />
+                    bn
+                  </span>
+                  <span className="pitch-journey__note">
+                    UK public procurement, 2023/24 · about a third of public
+                    spend
+                  </span>
+                </div>
               </div>
               </div>
             </div>
@@ -974,7 +994,9 @@ export function PitchDeck() {
               <p className="pitch-kicker">The ask</p>
               <h2>Help us scale the first&#8209;read layer</h2>
               <p className="pitch-poster__line">
-                Invest, advise, or introduce us.
+                The slowest, highest-stakes step of a public-sector bid, made
+                fast — with the expert in control the whole way. Invest, advise,
+                or introduce us.
               </p>
               <div className="pitch-cta-row">
                 <a href="https://bidframe.org">bidframe.org</a>

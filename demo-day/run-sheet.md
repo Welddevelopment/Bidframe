@@ -25,9 +25,9 @@ laptop handoffs. Everyone else speaks from beside the screen and points.
 **Screen:** `/` (the landing page, civic-record hero), or stand in front of a closed laptop / title slide.
 **Visual cue:** none yet — all eyes on the speaker, not the screen.
 **Says:**
-> "A bid manager spends about three weeks reading a tender like this by hand. Miss one mandatory
-> requirement, and the whole bid is thrown out — weeks of work, gone. Bidframe turns that into a
-> verified, source-linked checklist in minutes."
+> "A bid manager spends one to two days just on the first read of a tender like this — before writing a
+> word — hunting for the pass/fail clauses. Miss one and the whole bid is thrown out: weeks of work,
+> gone. Bidframe turns that into a verified, source-linked checklist in minutes."
 
 **Handoff:** "P, drop it in." → P steps to the keyboard side, Jawad navigates to `/review` (or `/upload`).
 

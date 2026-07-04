@@ -47,7 +47,7 @@ import { Seal } from "./art/Seal";
 const CONTAINER = "mx-auto w-full max-w-[1160px] px-4 sm:px-6";
 
 const COMPARISON_ROWS = [
-  { label: "Time", before: "Weeks of expert reading", after: "Minutes" },
+  { label: "Time", before: "1–2 days of expert first-read", after: "Minutes" },
   {
     label: "The deal-breaker",
     before: "A missed gate voids the whole bid",
@@ -120,8 +120,9 @@ export function Landing() {
               </span>
             </h1>
             <p className="hero-enter-2 forest-hero-lede mx-auto mt-5 max-w-[58ch] text-balance text-lg leading-relaxed text-ink-muted sm:text-xl">
-              Bidframe reads the tender, catches disqualifying requirements, and
-              links every flag to its exact clause.
+              Bidframe reads the whole tender pack, catches disqualifying
+              requirements, and links every flag to its exact clause. You
+              approve every call.
             </p>
             <div className="hero-enter-3 mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-4">
               <BookDemoButton location="hero" size="lg" />

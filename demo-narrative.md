@@ -17,8 +17,9 @@ your response from your own evidence. The human approves every call.**
 > Beat = what we click. (Narration) = what J says. Keep it to ~90s; the catch + the click-to-source
 > are the two moments that must land.
 
-1. **The before.** *(One sentence, no screen.)* "A bid manager spends about three weeks reading a tender
-   like this by hand. Miss one mandatory requirement and the whole bid is thrown out — weeks of work, gone."
+1. **The before.** *(One sentence, no screen.)* "A bid manager spends one to two days just on the *first
+   read* of a tender like this — before writing a word — hunting for the pass/fail clauses. Miss one and the
+   whole bid is thrown out: weeks of work, gone."
 2. **Upload.** Drag the tender PDF in. (Let the judge pick it if we're confident.) "We drop in a real
    public-sector tender. 13 pages."
 3. **The matrix populates.** "In under a minute, every requirement — pulled out, classified, scored."
@@ -34,14 +35,14 @@ your response from your own evidence. The human approves every call.**
    documents — every claim cites the exact evidence behind it, or says *needs your input*. **It never
    bluffs.** And it asks you only the handful of things it genuinely can't answer — a few questions, not a
    blank page."
-8. **The after.** "Three weeks of reading and a disqualifier risk — down to minutes, with the killer
+8. **The after.** "A day or two of hunting and a disqualifier risk — down to minutes, with the killer
    requirement caught, every line verifiable, and a drafted response. The human approved every step."
 
 ## The before / after (the legibility anchor)
 
 | | Before | After (Bidframe) |
 |---|---|---|
-| Time | ~3 weeks of expert reading | minutes |
+| Time | 1–2 days of expert first-read | minutes |
 | Disqualifier risk | a missed pass/fail = whole bid void | caught + surfaced first |
 | Trust | hope the checklist is complete | every requirement → its source clause, one click |
 | Uncertainty | invisible | flagged honestly (`needs_review`) |

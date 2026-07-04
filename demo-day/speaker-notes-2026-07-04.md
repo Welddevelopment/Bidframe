@@ -12,7 +12,9 @@ Use this as the live presenter sheet beside `/pitch` and `/showcase`. Target is 
 
 ## One-Sentence Thesis
 
-Bidframe does the first read of a public-sector tender, puts bid-killing deal-breakers first, traces every line to source, drafts only from evidence, and keeps the bid manager in control.
+Bidframe is the controlled first-read layer for the teams who turn large public-sector tender packs into a bid: it does the slow, high-stakes first read in minutes, puts bid-killing deal-breakers first, traces every line back to the source document, drafts only from evidence, and keeps the expert at the wheel on every call.
+
+*(Positioning: lead with the control + the slow-legacy-process-made-fast angle — the Conduct brief. Audience = bid & compliance teams handling large packs; underserved SMEs are the beachhead we start from, not the ceiling. Keep the "small firms are underserved" line for the Q&A below, not the main pitch.)*
 
 ## Timing
 
@@ -31,20 +33,29 @@ Bidframe does the first read of a public-sector tender, puts bid-killing deal-br
 2. Point at the ControlPanel: read pages, found requirements, flagged deal-breakers, drafted answers, left questions.
 3. Say: "Zero approved. Nothing is decided or submitted."
 4. Click the insurance deal-breaker.
-5. Show source trace: page, clause, excerpt, PDF.
-6. Show the evidence-backed answer and citation.
-7. Go to approval: type `CONFIRM` when prompted.
-8. Edit one answer.
-9. Flag one requirement.
-10. Open the references/open-question row.
-11. Say: "Where it could not back an answer, it did not invent one. It asked me."
-12. Point back to the tally.
+5. **The proof beat — this is the one to land.** Click **"See it in the document."** The actual
+   tender PDF opens beside the claim with the **exact line highlighted in green**. Say: *"Never
+   take our word for it — the proof is in their document, not our dashboard."* This runs fully
+   offline (frozen Bradwell PDF, no backend, no key).
+6. **Feature the page-31 pricing landmine.** Click that deal-breaker and "See it in the document"
+   — the highlight jumps to **page 31 of 34**. Say: *"A bid-killer buried thirty-one pages deep.
+   This is exactly the clause a human skims past on day two — and missing it bins the whole bid."*
+7. Show the evidence-backed answer and citation.
+8. Go to approval: type `CONFIRM` when prompted.
+9. Edit one answer.
+10. Flag one requirement.
+11. Open the references/open-question row.
+12. Say: "Where it could not back an answer, it did not invent one. It asked me."
+13. Point back to the tally.
 
 ## Control Beat Script
 
 "Before we touch anything, notice what the tool has and has not done. It read the tender, flagged the deal-breakers, drafted answers where it had evidence, and left the rest for me. Zero approved. Nothing here is decided or submitted. I am at the wheel."
 
 "When I approve a deal-breaker, it stops me. I have to explicitly confirm before a bid-killer is signed off. The agent never rubber-stamps one for me."
+
+"And you never have to trust the tool blind. Every claim opens the real tender page with the exact
+line highlighted — the proof lives in their document, not our dashboard."
 
 "Every draft is mine to correct. The AI proposes; I decide the wording."
 

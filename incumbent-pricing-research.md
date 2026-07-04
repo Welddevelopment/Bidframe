@@ -19,13 +19,13 @@
 
 Bidframe does the **first-read layer** — the compliance analysis *before* writing — not the whole ghost-written bid. So the defensible numbers:
 
-- **Per tender, directly:** an outsourced tender *review* starts at **£950**; done in-house the first read is **1–2 days of a bid writer** (~**£375–£750** at the £375/day rate). → **Bidframe saves roughly £400–£950 per tender on the first read, in hours instead of days.**
+- **Per tender, directly:** an outsourced tender *review* starts at **£950**; done in-house the first read is **1–2 days of a bid writer** (~**£375–£750** at the £375/day rate). → **Bidframe saves roughly £400–£950 per tender on the first read, in minutes instead of a day or two.**
 - **The bigger stakes:** a full bid averages **~£4,000 and 2–8 weeks** — and **one missed deal-breaker bins the entire thing.** Bidframe's guarantee (catch every disqualifier) is what protects that £4,000 / multi-week investment from being wasted on a bid that was dead on page 31.
 - **The accessibility angle:** a full-time bid writer is **£35k–£50k/year** — which a small firm bidding occasionally **can't justify**. Bidframe gives them the first-read layer without the hire.
 
 ## Pitch-ready lines (pick per slot)
 
-- **One-liner (hard number):** *"An outsourced tender review starts at £950; Bidframe does that first read in hours — and by catching every deal-breaker, it protects the £4,000-and-2-to-8-weeks a full bid costs from being wasted on a missed rule."*
+- **One-liner (hard number):** *"An outsourced tender review starts at £950; Bidframe does that first read in minutes — and by catching every deal-breaker, it protects the £4,000-and-2-to-8-weeks a full bid costs from being wasted on a missed rule."*
 - **Accessibility:** *"A full-time bid writer is £35–50k a year. A small firm that bids a few times a year can't justify that — so they either overpay a consultant £950+ a tender, or bid blind. Bidframe is the first-read layer they can actually afford."*
 - **If asked "how much do you save?":** *"£400–£950 per tender on the first read directly — but the real number is not wasting a £4,000, multi-week bid on a deal-breaker you missed."*
 
