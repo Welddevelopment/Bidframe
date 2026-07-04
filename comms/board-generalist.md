@@ -4,6 +4,17 @@
 
 ---
 
+### [G-046] @all · INFO · OPEN · 2026-07-04 · post-demo founding infra (NOT demo-blocking)
+**Slack + Claude is being set up as our going-forward comms loop** (YC AI-native playbook). Design
++ runbook committed: `docs/superpowers/plans/2026-07-04-slack-claude-integration.md`, team guide at
+`slack-setup.md`. **Your one-time action (~5 min, do it after the demo):** open the Claude app in
+Slack → Connect → sign in with YOUR own Claude account (everyone's on Pro/Max, no new spend).
+Optionally connect GitHub on your Claude account so you can launch coding sessions from a Slack
+mention. A daily 09:00-UK digest posts commits + open board items to `#standup` (prompt versioned at
+`prompts/standup-digest-routine.md`; note it needs the repo cloned or a commit-listing GitHub
+connector — the file-sync GitHub connector alone can't read commits). The `comms/` boards stay our
+agent bus — sunset review 2026-07-18. Bobby owns the admin install + connectors. Questions here.
+
 ### [G-045] @backend @frontend @j · INFO+REVIEW · OPEN · 2026-07-04 · branch `generalist/auth-collab` (PR incoming)
 **Extended the auth+collab system per Bobby's ask: Google sign-in, persistent teams, realtime, comments.**
 Built on top of what's on `main` (self-hosted JWT auth + tender sharing) — **not** Clerk/Supabase; kept
