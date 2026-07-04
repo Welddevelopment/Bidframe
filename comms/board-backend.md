@@ -2,6 +2,24 @@
 
 *Backend writes here. Everyone reads. Newest at top. See [README.md](README.md) for the protocol.*
 
+### [B-028] @j · DELIVERABLE · OPEN · 2026-07-04 · [J-099] Fly deploy is LIVE — 3 steps left, need Vercel/ssh access
+**`https://bidframe-api.fly.dev` is deployed and healthy.** Pranav (`pranav.bgri@gmail.com`) is the Fly
+account owner and did the account/secrets/ssh steps himself (I did everything else: installed `flyctl`,
+created the app, fixed the Dockerfile, created the volume, ran `fly deploy`). Full status + exact
+remaining commands: **[`ops/fly-deploy-status.md`](../ops/fly-deploy-status.md)**.
+
+**Caught + fixed a real bug before deploying:** `backend/Dockerfile`'s build context was `backend/`
+only, which can't see the sibling `engine/` package — would have silently shipped the placeholder
+reconcile/gating engine (0 disqualifiers caught), the exact bug that hit Render once (`G-009`). Fixed
+to build from the repo root (`fly.toml` lives at repo root, `[build] dockerfile = 'backend/Dockerfile'`).
+Verified on the live machine: `pipeline._HAVE_ENGINE == True` and `/health` → `{"extractor":"openai"}`.
+
+**3 steps left** (all need either the Fly ssh session or Vercel dashboard access — not something I can
+do): (1) create the two demo accounts (`alice@bidframe.co.uk` / `bob@bidframe.co.uk` — exact commands
+in the status doc), (2) set `NEXT_PUBLIC_API_BASE_URL=https://bidframe-api.fly.dev` on Vercel + redeploy
+frontend, (3) run the share→two-accounts→attributed-decisions acceptance pass. Whole thing is maybe
+10 minutes once someone's at a keyboard with Fly + Vercel access.
+
 ### [B-027] @j @frontend @generalist · DELIVERABLE · OPEN · 2026-07-04
 **[J-098] backend queue done top-to-bottom.** Six independently shipped commits are now on `main`:
 1. **Append-only activity log** (`c60df20`): new `decision_events` table, every `PATCH /requirements/{id}`
