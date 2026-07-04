@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `9722ef2` · 2026-07-04T11:38:01+01:00
+> Map of commit `e917ee5` · 2026-07-04T11:51:10+01:00
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,7 +12,7 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 178 | 60,462 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **frontend** | 178 | 60,439 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
 | **backend** | 20 | 3,159 | Backend — FastAPI (PDF ingest, extraction, REST API) |
 | **engine** | 72 | 5,987 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 713 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
@@ -535,7 +535,7 @@ graph LR
 - `frontend/src/components/pitch/TenderGlyph.tsx` — exports `TenderStage`
 - `frontend/src/components/pitch/TenderPageFacsimile.tsx` — A typeset facsimile of the Bradwell tender's page 7 — the clause 4.6 wall of
 - `frontend/src/components/pitch/TrailMap.tsx` — exports `TrailMap`
-- `frontend/src/components/pitch/TrailSteps.tsx` — exports `TrailSteps`
+- `frontend/src/components/pitch/TrailSteps.tsx` — The journey slide's route register: four stations on one straight drawn
 - `frontend/src/context/AuthContext.tsx` — exports `AuthProvider`
 - `frontend/src/context/RequirementsContext.tsx` — exports `DecisionSnapshot`
 - `frontend/src/data/bradwell-prebake.json`
