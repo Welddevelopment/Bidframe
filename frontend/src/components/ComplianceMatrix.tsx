@@ -153,7 +153,11 @@ function StatusWord({ req }: { req: Requirement }) {
   if (req.status === "pending") {
     const word = pendingStatusWord(req);
     if (!word) return null;
-    const tone = req.is_gating ? "text-signal-oxblood" : "text-ink-muted";
+    const tone = req.is_gating
+      ? req.needs_review
+        ? "text-signal-amber"
+        : "text-signal-oxblood"
+      : "text-ink-muted";
     return (
       <span className={`inline-flex items-center gap-1 text-xs ${tone}`}>
         {word}

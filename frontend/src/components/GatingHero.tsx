@@ -53,14 +53,22 @@ export function GatingHero({
 }) {
   const ctx = useRequirements();
   const source = requirements ?? ctx.requirements;
-  const { representatives: gating, meta } = collapseDuplicates(
+  const { representatives, meta } = collapseDuplicates(
     source.filter((r) => r.is_gating)
   );
 
-  if (gating.length === 0) {
+  if (representatives.length === 0) {
     return null;
   }
 
+  // Confident bid-killers first; the ones the tool flagged to be safe but is less
+  // sure of (needs_review) sort last and read as explicit review flags — so an
+  // over-flag is visible as an over-flag, never mixed silently into the dossier.
+  const gating = [...representatives].sort(
+    (a, b) => Number(!!a.needs_review) - Number(!!b.needs_review)
+  );
+  const confidentCount = gating.filter((r) => !r.needs_review).length;
+  const reviewCount = gating.length - confidentCount;
   const many = gating.length !== 1;
 
   return (
@@ -99,6 +107,18 @@ export function GatingHero({
           <RejectionStamp />
         </div>
 
+        {reviewCount > 0 && (
+          <p className="mt-2 font-mono text-xs">
+            <span className="text-signal-oxblood">
+              {confidentCount} high-confidence
+            </span>
+            <span className="text-ink-muted"> · </span>
+            <span className="text-signal-amber">
+              {reviewCount} flagged for review
+            </span>
+          </p>
+        )}
+
         <ul className="mt-4 flex flex-col">
           {gating.map((req, i) => {
             const alsoOn = alsoCitedLabel(meta.get(req.id)?.alsoCitedOn ?? []);
@@ -109,8 +129,16 @@ export function GatingHero({
                   i > 0 ? "border-t border-signal-oxblood-frame/20" : ""
                 }`}
               >
-                {/* The ledger index, in the mono record voice. */}
-                <span className="pt-0.5 font-mono text-xs font-medium text-signal-oxblood">
+                {/* The ledger index, in the mono record voice — amber on a
+                    lower-confidence review flag so it reads apart from a
+                    confident bid-killer. */}
+                <span
+                  className={`pt-0.5 font-mono text-xs font-medium ${
+                    req.needs_review
+                      ? "text-signal-amber"
+                      : "text-signal-oxblood"
+                  }`}
+                >
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <button
@@ -123,6 +151,11 @@ export function GatingHero({
                   <span className={onSelect ? "hover:underline" : ""}>
                     {req.text}
                   </span>
+                  {req.needs_review && (
+                    <span className="ml-2 inline-flex items-center rounded border border-signal-amber/50 bg-signal-amber/10 px-1.5 py-0.5 align-middle font-mono text-[10px] font-medium uppercase tracking-wide text-signal-amber">
+                      Needs review
+                    </span>
+                  )}
                   <span className="mt-1 block font-mono text-xs text-ink-muted">
                     p.{req.source_page}
                     {req.source_clause ? ` · ${req.source_clause}` : ""}

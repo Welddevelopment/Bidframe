@@ -65,7 +65,12 @@ export function isConfidentNonGating(req: Requirement): boolean {
 // Approve owns its cell.
 export function pendingStatusWord(req: Requirement): string | null {
   if (isConfidentNonGating(req)) return null;
-  if (req.is_gating) return "Deal-breaker to clear";
+  // A confident gate is a deal-breaker to clear; one the tool flagged to be safe
+  // but is less sure of (needs_review) is a POSSIBLE deal-breaker to verify — so
+  // an over-flag reads honestly instead of masquerading as a certain bid-killer.
+  if (req.is_gating) {
+    return req.needs_review ? "Possible deal-breaker — verify" : "Deal-breaker to clear";
+  }
   const needsInput =
     req.answer?.state === "needs_input" ||
     (req.open_questions?.some((q) => !q.answer) ?? false);
