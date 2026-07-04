@@ -48,13 +48,21 @@
 > price an SME can reach."
 
 **PRESS 4** *(field lands)*
-> "Everyone else writes prose, reuses old answers, or chats about the PDF. **Nobody proves the
-> first read.**"
+> "The others extract too — as a black box. You can't click their output back to the clause, and no
+> one publishes what they missed. **We show the receipt:** source-linked, measured on tenders we'd
+> never seen, at a price an SME can reach."
 
 *(Handoff — energy up, gesture to Joe:)*
 > "Joe drives, Pranav narrates — I'll stop touching the keyboard."
 
 **PRESS 5 → `/showcase`. Done.**
+
+## Pocket answer — "isn't AutogenAI just better at this?"
+
+> "They're a generative enterprise product — extraction is a step inside drafting, and from the
+> outside it's unverifiable and demo-gated. Our whole product **is** the verifiable first read:
+> click to clause, measured on held-out tenders, at a price an SME can reach. Different job: they
+> write. We prove you're allowed to bid."
 
 ## If you blank
 
