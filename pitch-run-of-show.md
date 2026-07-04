@@ -1,22 +1,23 @@
 # 5-minute run-of-show - Bidframe live pitch
 
-> Current source of truth for timing and handoffs. Word-for-word track: `demo/pitch-script.md`.
-> Demo clicks: `control-demo-script.md`. Claim safety: `demo-claim-ledger.md`.
+> Current source of truth for timing and handoffs. Jawad's word-for-word track:
+> `demo/pitch-script.md`. Bobby's slide 3-4 track: `bobbyscript.md`. Demo clicks:
+> `control-demo-script.md`. Claim safety: `demo-claim-ledger.md`.
 >
-> Latest split from J-089: **Bobby + Jawad own the deck**. **Joel + Pranav own the live `/showcase`
-> demo**. Bradwell is the hero tender. `/demo` is backup/cinematic proof only.
+> Latest split: **Jawad owns slides 1, 2, and 5. Bobby owns slides 3 and 4. Joe drives the live
+> `/showcase` demo while Pranav narrates over Joe's clicks.** Bradwell is the hero tender.
+> `/showcase` is the primary product surface. `/demo` is backup/cinematic proof only.
 
 ## The clock
 
 | Time | Who | Where | Beat |
 |---|---|---|---|
-| **0:00-0:25** | Jawad | `/pitch` s1 | Hook: missed mandatory requirement kills the bid. Bidframe turns the first read into a controlled review workflow. |
-| **0:25-0:55** | Bobby | `/pitch` s2 | Use case: first read becomes risk register - mandatory rules, pass/fail clauses, evidence gaps, source references. |
-| **0:55-1:25** | Jawad | `/pitch` s3 | Before/after: Bradwell legal text to bid-killer matrix. Let the marked clauses breathe. |
-| **1:25-1:55** | Bobby | `/pitch` s4 | Product/control frame: deal-breakers on top, source-linked rows, approve/edit/flag/open-question, human stays at the wheel. |
-| **1:55-3:55** | Joel + Pranav | `/showcase` | Live walkthrough: ControlPanel zero-approved state, Bradwell deal-breakers, source proof, held-out numbers, evidence-backed answer, open question, approve/edit/flag/control tally. |
-| **3:55-4:25** | Bobby or Jawad | `/pitch` competitors | Keep short: Bidframe is measured trust, not a PDF chatbot - source-linked matrix, deterministic deal-breaker floor, human approval trail. |
-| **4:25-5:00** | Jawad | `/pitch` ask | Conduct bridge: decision context moves with the work. Ask for pilots/design partners. Verbatim closer. |
+| **0:00-0:25** | Jawad | `/pitch` s1 | Hook: explain what a tender is, land the missed mandatory requirement pain, and frame the legacy problem. |
+| **0:25-0:55** | Jawad | `/pitch` s2 | Use case: first read becomes compliance matrix, deal-breaker register, source trace, evidence-backed draft. |
+| **0:55-1:35** | Bobby | `/pitch` s3 | Before/after: read clause 4.6, translate the legalese, reveal the five buried disqualifiers. |
+| **1:35-2:20** | Bobby | `/pitch` s4 | Product/control frame: deal-breakers on top, source-linked rows, evidence-backed answers, human approval. |
+| **2:20-4:20** | Joe drives / Pranav narrates | `/showcase` | Live walkthrough: ControlPanel zero-approved state, Bradwell deal-breakers, source proof, held-out numbers, evidence-backed answer, open question, approve/edit/flag/control tally. |
+| **4:20-5:00** | Jawad | `/pitch` ask | Conduct bridge: decision context moves with the work. Ask for pilots/design partners. Verbatim closer. |
 
 ## Non-negotiables
 
@@ -26,7 +27,7 @@
 - Say "cached output of a real pipeline run." Do not imply live extraction on stage.
 - Use only claim-ledger numbers: 12/12 deterministic, 26/26 across four gold sets, Bradwell 10/10 held out, Duffield zero missed, 101/101 synthetic, 42/42 citations with zero fabrications.
 - 12-vs-10 line: "Ten labelled bid-killers caught; two lower-confidence review flags. Visible over-flag, never silent miss."
-- Keep the competitor slide short. It is differentiation, not the demo.
+- Keep the humour human and quick. The room should smile, then immediately understand the risk.
 
 ## Fallbacks
 

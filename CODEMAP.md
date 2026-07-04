@@ -4,7 +4,7 @@
 >
 > **Interactive graph:** [`frontend/public/codemap.html`](frontend/public/codemap.html) — drag / zoom / click-to-focus; served at `/codemap.html` on the Vercel deploy. (The diagrams below render right here on GitHub.)
 >
-> Map of commit `455f32d` · 2026-07-04T12:12:28+01:00
+> Map of commit `2837540` · 2026-07-04T14:08:44+01:00
 
 **Read this first** for a current picture of the codebase — what lives where, and what imports what. It is the fast path to context for both humans and agents. If it looks wrong, it is stale: re-run the generator and push.
 
@@ -12,17 +12,17 @@
 
 | Area | Files | Lines | What it is |
 |------|-------|-------|------------|
-| **frontend** | 178 | 60,726 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
+| **frontend** | 178 | 60,900 | Frontend — Next.js 16 / React 19 / Tailwind (compliance matrix UI) |
 | **backend** | 20 | 3,159 | Backend — FastAPI (PDF ingest, extraction, REST API) |
-| **engine** | 72 | 5,987 | Engine — reconcile / eval / answer-draft pipeline + tests |
+| **engine** | 75 | 6,187 | Engine — reconcile / eval / answer-draft pipeline + tests |
 | **prompts** | 6 | 713 | Prompts — LLM prompt specs (extraction, classification, answers, gaps) |
 | **gold** | 7 | 363 | Eval gold-set — hand-labelled requirements for accuracy measurement |
 | **data** | 17 | 0 | Data — tender source PDFs (not parsed here) |
-| **comms** | 5 | 2,295 | Comms — async agent message boards |
+| **comms** | 5 | 2,354 | Comms — async agent message boards |
 | **docs** | 3 | 1,663 | Docs — plans & specs |
 | **ci** | 1 | 57 | CI — GitHub Actions |
 | **tooling** | 1 | 516 | Tooling — repo scripts (incl. this map generator) |
-| **root** | 578 | 32,783 | Root — docs, config, role briefs |
+| **root** | 586 | 34,071 | Root — docs, config, role briefs |
 
 ## System shape
 
@@ -296,7 +296,6 @@ graph LR
   n23[PitchDeck.tsx] --> n11[BrandLogo.tsx]
   n23[PitchDeck.tsx] --> n55[ComplianceMatrix.tsx]
   n23[PitchDeck.tsx] --> n59[GatingHero.tsx]
-  n23[PitchDeck.tsx] --> n60[GraphView.tsx]
   n23[PitchDeck.tsx] --> n25[MatrixView.tsx]
   n23[PitchDeck.tsx] --> n100[ProductShots.tsx]
   n23[PitchDeck.tsx] --> n105[PitchScene.tsx]
@@ -305,7 +304,6 @@ graph LR
   n23[PitchDeck.tsx] --> n108[TrailMap.tsx]
   n23[PitchDeck.tsx] --> n109[TrailSteps.tsx]
   n23[PitchDeck.tsx] --> n7[RequirementsContext.tsx]
-  n23[PitchDeck.tsx] --> n42[answers.ts]
   n23[PitchDeck.tsx] --> n54[triage.ts]
   n105[PitchScene.tsx] --> n71[FernFrond.tsx]
   n105[PitchScene.tsx] --> n94[PineBranch.tsx]
@@ -398,11 +396,12 @@ graph LR
   n26[gating_recall.py] --> n14[gating_scan.py]
   n26[gating_recall.py] --> n15[reconcile.py]
   n26[gating_recall.py] --> n24[run_tender.py]
-  n27[precision_report.py] --> n19[_io.py]
-  n27[precision_report.py] --> n18[eval.py]
-  n27[precision_report.py] --> n15[reconcile.py]
-  n27[precision_report.py] --> n24[run_tender.py]
-  n27[precision_report.py] --> n17[similarity.py]
+  n27[net_floor.py] --> n14[gating_scan.py]
+  n28[precision_report.py] --> n19[_io.py]
+  n28[precision_report.py] --> n18[eval.py]
+  n28[precision_report.py] --> n15[reconcile.py]
+  n28[precision_report.py] --> n24[run_tender.py]
+  n28[precision_report.py] --> n17[similarity.py]
   n24[run_tender.py] --> n2[chunk.py]
   n24[run_tender.py] --> n4[extract.py]
   n24[run_tender.py] --> n3[ingest.py]
@@ -410,8 +409,8 @@ graph LR
   n24[run_tender.py] --> n12[embeddings.py]
   n24[run_tender.py] --> n18[eval.py]
   n24[run_tender.py] --> n15[reconcile.py]
-  n28[parse_check.py]
-  n29[stress_test.py]
+  n29[parse_check.py]
+  n30[stress_test.py]
 ```
 
 ## Files by area
@@ -617,6 +616,7 @@ graph LR
 - `engine/scripts/eval_all.py` — aggregate accuracy across every labelled tender.
 - `engine/scripts/gating_coverage.py` — gate-FAMILY coverage diagnostic for the public-sector safety-net.
 - `engine/scripts/gating_recall.py` — the TRUE gating-recall number (semantic + auditable).
+- `engine/scripts/net_floor.py` — the deterministic deal-breaker floor, offline and reproducible.
 - `engine/scripts/precision_report.py` — categorise extraction false-positives vs a gold set.
 - `engine/scripts/run_tender.py` — the real closed loop on a real tender.
 - `engine/similarity.py` — Swappable similarity seam. difflib char-ratio + content-token Jaccard. No embeddings.
@@ -632,6 +632,7 @@ graph LR
 - `engine/tests/test_autofill_wiring.py` — Integration: auditable autofill is wired into the live API (generalist lane).
 - `engine/tests/test_backend_extract.py` — Regression tests for backend/app/extract.py — the Day-4 accuracy pass (P).
 - `engine/tests/test_calibrate.py`
+- `engine/tests/test_demo_no_bluff.py` — Regression lock for the SECOND headline trust claim: the demo never bluffs.
 - `engine/tests/test_draft_concurrency.py` — draft_all parallelism: drafting concurrently must be byte-identical to sequential.
 - `engine/tests/test_embedding_dedup.py` — Embedding semantic dedup (J-056, Generalist).
 - `engine/tests/test_end_to_end.py`
@@ -651,6 +652,7 @@ graph LR
 - `engine/tests/test_io.py`
 - `engine/tests/test_match_score.py` — Eval matcher: paraphrase/granularity tolerance without embeddings.
 - `engine/tests/test_merge.py`
+- `engine/tests/test_net_floor.py` — Regression lock for the deterministic deal-breaker floor (the demo's headline proof).
 - `engine/tests/test_pipeline_wiring.py` — Integration: the backend pipeline now uses the generalist engine for reconcile + routing.
 - `engine/tests/test_real_data_robustness.py` — Robustness against real extractor output (regression for the SPSO run).
 - `engine/tests/test_report.py`
@@ -723,9 +725,11 @@ graph LR
 - `archive/waitlist/route.ts` — exports `POST`
 - `autofill-scope-decision.md`
 - `bidframe_outreach_mailmerge.csv`
+- `bobbyscript.md`
 - `codex-continue-2026-07-03.md`
 - `codex-leadgen-handoff.md`
 - `codex-leadgen-instructions.md`
+- `competitor-analysis.md`
 - `control-demo-script.md`
 - `crm/.gitignore`
 - `crm/README.md`
@@ -1186,6 +1190,7 @@ graph LR
 - `demo-day/cue-cards/p-backend.md`
 - `demo-day/fable-demo-recording-brief.md`
 - `demo-day/notecards-printable-2026-07-04.md`
+- `demo-day/pranav-demo-section-brief.md`
 - `demo-day/pre-show-checklist.md`
 - `demo-day/qa-prep.md`
 - `demo-day/run-sheet.md`
@@ -1193,16 +1198,20 @@ graph LR
 - `demo-narrative.md`
 - `demo-scrolly-design-pack.md`
 - `demo/OVERNIGHT-MISSION.md`
+- `demo/before-after-build-spec.md`
+- `demo/codex-tasks.md`
 - `demo/demo-strategy.md`
 - `demo/final-checklist.md`
 - `demo/judge-research.md`
 - `demo/pitch-script.md`
 - `demo/q-and-a-battlecard.md`
+- `demo/qa-prep.md`
 - `demo/research/judges-criteria-worker.md`
 - `demo/research/pitch-worker.md`
 - `demo/research/product-reality-worker.md`
 - `demo/research/team-landscape-worker.md`
 - `demo/run-of-show.md`
+- `demo/submission-check.md`
 - `demo/team-landscape.md`
 - `demo/validation-log.md`
 - `demo/whatsapp-joel-summary.md`
@@ -1234,6 +1243,7 @@ graph LR
 - `overhaulplan.md`
 - `pitch-assets/canva/README.md`
 - `pitch-before-after.md`
+- `pitch-competitor-analysis.md`
 - `pitch-run-of-show.md`
 - `pitchimprovements.md`
 - `positioning-and-traction.md`
@@ -1258,4 +1268,4 @@ graph LR
 
 ---
 
-*888 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
+*899 tracked files mapped. Generated by `scripts/gen_codemap.py`.*
