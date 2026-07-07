@@ -22,6 +22,15 @@ Secrets are **not** baked — set them in the host: `AUTH_SECRET` (required, or 
 
 ## Primary path — Hugging Face Spaces (Docker)
 
+> **Current state (2026-07-07):** the Space **exists and is prepped** —
+> `yonnie-tsenta/bidframe-api` (Docker SDK, public, empty) with `AUTH_SECRET` already set.
+> On the machine with the baked demo data, the whole deploy is **one command**:
+> ```powershell
+> powershell -ExecutionPolicy Bypass -File deploy\push-hf-space.ps1
+> ```
+> (prompts for the HF write token; stage → push → prints the health URL). Then set the
+> Vercel env var (see below) and redeploy. Steps 1–4 below are the manual equivalent.
+
 1. **Stage the build** (assembles a 2 MB push-ready folder from the live, seeded backend):
    ```powershell
    powershell -ExecutionPolicy Bypass -File deploy\stage-hf-space.ps1
