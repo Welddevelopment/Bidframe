@@ -155,7 +155,7 @@ function toastRef(req: Requirement | undefined): string {
 }
 
 export function MatrixView({
-  title,
+  title: propTitle,
   stageReturnHref = null,
 }: {
   title: string;
@@ -164,6 +164,7 @@ export function MatrixView({
   const {
     requirements,
     tenderId,
+    title: loadedTitle,
     sourceDocs,
     approve,
     editRequirement,
@@ -175,6 +176,9 @@ export function MatrixView({
     restoreDecisions,
     answerOpenQuestion,
   } = useRequirements();
+  // A live tender loaded from the API shows its own title; the frozen demo /
+  // showcase / pack pages (no live tenderId) keep the title they pass as a prop.
+  const title = tenderId ? loadedTitle : propTitle;
   const router = useRouter();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<GroupKey | null>(null);
